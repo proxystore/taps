@@ -3,13 +3,13 @@ requires = ["setuptools>=64.0", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "foobar"
+name = "wbench"
 version = "0.1.0"
 authors = [
-    {name = "foobar author"},
-    {email = "foobar@foobar.com"},
+    {name = "Greg Pauloski", email = "jgpauloski@uchicago.edu"},
+    {name = "Globus Labs"},
 ]
-description = "Foobar example package."
+description = "Workflows benchmark suite for task-based execution frameworks."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
@@ -24,9 +24,9 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/foobar-author/foobar"
-documentation = "https://foobar.readthedocs.io"
-repository = "https://github.com/foobar-author/foobar"
+Homepage = "https://github.com/proxystore/workflows-bench"
+Documentation = "https://proxystore.dev/workflows-bench"
+Source = "https://github.com/proxystore/workflows-bench"
 
 [project.optional-dependencies]
 dev = [
@@ -39,16 +39,6 @@ dev = [
     "ruff>=0.2.0",
     "tox",
     "virtualenv",
-]
-docs = [
-    "black",
-    "mkdocs-gen-files",
-    "mkdocs-literate-nav",
-    "mkdocs-material==9.4.7",
-    "mkdocs-section-index",
-    "mkdocstrings==0.23.0",
-    "mkdocstrings-python==1.8.0",
-    "mike",
 ]
 
 [tool.codespell]
@@ -136,7 +126,19 @@ select = [
     # ruff-specific
     "RUF",
 ]
-extend-ignore = []
+extend-ignore = [
+    # Allow builtin attribute shadowing
+    "A003",
+    # Ruff will change all([generator]) to all(generator) because the all/any
+    # generator expressions directly and the list comprehension is not needed.
+    # However, coverage marks unfinished generators as not covered and
+    # all/any can early exit before exhausting the generator.
+    "C419",
+    # Allow pytest.raises() without match
+    "PT011",
+    # Allow nested contexts
+    "SIM117",
+]
 
 [tool.ruff.lint.flake8-pytest-style]
 parametrize-values-type = "tuple"
@@ -147,7 +149,7 @@ multiline-quotes = "single"
 
 [tool.ruff.lint.isort]
 force-single-line = true
-known-first-party = ["foobar", "test", "testing"]
+known-first-party = ["wbench", "test", "testing"]
 order-by-type = false
 required-imports = ["from __future__ import annotations"]
 
