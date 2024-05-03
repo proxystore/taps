@@ -20,7 +20,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-    "requests",
+    "pydantic",
 ]
 
 [project.urls]
@@ -155,7 +155,8 @@ required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
 "*/__init__.py" = ["F401"]
-"*/*_test.py" = ["D10"]
+"tests/**.py" = ["D10"]
+"testing/**.py" = ["D10"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
