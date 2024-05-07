@@ -20,7 +20,8 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-    "pydantic",
+    "globus-compute-sdk",
+    "pydantic>=2",
 ]
 
 [project.urls]
@@ -127,6 +128,8 @@ select = [
     "RUF",
 ]
 extend-ignore = [
+    # Do not require docstrings for modules, packages, magic methods, or __init__ methods
+    "D100", "D104", "D105", "D107",
     # Allow builtin attribute shadowing
     "A003",
     # Ruff will change all([generator]) to all(generator) because the all/any

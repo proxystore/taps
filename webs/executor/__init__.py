@@ -1,3 +1,3 @@
 from __future__ import annotations
 
-from webs.wf import template
+import webs.executor.globus_compute
