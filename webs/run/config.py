@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import pathlib
 from datetime import datetime
+from typing import Optional
+from typing import Union
 
 from pydantic import Field
 
@@ -20,12 +22,18 @@ class RunConfig(Config):
         run_dir: Runtime directory.
     """
 
-    log_file_level: int | str = Field(
+    log_file_level: Union[int, str] = Field(  # noqa: UP007
         'INFO',
         description='minimum logging level for the log file',
     )
-    log_file_name: str | None = Field(None, description='log file name')
-    log_level: int | str = Field('INFO', description='minimum logging level')
+    log_file_name: Optional[str] = Field(  # noqa: UP007
+        None,
+        description='log file name',
+    )
+    log_level: Union[int, str] = Field(  # noqa: UP007
+        'INFO',
+        description='minimum logging level',
+    )
     run_dir: str = Field(
         'runs/{name}-{timestamp}',
         description='run directory',
