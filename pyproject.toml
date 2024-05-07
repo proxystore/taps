@@ -3,7 +3,7 @@ requires = ["setuptools>=64.0", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "wbench"
+name = "webs"
 version = "0.1.0"
 authors = [
     {name = "Greg Pauloski", email = "jgpauloski@uchicago.edu"},
@@ -20,13 +20,14 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-    "pydantic",
+    "globus-compute-sdk",
+    "pydantic>=2",
 ]
 
 [project.urls]
-Homepage = "https://github.com/proxystore/workflows-bench"
-Documentation = "https://proxystore.dev/workflows-bench"
-Source = "https://github.com/proxystore/workflows-bench"
+Homepage = "https://github.com/proxystore/webs"
+Documentation = "https://proxystore.dev/webs"
+Source = "https://github.com/proxystore/webs"
 
 [project.optional-dependencies]
 dev = [
@@ -127,6 +128,8 @@ select = [
     "RUF",
 ]
 extend-ignore = [
+    # Do not require docstrings for modules, packages, magic methods, or __init__ methods
+    "D100", "D104", "D105", "D107",
     # Allow builtin attribute shadowing
     "A003",
     # Ruff will change all([generator]) to all(generator) because the all/any
@@ -157,6 +160,7 @@ required-imports = ["from __future__ import annotations"]
 "*/__init__.py" = ["F401"]
 "tests/**.py" = ["D10"]
 "testing/**.py" = ["D10"]
+"tests/conftest.py" = ["F401"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

@@ -1,29 +1,28 @@
 from __future__ import annotations
 
 import logging
+import pathlib
 import sys
 from typing import Any
 
-from wbench.utils import make_parent_dirs
-
 # Used by benchmark runners and harnesses
-BENCH_LOG_LEVEL = 25
+RUN_LOG_LEVEL = 25
 
 
 def init_logging(
-    logfile: str | None = None,
+    logfile: pathlib.Path | None = None,
     level: int | str = logging.INFO,
     logfile_level: int | str = logging.INFO,
     force: bool = False,
 ) -> None:
     """Initialize logging with custom formats.
 
-    Adds a custom log level BENCH which is higher than INFO and lower than
-    WARNING. BENCH is used by the workflow benchmark harness.
+    Adds a custom log level RUN which is higher than INFO and lower than
+    WARNING. RUN is used by the workflow benchmark harness.
 
     Usage:
         >>> logger = init_logger(...)
-        >>> logger.log(BENCH_LOG_LEVEL, 'message')
+        >>> logger.log(RUN_LOG_LEVEL, 'message')
 
     Args:
         logfile (str): option filepath to write log to (default: None).
@@ -35,14 +34,14 @@ def init_logging(
             package logging. Note: should not be set when running inside
             pytest (default: False).
     """
-    logging.addLevelName(BENCH_LOG_LEVEL, 'BENCH')
+    logging.addLevelName(RUN_LOG_LEVEL, 'RUN')
 
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setLevel(level)
 
     handlers: list[logging.Handler] = [stdout_handler]
     if logfile is not None:
-        make_parent_dirs(logfile)
+        logfile.parent.mkdir(parents=True, exist_ok=True)
         handler = logging.FileHandler(logfile)
         handler.setLevel(logfile_level)
         handlers.append(handler)
