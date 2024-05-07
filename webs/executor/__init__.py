@@ -1,3 +1,6 @@
 from __future__ import annotations
 
-import webs.executor.globus_compute
+# These imports are needed to ensure the executor
+# config registration decorator in each file is run.
+import webs.executor.globus
+import webs.executor.python

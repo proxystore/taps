@@ -160,6 +160,7 @@ required-imports = ["from __future__ import annotations"]
 "*/__init__.py" = ["F401"]
 "tests/**.py" = ["D10"]
 "testing/**.py" = ["D10"]
+"tests/conftest.py" = ["F401"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
