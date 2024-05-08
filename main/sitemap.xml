@@ -66,6 +66,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://proxystore.dev/webs/latest/api/executor/workflow/</loc>
+         <lastmod>2024-05-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://proxystore.dev/webs/latest/api/run/</loc>
          <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
