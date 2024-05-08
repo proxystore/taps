@@ -11,6 +11,7 @@ import pytest
 from testing.workflow import TestWorkflow
 from testing.workflow import TestWorkflowConfig
 from webs.executor.python import ThreadPoolConfig
+from webs.executor.workflow import WorkflowExecutor
 from webs.run.config import BenchmarkConfig
 from webs.run.config import RunConfig
 
@@ -24,6 +25,14 @@ def process_executor() -> Generator[ProcessPoolExecutor, None, None]:
 @pytest.fixture()
 def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
     with ThreadPoolExecutor(4) as executor:
+        yield executor
+
+
+@pytest.fixture()
+def workflow_executor(
+    thread_executor: ThreadPoolExecutor,
+) -> Generator[WorkflowExecutor, None, None]:
+    with WorkflowExecutor(thread_executor) as executor:
         yield executor
 
 

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import uuid
 from concurrent.futures import Future
-from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
@@ -17,6 +16,9 @@ def test_task_future_forwards_result() -> None:
 
     called: list[bool] = []
     task_future.add_done_callback(lambda fut: called.append(True))
+
+    assert repr(base_future) in repr(task_future)
+    assert task_future._waiters == base_future._waiters
 
     assert not base_future.done()
     assert not task_future.done()
@@ -66,13 +68,11 @@ def test_workflow_task_call() -> None:
     assert task([1, 2, 3], start=-6) == 0
 
 
-def test_workflow_executor_submit(thread_executor: ThreadPoolExecutor) -> None:
-    with WorkflowExecutor(thread_executor) as executor:
-        future = executor.submit(sum, [1, 2, 3], start=-6)
-        assert isinstance(future, WorkflowTaskFuture)
-        assert future.result() == 0
+def test_workflow_executor_submit(workflow_executor: WorkflowExecutor) -> None:
+    future = workflow_executor.submit(sum, [1, 2, 3], start=-6)
+    assert isinstance(future, WorkflowTaskFuture)
+    assert future.result() == 0
 
 
-def test_workflow_executor_map(thread_executor: ThreadPoolExecutor) -> None:
-    with WorkflowExecutor(thread_executor) as executor:
-        assert list(executor.map(abs, [1, -1])) == [1, 1]
+def test_workflow_executor_map(workflow_executor: WorkflowExecutor) -> None:
+    assert list(workflow_executor.map(abs, [1, -1])) == [1, 1]

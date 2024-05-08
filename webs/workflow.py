@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pathlib
 import sys
-from concurrent.futures import Executor
 from types import TracebackType
 from typing import Any
 from typing import Callable
@@ -16,6 +15,8 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 from pydantic import BaseModel
+
+from webs.executor.workflow import WorkflowExecutor
 
 WorkflowConfigT = TypeVar('WorkflowConfigT', bound=BaseModel)
 
@@ -48,7 +49,7 @@ class Workflow(Protocol[WorkflowConfigT]):
 
     def run(
         self,
-        executor: Executor,
+        executor: WorkflowExecutor,
         run_dir: pathlib.Path,
     ) -> None:
         """Run the workflow."""

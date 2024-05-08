@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import sys
+import threading
 import uuid
 from concurrent.futures import Executor
 from concurrent.futures import Future
+from concurrent.futures._base import _Waiter
 from typing import Any
 from typing import Callable
 from typing import Generic
@@ -41,6 +43,36 @@ class WorkflowTaskFuture(Future[T]):
     ) -> None:
         self.compute_future = compute_future
         self.task_id = task_id
+
+    @property
+    def _condition(self) -> threading.Condition:
+        return self.compute_future._condition
+
+    @_condition.setter
+    def _condition(
+        self,
+        condition: threading.Condition,
+    ) -> None:  # pragma: no cover
+        self.compute_future._condition = condition
+
+    @property
+    def _state(self) -> str:
+        return self.compute_future._state
+
+    @_state.setter
+    def _state(self, state: str) -> None:  # pragma: no cover
+        self.compute_future._state = state
+
+    @property
+    def _waiters(self) -> list[_Waiter]:
+        return self.compute_future._waiters
+
+    @_waiters.setter
+    def _waiters(self, waiters: list[_Waiter]) -> None:  # pragma: no cover
+        self.compute_future._waiters = waiters
+
+    def __repr__(self) -> str:
+        return f'<{self.__class__.__name__} wrapping {self.compute_future!r}>'
 
     def cancel(self) -> bool:
         """Attempt to cancel the call."""
