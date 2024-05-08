@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import pathlib
+from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from typing import Generator
 
 import pytest
 
@@ -10,6 +13,18 @@ from testing.workflow import TestWorkflowConfig
 from webs.executor.python import ThreadPoolConfig
 from webs.run.config import BenchmarkConfig
 from webs.run.config import RunConfig
+
+
+@pytest.fixture()
+def process_executor() -> Generator[ProcessPoolExecutor, None, None]:
+    with ProcessPoolExecutor(4) as executor:
+        yield executor
+
+
+@pytest.fixture()
+def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
+    with ThreadPoolExecutor(4) as executor:
+        yield executor
 
 
 @pytest.fixture()
