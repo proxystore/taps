@@ -2,112 +2,117 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://proxystore.dev/webs/latest/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/get-started/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/SUMMARY/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/config/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/context/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/logging/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/workflow/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/config/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/executor/dag/</loc>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/globus/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/python/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/run/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/run/config/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/run/main/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/issues-pull-requests/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/releases/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/style-guide/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/guides/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/guides/creating-workflows/</loc>
-         <lastmod>2024-05-07</lastmod>
+         <lastmod>2024-05-08</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
