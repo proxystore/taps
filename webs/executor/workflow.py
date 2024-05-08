@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import sys
-import threading
 import uuid
 from concurrent.futures import Executor
 from concurrent.futures import Future
-from concurrent.futures._base import _Waiter
+from types import TracebackType
 from typing import Any
 from typing import Callable
 from typing import Generic
@@ -18,106 +17,16 @@ if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
 else:  # pragma: <3.10 cover
     from typing_extensions import ParamSpec
 
+if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
+    from typing import Self
+else:  # pragma: <3.11 cover
+    from typing_extensions import Self
+
 P = ParamSpec('P')
 T = TypeVar('T')
 
 
-# Using Future[T] is not possible in Python 3.8. The Generic[T] and type
-# ignore can be removed after Python 3.8 support is dropped.
-class WorkflowTaskFuture(Future, Generic[T]):  # type: ignore[type-arg]
-    """Task result future.
-
-    A thin wrapper around another future returned by the compute executor.
-    Refer to the [`Future`][concurrent.futures.Future] docstring for
-    further details on behaviour.
-
-    Args:
-        compute_future: Underlying future representing the result of the
-            task execution.
-        task_id: UUID of the task this future corresponds to.
-    """
-
-    def __init__(
-        self,
-        compute_future: Future[T],
-        *,
-        task_id: uuid.UUID,
-    ) -> None:
-        self.compute_future = compute_future
-        self.task_id = task_id
-
-    @property
-    def _condition(self) -> threading.Condition:
-        return self.compute_future._condition
-
-    @_condition.setter
-    def _condition(
-        self,
-        condition: threading.Condition,
-    ) -> None:  # pragma: no cover
-        self.compute_future._condition = condition
-
-    @property
-    def _state(self) -> str:
-        return self.compute_future._state
-
-    @_state.setter
-    def _state(self, state: str) -> None:  # pragma: no cover
-        self.compute_future._state = state
-
-    @property
-    def _waiters(self) -> list[_Waiter]:
-        return self.compute_future._waiters
-
-    @_waiters.setter
-    def _waiters(self, waiters: list[_Waiter]) -> None:  # pragma: no cover
-        self.compute_future._waiters = waiters
-
-    def __repr__(self) -> str:
-        return f'<{self.__class__.__name__} wrapping {self.compute_future!r}>'
-
-    def cancel(self) -> bool:
-        """Attempt to cancel the call."""
-        return self.compute_future.cancel()
-
-    def cancelled(self) -> bool:
-        """Check if the call was successfully cancelled."""
-        return self.compute_future.cancelled()
-
-    def running(self) -> bool:
-        """Check if the call is currently being executed."""
-        return self.compute_future.running()
-
-    def done(self) -> bool:
-        """Check if the call was successfully cancelled or finished running."""
-        return self.compute_future.done()
-
-    def result(self, timeout: float | None = None) -> T:
-        """Get the value returned by the call."""
-        return self.compute_future.result(timeout)
-
-    def exception(self, timeout: float | None = None) -> BaseException | None:
-        """Get the exception raised by the call."""
-        return self.compute_future.exception(timeout)
-
-    def add_done_callback(self, fn: Callable[[Future[T]], Any]) -> None:
-        """Attach a callback for when the future is done."""
-        self.compute_future.add_done_callback(fn)
-
-    def set_running_or_notify_cancel(self) -> bool:
-        """Set the future as running or notify the call was cancelled."""
-        return self.compute_future.set_running_or_notify_cancel()
-
-    def set_result(self, result: T) -> None:
-        """Set the result of the work associated with the future."""
-        self.compute_future.set_result(result)
-
-    def set_exception(self, exception: BaseException | None) -> None:
-        """Set the exception raised by the work associated with the future."""
-        self.compute_future.set_exception(exception)
-
-
-class WorkflowTask(Generic[P, T]):
+class _TaskWrapper(Generic[P, T]):
     """Workflow task wrapper.
 
     Args:
@@ -129,7 +38,7 @@ class WorkflowTask(Generic[P, T]):
         self,
         function: Callable[P, T],
         *,
-        task_id: uuid.UUID | None = None,
+        task_id: uuid.UUID,
     ) -> None:
         self.function = function
         self.task_id = uuid.uuid4() if task_id is None else task_id
@@ -139,7 +48,15 @@ class WorkflowTask(Generic[P, T]):
         return self.function(*args, **kwargs)
 
 
-class WorkflowExecutor(Executor):
+class WorkflowTask(Generic[T]):
+    """Workflow task information."""
+
+    def __init__(self, future: Future[T], task_id: uuid.UUID) -> None:
+        self.future = future
+        self.task_id = task_id
+
+
+class WorkflowExecutor:
     """Workflow executor.
 
     Args:
@@ -149,13 +66,24 @@ class WorkflowExecutor(Executor):
     def __init__(self, compute_executor: Executor) -> None:
         self.compute_executor = compute_executor
 
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        exc_traceback: TracebackType | None,
+    ) -> None:
+        self.shutdown()
+
     def submit(
         self,
         function: Callable[P, T],
         /,
-        *args: P.args,
-        **kwargs: P.kwargs,
-    ) -> WorkflowTaskFuture[T]:
+        *args: Any,
+        **kwargs: Any,
+    ) -> WorkflowTask[T]:
         """Schedule the callable to be executed.
 
         Args:
@@ -164,17 +92,19 @@ class WorkflowExecutor(Executor):
             kwargs: Keyword arguments.
 
         Returns:
-            [`Future`][concurrent.futures.Future] object representing the \
-            result of the execution of the callable.
+            [`WorkflowTask`][webs.executor.workflow.WorkflowTask`] object \
+            containing the [`Future`][concurrent.futures.Future] object \
+            representing the result of the execution of the callable.
         """
-        task = WorkflowTask(function)
-        compute_future = self.compute_executor.submit(task, *args, **kwargs)
-        return WorkflowTaskFuture(compute_future, task_id=task.task_id)
+        task_id = uuid.uuid4()
+        task = _TaskWrapper(function, task_id=task_id)
+        future = self.compute_executor.submit(task, *args, **kwargs)
+        return WorkflowTask(future, task_id)
 
     def map(
         self,
         function: Callable[P, T],
-        *iterables: Iterable[P.args],
+        *iterables: Iterable[Any],
         timeout: float | None = None,
         chunksize: int = 1,
     ) -> Iterator[T]:
