@@ -12,6 +12,7 @@ from typing import Sequence
 from webs import wf  # noqa: F401
 from webs.executor.config import ExecutorChoicesConfig
 from webs.executor.config import get_executor_config
+from webs.executor.workflow import WorkflowExecutor
 from webs.logging import init_logging
 from webs.logging import RUN_LOG_LEVEL
 from webs.run.config import BenchmarkConfig
@@ -79,14 +80,11 @@ def run(config: BenchmarkConfig) -> None:
     logger.log(RUN_LOG_LEVEL, f'Starting workflow (name={config.name})')
     logger.log(RUN_LOG_LEVEL, config)
 
-    executor = config.executor.get_executor()
+    compute_executor = config.executor.get_executor()
     workflow = get_registered()[config.name].from_config(config.workflow)
 
-    with executor, workflow:
-        workflow.run(
-            executor=executor,
-            run_dir=config.get_run_dir(),
-        )
+    with workflow, WorkflowExecutor(compute_executor) as executor:
+        workflow.run(executor=executor, run_dir=config.get_run_dir())
 
     runtime = time.perf_counter() - start
     logger.log(
