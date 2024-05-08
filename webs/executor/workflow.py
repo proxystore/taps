@@ -22,7 +22,9 @@ P = ParamSpec('P')
 T = TypeVar('T')
 
 
-class WorkflowTaskFuture(Future[T]):
+# Using Future[T] is not possible in Python 3.8. The Generic[T] and type
+# ignore can be removed after Python 3.8 support is dropped.
+class WorkflowTaskFuture(Future, Generic[T]):  # type: ignore[type-arg]
     """Task result future.
 
     A thin wrapper around another future returned by the compute executor.
