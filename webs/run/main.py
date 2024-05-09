@@ -33,11 +33,16 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
     """
     parser = argparse.ArgumentParser(
         description='Workflow benchmark suite.',
-        usage='python -m webs.run',
+        prog='python -m webs.run',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    subparsers = parser.add_subparsers(title='Workflows', dest='name')
+    subparsers = parser.add_subparsers(
+        title='Workflows',
+        dest='name',
+        required=True,
+        help='workflow to execute',
+    )
 
     workflows = get_registered()
     workflow_names = sorted(workflows.keys())
