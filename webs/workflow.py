@@ -66,10 +66,15 @@ class _WorkflowRegistry:
     def register(
         self,
         *,
-        name: str,
+        name: str | None = None,
     ) -> Callable[[type[Workflow[Any]]], type[Workflow[Any]]]:
         def decorator(cls: type[Workflow[Any]]) -> type[Workflow[Any]]:
-            self._workflows[name] = cls
+            registered_name = (
+                cls.name.lower().replace(' ', '-').replace('_', '-')
+                if name is None
+                else name
+            )
+            self._workflows[registered_name] = cls
             return cls
 
         return decorator

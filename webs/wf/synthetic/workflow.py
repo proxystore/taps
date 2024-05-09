@@ -45,7 +45,7 @@ def noop_task(data: bytes, output_size: int, sleep: float) -> bytes:
     return result
 
 
-@register(name='synthetic')
+@register()
 class SyntheticWorkflow(ContextManagerAddIn):
     """Synthetic workflow.
 

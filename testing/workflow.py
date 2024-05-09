@@ -26,7 +26,7 @@ class TestWorkflowConfig(Config):
     tasks: int = 3
 
 
-@register(name='test-workflow')
+@register()
 class TestWorkflow(ContextManagerAddIn):
     """Test workflow."""
 
