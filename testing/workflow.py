@@ -26,7 +26,7 @@ class TestWorkflowConfig(Config):
     tasks: int = 3
 
 
-@register(name='test-workflow')
+@register()
 class TestWorkflow(ContextManagerAddIn):
     """Test workflow."""
 
@@ -42,5 +42,5 @@ class TestWorkflow(ContextManagerAddIn):
         return cls(tasks=config.tasks)
 
     def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
-        futures = [executor.submit(task) for _ in range(self.tasks)]
-        wait(futures)
+        tasks = [executor.submit(task) for _ in range(self.tasks)]
+        wait([task.future for task in tasks])

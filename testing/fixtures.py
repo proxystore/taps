@@ -10,6 +10,7 @@ import pytest
 
 from testing.workflow import TestWorkflow
 from testing.workflow import TestWorkflowConfig
+from webs.executor.python import DAGExecutor
 from webs.executor.python import ThreadPoolConfig
 from webs.executor.workflow import WorkflowExecutor
 from webs.run.config import BenchmarkConfig
@@ -32,7 +33,8 @@ def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
 def workflow_executor(
     thread_executor: ThreadPoolExecutor,
 ) -> Generator[WorkflowExecutor, None, None]:
-    with WorkflowExecutor(thread_executor) as executor:
+    dag_executor = DAGExecutor(thread_executor)
+    with WorkflowExecutor(dag_executor) as executor:
         yield executor
 
 
