@@ -13,11 +13,11 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 from webs.context import ContextManagerAddIn
-from webs.data import randbytes
 from webs.executor.workflow import WorkflowExecutor
 from webs.executor.workflow import WorkflowTask
 from webs.logging import WORK_LOG_LEVEL
 from webs.wf.synthetic.config import SyntheticWorkflowConfig
+from webs.wf.synthetic.utils import randbytes
 from webs.workflow import register
 
 logger = logging.getLogger(__name__)

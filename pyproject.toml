@@ -21,6 +21,7 @@ classifiers = [
 ]
 dependencies = [
     "globus-compute-sdk",
+    "proxystore>=0.6.5",
     "pydantic>=2",
 ]
 
@@ -68,6 +69,10 @@ plugins = ["covdefaults"]
 omit = ["examples"]
 
 [tool.mypy]
+plugins = [
+    "proxystore.mypy_plugin",
+    "pydantic.mypy",
+]
 python_version = "3.10"
 check_untyped_defs = true
 disallow_any_generics = true

@@ -22,6 +22,9 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
 else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
+from webs.data.transform import NullTransformer
+from webs.data.transform import TaskDataTransformer
+
 P = ParamSpec('P')
 T = TypeVar('T')
 
@@ -39,12 +42,16 @@ class _TaskWrapper(Generic[P, T]):
         function: Callable[P, T],
         *,
         task_id: uuid.UUID,
+        data_transformer: TaskDataTransformer[Any],
     ) -> None:
         self.function = function
         self.task_id = uuid.uuid4() if task_id is None else task_id
+        self.data_transformer = data_transformer
 
-    def __call__(self, *args: P.args, **kwargs: P.kwargs) -> T:
+    def __call__(self, *args: Any, **kwargs: Any) -> T:
         """Call the function associated with the task."""
+        args = self.data_transformer.resolve_iterable(args)
+        kwargs = self.data_transformer.resolve_mapping(kwargs)
         return self.function(*args, **kwargs)
 
 
@@ -63,8 +70,17 @@ class WorkflowExecutor:
         compute_executor: Compute executor.
     """
 
-    def __init__(self, compute_executor: Executor) -> None:
+    def __init__(
+        self,
+        compute_executor: Executor,
+        data_transformer: TaskDataTransformer[Any] | None = None,
+    ) -> None:
         self.compute_executor = compute_executor
+        self.data_transformer = (
+            data_transformer
+            if data_transformer is not None
+            else TaskDataTransformer(NullTransformer())
+        )
 
     def __enter__(self) -> Self:
         return self
@@ -97,14 +113,22 @@ class WorkflowExecutor:
             representing the result of the execution of the callable.
         """
         task_id = uuid.uuid4()
-        task = _TaskWrapper(function, task_id=task_id)
+        task = _TaskWrapper(
+            function,
+            task_id=task_id,
+            data_transformer=self.data_transformer,
+        )
+
+        args = self.data_transformer.transform_iterable(args)
+        kwargs = self.data_transformer.transform_mapping(kwargs)
+
         future = self.compute_executor.submit(task, *args, **kwargs)
         return WorkflowTask(future, task_id)
 
     def map(
         self,
         function: Callable[P, T],
-        *iterables: Iterable[Any],
+        *iterables: Iterable[P.args],
         timeout: float | None = None,
         chunksize: int = 1,
     ) -> Iterator[T]:
