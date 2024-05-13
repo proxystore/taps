@@ -44,6 +44,6 @@ def test_benchmark_config(tmp_path: pathlib.Path) -> BenchmarkConfig:
         name=TestWorkflow.name,
         timestamp=datetime.now(),
         executor=ThreadPoolConfig(max_thread=4),
-        run=RunConfig(run_dir=str(tmp_path)),
+        run=RunConfig(log_file_name=None, run_dir=str(tmp_path)),
         workflow=TestWorkflowConfig(tasks=3),
     )

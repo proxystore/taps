@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pathlib
 import sys
-from concurrent.futures import wait
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -42,5 +41,7 @@ class TestWorkflow(ContextManagerAddIn):
         return cls(tasks=config.tasks)
 
     def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
-        tasks = [executor.submit(task) for _ in range(self.tasks)]
-        wait([task.future for task in tasks])
+        task_futures = [executor.submit(task) for _ in range(self.tasks)]
+
+        for task_future in task_futures:
+            task_future.result()

@@ -4,8 +4,6 @@ import logging
 import pathlib
 import sys
 import time
-from concurrent.futures import as_completed
-from concurrent.futures import Future
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -13,8 +11,8 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 from webs.context import ContextManagerAddIn
+from webs.executor.workflow import TaskFuture
 from webs.executor.workflow import WorkflowExecutor
-from webs.executor.workflow import WorkflowTask
 from webs.logging import WORK_LOG_LEVEL
 from webs.wf.synthetic.config import SyntheticWorkflowConfig
 from webs.wf.synthetic.utils import randbytes
@@ -79,30 +77,28 @@ class SyntheticWorkflow(ContextManagerAddIn):
             executor: Workflow task executor.
             run_dir: Run directory.
         """
-        input_data: bytes | Future[bytes] = randbytes(
-            self.config.task_data_bytes,
-        )
-        tasks: dict[Future[bytes], WorkflowTask[bytes]] = {}
+        initial_data = randbytes(self.config.task_data_bytes)
+        tasks: list[TaskFuture[bytes]] = []
 
         for i in range(self.config.task_count):
+            input_data = initial_data if i == 0 else tasks[-1]
             task = executor.submit(
                 noop_task,
                 input_data,
                 output_size=self.config.task_data_bytes,
                 sleep=self.config.task_sleep,
             )
-            input_data = task.future
-            tasks[task.future] = task
+            tasks.append(task)
             logger.log(
                 WORK_LOG_LEVEL,
                 f'Submitted task {i+1}/{self.config.task_count} '
-                f'(task_id={task.task_id})',
+                f'(task_id={task.info.task_id})',
             )
 
-        for i, future in enumerate(as_completed(tasks.keys())):
-            task = tasks[future]
+        for i, task in enumerate(tasks):
+            task.result()
             logger.log(
                 WORK_LOG_LEVEL,
                 f'Received task {i+1}/{self.config.task_count} '
-                f'(task_id={task.task_id})',
+                f'(task_id={task.info.task_id})',
             )

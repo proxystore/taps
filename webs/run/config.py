@@ -6,6 +6,7 @@ from typing import Optional
 from typing import Union
 
 from pydantic import Field
+from pydantic import SerializeAsAny
 
 from webs.config import Config
 from webs.executor.config import ExecutorConfig
@@ -27,12 +28,16 @@ class RunConfig(Config):
         description='minimum logging level for the log file',
     )
     log_file_name: Optional[str] = Field(  # noqa: UP007
-        None,
+        'log.txt',
         description='log file name',
     )
     log_level: Union[int, str] = Field(  # noqa: UP007
         'INFO',
         description='minimum logging level',
+    )
+    task_record_file_name: str = Field(
+        'tasks.json',
+        description='task record JSON file name',
     )
     run_dir: str = Field(
         'runs/{name}-{timestamp}',
@@ -52,9 +57,9 @@ class BenchmarkConfig(Config):
 
     name: str
     timestamp: datetime
-    executor: ExecutorConfig
-    run: RunConfig
-    workflow: Config
+    executor: SerializeAsAny[ExecutorConfig]
+    run: SerializeAsAny[RunConfig]
+    workflow: SerializeAsAny[Config]
 
     def get_log_file(self) -> pathlib.Path | None:
         """Get the log file if specified."""
@@ -62,6 +67,10 @@ class BenchmarkConfig(Config):
         if log_file_name is None:
             return None
         return self.get_run_dir() / log_file_name
+
+    def get_task_record_file(self) -> pathlib.Path:
+        """Get the task record file."""
+        return self.get_run_dir() / self.run.task_record_file_name
 
     def get_run_dir(self) -> pathlib.Path:
         """Create and return the path to the run directory."""
