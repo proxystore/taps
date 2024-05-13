@@ -70,6 +70,7 @@ class _TaskWrapper(Generic[P, T]):
         args = self.data_transformer.resolve_iterable(args)
         kwargs = self.data_transformer.resolve_mapping(kwargs)
         result = self.function(*args, **kwargs)
+        result = self.data_transformer.transform(result)
         return _TaskResult(result)
 
 
@@ -94,15 +95,18 @@ class TaskFuture(Generic[T]):
     Args:
         future: Underlying future returned by the compute executor.
         info: Task information and metadata.
+        data_transformer: Data transformer used to resolve the task result.
     """
 
     def __init__(
         self,
         future: Future[_TaskResult[T]],
         info: _TaskInfo,
+        data_transformer: TaskDataTransformer[Any],
     ) -> None:
         self.info = info
         self._future = future
+        self._data_transformer = data_transformer
 
     def cancel(self) -> bool:
         """Attempt to cancel the task.
@@ -127,7 +131,9 @@ class TaskFuture(Generic[T]):
             TimeoutError: If `timeout` is specified and the task does not
                 complete within `timeout` seconds.
         """
-        return self._future.result(timeout=timeout).result
+        task_result = self._future.result(timeout=timeout)
+        result = self._data_transformer.resolve(task_result.result)
+        return result
 
 
 def _result_or_cancel(
@@ -197,7 +203,7 @@ class WorkflowExecutor:
         """Schedule the callable to be executed.
 
         This function can also accept
-        [`WorkflowTask`][webs.executor.workflow.WorkflowTask] objects as input
+        [`TaskFuture`][webs.executor.workflow.TaskFuture] objects as input
         to denote dependencies between a parent and this child task.
 
         Args:
@@ -206,10 +212,10 @@ class WorkflowExecutor:
             kwargs: Keyword arguments.
 
         Returns:
-            [`TaskFuture`][webs.executor.workflow.TaskFuture`] object \
+            [`TaskFuture`][webs.executor.workflow.TaskFuture] object \
             representing the result of the execution of the callable
             accessible via \
-            [`TaskFuture.result()`][webs.execution.workflow.TaskFuture.result].
+            [`TaskFuture.result()`][webs.executor.workflow.TaskFuture.result].
         """
         task_id = uuid.uuid4()
         task = _TaskWrapper(
@@ -244,7 +250,7 @@ class WorkflowExecutor:
 
         future = self.compute_executor.submit(task, *args, **kwargs)
 
-        task_future = TaskFuture(future, info)
+        task_future = TaskFuture(future, info, self.data_transformer)
         self._running_tasks[future] = task_future
         future.add_done_callback(self._task_done_callback)
 
