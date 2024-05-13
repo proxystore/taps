@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import socket
 import sys
 import time
 import uuid
@@ -35,8 +36,36 @@ P = ParamSpec('P')
 T = TypeVar('T')
 
 
+@dataclasses.dataclass
+class ExecutionInfo:
+    """Task execution information."""
+
+    hostname: str
+    execution_start_time: float
+    execution_end_time: float
+    task_start_time: float
+    task_end_time: float
+    input_transform_start_time: float
+    input_transform_end_time: float
+    result_transform_start_time: float
+    result_transform_end_time: float
+
+
+@dataclasses.dataclass
+class TaskInfo:
+    """Task information."""
+
+    task_id: str
+    function_name: str
+    parent_task_ids: list[str]
+    submit_time: float
+    received_time: float | None = None
+    execution: ExecutionInfo | None = None
+
+
 class _TaskResult(NamedTuple, Generic[T]):
     result: T
+    info: ExecutionInfo
 
 
 class _TaskWrapper(Generic[P, T]):
@@ -60,6 +89,7 @@ class _TaskWrapper(Generic[P, T]):
 
     def __call__(self, *args: Any, **kwargs: Any) -> _TaskResult[T]:
         """Call the function associated with the task."""
+        execution_start_time = time.time()
         args = tuple(
             arg.result if isinstance(arg, _TaskResult) else arg for arg in args
         )
@@ -67,20 +97,34 @@ class _TaskWrapper(Generic[P, T]):
             k: v.result if isinstance(v, _TaskResult) else v
             for k, v in kwargs.items()
         }
+
+        input_transform_start_time = time.time()
         args = self.data_transformer.resolve_iterable(args)
         kwargs = self.data_transformer.resolve_mapping(kwargs)
+        input_transform_end_time = time.time()
+
+        task_start_time = time.time()
         result = self.function(*args, **kwargs)
+        task_end_time = time.time()
+
+        result_transform_start_time = time.time()
         result = self.data_transformer.transform(result)
-        return _TaskResult(result)
+        result_transform_end_time = time.time()
 
+        execution_end_time = time.time()
 
-@dataclasses.dataclass
-class _TaskInfo:
-    task_id: str
-    function_name: str
-    parent_task_ids: list[str]
-    started_time: float
-    finished_time: float | None = None
+        info = ExecutionInfo(
+            hostname=socket.gethostname(),
+            execution_start_time=execution_start_time,
+            execution_end_time=execution_end_time,
+            task_start_time=task_start_time,
+            task_end_time=task_end_time,
+            input_transform_start_time=input_transform_start_time,
+            input_transform_end_time=input_transform_end_time,
+            result_transform_start_time=result_transform_start_time,
+            result_transform_end_time=result_transform_end_time,
+        )
+        return _TaskResult(result, info)
 
 
 class TaskFuture(Generic[T]):
@@ -101,7 +145,7 @@ class TaskFuture(Generic[T]):
     def __init__(
         self,
         future: Future[_TaskResult[T]],
-        info: _TaskInfo,
+        info: TaskInfo,
         data_transformer: TaskDataTransformer[Any],
     ) -> None:
         self.info = info
@@ -190,7 +234,9 @@ class WorkflowExecutor:
 
     def _task_done_callback(self, future: Future[Any]) -> None:
         task_future = self._running_tasks.pop(future)
-        task_future.info.finished_time = time.time()
+        _, execution_info = future.result()
+        task_future.info.received_time = time.time()
+        task_future.info.execution = execution_info
         self.record_logger.log(dataclasses.asdict(task_future.info))
 
     def submit(
@@ -229,11 +275,11 @@ class WorkflowExecutor:
             for arg in (*args, *kwargs.values())
             if isinstance(arg, TaskFuture)
         ]
-        info = _TaskInfo(
+        info = TaskInfo(
             task_id=str(task_id),
             function_name=function.__name__,
             parent_task_ids=parents,
-            started_time=time.time(),
+            submit_time=time.time(),
         )
 
         # Extract executor futures from inside TaskFuture objects
