@@ -79,24 +79,23 @@ class SyntheticWorkflow(ContextManagerAddIn):
             executor: Workflow task executor.
             run_dir: Run directory.
         """
-        input_data: bytes | Future[bytes] = randbytes(
+        input_data: bytes | WorkflowTask[bytes] = randbytes(
             self.config.task_data_bytes,
         )
         tasks: dict[Future[bytes], WorkflowTask[bytes]] = {}
 
         for i in range(self.config.task_count):
-            task = executor.submit(
+            input_data = executor.submit(
                 noop_task,
                 input_data,
                 output_size=self.config.task_data_bytes,
                 sleep=self.config.task_sleep,
             )
-            input_data = task.future
-            tasks[task.future] = task
+            tasks[input_data.future] = input_data
             logger.log(
                 WORK_LOG_LEVEL,
                 f'Submitted task {i+1}/{self.config.task_count} '
-                f'(task_id={task.task_id})',
+                f'(task_id={input_data.task_id})',
             )
 
         for i, future in enumerate(as_completed(tasks.keys())):

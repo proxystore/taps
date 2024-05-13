@@ -85,6 +85,14 @@ def run(config: BenchmarkConfig) -> None:
     start = time.perf_counter()
     logger.log(RUN_LOG_LEVEL, f'Starting workflow (name={config.name})')
     logger.log(RUN_LOG_LEVEL, config)
+    logger.log(
+        RUN_LOG_LEVEL,
+        f'Runtime directory: {config.get_run_dir().resolve()}',
+    )
+
+    config_json = config.model_dump_json(exclude={'timestamp'}, indent=4)
+    with open(config.get_run_dir() / 'config.json', 'w') as f:
+        f.write(config_json)
 
     workflow = get_registered()[config.name].from_config(config.workflow)
 

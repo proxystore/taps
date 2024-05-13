@@ -6,6 +6,7 @@ from typing import Optional
 from typing import Union
 
 from pydantic import Field
+from pydantic import SerializeAsAny
 
 from webs.config import Config
 from webs.executor.config import ExecutorConfig
@@ -27,7 +28,7 @@ class RunConfig(Config):
         description='minimum logging level for the log file',
     )
     log_file_name: Optional[str] = Field(  # noqa: UP007
-        None,
+        'log.txt',
         description='log file name',
     )
     log_level: Union[int, str] = Field(  # noqa: UP007
@@ -56,9 +57,9 @@ class BenchmarkConfig(Config):
 
     name: str
     timestamp: datetime
-    executor: ExecutorConfig
-    run: RunConfig
-    workflow: Config
+    executor: SerializeAsAny[ExecutorConfig]
+    run: SerializeAsAny[RunConfig]
+    workflow: SerializeAsAny[Config]
 
     def get_log_file(self) -> pathlib.Path | None:
         """Get the log file if specified."""
