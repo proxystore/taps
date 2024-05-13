@@ -34,6 +34,10 @@ class RunConfig(Config):
         'INFO',
         description='minimum logging level',
     )
+    task_record_file_name: str = Field(
+        'tasks.json',
+        description='task record JSON file name',
+    )
     run_dir: str = Field(
         'runs/{name}-{timestamp}',
         description='run directory',
@@ -62,6 +66,10 @@ class BenchmarkConfig(Config):
         if log_file_name is None:
             return None
         return self.get_run_dir() / log_file_name
+
+    def get_task_record_file(self) -> pathlib.Path:
+        """Get the task record file."""
+        return self.get_run_dir() / self.run.task_record_file_name
 
     def get_run_dir(self) -> pathlib.Path:
         """Create and return the path to the run directory."""

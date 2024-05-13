@@ -75,3 +75,26 @@ class JSONRecordLogger:
     def close(self) -> None:
         """Close the logger."""
         self._handle.close()
+
+
+class NullRecordLogger:
+    """Null/no-op record logger."""
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        exc_traceback: TracebackType | None,
+    ) -> None:
+        self.close()
+
+    def log(self, record: Record) -> None:
+        """Log a record."""
+        return
+
+    def close(self) -> None:
+        """Close the logger."""
+        return

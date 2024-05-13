@@ -39,6 +39,9 @@ def test_workflow_executor_data_transformer(
     tmp_path: pathlib.Path,
 ) -> None:
     transformer = TaskDataTransformer(PickleFileTransformer(tmp_path))
-    with WorkflowExecutor(thread_executor, transformer) as executor:
+    with WorkflowExecutor(
+        thread_executor,
+        data_transformer=transformer,
+    ) as executor:
         task = executor.submit(sum, [1, 2, 3], start=-6)
         assert task.future.result() == 0

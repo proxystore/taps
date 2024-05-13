@@ -24,6 +24,8 @@ else:  # pragma: <3.11 cover
 
 from webs.data.transform import NullTransformer
 from webs.data.transform import TaskDataTransformer
+from webs.record import NullRecordLogger
+from webs.record import RecordLogger
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -73,13 +75,18 @@ class WorkflowExecutor:
     def __init__(
         self,
         compute_executor: Executor,
+        *,
         data_transformer: TaskDataTransformer[Any] | None = None,
+        record_logger: RecordLogger | None = None,
     ) -> None:
         self.compute_executor = compute_executor
         self.data_transformer = (
             data_transformer
             if data_transformer is not None
             else TaskDataTransformer(NullTransformer())
+        )
+        self.record_logger = (
+            record_logger if record_logger is not None else NullRecordLogger()
         )
 
     def __enter__(self) -> Self:

@@ -4,6 +4,7 @@ import json
 import pathlib
 
 from webs.record import JSONRecordLogger
+from webs.record import NullRecordLogger
 
 
 def test_json_record_logger(tmp_path: pathlib.Path) -> None:
@@ -20,3 +21,8 @@ def test_json_record_logger(tmp_path: pathlib.Path) -> None:
 
     assert json.loads(line_a) == dict_a
     assert json.loads(line_b) == dict_b
+
+
+def test_null_record_logger() -> None:
+    with NullRecordLogger() as logger:
+        logger.log({})

@@ -15,6 +15,7 @@ from webs.executor.config import get_executor_config
 from webs.executor.workflow import WorkflowExecutor
 from webs.logging import init_logging
 from webs.logging import RUN_LOG_LEVEL
+from webs.record import JSONRecordLogger
 from webs.run.config import BenchmarkConfig
 from webs.run.config import RunConfig
 from webs.workflow import get_registered
@@ -85,10 +86,13 @@ def run(config: BenchmarkConfig) -> None:
     logger.log(RUN_LOG_LEVEL, f'Starting workflow (name={config.name})')
     logger.log(RUN_LOG_LEVEL, config)
 
-    compute_executor = config.executor.get_executor()
     workflow = get_registered()[config.name].from_config(config.workflow)
 
-    with workflow, WorkflowExecutor(compute_executor) as executor:
+    compute_executor = config.executor.get_executor()
+    record_logger = JSONRecordLogger(config.get_task_record_file())
+    executor = WorkflowExecutor(compute_executor, record_logger=record_logger)
+
+    with workflow, record_logger, executor:
         workflow.run(executor=executor, run_dir=config.get_run_dir())
 
     runtime = time.perf_counter() - start
