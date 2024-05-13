@@ -35,6 +35,10 @@ P = ParamSpec('P')
 T = TypeVar('T')
 
 
+class _TaskResult(NamedTuple, Generic[T]):
+    result: T
+
+
 class _TaskWrapper(Generic[P, T]):
     """Workflow task wrapper.
 
@@ -54,11 +58,19 @@ class _TaskWrapper(Generic[P, T]):
         self.task_id = uuid.uuid4() if task_id is None else task_id
         self.data_transformer = data_transformer
 
-    def __call__(self, *args: Any, **kwargs: Any) -> T:
+    def __call__(self, *args: Any, **kwargs: Any) -> _TaskResult[T]:
         """Call the function associated with the task."""
+        args = tuple(
+            arg.result if isinstance(arg, _TaskResult) else arg for arg in args
+        )
+        kwargs = {
+            k: v.result if isinstance(v, _TaskResult) else v
+            for k, v in kwargs.items()
+        }
         args = self.data_transformer.resolve_iterable(args)
         kwargs = self.data_transformer.resolve_mapping(kwargs)
-        return self.function(*args, **kwargs)
+        result = self.function(*args, **kwargs)
+        return _TaskResult(result)
 
 
 @dataclasses.dataclass
@@ -70,19 +82,58 @@ class _TaskInfo:
     finished_time: float | None = None
 
 
-class WorkflowTask(NamedTuple, Generic[T]):
-    """Workflow task information.
+class TaskFuture(Generic[T]):
+    """Workflow task future.
+
+    Note:
+        This class should not be instantiated by clients.
 
     Attributes:
-        future: Future to the result of the task.
-        task_id: Unique ID of the task.
+        info: Task information and metadata.
+
+    Args:
+        future: Underlying future returned by the compute executor.
+        info: Task information and metadata.
     """
 
-    future: Future[T]
-    task_id: uuid.UUID
+    def __init__(
+        self,
+        future: Future[_TaskResult[T]],
+        info: _TaskInfo,
+    ) -> None:
+        self.info = info
+        self._future = future
+
+    def cancel(self) -> bool:
+        """Attempt to cancel the task.
+
+        If the call is currently being executed or finished running and
+        cannot be cancelled then the method will return `False`, otherwise
+        the call will be cancelled and the method will return `True`.
+        """
+        return self._future.cancel()
+
+    def result(self, timeout: float | None = None) -> T:
+        """Get the result of the task.
+
+        Args:
+            timeout: If the task has not finished, wait up to `timeout`
+                seconds.
+
+        Returns:
+            Task result if the task completed successfully.
+
+        Raises:
+            TimeoutError: If `timeout` is specified and the task does not
+                complete within `timeout` seconds.
+        """
+        return self._future.result(timeout=timeout).result
 
 
-def _result_or_cancel(future: Future[T], timeout: float | None = None) -> T:
+def _result_or_cancel(
+    future: TaskFuture[T],
+    timeout: float | None = None,
+) -> T:
     try:
         try:
             return future.result(timeout)
@@ -118,8 +169,7 @@ class WorkflowExecutor:
         )
 
         # Internal bookkeeping
-        self._task_info: dict[uuid.UUID, _TaskInfo] = {}
-        self._running_tasks: dict[Future[Any], uuid.UUID] = {}
+        self._running_tasks: dict[Future[Any], TaskFuture[Any]] = {}
 
     def __enter__(self) -> Self:
         return self
@@ -133,10 +183,9 @@ class WorkflowExecutor:
         self.shutdown()
 
     def _task_done_callback(self, future: Future[Any]) -> None:
-        task_id = self._running_tasks.pop(future)
-        task_info = self._task_info.pop(task_id)
-        task_info.finished_time = time.time()
-        self.record_logger.log(dataclasses.asdict(task_info))
+        task_future = self._running_tasks.pop(future)
+        task_future.info.finished_time = time.time()
+        self.record_logger.log(dataclasses.asdict(task_future.info))
 
     def submit(
         self,
@@ -144,7 +193,7 @@ class WorkflowExecutor:
         /,
         *args: Any,
         **kwargs: Any,
-    ) -> WorkflowTask[T]:
+    ) -> TaskFuture[T]:
         """Schedule the callable to be executed.
 
         This function can also accept
@@ -157,9 +206,10 @@ class WorkflowExecutor:
             kwargs: Keyword arguments.
 
         Returns:
-            [`WorkflowTask`][webs.executor.workflow.WorkflowTask`] object \
-            containing the [`Future`][concurrent.futures.Future] object \
-            representing the result of the execution of the callable.
+            [`TaskFuture`][webs.executor.workflow.TaskFuture`] object \
+            representing the result of the execution of the callable
+            accessible via \
+            [`TaskFuture.result()`][webs.execution.workflow.TaskFuture.result].
         """
         task_id = uuid.uuid4()
         task = _TaskWrapper(
@@ -169,9 +219,9 @@ class WorkflowExecutor:
         )
 
         parents = [
-            str(arg.task_id)
+            str(arg.info.task_id)
             for arg in (*args, *kwargs.values())
-            if isinstance(arg, WorkflowTask)
+            if isinstance(arg, TaskFuture)
         ]
         info = _TaskInfo(
             task_id=str(task_id),
@@ -179,15 +229,13 @@ class WorkflowExecutor:
             parent_task_ids=parents,
             started_time=time.time(),
         )
-        self._task_info[task_id] = info
 
-        # Extract futures from WorkflowTask objects
+        # Extract executor futures from inside TaskFuture objects
         args = tuple(
-            arg.future if isinstance(arg, WorkflowTask) else arg
-            for arg in args
+            arg._future if isinstance(arg, TaskFuture) else arg for arg in args
         )
         kwargs = {
-            k: v.future if isinstance(v, WorkflowTask) else v
+            k: v._future if isinstance(v, TaskFuture) else v
             for k, v in kwargs.items()
         }
 
@@ -195,9 +243,12 @@ class WorkflowExecutor:
         kwargs = self.data_transformer.transform_mapping(kwargs)
 
         future = self.compute_executor.submit(task, *args, **kwargs)
-        self._running_tasks[future] = task_id
+
+        task_future = TaskFuture(future, info)
+        self._running_tasks[future] = task_future
         future.add_done_callback(self._task_done_callback)
-        return WorkflowTask(future, task_id)
+
+        return task_future
 
     def map(
         self,
@@ -227,26 +278,26 @@ class WorkflowExecutor:
         if timeout is not None:
             end_time = timeout + time.monotonic()
 
-        fs = [self.submit(function, *args).future for args in zip(*iterables)]
+        tasks = [self.submit(function, *args) for args in zip(*iterables)]
 
         # Yield must be hidden in closure so that the futures are submitted
         # before the first iterator value is required.
         def _result_iterator() -> Generator[T, None, None]:
             try:
                 # reverse to keep finishing order
-                fs.reverse()
-                while fs:
+                tasks.reverse()
+                while tasks:
                     # Careful not to keep a reference to the popped future
                     if timeout is None:
-                        yield _result_or_cancel(fs.pop())
+                        yield _result_or_cancel(tasks.pop())
                     else:
                         yield _result_or_cancel(
-                            fs.pop(),
+                            tasks.pop(),
                             end_time - time.monotonic(),
                         )
             finally:  # pragma: no cover
-                for future in fs:
-                    future.cancel()
+                for task in tasks:
+                    task.cancel()
 
         return _result_iterator()
 
