@@ -14,7 +14,6 @@ from typing import Generator
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
-from typing import NamedTuple
 from typing import TypeVar
 
 if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
@@ -63,7 +62,8 @@ class TaskInfo:
     execution: ExecutionInfo | None = None
 
 
-class _TaskResult(NamedTuple, Generic[T]):
+@dataclasses.dataclass
+class _TaskResult(Generic[T]):
     result: T
     info: ExecutionInfo
 
@@ -234,7 +234,7 @@ class WorkflowExecutor:
 
     def _task_done_callback(self, future: Future[Any]) -> None:
         task_future = self._running_tasks.pop(future)
-        _, execution_info = future.result()
+        execution_info = future.result().info
         task_future.info.received_time = time.time()
         task_future.info.execution = execution_info
         self.record_logger.log(dataclasses.asdict(task_future.info))
