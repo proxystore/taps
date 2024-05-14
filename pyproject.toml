@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
+    "dask[distributed]",
     "globus-compute-sdk",
     "proxystore>=0.6.5",
     "pydantic>=2",
