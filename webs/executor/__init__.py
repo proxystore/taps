@@ -4,4 +4,5 @@ from __future__ import annotations
 # config registration decorator in each file is run.
 import webs.executor.dask
 import webs.executor.globus
+import webs.executor.parsl
 import webs.executor.python

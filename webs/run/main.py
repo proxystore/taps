@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import logging
+import os
+import pathlib
 import sys
 import time
 from datetime import datetime
+from typing import Callable
 from typing import Sequence
 
 # This import is necessary to ensure that all the workflow
@@ -80,6 +84,22 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
     )
 
 
+def _cwd_run_dir(
+    function: Callable[[BenchmarkConfig], None],
+) -> Callable[[BenchmarkConfig], None]:
+    @functools.wraps(function)
+    def _decorator(config: BenchmarkConfig) -> None:
+        origin = pathlib.Path().absolute()
+        try:
+            os.chdir(config.get_run_dir())
+            function(config)
+        finally:
+            os.chdir(origin)
+
+    return _decorator
+
+
+@_cwd_run_dir
 def run(config: BenchmarkConfig) -> None:
     """Run a workflow using the configuration."""
     start = time.perf_counter()
