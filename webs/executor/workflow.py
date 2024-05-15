@@ -5,8 +5,10 @@ import socket
 import sys
 import time
 import uuid
+from concurrent.futures import as_completed as as_completed_python
 from concurrent.futures import Executor
 from concurrent.futures import Future
+from concurrent.futures import wait as wait_python
 from types import TracebackType
 from typing import Any
 from typing import Callable
@@ -14,6 +16,7 @@ from typing import Generator
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
+from typing import Sequence
 from typing import TypeVar
 
 if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
@@ -25,6 +28,10 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
 else:  # pragma: <3.11 cover
     from typing_extensions import Self
+
+from dask.distributed import as_completed as as_completed_dask
+from dask.distributed import Future as DaskFuture
+from dask.distributed import wait as wait_dask
 
 from webs.data.transform import NullTransformer
 from webs.data.transform import TaskDataTransformer
@@ -185,10 +192,12 @@ def _result_or_cancel(
     timeout: float | None = None,
 ) -> T:
     try:
-        try:
-            return future.result(timeout)
-        finally:
-            future.cancel()
+        # Note: this used to be inside a try/finally block with the
+        # finally arm calling future.cancel(). This was removed because
+        # Dask Future have different cancel behavior that essentially
+        # removes the data associated with the task. Wherea Python futures
+        # are a no-op if you cancel a future that's already completed.
+        return future.result(timeout)
     finally:
         # Break a reference cycle with the exception in self._exception
         del future
@@ -335,21 +344,17 @@ class WorkflowExecutor:
         # Yield must be hidden in closure so that the futures are submitted
         # before the first iterator value is required.
         def _result_iterator() -> Generator[T, None, None]:
-            try:
-                # reverse to keep finishing order
-                tasks.reverse()
-                while tasks:
-                    # Careful not to keep a reference to the popped future
-                    if timeout is None:
-                        yield _result_or_cancel(tasks.pop())
-                    else:
-                        yield _result_or_cancel(
-                            tasks.pop(),
-                            end_time - time.monotonic(),
-                        )
-            finally:  # pragma: no cover
-                for task in tasks:
-                    task.cancel()
+            # reverse to keep finishing order
+            tasks.reverse()
+            while tasks:
+                # Careful not to keep a reference to the popped future
+                if timeout is None:
+                    yield _result_or_cancel(tasks.pop())
+                else:
+                    yield _result_or_cancel(
+                        tasks.pop(),
+                        end_time - time.monotonic(),
+                    )
 
         return _result_iterator()
 
@@ -373,3 +378,73 @@ class WorkflowExecutor:
             )
         else:  # pragma: <3.9 cover
             self.compute_executor.shutdown(wait=wait)
+
+
+def as_completed(
+    tasks: Sequence[TaskFuture[T]],
+    timeout: float | None = None,
+) -> Generator[TaskFuture[T], None, None]:
+    """Return an iterator which yields tasks as they complete.
+
+    Args:
+        tasks: Sequence of tasks.
+        timeout: Seconds to wait for a task to complete. If no task completes
+            in that time, a `TimeoutError` is raised. If timeout is `None`,
+            there is no limit to the wait time.
+
+    Returns:
+        Iterator which yields futures as they complete (finished or cancelled \
+        futures).
+    """
+    futures = {task._future: task for task in tasks}
+
+    kwargs = {'timeout': timeout}
+    if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
+        _as_completed = as_completed_python
+    elif isinstance(tasks[0]._future, DaskFuture):
+        _as_completed = as_completed_dask
+        if sys.version_info < (3, 9):  # pragma: <3.9 cover
+            kwargs = {}
+    else:  # pragma: no cover
+        raise ValueError(f'Unsupported future type {type(tasks[0])}.')
+
+    for completed in _as_completed(futures.keys(), **kwargs):
+        yield futures[completed]
+
+
+def wait(
+    tasks: Sequence[TaskFuture[T]],
+    timeout: float | None = None,
+    return_when: str = 'ALL_COMPLETED',
+) -> tuple[set[TaskFuture[T]], set[TaskFuture[T]]]:
+    """Wait for tasks to finish.
+
+    Args:
+        tasks: Sequence of tasks to wait on.
+        timeout: Maximum number of seconds to wait on tasks. Can be `None` to
+            wait indefinitely.
+        return_when: Either `"ALL_COMPLETED"` or `"FIRST_COMPLETED"`.
+
+    Returns:
+        Tuple containing the set of completed tasks and the set of not \
+        completed tasks.
+    """
+    futures = {task._future: task for task in tasks}
+
+    if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
+        _wait = wait_python
+    elif isinstance(tasks[0]._future, DaskFuture):
+        _wait = wait_dask
+    else:  # pragma: no cover
+        raise ValueError(f'Unsupported future type {type(tasks[0])}.')
+
+    completed_futures, not_completed_futures = _wait(
+        list(futures.keys()),
+        timeout=timeout,
+        return_when=return_when,
+    )
+
+    completed_tasks = {futures[f] for f in completed_futures}
+    not_completed_tasks = {futures[f] for f in not_completed_futures}
+
+    return (completed_tasks, not_completed_tasks)

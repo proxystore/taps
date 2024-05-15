@@ -16,6 +16,7 @@ else:  # pragma: <3.10 cover
     from typing_extensions import ParamSpec
 
 from dask.distributed import Client
+from dask.distributed import Future as DaskFuture
 from pydantic import Field
 
 from webs.executor.config import ExecutorConfig
@@ -94,6 +95,15 @@ class DaskDistributedExecutor(Executor):
         cancel_futures: bool = False,
     ) -> None:
         """Shutdown the client."""
+        if DaskFuture._cb_executor is not None:
+            # Dask runs future callbacks in threads of a ThreadPoolExecutor
+            # that is a class attributed of Dask's future. Shutting down
+            # the client causes all futures to get cancelled, which can
+            # cause a currently executing callback to raise a CancelledError
+            # if the callback accesses the future's result.
+            DaskFuture._cb_executor.shutdown(wait=wait)
+            DaskFuture._cb_executor = None
+
         # Note: wait and cancel_futures are not implemented.
         self.client.close()
 
