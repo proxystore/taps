@@ -7,14 +7,23 @@ from datetime import datetime
 from typing import Generator
 
 import pytest
+from dask.distributed import Client
 
 from testing.workflow import TestWorkflow
 from testing.workflow import TestWorkflowConfig
+from webs.executor.dask import DaskDistributedExecutor
 from webs.executor.python import DAGExecutor
 from webs.executor.python import ThreadPoolConfig
 from webs.executor.workflow import WorkflowExecutor
 from webs.run.config import BenchmarkConfig
 from webs.run.config import RunConfig
+
+
+@pytest.fixture()
+def dask_executor() -> Generator[DaskDistributedExecutor, None, None]:
+    client = Client(n_workers=4, processes=False, dashboard_address=None)
+    with DaskDistributedExecutor(client) as executor:
+        yield executor
 
 
 @pytest.fixture()
