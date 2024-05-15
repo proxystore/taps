@@ -398,14 +398,17 @@ def as_completed(
     """
     futures = {task._future: task for task in tasks}
 
+    kwargs = {'timeout': timeout}
     if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
         _as_completed = as_completed_python
     elif isinstance(tasks[0]._future, DaskFuture):
         _as_completed = as_completed_dask
+        if sys.version_info < (3, 9):  # pragma: <3.9 cover
+            kwargs = {}
     else:  # pragma: no cover
         raise ValueError(f'Unsupported future type {type(tasks[0])}.')
 
-    for completed in _as_completed(futures.keys(), timeout=timeout):
+    for completed in _as_completed(futures.keys(), **kwargs):
         yield futures[completed]
 
 
