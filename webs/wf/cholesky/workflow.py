@@ -15,6 +15,7 @@ else:  # pragma: <3.11 cover
 from webs.context import ContextManagerAddIn
 from webs.executor.workflow import TaskFuture
 from webs.executor.workflow import WorkflowExecutor
+from webs.logging import WORK_LOG_LEVEL
 from webs.wf.cholesky.config import CholeskyWorkflowConfig
 from webs.workflow import register
 
@@ -60,6 +61,21 @@ def gemm_task(lower_i_k: int, lower_j_k: int) -> int:
     return lower_i_k * lower_j_k
 
 
+def create_psd_matrix(n: int, max_value: int = 100) -> np.ndarray:
+    """Create a positive semi-definite matrix.
+
+    Args:
+        n: Create an `n` x `n` square matrix.
+        max_value: Maximum element value.
+
+    Returns:
+        Random matrix that is positive semi-definite.
+    """
+    max_value = max_value // 2
+    left = np.tril(np.random.randint(1, max_value + 1, size=(n, n)))
+    return np.dot(left, left.T)
+
+
 @register()
 class CholeskyWorkflow(ContextManagerAddIn):
     """Cholesky workflow.
@@ -94,20 +110,15 @@ class CholeskyWorkflow(ContextManagerAddIn):
             executor: Workflow task executor.
             run_dir: Run directory.
         """
-        max_value = 10
-        left = np.tril(
-            np.random.randint(
-                1,
-                max_value + 1,
-                size=(self.config.n, self.config.n),
-            ),
-        )
-        matrix = np.dot(left, left.T)
+        max_print_size = 10
+        matrix = create_psd_matrix(self.config.n, max_value=10)
+        lower = np.zeros_like(matrix)
 
-        lower = [
-            [0 for x in range(self.config.n + 1)]
-            for y in range(self.config.n + 1)
-        ]
+        if matrix.shape[0] <= max_print_size:
+            logger.log(WORK_LOG_LEVEL, f'Input matrix:\n{matrix}')
+        else:
+            logger.log(WORK_LOG_LEVEL, f'Input matrix: {matrix.shape}')
+
         tasks: list[TaskFuture[int]] = []
 
         for i in range(self.config.n):
@@ -142,7 +153,7 @@ class CholeskyWorkflow(ContextManagerAddIn):
                         tasks.append(task)
                         lower[i][j] = task.result()
 
-        # ~ for i, task in enumerate(tasks):
-        # ~ task.result()
-        print('Input was:', matrix)
-        print('Result is', lower)
+        if matrix.shape[0] <= max_print_size:
+            logger.log(WORK_LOG_LEVEL, f'Output matrix:\n{lower}')
+        else:
+            logger.log(WORK_LOG_LEVEL, f'Output matrix: {lower.shape}')
