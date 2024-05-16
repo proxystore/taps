@@ -101,27 +101,32 @@ def _cwd_run_dir(
 
 @_cwd_run_dir
 def run(config: BenchmarkConfig) -> None:
-    """Run a workflow using the configuration."""
+    """Run a workflow using the configuration.
+
+    This function changes the current working directory to
+    `config.run.run_dir` so that all paths are relative to the current
+    working directory.
+    """
     start = time.perf_counter()
+
+    cwd = pathlib.Path.cwd().resolve()
+
     logger.log(RUN_LOG_LEVEL, f'Starting workflow (name={config.name})')
     logger.log(RUN_LOG_LEVEL, config)
-    logger.log(
-        RUN_LOG_LEVEL,
-        f'Runtime directory: {config.get_run_dir().resolve()}',
-    )
+    logger.log(RUN_LOG_LEVEL, f'Runtime directory: {cwd}')
 
     config_json = config.model_dump_json(exclude={'timestamp'}, indent=4)
-    with open(config.get_run_dir() / 'config.json', 'w') as f:
+    with open('config.json', 'w') as f:
         f.write(config_json)
 
     workflow = get_registered()[config.name].from_config(config.workflow)
 
     compute_executor = config.executor.get_executor()
-    record_logger = JSONRecordLogger(config.get_task_record_file())
+    record_logger = JSONRecordLogger(config.run.task_record_file_name)
     executor = WorkflowExecutor(compute_executor, record_logger=record_logger)
 
     with workflow, record_logger, executor:
-        workflow.run(executor=executor, run_dir=config.get_run_dir())
+        workflow.run(executor=executor, run_dir=cwd)
 
     runtime = time.perf_counter() - start
     logger.log(
@@ -134,8 +139,13 @@ def main(argv: Sequence[str] | None = None) -> int:  # noqa: D103
     argv = argv if argv is not None else sys.argv[1:]
     config = parse_args_to_config(argv)
 
+    log_file = (
+        None
+        if config.run.log_file_name is None
+        else config.get_run_dir() / config.run.log_file_name
+    )
     init_logging(
-        config.get_log_file(),
+        log_file,
         config.run.log_level,
         config.run.log_file_level,
         force=True,
