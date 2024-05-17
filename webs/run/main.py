@@ -131,7 +131,8 @@ def run(config: BenchmarkConfig) -> None:
     runtime = time.perf_counter() - start
     logger.log(
         RUN_LOG_LEVEL,
-        f'Finished workflow (name={config.name}, runtime={runtime:.2f}s)',
+        f'Finished workflow (name={config.name}, '
+        f'runtime={runtime:.2f}s, tasks={executor.tasks_executed})',
     )
 
 

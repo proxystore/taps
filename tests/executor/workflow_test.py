@@ -38,10 +38,13 @@ def test_workflow_executor_submit(workflow_executor: WorkflowExecutor) -> None:
     assert isinstance(task, TaskFuture)
     assert task.result() == 0
     assert not task.cancel()
+    assert workflow_executor.tasks_executed == 1
 
 
 def test_workflow_executor_map(workflow_executor: WorkflowExecutor) -> None:
-    assert list(workflow_executor.map(abs, [1, -1])) == [1, 1]
+    x = [1, -1]
+    assert list(workflow_executor.map(abs, x)) == [abs(v) for v in x]
+    assert workflow_executor.tasks_executed == len(x)
 
 
 def test_workflow_executor_dask(

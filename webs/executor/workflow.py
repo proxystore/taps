@@ -229,6 +229,7 @@ class WorkflowExecutor:
 
         # Internal bookkeeping
         self._running_tasks: dict[Future[Any], TaskFuture[Any]] = {}
+        self._total_tasks = 0
 
     def __enter__(self) -> Self:
         return self
@@ -240,6 +241,11 @@ class WorkflowExecutor:
         exc_traceback: TracebackType | None,
     ) -> None:
         self.shutdown()
+
+    @property
+    def tasks_executed(self) -> int:
+        """Total number of tasks submitted for execution."""
+        return self._total_tasks
 
     def _task_done_callback(self, future: Future[Any]) -> None:
         task_future = self._running_tasks.pop(future)
@@ -304,6 +310,7 @@ class WorkflowExecutor:
         kwargs = self.data_transformer.transform_mapping(kwargs)
 
         future = self.compute_executor.submit(task, *args, **kwargs)
+        self._total_tasks += 1
 
         task_future = TaskFuture(future, info, self.data_transformer)
         self._running_tasks[future] = task_future
