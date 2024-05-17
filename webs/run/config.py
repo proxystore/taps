@@ -39,9 +39,12 @@ class RunConfig(Config):
         'tasks.json',
         description='task record JSON file name',
     )
-    run_dir: str = Field(
+    run_dir_format: str = Field(
         'runs/{name}-{timestamp}',
-        description='run directory',
+        description=(
+            'run directory format (supports "{name}" and "{timestamp}" '
+            'for formatting)'
+        ),
     )
 
 
@@ -61,22 +64,14 @@ class BenchmarkConfig(Config):
     run: SerializeAsAny[RunConfig]
     workflow: SerializeAsAny[Config]
 
-    def get_log_file(self) -> pathlib.Path | None:
-        """Get the log file if specified."""
-        log_file_name = self.run.log_file_name
-        if log_file_name is None:
-            return None
-        return self.get_run_dir() / log_file_name
-
-    def get_task_record_file(self) -> pathlib.Path:
-        """Get the task record file."""
-        return self.get_run_dir() / self.run.task_record_file_name
-
     def get_run_dir(self) -> pathlib.Path:
         """Create and return the path to the run directory."""
         timestamp = self.timestamp.strftime('%Y-%m-%d-%H-%M-%S')
         run_dir = pathlib.Path(
-            self.run.run_dir.format(name=self.name, timestamp=timestamp),
+            self.run.run_dir_format.format(
+                name=self.name,
+                timestamp=timestamp,
+            ),
         )
         run_dir.mkdir(parents=True, exist_ok=True)
         return run_dir

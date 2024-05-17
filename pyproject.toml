@@ -33,6 +33,8 @@ Documentation = "https://proxystore.dev/webs"
 Source = "https://github.com/proxystore/webs"
 
 [project.optional-dependencies]
+all = ["webs[cholesky]"]
+cholesky = ["numpy"]
 dev = [
     "covdefaults>=2.2",
     "coverage",
@@ -68,7 +70,10 @@ dist,
 
 [tool.coverage.run]
 plugins = ["covdefaults"]
-omit = ["examples"]
+omit = [
+    "examples",
+    "webs/wf/cholesky/*",
+]
 
 [tool.mypy]
 plugins = [
