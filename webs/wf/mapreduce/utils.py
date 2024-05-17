@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import random
 import string
 
@@ -34,3 +35,32 @@ def generate_paragraphs_for_map_tasks(
         for _ in range(task_count)
     ]
     return paragraphs
+
+
+def generate_author_lists_for_map_tasks(
+    task_count: int,
+    mail_dir: str,
+) -> list[list[str]]:
+    """Generate task_count lists of email authors for the map tasks."""
+    mail_dir = os.path.expanduser(mail_dir)
+
+    try:
+        # Get list of all immediate subdirectories
+        author_dirs = [
+            name
+            for name in os.listdir(mail_dir)
+            if os.path.isdir(os.path.join(mail_dir, name))
+        ]
+
+        # Split the list of directories into task_count sublists
+        author_lists: list[list[str]] = [[] for _ in range(task_count)]
+        for i, author in enumerate(author_dirs):
+            author_lists[i % task_count].append(author)
+
+        return author_lists
+    except FileNotFoundError:
+        print(f"Error: The directory '{mail_dir}' does not exist.")
+        return []
+    except PermissionError:
+        print(f"Error: Permission denied to access '{mail_dir}'.")
+        return []

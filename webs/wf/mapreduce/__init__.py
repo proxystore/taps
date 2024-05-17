@@ -1,31 +1,54 @@
-"""Mapreduce workflow.
+"""MapReduce Workflow.
 
-External dependencies: this workflow does not require external libraries.
+External Dependencies:
+    This workflow does not require any external libraries.
 
-Data download instructions: this workflow does not require external data.
+Data Download Instructions:
+    The Enron run mode requires the Maildir folder, which can be
+    downloaded from https://www.cs.cmu.edu/~enron/.
 
-Parameters and results (on M3 MacBook Air):
+Parameters and Results (Tested on M3 MacBook Air):
+    To see all parameters, run the following command:
+        python -m webs.run mapreduce --help
 
-    python -m webs.run mapreduce --executor thread-pool \
-        --map-task-word-count 1000000 --map-task-count 2 \
-        --word-len-min 1 --word-len-max 1
-    ==> runtime=1.19s
+Example Commands and Results:
+1. Basic Run:
+    python -m webs.run mapreduce --executor thread-pool --mode random \
+    --map-task-count 1
+    Result:
+        Total words: 500
+        Runtime: 0.01s
 
-    python -m webs.run mapreduce --executor thread-pool \
-        --map-task-word-count 1000000 --map-task-count 10 \
-        --word-len-min 1 --word-len-max 1
-    ==>  runtime=6.10s
+2. Increased Map Task Count:
+    Optionally, specify the number of most frequent words to save
+    and the output file name:
 
-    python -m webs.run mapreduce --executor thread-pool \
-        --map-task-word-count 1000000 --map-task-count 10 \
-        --word-len-min 2 --word-len-max 5
-    ==>  runtime=13.57s
+    python -m webs.run mapreduce --executor thread-pool --mode random \
+    --map-task-count 10 --n-freq 20 --out my-out.txt
+    Result:
+        Total words: 5000
+        Runtime: 0.01s
 
-    python -m webs.run mapreduce --executor thread-pool \
-        --map-task-word-count 100 --map-task-count 1 \
-        --word-len-min 5 --word-len-max 1
-    ==> ValueError: empty range for randrange() (5, 2, -3)
+3. Longer paragraphs with Longer Word Length:
+    python -m webs.run mapreduce --executor thread-pool --mode random \
+    --map-task-count 10 --word-count 1000000 --word-len-min 2 --word-len-max 2
+    Result:
+        Total words: 10000000
+        Runtime: 7.09s
 
+4. Invalid Word Length Range:
+    python -m webs.run mapreduce --executor thread-pool --mode random \
+    --map-task-count 10 --word-count 1000000 --word-len-min 5 --word-len-max 1
+    Result:
+        Error: ValueError: empty range for randrange() (5, 2, -3)
+
+5. Enron Mode:
+    Need to specify the root path of the maildir through --mail-dir:
+
+    python -m webs.run mapreduce --executor thread-pool --mode enron \
+    --map-task-count 10 --mail-dir ~/Downloads/maildir
+    Result:
+        Runtime: 52.12s
 """
 
 from __future__ import annotations
