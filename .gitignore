@@ -1,3 +1,9 @@
+# macOS ignores
+.DS_Store
+
+# Jetbrains ignores
+.idea/
+
 # Default output directory
 runs/
 
