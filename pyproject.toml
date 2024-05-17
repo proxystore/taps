@@ -73,6 +73,7 @@ plugins = ["covdefaults"]
 omit = [
     "examples",
     "webs/wf/cholesky/*",
+    "webs/wf/mapreduce/*",
 ]
 
 [tool.mypy]
