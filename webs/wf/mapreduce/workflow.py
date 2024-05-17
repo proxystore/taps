@@ -100,19 +100,11 @@ class MapreduceWorkflow(ContextManagerAddIn):
             executor: Workflow task executor.
             run_dir: Run directory.
         """
-        logger.log(
-            WORK_LOG_LEVEL,
-            f'Running {self.name} workflow with config: {self.config}',
-        )
-
         # Perform the map phase
-        logger.log(
-            WORK_LOG_LEVEL,
-            'map phase starts',
-        )
+        logger.log(WORK_LOG_LEVEL, 'Starting map phase')
         map_counters: list[Counter[str]] = []
 
-        if self.config.mode == 'enron':  # enron run mode
+        if self.config.mode == 'enron':
             author_lists = generate_author_lists_for_map_tasks(
                 self.config.map_task_count,
                 self.config.mail_dir,
@@ -127,7 +119,7 @@ class MapreduceWorkflow(ContextManagerAddIn):
                     map_task_inputs,
                 ),
             )
-        else:  # random run mode
+        else:
             paragraphs = generate_paragraphs_for_map_tasks(
                 self.config.map_task_count,
                 self.config.word_count,
@@ -141,7 +133,7 @@ class MapreduceWorkflow(ContextManagerAddIn):
 
         logger.log(
             WORK_LOG_LEVEL,
-            'map phase completes and reduce phase starts',
+            'Map phase completed. Starting reduce phase',
         )
 
         # Perform the reduce phase
@@ -157,20 +149,15 @@ class MapreduceWorkflow(ContextManagerAddIn):
             f'{self.config.n_freq} most frequent words:',
         )
         for word, count in most_common_words:
-            logger.log(
-                WORK_LOG_LEVEL,
-                f'{word:10s}: {count}',
-            )
+            logger.log(WORK_LOG_LEVEL, f'{word:10s}: {count}')
         logger.log(
             WORK_LOG_LEVEL,
-            f'Total number of words {reduce_task.result().total()}',
+            f'Total number of words {sum(reduce_task.result().values())}',
         )
         # Save the reduce phase result
         output_file_path = os.path.join(run_dir, self.config.out)
         with open(output_file_path, 'w') as f:
             for word, count in most_common_words:
-                f.write(f'{word:10s}: {count}\n')
-        logger.log(
-            WORK_LOG_LEVEL,
-            f'Results are saved at: {output_file_path}',
-        )
+                f.write(f'{word},{count}\n')
+
+        logger.log(WORK_LOG_LEVEL, f'Results saved to: {output_file_path}')
