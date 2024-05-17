@@ -8,5 +8,7 @@ from webs.config import Config
 class MontageWorkflowConfig(Config):
     """Montage workflow configuration."""
 
-    message: str = Field(description='message to print')
-    repeat: int = Field(1, description='number of times to repeat message')
+    img_folder: str = Field(description='input images folder path')
+    img_tbl: str = Field(description='input image table file')
+    img_hdr: str = Field(description='header filename for input images')
+    output_dir: str = Field(description='output folder path')
