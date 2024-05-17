@@ -8,3 +8,4 @@ import webs.wf.cholesky
 import webs.wf.fedlearn
 import webs.wf.mapreduce
 import webs.wf.synthetic
+import webs.wf.montage
