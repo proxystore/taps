@@ -2,13 +2,15 @@ from __future__ import annotations
 
 import torch
 from torch import nn
-from torch.nn import functional as F
-from torch.utils.data import DataLoader, Dataset
+from torch.nn import functional as F  # noqa: N812
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
 
-from webs.wf.fed_learn.types import Client, Result
+from webs.wf.fedlearn.types import Client
+from webs.wf.fedlearn.types import Result
 
 
-def no_local_train(
+def no_local_train(  # noqa: PLR0913
     client: Client,
     round_idx: int,
     epochs: int,
@@ -16,8 +18,7 @@ def no_local_train(
     lr: float,
     device: torch.device,
 ) -> list[Result]:
-    """
-    No-op version of [local_train](/webs/api/wf/fed_learn/tasks/#webs.wf.fed_learn.tasks.local_train).
+    """No-op version of [local_train][webs.wf.fedlearn.tasks.local_train].
 
     Returns:
         Empty result list.
@@ -26,7 +27,7 @@ def no_local_train(
     return results
 
 
-def local_train(
+def local_train(  # noqa: PLR0913
     client: Client,
     round_idx: int,
     epochs: int,
@@ -34,8 +35,7 @@ def local_train(
     lr: float,
     device: torch.device,
 ) -> list[Result]:
-    """
-    Local training job.
+    """Local training job.
 
     Args:
         client (Client): The client to train.
@@ -75,13 +75,13 @@ def local_train(
             if batch_idx % log_every_n_batches == (log_every_n_batches - 1):
                 epoch_results.append(
                     {
-                        "time": datetime.now(),
-                        "client_idx": client.idx,
-                        "round_idx": round_idx,
-                        "epoch": epoch,
-                        "batch_idx": batch_idx,
-                        "train_loss": running_loss / log_every_n_batches,
-                    }
+                        'time': datetime.now(),
+                        'client_idx': client.idx,
+                        'round_idx': round_idx,
+                        'epoch': epoch,
+                        'batch_idx': batch_idx,
+                        'train_loss': running_loss / log_every_n_batches,
+                    },
                 )
                 running_loss = 0.0
 
@@ -96,6 +96,7 @@ def test_model(
     round_idx: int,
     device: torch.device,
 ) -> Result:
+    """Evaluate a model."""
     from datetime import datetime
 
     model.eval()
@@ -113,8 +114,8 @@ def test_model(
             n_batches += 1
 
     res: Result = {
-        "time": datetime.now(),
-        "round_idx": round_idx,
-        "test_loss": total_loss / n_batches,
+        'time': datetime.now(),
+        'round_idx': round_idx,
+        'test_loss': total_loss / n_batches,
     }
     return res

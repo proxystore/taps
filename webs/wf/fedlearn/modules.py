@@ -5,15 +5,16 @@ import pathlib
 import torch
 import torchvision
 from torch import nn
-from torch.nn import functional as F
+from torch.nn import functional as F  # noqa: N812
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from webs.wf.fed_learn.types import DataChoices
+from webs.wf.fedlearn.config import DataChoices
 
 
 class CifarModule(nn.Module):
-    """
+    """Cifar model.
+
     Source:
     https://www.kaggle.com/code/shadabhussain/cifar-10-cnn-using-pytorch
     """
@@ -46,13 +47,14 @@ class CifarModule(nn.Module):
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass."""
         return self.network(x)
 
 
 class MnistModule(nn.Module):
     """Model for MNIST and FashionMNIST data."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.flattener = nn.Flatten()
         self.fc1 = nn.Linear(28 * 28, 56 * 56)
@@ -61,6 +63,7 @@ class MnistModule(nn.Module):
         self.classifier = nn.Linear(14 * 14, 10)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass."""
         x = self.flattener(x)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
@@ -70,60 +73,67 @@ class MnistModule(nn.Module):
 
 
 def create_model(data: DataChoices) -> nn.Module:
-    """Initializes and returns a PyTorch model based on the name of the dataset in use.
+    """Create a model suitable for the dataset choice.
+
+    Note:
+        The currently supported dataset options are `MNIST`, `FashionMNIST`,
+        `CIFAR10`, and `CIFAR100`.
 
     Args:
-        data (DataChoices): Name of dataset that will be used for training (and testing).
-
-    Raises:
-        ValueError: Thrown if an illegal value for `DataChoices` is somehow passed in.
+        data: Name of dataset that will be used for training (and testing).
 
     Returns:
         PyTorch module to be used for FL workflow.
 
-    Notes:
-        The currently supported dataset options are `MNIST`, `FashionMNIST`, `CIFAR10`, and `CIFAR100`.
-        We chose a conservative list of benchmark datasets for simplicity.
+    Raises:
+        ValueError: If an unsupported value for `data` is provided.
     """
-    match data.value.lower():
-        case "cifar10":
-            return CifarModule(10)
-        case "cifar100":
-            return CifarModule(100)
-        case "fmnist" | "mnist":
-            return MnistModule()
-        case _:
-            raise ValueError(
-                "Illegal value for function `load_model`. "
-                "Supported values are 'cifar10', 'cifar100', 'fmnist', and 'mnist'."
-            )
+    name = data.value.lower()
+
+    if name == 'cifar10':
+        return CifarModule(10)
+    elif name == 'cifar100':
+        return CifarModule(100)
+    elif name in ('fmnist', 'mnist'):
+        return MnistModule()
+    else:
+        raise ValueError(
+            f'Unknown dataset "{data.value}". Supported options are '
+            "'cifar10', 'cifar100', 'fmnist', and 'mnist'.",
+        )
 
 
 def load_data(
-    data_name: DataChoices, root: pathlib.Path, train: bool, download: bool = False
+    data_name: DataChoices,
+    root: pathlib.Path,
+    train: bool,
+    download: bool = False,
 ) -> Dataset:
     """Load dataset to train with for FL workflow.
 
     Args:
-        data_name (DataChoices): _description_
-        root (pathlib.Path): _description_
-        train (bool): _description_
-        download (bool, optional): _description_. Defaults to False.
+        data_name: Dataset choice.
+        root: Root dataset directory.
+        train: Flag for if training.
+        download: Should the dataset be downloaded.
 
     Returns:
         Dataset: _description_
     """
-    kwargs = dict(
-        root=root, train=train, transform=transforms.ToTensor(), download=download
-    )
-    match data_name.value.lower():
-        case "cifar10":
-            return torchvision.datasets.CIFAR10(**kwargs)
-        case "cifar100":
-            return torchvision.datasets.CIFAR100(**kwargs)
-        case "fmnist":
-            return torchvision.datasets.FashionMNIST(**kwargs)
-        case "mnist":
-            return torchvision.datasets.MNIST(**kwargs)
-        case _:
-            raise ValueError("Illegal value for `load_data` function.")
+    kwargs = {
+        'root': root,
+        'train': train,
+        'transform': transforms.ToTensor(),
+        'download': download,
+    }
+    name = data_name.value.lower()
+    if name == 'cifar10':
+        return torchvision.datasets.CIFAR10(**kwargs)
+    elif name == 'cifar100':
+        return torchvision.datasets.CIFAR100(**kwargs)
+    elif name == 'fmnist':
+        return torchvision.datasets.FashionMNIST(**kwargs)
+    elif name == 'mnist':
+        return torchvision.datasets.MNIST(**kwargs)
+    else:
+        raise ValueError(f'Unknown dataset: {data_name}.')

@@ -33,8 +33,9 @@ Documentation = "https://proxystore.dev/webs"
 Source = "https://github.com/proxystore/webs"
 
 [project.optional-dependencies]
-all = ["webs[cholesky]"]
+all = ["webs[cholesky,fedlearn]"]
 cholesky = ["numpy"]
+fedlearn = ["numpy", "torch", "torchvision"]
 dev = [
     "covdefaults>=2.2",
     "coverage",
@@ -73,6 +74,7 @@ plugins = ["covdefaults"]
 omit = [
     "examples",
     "webs/wf/cholesky/*",
+    "webs/wf/fedlearn/*",
     "webs/wf/mapreduce/*",
 ]
 
