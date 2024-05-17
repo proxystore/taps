@@ -146,6 +146,41 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/config/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/modules/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/tasks/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/types/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/utils/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/workflow/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/</loc>
          <lastmod>2024-05-17</lastmod>
          <changefreq>daily</changefreq>
