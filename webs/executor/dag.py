@@ -75,6 +75,7 @@ class _Task(Generic[P, T]):
     def _pending_future_callback(self, future: Future[Any]) -> None:
         assert future.done()
         assert len(self.pending_futures) > 0
+        print(self.function, self.pending_futures)
         self.pending_futures.remove(future)
 
         if future.cancelled():
