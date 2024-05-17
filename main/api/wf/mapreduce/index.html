@@ -12,26 +12,28 @@
         <meta name="author" content="Globus Labs">
       
       
-        <link rel="canonical" href="https://proxystore.dev/webs/latest/contributing/releases/">
+        <link rel="canonical" href="https://proxystore.dev/webs/latest/api/wf/mapreduce/">
       
       
-        <link rel="prev" href="../issues-pull-requests/">
+        <link rel="prev" href="../cholesky/workflow/">
       
       
+        <link rel="next" href="config/">
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.4.7">
     
     
       
-        <title>Releases - WEBS</title>
+        <title>mapreduce - WEBS</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -50,13 +52,13 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../css/extra.css">
+      <link rel="stylesheet" href="../../../css/extra.css">
     
-      <link rel="stylesheet" href="../../css/mkdocstrings.css">
+      <link rel="stylesheet" href="../../../css/mkdocstrings.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -85,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#release-timeline" class="md-skip">
+        <a href="#webswfmapreduce" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +105,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="WEBS" class="md-header__button md-logo" aria-label="WEBS" data-md-component="logo">
+    <a href="../../.." title="WEBS" class="md-header__button md-logo" aria-label="WEBS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -123,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Releases
+              mapreduce
             
           </span>
         </div>
@@ -246,7 +248,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../.." class="md-tabs__link">
+        <a href="../../.." class="md-tabs__link">
           
   
   Home
@@ -262,7 +264,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../guides/" class="md-tabs__link">
+      <a href="../../../guides/" class="md-tabs__link">
         
   
     
@@ -277,17 +279,21 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
   API Reference
@@ -304,11 +310,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="../" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../../contributing/" class="md-tabs__link">
         
   
     
@@ -342,7 +346,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="WEBS" class="md-nav__button md-logo" aria-label="WEBS" data-md-component="logo">
+    <a href="../../.." title="WEBS" class="md-nav__button md-logo" aria-label="WEBS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -410,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -430,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../get-started/" class="md-nav__link">
+      <a href="../../../get-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -514,7 +518,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../guides/" class="md-nav__link ">
+            <a href="../../../guides/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -544,7 +548,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/creating-workflows/" class="md-nav__link">
+      <a href="../../../guides/creating-workflows/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -569,6 +573,8 @@
       
   
   
+    
+  
   
     
     
@@ -578,12 +584,12 @@
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -597,7 +603,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             API Reference
@@ -608,6 +614,8 @@
                 
   
   
+    
+  
   
     
     
@@ -617,12 +625,12 @@
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
         
           
           <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
@@ -636,7 +644,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             WEBS
@@ -649,7 +657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -669,7 +677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/config/" class="md-nav__link">
+      <a href="../../config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -689,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/context/" class="md-nav__link">
+      <a href="../../context/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -723,7 +731,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/data/" class="md-nav__link ">
+            <a href="../../data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -753,7 +761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/data/file/" class="md-nav__link">
+      <a href="../../data/file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -773,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/data/filter/" class="md-nav__link">
+      <a href="../../data/filter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/data/proxy/" class="md-nav__link">
+      <a href="../../data/proxy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -813,7 +821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/data/transform/" class="md-nav__link">
+      <a href="../../data/transform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -855,7 +863,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/executor/" class="md-nav__link ">
+            <a href="../../executor/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -885,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/executor/config/" class="md-nav__link">
+      <a href="../../executor/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -905,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/executor/dag/" class="md-nav__link">
+      <a href="../../executor/dag/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -925,7 +933,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/executor/dask/" class="md-nav__link">
+      <a href="../../executor/dask/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -945,7 +953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/executor/globus/" class="md-nav__link">
+      <a href="../../executor/globus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -965,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/executor/parsl/" class="md-nav__link">
+      <a href="../../executor/parsl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -985,7 +993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/executor/python/" class="md-nav__link">
+      <a href="../../executor/python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1005,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/executor/workflow/" class="md-nav__link">
+      <a href="../../executor/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1033,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/logging/" class="md-nav__link">
+      <a href="../../logging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1053,7 +1061,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/record/" class="md-nav__link">
+      <a href="../../record/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1087,7 +1095,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/run/" class="md-nav__link ">
+            <a href="../../run/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1117,7 +1125,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/run/config/" class="md-nav__link">
+      <a href="../../run/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1137,7 +1145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/run/main/" class="md-nav__link">
+      <a href="../../run/main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1163,23 +1171,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_9" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/wf/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1196,7 +1206,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1_9">
             <span class="md-nav__icon md-icon"></span>
             webs.wf
@@ -1223,7 +1233,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/wf/cholesky/" class="md-nav__link ">
+            <a href="../cholesky/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1253,7 +1263,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/cholesky/config/" class="md-nav__link">
+      <a href="../cholesky/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1273,7 +1283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/cholesky/workflow/" class="md-nav__link">
+      <a href="../cholesky/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1299,23 +1309,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_9_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_9_2" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/wf/mapreduce/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -1326,13 +1338,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_1_9_2" id="__nav_3_1_9_2_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_3_1_9_2" id="__nav_3_1_9_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_1_9_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_1_9_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1_9_2">
             <span class="md-nav__icon md-icon"></span>
             mapreduce
@@ -1345,7 +1357,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/mapreduce/config/" class="md-nav__link">
+      <a href="config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1365,7 +1377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/mapreduce/utils/" class="md-nav__link">
+      <a href="utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1385,7 +1397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/mapreduce/workflow/" class="md-nav__link">
+      <a href="workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1427,7 +1439,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/wf/synthetic/" class="md-nav__link ">
+            <a href="../synthetic/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1457,7 +1469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/synthetic/config/" class="md-nav__link">
+      <a href="../synthetic/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1477,7 +1489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/synthetic/utils/" class="md-nav__link">
+      <a href="../synthetic/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1497,7 +1509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/wf/synthetic/workflow/" class="md-nav__link">
+      <a href="../synthetic/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1533,7 +1545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/workflow/" class="md-nav__link">
+      <a href="../../workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1566,8 +1578,6 @@
       
   
   
-    
-  
   
     
     
@@ -1577,17 +1587,17 @@
       
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../contributing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1604,7 +1614,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Contributing
@@ -1617,7 +1627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../style-guide/" class="md-nav__link">
+      <a href="../../../contributing/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1637,7 +1647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../issues-pull-requests/" class="md-nav__link">
+      <a href="../../../contributing/issues-pull-requests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1655,27 +1665,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Releases
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../contributing/releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1684,38 +1676,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#release-timeline" class="md-nav__link">
-    Release Timeline
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creating-releases" class="md-nav__link">
-    Creating Releases
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1745,6 +1705,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1753,16 +1715,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#release-timeline" class="md-nav__link">
-    Release Timeline
+  <a href="#webs.wf.mapreduce" class="md-nav__link">
+    webs.wf.mapreduce
+  </a>
+  
+    <nav class="md-nav" aria-label="webs.wf.mapreduce">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#webs.wf.mapreduce--setup" class="md-nav__link">
+    Setup
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#creating-releases" class="md-nav__link">
-    Creating Releases
+        
+          <li class="md-nav__item">
+  <a href="#webs.wf.mapreduce--examples" class="md-nav__link">
+    Examples
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1784,43 +1759,90 @@
   
 
 
-  <h1>Releases</h1>
+<h1 id="webswfmapreduce">webs.wf.mapreduce<a class="headerlink" href="#webswfmapreduce" title="Permanent link">&para;</a></h1>
 
-<h2 id="release-timeline">Release Timeline<a class="headerlink" href="#release-timeline" title="Permanent link">&para;</a></h2>
-<p>Releases are created on an as-needed basis.
-Milestones are the <a href="https://github.com/proxystore/webs/issues" target="_blank">Issue Tracker</a> are used to track features to be included in upcoming releases.</p>
-<h2 id="creating-releases">Creating Releases<a class="headerlink" href="#creating-releases" title="Permanent link">&para;</a></h2>
+
+<div class="doc doc-object doc-module">
+
+
+<a id="webs.wf.mapreduce"></a>
+  <div class="doc doc-contents">
+      <a target="_blank" href="https://github.com/proxystore/proxystore/blob/main/webs/wf/mapreduce/__init__.py"><code>webs/wf/mapreduce/__init__.py</code></a>
+  </div>
+
+  <div class="doc doc-contents first">
+  
+      <p>Mapreduce workflow.</p>
+<p>Counts words in a text corpus (randomly generated or the Enron email
+dataset) using a mapreduce strategy.</p>
+<h3 id="webs.wf.mapreduce--setup">Setup<a class="headerlink" href="#webs.wf.mapreduce--setup" title="Permanent link">&para;</a></h3>
+<p>This workflow does not require any external libraries.</p>
+<p>Executing the workflow with the Enron dataset requires downloading the
+maildir folder from <a href="https://www.cs.cmu.edu/~enron/">https://www.cs.cmu.edu/~enron/</a>.</p>
+<h3 id="webs.wf.mapreduce--examples">Examples<a class="headerlink" href="#webs.wf.mapreduce--examples" title="Permanent link">&para;</a></h3>
+<p>To see all parameters, run the following command:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>mapreduce<span class="w"> </span>--help
+</span></code></pre></div></p>
+<p>The following commands work on any platform, but the specific results were
+recorded on an M3 MacBook Air.</p>
 <ol>
-<li>Choose the next version number, referred to as <code>{VERSION}</code> for the
-   rest of the instructions. Versioning follows semver
-   (<code>major.minor.patch</code>) with optional <a href="https://peps.python.org/pep-0440" target="_blank">PEP-440</a>
-   pre-release/post-release/dev-release segments. Major/minor/patch numbers
-   start at 0 and pre-release/post-release/dev-release segments start at 1.</li>
-<li>Update the version in <code>pyproject.toml</code> to <code>{VERSION}</code>.</li>
-<li>Commit and merge the version updates/changelogs into main.</li>
-<li>Tag the release commit and push (typically this is the commit updating the
-   version numbers).
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>git<span class="w"> </span>tag<span class="w"> </span>-s<span class="w"> </span>v<span class="o">{</span>VERSION<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;FooBar v{VERSION}&quot;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v<span class="o">{</span>VERSION<span class="o">}</span>
+<li><strong>Simple configuration:</strong>
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">1</span>
 </span></code></pre></div>
-   Note the version number is prepended by "v" for the tags so we can
-   distinguish release tags from non-release tags.</li>
-<li>Create a new release on GitHub using the tag. The title should be
-   <code>FooBar v{VERSION}</code>.</li>
-<li><strong>Official release:</strong><ol>
-<li>Use the "Generate release notes" option and set the previous tag as the previous official release tag. E.g., for <code>v0.4.1</code>, the previous release tag should be <code>v0.4.0</code> and NOT <code>v0.4.1a1</code>.</li>
-<li>Add an "Upgrade Steps" section at the top (see previous releases for examples).</li>
-<li>Review the generated notes and edit as needed. PRs are organized by tag, but some PRs will be missing tags and need to be moved from the "Other Changes" section to the correct section.</li>
-<li>Select "Set as the latest release."</li>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Result:
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Total words: 500
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  Runtime: 0.01s
+</span></code></pre></div></li>
+<li><strong>Increased map task count:</strong>
+   Optionally, specify the number of most frequent words to save and the
+   output file name:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--n-freq<span class="w"> </span><span class="m">20</span><span class="w"> </span>--out<span class="w"> </span>my-out.txt
+</span></code></pre></div>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Result:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  Total words: 5000
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  Runtime: 0.01s
+</span></code></pre></div></li>
+<li><strong>Longer paragraphs with longer word length:</strong>
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--word-count<span class="w"> </span><span class="m">1000000</span><span class="w"> </span>--word-len-min<span class="w"> </span><span class="m">2</span><span class="w"> </span>--word-len-max<span class="w"> </span><span class="m">2</span>
+</span></code></pre></div>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Result:
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  Total words: 10000000
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  Runtime: 7.09s
+</span></code></pre></div></li>
+<li><strong>Invalid word length range:</strong>
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--word-count<span class="w"> </span><span class="m">1000000</span><span class="w"> </span>--word-len-min<span class="w"> </span><span class="m">5</span><span class="w"> </span>--word-len-max<span class="w"> </span><span class="m">1</span>
+</span></code></pre></div>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Result:
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  Error: ValueError: empty range for randrange() (5, 2, -3)
+</span></code></pre></div></li>
+<li><strong>Use the Enron email dataset:</strong>
+   This requires specifying the root path of the maildir through <code>--mail-dir</code>.
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>enron<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--mail-dir<span class="w"> </span>~/Downloads/maildir
+</span></code></pre></div>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Result:
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  Runtime: 52.12s
+</span></code></pre></div></li>
 </ol>
-</li>
-<li><strong>Unofficial release:</strong> (alpha/dev builds)<ol>
-<li>Do NOT generate release notes. The body can be along the lines of "Development pre-prelease for <code>V{VERSION}</code>."</li>
-<li>Leave the previous tag as "auto."</li>
-<li>Select "Set as a pre-release."</li>
-</ol>
-</li>
-</ol>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 
 
 
@@ -1869,10 +1891,10 @@ Milestones are the <a href="https://github.com/proxystore/webs/issues" target="_
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.aecac24b.min.js"></script>
       
     
   </body>

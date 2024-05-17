@@ -146,6 +146,26 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/config/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/utils/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/workflow/</loc>
+         <lastmod>2024-05-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/synthetic/</loc>
          <lastmod>2024-05-17</lastmod>
          <changefreq>daily</changefreq>
