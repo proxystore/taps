@@ -5,4 +5,5 @@ from __future__ import annotations
 # submodules may also require similar imports in the __init__.py of
 # the submodule.
 import webs.wf.cholesky
+import webs.wf.mapreduce
 import webs.wf.synthetic
