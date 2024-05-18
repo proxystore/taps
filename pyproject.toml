@@ -33,9 +33,10 @@ Documentation = "https://proxystore.dev/webs"
 Source = "https://github.com/proxystore/webs"
 
 [project.optional-dependencies]
-all = ["webs[cholesky,fedlearn]"]
+all = ["webs[cholesky,fedlearn,montage]"]
 cholesky = ["numpy"]
 fedlearn = ["numpy", "torch", "torchvision"]
+montage = ["montage_wrapper", "pandas"]
 dev = [
     "covdefaults>=2.2",
     "coverage",
@@ -76,6 +77,7 @@ omit = [
     "webs/wf/cholesky/*",
     "webs/wf/fedlearn/*",
     "webs/wf/mapreduce/*",
+    "webs/wf/montage/*"
 ]
 
 [tool.mypy]

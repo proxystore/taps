@@ -7,4 +7,5 @@ from __future__ import annotations
 import webs.wf.cholesky
 import webs.wf.fedlearn
 import webs.wf.mapreduce
+import webs.wf.montage
 import webs.wf.synthetic
