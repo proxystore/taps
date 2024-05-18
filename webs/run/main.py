@@ -53,7 +53,10 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
     workflow_names = sorted(workflows.keys())
     for workflow_name in workflow_names:
         workflow = workflows[workflow_name]
-        subparser = subparsers.add_parser(workflow.name)
+        subparser = subparsers.add_parser(
+            workflow.name,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        )
 
         RunConfig.add_argument_group(subparser, argv=argv, required=True)
         ExecutorChoicesConfig.add_argument_group(
