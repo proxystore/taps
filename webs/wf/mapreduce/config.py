@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import pathlib
+
 from pydantic import Field
+from pydantic import field_validator
 
 from webs.config import Config
 
@@ -23,3 +26,8 @@ class MapreduceWorkflowConfig(Config):
     # To Save reduce task result
     n_freq: int = Field(10, description='how many most frequent words to save')
     out: str = Field('output.txt', description='output file name')
+
+    @field_validator('mail_dir', mode='before')
+    @classmethod
+    def _resolve_mail_dir(cls, path: str) -> str:
+        return str(pathlib.Path(path).resolve())

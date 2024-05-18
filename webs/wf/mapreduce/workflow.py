@@ -66,6 +66,12 @@ def map_function_for_enron_run_mode(
     return word_count
 
 
+def _map_function_for_enron_run_mode(
+    data: tuple[str, list[str]],
+) -> Counter[str]:
+    return map_function_for_enron_run_mode(data[0], data[1])
+
+
 @register()
 class MapreduceWorkflow(ContextManagerAddIn):
     """Mapreduce workflow.
@@ -115,7 +121,7 @@ class MapreduceWorkflow(ContextManagerAddIn):
             )
             map_counters.extend(
                 executor.map(
-                    lambda args: map_function_for_enron_run_mode(*args),
+                    _map_function_for_enron_run_mode,
                     map_task_inputs,
                 ),
             )
