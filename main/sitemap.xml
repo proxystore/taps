@@ -2,267 +2,287 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://proxystore.dev/webs/latest/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/get-started/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/SUMMARY/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/context/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/logging/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/record/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/workflow/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/data/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/data/file/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/data/filter/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/data/proxy/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/data/transform/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/dag/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/dask/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/globus/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/parsl/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/python/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/executor/workflow/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/run/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/run/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/run/main/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/cholesky/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/cholesky/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/cholesky/workflow/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/docking/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/docking/config/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/docking/train/</loc>
+         <lastmod>2024-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://proxystore.dev/webs/latest/api/wf/docking/workflow/</loc>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/modules/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/tasks/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/types/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/utils/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/fedlearn/workflow/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/utils/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/mapreduce/workflow/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/montage/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/montage/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/montage/workflow/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/synthetic/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/synthetic/config/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/synthetic/utils/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/api/wf/synthetic/workflow/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/issues-pull-requests/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/releases/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/contributing/style-guide/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/guides/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://proxystore.dev/webs/latest/guides/creating-workflows/</loc>
-         <lastmod>2024-05-18</lastmod>
+         <lastmod>2024-05-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
