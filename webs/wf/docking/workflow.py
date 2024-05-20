@@ -313,11 +313,11 @@ class DockingWorkflow(ContextManagerAddIn):
             # workflow
             fname = uuid.uuid4().hex
 
-            pdb_file = f'{fname}.pdb'
-            output_pdb = f'{fname}-coords.pdb'
-            pdbqt_file = f'{fname}-coords.pdbqt'
-            vina_conf_file = f'{fname}-config.txt'
-            output_ligand_pdbqt = f'{fname}-out.pdb'
+            pdb_file = pathlib.Path(f'{fname}.pdb')
+            output_pdb = pathlib.Path(f'{fname}-coords.pdb')
+            pdbqt_file = pathlib.Path(f'{fname}-coords.pdbqt')
+            vina_conf_file = pathlib.Path(f'{fname}-config.txt')
+            output_ligand_pdbqt = pathlib.Path(f'{fname}-out.pdb')
 
             smi_future = executor.submit(smi_to_pdb, smiles, pdb_file=pdb_file)
             element_future = executor.submit(
@@ -392,11 +392,11 @@ class DockingWorkflow(ContextManagerAddIn):
                 if smiles not in smiles_simulated:
                     fname = uuid.uuid4().hex
 
-                    pdb_file = f'{fname}.pdb'
-                    output_pdb = f'{fname}-coords.pdb'
-                    pdbqt_file = f'{fname}-coords.pdbqt'
-                    vina_conf_file = f'{fname}-config.txt'
-                    output_ligand_pdbqt = f'{fname}-out.pdb'
+                    pdb_file = pathlib.Path(f'{fname}.pdb')
+                    output_pdb = pathlib.Path(f'{fname}-coords.pdb')
+                    pdbqt_file = pathlib.Path(f'{fname}-coords.pdbqt')
+                    vina_conf_file = pathlib.Path(f'{fname}-config.txt')
+                    output_ligand_pdbqt = pathlib.Path(f'{fname}-out.pdb')
 
                     smi_future = executor.submit(
                         smi_to_pdb,

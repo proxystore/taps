@@ -28,7 +28,6 @@ Example command:
 python -m webs.run docking \
     --executor process-pool \
     --max-processes 40 \
-    --output-dir results \
     --smi-file-name-ligand ${PWD}/dataset_orz_original_1k.csv \
     --receptor ${PWD}/1iep_receptor.pdbqt \
     --tcl-path ${PWD}/set_element.tcl
