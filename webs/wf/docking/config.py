@@ -8,6 +8,9 @@ from webs.config import Config
 class DockingWorkflowConfig(Config):
     """Synthetic workflow configuration."""
 
-    task_count: int = Field(description='number of tasks in the workflow')
-    task_data_bytes: int = Field(description='intermediate task data size')
-    task_sleep: float = Field(description='minimum duration of each task')
+    output_dir: str = Field(description='Output directory to write results to')
+    smi_file_name_ligand: str = Field(
+        description='Path to ligand SMILES string',
+    )
+    receptor: str = Field(description='Path to target receptor pdbqt file')
+    tcl_path: str = Field(description='Path to TCL script')

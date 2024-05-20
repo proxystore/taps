@@ -33,8 +33,9 @@ Documentation = "https://proxystore.dev/webs"
 Source = "https://github.com/proxystore/webs"
 
 [project.optional-dependencies]
-all = ["webs[cholesky,fedlearn,montage]"]
+all = ["webs[cholesky,fedlearn,montage,docking]"]
 cholesky = ["numpy"]
+docking = ["numpy", "pandas", "scikit-learn", "rdkit"]
 fedlearn = ["numpy", "torch", "torchvision"]
 montage = ["montage_wrapper", "pandas"]
 dev = [
@@ -75,6 +76,7 @@ plugins = ["covdefaults"]
 omit = [
     "examples",
     "webs/wf/cholesky/*",
+    "webs/wf/docking/*",
     "webs/wf/fedlearn/*",
     "webs/wf/mapreduce/*",
     "webs/wf/montage/*"
