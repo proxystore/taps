@@ -268,7 +268,6 @@ class DockingWorkflow(ContextManagerAddIn):
     config_type = DockingWorkflowConfig
 
     def __init__(self, config: DockingWorkflowConfig) -> None:
-        self.output_dir = pathlib.Path(config.output_dir)
         self.smi_file_name_ligand = pathlib.Path(config.smi_file_name_ligand)
         self.receptor = pathlib.Path(config.receptor)
         self.tcl_path = pathlib.Path(config.tcl_path)
@@ -299,11 +298,7 @@ class DockingWorkflow(ContextManagerAddIn):
         initial_count = 5
         num_loops = 3
         batch_size = 3
-
-        if not self.output_dir.is_absolute():
-            self.output_dir = run_dir / self.output_dir
-
-        self.output_dir.mkdir(parents=True, exist_ok=True)
+        train_output_file = pathlib.Path('training_results.json')
 
         search_space = pd.read_csv(self.smi_file_name_ligand)
         search_space = search_space[['TITLE', 'SMILES']]
@@ -318,11 +313,11 @@ class DockingWorkflow(ContextManagerAddIn):
             # workflow
             fname = uuid.uuid4().hex
 
-            pdb_file = self.output_dir / f'{fname}.pdb'
-            output_pdb = self.output_dir / f'{fname}-coords.pdb'
-            pdbqt_file = self.output_dir / f'{fname}-coords.pdbqt'
-            vina_conf_file = self.output_dir / f'{fname}-config.txt'
-            output_ligand_pdbqt = self.output_dir / f'{fname}-out.pdb'
+            pdb_file = f'{fname}.pdb'
+            output_pdb = f'{fname}-coords.pdb'
+            pdbqt_file = f'{fname}-coords.pdbqt'
+            vina_conf_file = f'{fname}-config.txt'
+            output_ligand_pdbqt = f'{fname}-out.pdb'
 
             smi_future = executor.submit(smi_to_pdb, smiles, pdb_file=pdb_file)
             element_future = executor.submit(
@@ -388,7 +383,7 @@ class DockingWorkflow(ContextManagerAddIn):
                 'score',
                 ascending=True,
                 inplace=True,
-            )  # .head(5)
+            )
 
             train_data = []
             futures = []
@@ -397,11 +392,11 @@ class DockingWorkflow(ContextManagerAddIn):
                 if smiles not in smiles_simulated:
                     fname = uuid.uuid4().hex
 
-                    pdb_file = self.output_dir / f'{fname}.pdb'
-                    output_pdb = self.output_dir / f'{fname}-coords.pdb'
-                    pdbqt_file = self.output_dir / f'{fname}-coords.pdbqt'
-                    vina_conf_file = self.output_dir / f'{fname}-config.txt'
-                    output_ligand_pdbqt = self.output_dir / f'{fname}-out.pdb'
+                    pdb_file = f'{fname}.pdb'
+                    output_pdb = f'{fname}-coords.pdb'
+                    pdbqt_file = f'{fname}-coords.pdbqt'
+                    vina_conf_file = f'{fname}-config.txt'
+                    output_ligand_pdbqt = f'{fname}-out.pdb'
 
                     smi_future = executor.submit(
                         smi_to_pdb,
@@ -473,3 +468,5 @@ class DockingWorkflow(ContextManagerAddIn):
                 (training_df, pd.DataFrame(train_data)),
                 ignore_index=True,
             )
+
+        training_df.to_json(train_output_file)
