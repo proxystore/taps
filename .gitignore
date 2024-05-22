@@ -4,6 +4,9 @@
 # Jetbrains ignores
 .idea/
 
+# Default data download directory
+data/
+
 # Default output directory
 runs/
 

@@ -111,6 +111,20 @@ def test_as_completed_dask(dask_executor: DaskDistributedExecutor) -> None:
         assert completed_results == set(range(1, 6))
 
 
+def test_task_future_exception() -> None:
+    future: Future[_TaskResult[int]] = Future()
+
+    task = TaskFuture(
+        future,
+        TaskInfo('test', 'test', [], 0),
+        TaskDataTransformer(NullTransformer()),
+    )
+
+    exception = RuntimeError()
+    future.set_exception(exception)
+    assert task.exception() == exception
+
+
 def test_wait() -> None:
     fast_future: Future[_TaskResult[int]] = Future()
     fast_future.set_result(_TaskResult(0, None))  # type: ignore[arg-type]

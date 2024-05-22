@@ -8,5 +8,6 @@ import webs.wf.cholesky
 import webs.wf.docking
 import webs.wf.fedlearn
 import webs.wf.mapreduce
+import webs.wf.moldesign
 import webs.wf.montage
 import webs.wf.synthetic
