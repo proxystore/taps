@@ -6,3 +6,4 @@ import webs.executor.dask
 import webs.executor.globus
 import webs.executor.parsl
 import webs.executor.python
+import webs.executor.ray

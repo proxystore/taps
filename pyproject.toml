@@ -25,6 +25,7 @@ dependencies = [
     "parsl",
     "proxystore>=0.6.5",
     "pydantic>=2",
+    "ray",
 ]
 
 [project.urls]
