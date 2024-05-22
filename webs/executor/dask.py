@@ -113,7 +113,9 @@ class DaskDistributedConfig(ExecutorConfig):
     """Dask Distributed configuration.
 
     Attributes:
-        endpoint: Globus Compute endpoint UUID.
+        dask_scheduler_address: Dask scheduler address.
+        dask_use_threads: Use threads rather than processes for local clusters.
+        dask_workers: Number of Dask workers for local clusters.
     """
 
     dask_scheduler_address: Optional[str] = Field(  # noqa: UP007
