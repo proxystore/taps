@@ -18,10 +18,18 @@ pip install -e .[moldesign]
 
 ## Data
 
+The data needs to be downloaded first.
 ```bash
 curl -o data/QM9-search.tsv https://raw.githubusercontent.com/ExaWorks/molecular-design-parsl-demo/main/data/QM9-search.tsv
 ```
 
-"""
+## Running
+
+```bash
+python -m webs.run moldesign --dataset data/QM9-search.tsv --executor process-pool --max-processes 4
+```
+
+Additional parameters are available with `python -m webs.run moldesign --help`.
+"""  # noqa: E501
 
 from __future__ import annotations
