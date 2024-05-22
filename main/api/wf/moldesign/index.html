@@ -12,28 +12,28 @@
         <meta name="author" content="Globus Labs">
       
       
-        <link rel="canonical" href="https://proxystore.dev/webs/latest/api/wf/">
+        <link rel="canonical" href="https://proxystore.dev/webs/latest/api/wf/moldesign/">
       
       
-        <link rel="prev" href="../run/main/">
+        <link rel="prev" href="../mapreduce/workflow/">
       
       
-        <link rel="next" href="cholesky/">
+        <link rel="next" href="chemfunctions/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.4.7">
     
     
       
-        <title>webs.wf - WEBS</title>
+        <title>moldesign - WEBS</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -52,13 +52,13 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../css/extra.css">
+      <link rel="stylesheet" href="../../../css/extra.css">
     
-      <link rel="stylesheet" href="../../css/mkdocstrings.css">
+      <link rel="stylesheet" href="../../../css/mkdocstrings.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#webswf" class="md-skip">
+        <a href="#webswfmoldesign" class="md-skip">
           Skip to content
         </a>
       
@@ -105,7 +105,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="WEBS" class="md-header__button md-logo" aria-label="WEBS" data-md-component="logo">
+    <a href="../../.." title="WEBS" class="md-header__button md-logo" aria-label="WEBS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              webs.wf
+              moldesign
             
           </span>
         </div>
@@ -248,7 +248,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../.." class="md-tabs__link">
+        <a href="../../.." class="md-tabs__link">
           
   
   Home
@@ -264,7 +264,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../guides/" class="md-tabs__link">
+      <a href="../../../guides/" class="md-tabs__link">
         
   
     
@@ -293,7 +293,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+        <a href="../../" class="md-tabs__link">
           
   
   API Reference
@@ -312,7 +312,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../contributing/" class="md-tabs__link">
+      <a href="../../../contributing/" class="md-tabs__link">
         
   
     
@@ -346,7 +346,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="WEBS" class="md-nav__button md-logo" aria-label="WEBS" data-md-component="logo">
+    <a href="../../.." title="WEBS" class="md-nav__button md-logo" aria-label="WEBS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -414,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -434,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../get-started/" class="md-nav__link">
+      <a href="../../../get-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -518,7 +518,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../guides/" class="md-nav__link ">
+            <a href="../../../guides/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -548,7 +548,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/creating-workflows/" class="md-nav__link">
+      <a href="../../../guides/creating-workflows/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -657,7 +657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -677,7 +677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../config/" class="md-nav__link">
+      <a href="../../config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -697,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../context/" class="md-nav__link">
+      <a href="../../context/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -731,7 +731,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../data/" class="md-nav__link ">
+            <a href="../../data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -761,7 +761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data/file/" class="md-nav__link">
+      <a href="../../data/file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -781,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data/filter/" class="md-nav__link">
+      <a href="../../data/filter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -801,7 +801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data/proxy/" class="md-nav__link">
+      <a href="../../data/proxy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -821,7 +821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data/transform/" class="md-nav__link">
+      <a href="../../data/transform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -863,7 +863,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../executor/" class="md-nav__link ">
+            <a href="../../executor/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -893,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/config/" class="md-nav__link">
+      <a href="../../executor/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -913,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/dag/" class="md-nav__link">
+      <a href="../../executor/dag/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -933,7 +933,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/dask/" class="md-nav__link">
+      <a href="../../executor/dask/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -953,7 +953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/globus/" class="md-nav__link">
+      <a href="../../executor/globus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -973,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/parsl/" class="md-nav__link">
+      <a href="../../executor/parsl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -993,7 +993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/python/" class="md-nav__link">
+      <a href="../../executor/python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1013,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/ray/" class="md-nav__link">
+      <a href="../../executor/ray/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1033,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../executor/workflow/" class="md-nav__link">
+      <a href="../../executor/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1061,7 +1061,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../logging/" class="md-nav__link">
+      <a href="../../logging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1081,7 +1081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../record/" class="md-nav__link">
+      <a href="../../record/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1115,7 +1115,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../run/" class="md-nav__link ">
+            <a href="../../run/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1145,7 +1145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../run/config/" class="md-nav__link">
+      <a href="../../run/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1165,7 +1165,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../run/main/" class="md-nav__link">
+      <a href="../../run/main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1209,7 +1209,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1220,7 +1220,7 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_3_1_9" id="__nav_3_1_9_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_1_9" id="__nav_3_1_9_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -1253,7 +1253,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="cholesky/" class="md-nav__link ">
+            <a href="../cholesky/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1283,7 +1283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="cholesky/config/" class="md-nav__link">
+      <a href="../cholesky/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1303,7 +1303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="cholesky/workflow/" class="md-nav__link">
+      <a href="../cholesky/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1345,7 +1345,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="docking/" class="md-nav__link ">
+            <a href="../docking/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1375,7 +1375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docking/config/" class="md-nav__link">
+      <a href="../docking/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1395,7 +1395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docking/train/" class="md-nav__link">
+      <a href="../docking/train/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1415,7 +1415,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docking/workflow/" class="md-nav__link">
+      <a href="../docking/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1457,7 +1457,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="fedlearn/" class="md-nav__link ">
+            <a href="../fedlearn/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1487,7 +1487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fedlearn/config/" class="md-nav__link">
+      <a href="../fedlearn/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1507,7 +1507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fedlearn/modules/" class="md-nav__link">
+      <a href="../fedlearn/modules/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1527,7 +1527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fedlearn/tasks/" class="md-nav__link">
+      <a href="../fedlearn/tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1547,7 +1547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fedlearn/types/" class="md-nav__link">
+      <a href="../fedlearn/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1567,7 +1567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fedlearn/utils/" class="md-nav__link">
+      <a href="../fedlearn/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1587,7 +1587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fedlearn/workflow/" class="md-nav__link">
+      <a href="../fedlearn/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1629,7 +1629,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="mapreduce/" class="md-nav__link ">
+            <a href="../mapreduce/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1659,7 +1659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mapreduce/config/" class="md-nav__link">
+      <a href="../mapreduce/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1679,7 +1679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mapreduce/utils/" class="md-nav__link">
+      <a href="../mapreduce/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1699,7 +1699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mapreduce/workflow/" class="md-nav__link">
+      <a href="../mapreduce/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1725,23 +1725,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_9_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_9_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="moldesign/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -1752,13 +1754,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_1_9_5" id="__nav_3_1_9_5_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_3_1_9_5" id="__nav_3_1_9_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_1_9_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_1_9_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_1_9_5">
             <span class="md-nav__icon md-icon"></span>
             moldesign
@@ -1771,7 +1773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="moldesign/chemfunctions/" class="md-nav__link">
+      <a href="chemfunctions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1791,7 +1793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="moldesign/config/" class="md-nav__link">
+      <a href="config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1811,7 +1813,7 @@
   
   
     <li class="md-nav__item">
-      <a href="moldesign/tasks/" class="md-nav__link">
+      <a href="tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1831,7 +1833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="moldesign/workflow/" class="md-nav__link">
+      <a href="workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1873,7 +1875,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="montage/" class="md-nav__link ">
+            <a href="../montage/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1903,7 +1905,7 @@
   
   
     <li class="md-nav__item">
-      <a href="montage/config/" class="md-nav__link">
+      <a href="../montage/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1923,7 +1925,7 @@
   
   
     <li class="md-nav__item">
-      <a href="montage/workflow/" class="md-nav__link">
+      <a href="../montage/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1965,7 +1967,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="synthetic/" class="md-nav__link ">
+            <a href="../synthetic/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1995,7 +1997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="synthetic/config/" class="md-nav__link">
+      <a href="../synthetic/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2015,7 +2017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="synthetic/utils/" class="md-nav__link">
+      <a href="../synthetic/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2035,7 +2037,7 @@
   
   
     <li class="md-nav__item">
-      <a href="synthetic/workflow/" class="md-nav__link">
+      <a href="../synthetic/workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2071,7 +2073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../workflow/" class="md-nav__link">
+      <a href="../../workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2123,7 +2125,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../contributing/" class="md-nav__link ">
+            <a href="../../../contributing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2153,7 +2155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/style-guide/" class="md-nav__link">
+      <a href="../../../contributing/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2173,7 +2175,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/issues-pull-requests/" class="md-nav__link">
+      <a href="../../../contributing/issues-pull-requests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2193,7 +2195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/releases/" class="md-nav__link">
+      <a href="../../../contributing/releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2241,9 +2243,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#webs.wf" class="md-nav__link">
-    webs.wf
+  <a href="#webs.wf.moldesign" class="md-nav__link">
+    webs.wf.moldesign
   </a>
+  
+    <nav class="md-nav" aria-label="webs.wf.moldesign">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#webs.wf.moldesign--installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webs.wf.moldesign--data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webs.wf.moldesign--running" class="md-nav__link">
+    Running
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2265,18 +2294,39 @@
   
 
 
-<h1 id="webswf">webs.wf<a class="headerlink" href="#webswf" title="Permanent link">&para;</a></h1>
+<h1 id="webswfmoldesign">webs.wf.moldesign<a class="headerlink" href="#webswfmoldesign" title="Permanent link">&para;</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
-<a id="webs.wf"></a>
+<a id="webs.wf.moldesign"></a>
   <div class="doc doc-contents">
-      <a target="_blank" href="https://github.com/proxystore/proxystore/blob/main/webs/wf/__init__.py"><code>webs/wf/__init__.py</code></a>
+      <a target="_blank" href="https://github.com/proxystore/proxystore/blob/main/webs/wf/moldesign/__init__.py"><code>webs/wf/moldesign/__init__.py</code></a>
   </div>
 
   <div class="doc doc-contents first">
+  
+      <p>Molecular Design Workflow.</p>
+<p>This workflow is based on the
+<a href="https://github.com/ExaWorks/molecular-design-parsl-demo/blob/6c0dbc598091634074cd3a8f23815819ab77f91e/0_molecular-design-with-parsl.ipynb">Molecular Design with Parsl</a>.</p>
+<h3 id="webs.wf.moldesign--installation">Installation<a class="headerlink" href="#webs.wf.moldesign--installation" title="Permanent link">&para;</a></h3>
+<p>This workflow has certain dependencies which require Conda to install.
+To get started, create a Conda environment, install the Conda dependencies,
+and then install the <code>webs</code> package into the Conda environment.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>conda<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span><span class="nv">$PWD</span>/env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>./env
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>xtb-python<span class="o">==</span><span class="m">22</span>.1
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>moldesign<span class="o">]</span>
+</span></code></pre></div>
+<h3 id="webs.wf.moldesign--data">Data<a class="headerlink" href="#webs.wf.moldesign--data" title="Permanent link">&para;</a></h3>
+<p>The data needs to be downloaded first.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-o<span class="w"> </span>data/QM9-search.tsv<span class="w"> </span>https://raw.githubusercontent.com/ExaWorks/molecular-design-parsl-demo/main/data/QM9-search.tsv
+</span></code></pre></div></p>
+<h3 id="webs.wf.moldesign--running">Running<a class="headerlink" href="#webs.wf.moldesign--running" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>moldesign<span class="w"> </span>--dataset<span class="w"> </span>data/QM9-search.tsv<span class="w"> </span>--executor<span class="w"> </span>process-pool<span class="w"> </span>--max-processes<span class="w"> </span><span class="m">4</span>
+</span></code></pre></div>
+<p>Additional parameters are available with <code>python -m webs.run moldesign --help</code>.</p>
 
   
 
@@ -2345,10 +2395,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.aecac24b.min.js"></script>
       
     
   </body>
