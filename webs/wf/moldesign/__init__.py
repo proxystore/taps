@@ -25,5 +25,3 @@ curl -o data/QM9-search.tsv https://raw.githubusercontent.com/ExaWorks/molecular
 """
 
 from __future__ import annotations
-
-import webs.wf.moldesign.workflow

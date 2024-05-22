@@ -27,13 +27,13 @@ def test_run(test_benchmark_config: BenchmarkConfig) -> None:
     run(test_benchmark_config)
 
 
-def test_parse_args_to_config() -> None:
+def test_parse_args_to_config(test_benchmark_config: BenchmarkConfig) -> None:
     argv = [
-        'test-workflow',
+        test_benchmark_config.name,
         '--executor',
         'thread-pool',
     ]
     config = parse_args_to_config(argv)
 
-    assert config.name == 'test-workflow'
+    assert config.name == test_benchmark_config.name
     assert isinstance(config.executor, ThreadPoolConfig)

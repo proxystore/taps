@@ -29,7 +29,6 @@ from webs.wf.fedlearn.tasks import test_model
 from webs.wf.fedlearn.types import Result
 from webs.wf.fedlearn.utils import create_clients
 from webs.wf.fedlearn.utils import unweighted_module_avg
-from webs.workflow import register
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +42,6 @@ def _setup_platform() -> None:
         multiprocessing.set_start_method('spawn', force=True)
 
 
-@register()
 class FedLearnWorkflow(ContextManagerAddIn):
     """Federated learning workflow.
 

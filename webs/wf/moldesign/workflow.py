@@ -24,12 +24,10 @@ from webs.wf.moldesign.config import MoldesignWorkflowConfig
 from webs.wf.moldesign.tasks import combine_inferences
 from webs.wf.moldesign.tasks import run_model
 from webs.wf.moldesign.tasks import train_model
-from webs.workflow import register
 
 logger = logging.getLogger(__name__)
 
 
-@register()
 class MoldesignWorkflow(ContextManagerAddIn):
     """Molecular design workflow.
 

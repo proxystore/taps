@@ -8,5 +8,3 @@ Input data available here: http://montage.ipac.caltech.edu/docs/Kimages.tar
 """
 
 from __future__ import annotations
-
-import webs.wf.montage.workflow

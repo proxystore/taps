@@ -38,19 +38,7 @@ webs/
 │  │  ├─ workflow.py
 ```
 
-The first file, `webs/wf/foobar/__init__.py`, will contain the following lines.
-```python title="webs/wf/foobar/__init__.py" linenums="1"
-from __future__ import annotations
-
-import webs.wf.foobar.workflow
-```
-This import is necessary to run some registration code we will add in `webs/wf/foobar/workflow.py`.
-We will also need to add the following line to `webs/wf/__init__.py` or the above import will not be run when the CLI is invoked.
-```python
-import webs.wf.foobar
-```
-
-The second file, `webs/wf/foobar/config.py`, will contain the configuration model for the workflow.
+The first file, `webs/wf/foobar/config.py`, will contain the configuration model for the workflow.
 This configuration should contain all of the parameters that the user needs to provide or that can be adjusted for the workflow.
 In our case, the `foobar` workflow is simply going to print a user defined message `n` number of times.
 ```python title="webs/wf/foobar/config.py" linenums="1"
@@ -69,7 +57,7 @@ class FoobarWorkflowConfig(Config):
 ```
 The [`Config`][webs.config.Config] class supports required arguments without default values (e.g., `message`) and optional arguments with default values (e.g., `repeat`).
 
-The final file, `webs/wf/foobar/workflow.py`, will contain the core workflow logic.
+The second file, `webs/wf/foobar/workflow.py`, will contain the core workflow logic.
 Task functions and workflow code can be included here or in another module within `webs/wf/foobar`.
 For example, this trivial example workflow will be entirely contained within `webs/wf/foobar/workflow.py` but more complex workflows may want to split up the code across many modules.
 Nonetheless, the entry point for the workflow will be in the [`run()`][webs.workflow.Workflow.run] method inside of `webs/wf/foorbar/workflow.py`.
@@ -161,6 +149,19 @@ This method returns a [`TaskFuture`][webs.executor.workflow.TaskFuture] object w
 Alternatively, [`WorkflowExecutor.map()`][webs.executor.workflow.WorkflowExecutor.map] can be used to map a task onto a sequence of inputs, compute the tasks in parallel, and gather the results.
 Importantly, a [`TaskFuture`][webs.executor.workflow.TaskFuture] can also be passed as input to another tasks.
 Doing so indicates to the [`WorkflowExecutor`][webs.executor.workflow.WorkflowExecutor] that there is a dependency between those two tasks.
+
+## Registering a Workflow
+
+To make WEBS aware of the workflow, we need to modify `REGISTERED_WORKFLOWS` in `webs/workflows.py`.
+`REGISTERED_WORKFLOWS` is a dictionary mapping the workflow name (e.g., `'foobar'`) to it's [`Workflow`][webs.workflow.Workflow] implementation.
+For this workflow, this would look like:
+```python
+REGISTERED_WORKFLOWS = {
+    ...
+    'foobar': 'webs.wf.foobar.workflow.FoobarWorkflow',
+}
+```
+If this step is skipped, the workflow will not be accessible from the CLI.
 
 ## Running a Workflow
 

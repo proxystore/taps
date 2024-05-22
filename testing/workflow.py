@@ -12,7 +12,6 @@ else:  # pragma: <3.11 cover
 from webs.config import Config
 from webs.context import ContextManagerAddIn
 from webs.executor.workflow import WorkflowExecutor
-from webs.workflow import register
 
 
 def task() -> None:
@@ -25,7 +24,6 @@ class TestWorkflowConfig(Config):
     tasks: int = 3
 
 
-@register()
 class TestWorkflow(ContextManagerAddIn):
     """Test workflow."""
 
