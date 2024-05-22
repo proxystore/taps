@@ -14,7 +14,13 @@ if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
 else:  # pragma: <3.10 cover
     from typing_extensions import ParamSpec
 
-import ray
+try:
+    import ray
+
+    RAY_IMPORT_ERROR = None
+except ImportError as e:  # pragma: no cover
+    RAY_IMPORT_ERROR = e
+
 from pydantic import Field
 
 from webs.executor.config import ExecutorConfig
@@ -37,6 +43,9 @@ class RayExecutor(Executor):
         address: str | None = 'local',
         num_cpus: int | None = None,
     ) -> None:
+        if RAY_IMPORT_ERROR is not None:  # pragma: no cover
+            raise RAY_IMPORT_ERROR
+
         ray.init(address=address, configure_logging=False, num_cpus=num_cpus)
         # Mapping of Python callables to Ray RemoteFunction types
         self._remote: dict[Any, Any] = {}
