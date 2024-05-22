@@ -24,5 +24,3 @@ python -m webs.run fedlearn --executor process-pool --data-name mnist --data-roo
 """  # noqa: E501
 
 from __future__ import annotations
-
-import webs.wf.fedlearn.workflow

@@ -22,7 +22,8 @@ from webs.logging import RUN_LOG_LEVEL
 from webs.record import JSONRecordLogger
 from webs.run.config import BenchmarkConfig
 from webs.run.config import RunConfig
-from webs.workflow import get_registered
+from webs.workflow import get_registered_workflow
+from webs.workflow import get_registered_workflow_names
 
 logger = logging.getLogger('webs.run')
 
@@ -49,12 +50,10 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
         help='workflow to execute',
     )
 
-    workflows = get_registered()
-    workflow_names = sorted(workflows.keys())
+    workflow_names = sorted(get_registered_workflow_names())
     for workflow_name in workflow_names:
-        workflow = workflows[workflow_name]
         subparser = subparsers.add_parser(
-            workflow.name,
+            workflow_name,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
 
@@ -64,11 +63,16 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
             argv=argv,
             required=True,
         )
-        workflow.config_type.add_argument_group(
-            subparser,
-            argv=argv,
-            required=True,
-        )
+
+        # Avoid importing the workflow and its dependencies unless the
+        # user has already specified it.
+        if workflow_name in argv:
+            workflow = get_registered_workflow(workflow_name)
+            workflow.config_type.add_argument_group(
+                subparser,
+                argv=argv,
+                required=True,
+            )
 
     args = parser.parse_args(argv)
     options = vars(args)
@@ -76,7 +80,8 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
     workflow_name = options['name']
     executor_config = get_executor_config(**options)
     run_config = RunConfig(**options)
-    workflow_config = workflows[workflow_name].config_type(**options)
+    workflow = get_registered_workflow(workflow_name)
+    workflow_config = workflow.config_type(**options)
 
     return BenchmarkConfig(
         name=workflow_name,
@@ -122,7 +127,9 @@ def run(config: BenchmarkConfig) -> None:
     with open('config.json', 'w') as f:
         f.write(config_json)
 
-    workflow = get_registered()[config.name].from_config(config.workflow)
+    workflow = get_registered_workflow(config.name).from_config(
+        config.workflow,
+    )
 
     compute_executor = config.executor.get_executor()
     record_logger = JSONRecordLogger(config.run.task_record_file_name)

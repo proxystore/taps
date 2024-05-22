@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import importlib
 import pathlib
 import sys
 from types import TracebackType
 from typing import Any
-from typing import Callable
 from typing import Protocol
 from typing import runtime_checkable
 from typing import TypeVar
@@ -56,30 +56,54 @@ class Workflow(Protocol[WorkflowConfigT]):
         ...
 
 
-class _WorkflowRegistry:
-    def __init__(self) -> None:
-        self._workflows: dict[str, type[Workflow[Any]]] = {}
-
-    def get_registered(self) -> dict[str, type[Workflow[Any]]]:
-        return self._workflows
-
-    def register(
-        self,
-        *,
-        name: str | None = None,
-    ) -> Callable[[type[Workflow[Any]]], type[Workflow[Any]]]:
-        def decorator(cls: type[Workflow[Any]]) -> type[Workflow[Any]]:
-            registered_name = (
-                cls.name.lower().replace(' ', '-').replace('_', '-')
-                if name is None
-                else name
-            )
-            self._workflows[registered_name] = cls
-            return cls
-
-        return decorator
+REGISTERED_WORKFLOWS = {
+    'cholesky': 'webs.wf.cholesky.workflow.CholeskyWorkflow',
+    'docking': 'webs.wf.docking.workflow.DockingWorkflow',
+    'fedlearn': 'webs.wf.fedlearn.workflow.FedLearnWorkflow',
+    'mapreduce': 'webs.wf.mapreduce.workflow.MapreduceWorkflow',
+    'moldesign': 'webs.wf.moldesign.workflow.MoldesignWorkflow',
+    'montage': 'webs.wf.montage.workflow.MontageWorkflow',
+    'synthetic': 'webs.wf.synthetic.workflow.SyntheticWorkflow',
+}
 
 
-_workflows = _WorkflowRegistry()
-register = _workflows.register
-get_registered = _workflows.get_registered
+def get_registered_workflow_names() -> tuple[str, ...]:
+    """Get the names of all registered workflows."""
+    return tuple(REGISTERED_WORKFLOWS.keys())
+
+
+def get_registered_workflow(name: str) -> type[Workflow[Any]]:
+    """Get a workflow implementation by name.
+
+    Args:
+        name: Name of the registered workflow.
+
+    Returns:
+        The [`Workflow`][webs.workflow.Workflow] implementation type.
+
+    Raises:
+        KeyError: If `name` is not known.
+        ImportError: If the workflow cannot be imported.
+    """
+    try:
+        path = REGISTERED_WORKFLOWS[name]
+    except KeyError as e:
+        raise KeyError(
+            f'A workflow named "{name}" has not been registered.',
+        ) from e
+
+    module_path, _, class_name = path.rpartition('.')
+
+    try:
+        module = importlib.import_module(module_path)
+        return getattr(module, class_name)
+    except (ImportError, AttributeError) as e:
+        raise ImportError(
+            f'Failed to load the "{name}" workflow. (Tried to load '
+            f'{class_name} from {module_path}.)\n\n'
+            'If the above error is because another dependency was not found, '
+            'check the documentation for the specific workflow '
+            'for installation instructions or try reinstalling the package '
+            'with the corresponding extras option.\n'
+            f'  $ pip install .[{name}]',
+        ) from e

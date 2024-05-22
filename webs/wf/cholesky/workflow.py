@@ -16,7 +16,6 @@ from webs.executor.workflow import TaskFuture
 from webs.executor.workflow import WorkflowExecutor
 from webs.logging import WORK_LOG_LEVEL
 from webs.wf.cholesky.config import CholeskyWorkflowConfig
-from webs.workflow import register
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +55,6 @@ def create_psd_matrix(n: int) -> np.ndarray:
     return psd
 
 
-@register()
 class CholeskyWorkflow(ContextManagerAddIn):
     """Cholesky workflow.
 

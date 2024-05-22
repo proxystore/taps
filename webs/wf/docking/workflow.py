@@ -24,7 +24,6 @@ from webs.executor.workflow import WorkflowExecutor
 from webs.wf.docking.config import DockingWorkflowConfig
 from webs.wf.docking.train import run_model
 from webs.wf.docking.train import train_model
-from webs.workflow import register
 
 logger = logging.getLogger(__name__)
 
@@ -256,7 +255,6 @@ def cleanup(  # noqa: PLR0913
     docking.unlink(missing_ok=True)
 
 
-@register()
 class DockingWorkflow(ContextManagerAddIn):
     """Protein docking workflow.
 

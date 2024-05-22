@@ -69,5 +69,3 @@ recorded on an M3 MacBook Air.
 """  # noqa: E501
 
 from __future__ import annotations
-
-import webs.wf.mapreduce.workflow

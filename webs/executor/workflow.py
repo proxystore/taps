@@ -168,6 +168,10 @@ class TaskFuture(Generic[T]):
         """
         return self._future.cancel()
 
+    def exception(self) -> BaseException | None:
+        """Get the exception raised by the task or `None` if successful."""
+        return self._future.exception()
+
     def result(self, timeout: float | None = None) -> T:
         """Get the result of the task.
 

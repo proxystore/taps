@@ -15,7 +15,6 @@ from webs.context import ContextManagerAddIn
 from webs.executor.workflow import WorkflowExecutor
 from webs.logging import WORK_LOG_LEVEL
 from webs.wf.montage.config import MontageWorkflowConfig
-from webs.workflow import register
 
 logger = logging.getLogger(__name__)
 
@@ -264,7 +263,6 @@ def mbackground(
     return out_image
 
 
-@register()
 class MontageWorkflow(ContextManagerAddIn):
     """Montage workflow.
 

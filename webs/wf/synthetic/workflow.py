@@ -16,7 +16,6 @@ from webs.executor.workflow import WorkflowExecutor
 from webs.logging import WORK_LOG_LEVEL
 from webs.wf.synthetic.config import SyntheticWorkflowConfig
 from webs.wf.synthetic.utils import randbytes
-from webs.workflow import register
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +42,6 @@ def noop_task(data: bytes, output_size: int, sleep: float) -> bytes:
     return result
 
 
-@register()
 class SyntheticWorkflow(ContextManagerAddIn):
     """Synthetic workflow.
 

@@ -17,7 +17,6 @@ from webs.logging import WORK_LOG_LEVEL
 from webs.wf.mapreduce.config import MapreduceWorkflowConfig
 from webs.wf.mapreduce.utils import generate_author_lists_for_map_tasks
 from webs.wf.mapreduce.utils import generate_paragraphs_for_map_tasks
-from webs.workflow import register
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +71,6 @@ def _map_function_for_enron_run_mode(
     return map_function_for_enron_run_mode(data[0], data[1])
 
 
-@register()
 class MapreduceWorkflow(ContextManagerAddIn):
     """Mapreduce workflow.
 
