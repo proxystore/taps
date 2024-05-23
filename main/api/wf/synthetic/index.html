@@ -2247,6 +2247,19 @@
     webs.wf.synthetic
   </a>
   
+    <nav class="md-nav" aria-label="webs.wf.synthetic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#webs.wf.synthetic--running" class="md-nav__link">
+    Running
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -2279,6 +2292,37 @@
   </div>
 
   <div class="doc doc-contents first">
+  
+      <p>Synthetic workflow.</p>
+<p>The synthetic workflow generates an arbitrary number of no-op sleep tasks
+that take and produce random data.</p>
+<p>The following arguments are supported:</p>
+<ul>
+<li><code>--structure</code></li>
+<li><code>--task-count</code></li>
+<li><code>--task-data-bytes</code></li>
+<li><code>--task-sleep</code></li>
+<li><code>--bag-max-running</code></li>
+</ul>
+<p>The workflow supports four workflow structures:</p>
+<ul>
+<li><code>bag</code>: Executes a "bag-of-tasks" where <code>task-count</code> tasks are executed. At
+  most <code>bag-max-running</code> will be running at any given time. This is useful
+  for testing scalability.</li>
+<li><code>diamond</code>: Executes a diamond workflow where the output of an initial task
+  is given to <code>task-count</code> intermediate tasks, executed in parallel, and
+  the outputs of the intermediate tasks are aggregated in a single, final
+  task.</li>
+<li><code>reduce</code>: Executes <code>task-count</code> independent tasks in parallel and a single
+  reduce task that takes the output of all of the independent tasks.</li>
+<li><code>sequential</code>: Executes a chain of <code>task-count</code> tasks where each subsequent
+  task depends on the output data of the prior. There is no parallelism, but
+  is useful for evaluating task and data overheads.</li>
+</ul>
+<h3 id="webs.wf.synthetic--running">Running<a class="headerlink" href="#webs.wf.synthetic--running" title="Permanent link">&para;</a></h3>
+<p>Note that all arguments are required regardless of the <code>--structure</code>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>synthetic<span class="w"> </span>--executor<span class="w"> </span>process-pool<span class="w"> </span>--max-processes<span class="w"> </span><span class="m">4</span><span class="w"> </span>--structure<span class="w"> </span>bag<span class="w"> </span>--task-count<span class="w"> </span><span class="m">40</span><span class="w"> </span>--task-data-bytes<span class="w"> </span><span class="m">10000</span><span class="w"> </span>--task-sleep<span class="w"> </span><span class="m">1</span><span class="w"> </span>--bag-max-running<span class="w"> </span><span class="m">4</span>
+</span></code></pre></div>
 
   
 
