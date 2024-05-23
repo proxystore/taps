@@ -23,7 +23,7 @@ dependencies = [
     "dask[distributed]",
     "globus-compute-sdk",
     "parsl",
-    "proxystore>=0.6.5",
+    "proxystore[redis]>=0.6.5",
     "pydantic>=2",
     "ray ; python_version<'3.12'",
 ]

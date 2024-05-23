@@ -14,6 +14,10 @@ from typing import Sequence
 # This import is necessary to ensure that all the workflow
 # implementations get imported and therefore registered.
 from webs import wf  # noqa: F401
+from webs.data.config import FilterConfig
+from webs.data.config import get_transformer_config
+from webs.data.config import TransformerChoicesConfig
+from webs.data.transform import TaskDataTransformer
 from webs.executor.config import ExecutorChoicesConfig
 from webs.executor.config import get_executor_config
 from webs.executor.workflow import WorkflowExecutor
@@ -63,6 +67,16 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
             argv=argv,
             required=True,
         )
+        TransformerChoicesConfig.add_argument_group(
+            subparser,
+            argv=argv,
+            required=False,
+        )
+        FilterConfig.add_argument_group(
+            subparser,
+            argv=argv,
+            required=True,
+        )
 
         # Avoid importing the workflow and its dependencies unless the
         # user has already specified it.
@@ -79,6 +93,8 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
 
     workflow_name = options['name']
     executor_config = get_executor_config(**options)
+    transformer_config = get_transformer_config(**options)
+    filter_config = FilterConfig(**options)
     run_config = RunConfig(**options)
     workflow = get_registered_workflow(workflow_name)
     workflow_config = workflow.config_type(**options)
@@ -87,6 +103,8 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
         name=workflow_name,
         timestamp=datetime.now(),
         executor=executor_config,
+        transformer=transformer_config,
+        filter=filter_config,
         run=run_config,
         workflow=workflow_config,
     )
@@ -132,8 +150,16 @@ def run(config: BenchmarkConfig) -> None:
     )
 
     compute_executor = config.executor.get_executor()
+    data_transformer = TaskDataTransformer(
+        transformer=config.transformer.get_transformer(),
+        filter_=config.filter.get_filter(),
+    )
     record_logger = JSONRecordLogger(config.run.task_record_file_name)
-    executor = WorkflowExecutor(compute_executor, record_logger=record_logger)
+    executor = WorkflowExecutor(
+        compute_executor,
+        data_transformer=data_transformer,
+        record_logger=record_logger,
+    )
 
     with workflow, record_logger, executor:
         workflow.run(executor=executor, run_dir=cwd)

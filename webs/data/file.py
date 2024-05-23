@@ -7,7 +7,29 @@ from typing import Any
 from typing import NamedTuple
 from typing import TypeVar
 
+from pydantic import Field
+from pydantic import field_validator
+
+from webs.data.config import register
+from webs.data.transform import TransformerConfig
+
 T = TypeVar('T')
+
+
+@register(name='file')
+class PickleFileTransformerConfig(TransformerConfig):
+    """Pickle file transformer config."""
+
+    file_dir: str = Field(description='Object file directory')
+
+    def get_transformer(self) -> PickleFileTransformer:
+        """Create a transformer instance from the config."""
+        return PickleFileTransformer(self.file_dir)
+
+    @field_validator('file_dir', mode='before')
+    @classmethod
+    def _resolve_file_dir(cls, path: str) -> str:
+        return str(pathlib.Path(path).resolve())
 
 
 class Identifier(NamedTuple):
@@ -73,5 +95,4 @@ class PickleFileTransformer:
         filepath = identifier.path()
         with open(filepath, 'rb') as f:
             obj = pickle.load(f)
-        filepath.unlink()
         return obj

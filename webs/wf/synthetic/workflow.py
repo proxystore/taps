@@ -11,6 +11,7 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 from webs.context import ContextManagerAddIn
+from webs.executor.workflow import as_completed
 from webs.executor.workflow import TaskFuture
 from webs.executor.workflow import wait
 from webs.executor.workflow import WorkflowExecutor
@@ -206,8 +207,8 @@ def run_sequential(
             f'(task_id={task.info.task_id})',
         )
 
-    for i, task in enumerate(tasks):
-        task.result()
+    for i, task in enumerate(as_completed(tasks)):
+        assert task.done()
         logger.log(
             WORK_LOG_LEVEL,
             f'Received task {i+1}/{task_count} (task_id: {task.info.task_id})',

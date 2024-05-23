@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from testing.record import SimpleRecordLogger
 from webs.data.file import PickleFileTransformer
-from webs.data.transform import NullTransformer
+from webs.data.null import NullTransformer
 from webs.data.transform import TaskDataTransformer
 from webs.executor.dag import DAGExecutor
 from webs.executor.dask import DaskDistributedExecutor

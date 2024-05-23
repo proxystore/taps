@@ -9,6 +9,8 @@ from pydantic import Field
 from pydantic import SerializeAsAny
 
 from webs.config import Config
+from webs.data.config import FilterConfig
+from webs.data.config import TransformerConfig
 from webs.executor.config import ExecutorConfig
 
 
@@ -54,6 +56,8 @@ class BenchmarkConfig(Config):
     Attributes:
         name: Name of the workflow to execute.
         timestamp: Start time of the workflow.
+        transformer: Transformer config.
+        filter: Filter config.
         run: Run configuration.
         workflow: Workflow configuration.
     """
@@ -61,6 +65,8 @@ class BenchmarkConfig(Config):
     name: str
     timestamp: datetime
     executor: SerializeAsAny[ExecutorConfig]
+    transformer: SerializeAsAny[TransformerConfig]
+    filter: SerializeAsAny[FilterConfig]
     run: SerializeAsAny[RunConfig]
     workflow: SerializeAsAny[Config]
 

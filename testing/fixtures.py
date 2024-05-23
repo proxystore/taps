@@ -13,6 +13,8 @@ from dask.distributed import Client
 import webs
 from testing.workflow import TestWorkflow
 from testing.workflow import TestWorkflowConfig
+from webs.data.config import FilterConfig
+from webs.data.null import NullTransformerConfig
 from webs.executor.dask import DaskDistributedExecutor
 from webs.executor.python import DAGExecutor
 from webs.executor.python import ThreadPoolConfig
@@ -61,6 +63,8 @@ def test_benchmark_config(
             name=TestWorkflow.name,
             timestamp=datetime.now(),
             executor=ThreadPoolConfig(max_thread=4),
+            transformer=NullTransformerConfig(),
+            filter=FilterConfig(),
             run=RunConfig(log_file_name=None, run_dir=str(tmp_path)),
             workflow=TestWorkflowConfig(tasks=3),
         )
