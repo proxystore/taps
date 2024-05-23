@@ -53,6 +53,7 @@ def run_bag_of_tasks(
 ) -> None:
     """Run bag of tasks workflow."""
     max_running_tasks = min(max_running_tasks, task_count)
+    start = time.monotonic()
 
     running_tasks = [
         executor.submit(
@@ -65,7 +66,7 @@ def run_bag_of_tasks(
     ]
     logger.log(
         WORK_LOG_LEVEL,
-        f'Submitting initial tasks (count={max_running_tasks})',
+        f'Submitted {max_running_tasks} initial tasks',
     )
 
     completed_tasks = 0
@@ -90,18 +91,21 @@ def run_bag_of_tasks(
         running_tasks.extend(new_tasks)
         submitted_tasks += len(new_tasks)
 
-        if completed_tasks % 10 == 0:  # pragma: no cover
+        if completed_tasks % max_running_tasks == 0:
+            rate = completed_tasks / (time.monotonic() - start)
             logger.log(
                 WORK_LOG_LEVEL,
-                f'Completed {completed_tasks} tasks and {len(running_tasks)} '
-                'tasks are running',
+                f'Completed {completed_tasks}/{task_count} tasks '
+                f'(rate: {rate:.2f} tasks/s, running tasks: '
+                f'{len(running_tasks)})',
             )
 
     wait(running_tasks, return_when='ALL_COMPLETED')
     completed_tasks += len(running_tasks)
+    rate = completed_tasks / (time.monotonic() - start)
     logger.log(
         WORK_LOG_LEVEL,
-        f'All tasks completed (count={completed_tasks})',
+        f'Completed {completed_tasks}/{task_count} (rate: {rate:.2f} tasks/s)',
     )
 
 
@@ -131,7 +135,7 @@ def run_diamond(
     ]
     logger.log(
         WORK_LOG_LEVEL,
-        f'Submitting intermediate tasks (count={task_count})',
+        f'Submitting {task_count} intermediate tasks',
     )
 
     final_task = executor.submit(
@@ -162,7 +166,7 @@ def run_reduce(
         )
         for _ in range(task_count)
     ]
-    logger.log(WORK_LOG_LEVEL, f'Submitted initial tasks (count={task_count})')
+    logger.log(WORK_LOG_LEVEL, f'Submitted {task_count} initial tasks')
 
     reduce_task = executor.submit(
         noop_task,
@@ -183,6 +187,7 @@ def run_sequential(
     task_sleep: float,
 ) -> None:
     """Run sequential workflow."""
+    start = time.monotonic()
     initial_data = randbytes(task_data_bytes)
     tasks: list[TaskFuture[bytes]] = []
 
@@ -205,15 +210,23 @@ def run_sequential(
         task.result()
         logger.log(
             WORK_LOG_LEVEL,
-            f'Received task {i+1}/{task_count} (task_id={task.info.task_id})',
+            f'Received task {i+1}/{task_count} (task_id: {task.info.task_id})',
         )
+
+    rate = task_count / (time.monotonic() - start)
+    logger.log(WORK_LOG_LEVEL, f'Task completion rate: {rate:.3f} tasks/s')
 
 
 class SyntheticWorkflow(ContextManagerAddIn):
     """Synthetic workflow.
 
     Args:
-        config: Workflow configuration.
+        structure: Workflow structure.
+        task_count: Number of tasks.
+        task_data_bytes: Size of random input and output data of tasks.
+        task_sleep: Seconds to sleep for in each task.
+        bag_max_running: Maximum concurrently executing tasks in the "bag"
+            workflow.
     """
 
     name = 'synthetic'
