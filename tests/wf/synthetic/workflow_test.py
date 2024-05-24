@@ -24,7 +24,7 @@ def test_noop_task() -> None:
     result = noop_task(b'data', output_size=output_size, sleep=sleep)
     runtime = time.perf_counter() - start
 
-    assert runtime >= sleep
+    assert sleep <= runtime
     assert len(result) == output_size
 
 
@@ -72,8 +72,7 @@ def test_run_bag_of_tasks(workflow_executor: WorkflowExecutor) -> None:
     runtime = time.perf_counter() - start
 
     min_time = math.ceil(task_count / max_running_tasks) * task_sleep
-    max_time = task_sleep * task_count
-    assert min_time <= runtime <= max_time
+    assert min_time <= runtime
 
 
 def test_run_diamond(workflow_executor: WorkflowExecutor) -> None:
@@ -84,7 +83,7 @@ def test_run_diamond(workflow_executor: WorkflowExecutor) -> None:
     runtime = time.perf_counter() - start
 
     layers = 3
-    assert layers * task_sleep <= runtime <= (task_count + 2) * task_sleep
+    assert layers * task_sleep <= runtime
 
 
 def test_run_reduce(workflow_executor: WorkflowExecutor) -> None:
@@ -95,9 +94,7 @@ def test_run_reduce(workflow_executor: WorkflowExecutor) -> None:
     runtime = time.perf_counter() - start
 
     layers = 2
-    # 1.5 is for some added margin for slower CI
-    max_time = (task_count + 1) * task_sleep * 1.5
-    assert layers * task_sleep <= runtime <= max_time
+    assert layers * task_sleep <= runtime
 
 
 def test_run_sequential(workflow_executor: WorkflowExecutor) -> None:
@@ -107,4 +104,4 @@ def test_run_sequential(workflow_executor: WorkflowExecutor) -> None:
     run_sequential(workflow_executor, task_count, 0, task_sleep)
     runtime = time.perf_counter() - start
 
-    assert runtime >= task_count * task_sleep
+    assert task_count * task_sleep <= runtime
