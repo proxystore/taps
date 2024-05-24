@@ -29,9 +29,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/proxystore/webs"
-Documentation = "https://proxystore.dev/webs"
-Source = "https://github.com/proxystore/webs"
+Homepage = "https://github.com/proxystore/taps"
+Documentation = "https://proxystore.dev/taps"
+Source = "https://github.com/proxystore/taps"
 
 [project.optional-dependencies]
 cholesky = ["numpy"]

@@ -1,7 +1,7 @@
 ## Release Timeline
 
 Releases are created on an as-needed basis.
-Milestones are the [Issue Tracker](https://github.com/proxystore/webs/issues){target=_blank} are used to track features to be included in upcoming releases.
+Milestones are the [Issue Tracker](https://github.com/proxystore/taps/issues){target=_blank} are used to track features to be included in upcoming releases.
 
 ## Creating Releases
 

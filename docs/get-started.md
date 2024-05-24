@@ -5,8 +5,8 @@ The Workflow Execution Benchmark Suite (WEBS) provides a set of standard computa
 ## Installation
 
 ```bash
-git clone https://github.com/proxystore/webs
-cd webs
+git clone https://github.com/proxystore/taps
+cd taps
 python -m venv venv
 . venv/bin/activate
 pip install -e .
