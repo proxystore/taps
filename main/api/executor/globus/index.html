@@ -2602,7 +2602,7 @@
 
 
 <a href="#webs.executor.globus.GlobusComputeConfig.get_executor" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_executor</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><span title="globus_compute_sdk.Executor">Executor</span></span>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_executor</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="webs.executor.dag.DAGExecutor" href="../dag/#webs.executor.dag.DAGExecutor">DAGExecutor</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2611,11 +2611,11 @@
 
       <details class="quote">
         <summary>Source code in <code>webs/executor/globus.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-20">20</a></span>
-<span class="normal"><a href="#__codelineno-0-21">21</a></span>
-<span class="normal"><a href="#__codelineno-0-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="k">def</span> <span class="nf">get_executor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">globus_compute_sdk</span><span class="o">.</span><span class="n">Executor</span><span class="p">:</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an executor instance from the config.&quot;&quot;&quot;</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="k">return</span> <span class="n">globus_compute_sdk</span><span class="o">.</span><span class="n">Executor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">)</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="k">def</span> <span class="nf">get_executor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DAGExecutor</span><span class="p">:</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an executor instance from the config.&quot;&quot;&quot;</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="k">return</span> <span class="n">DAGExecutor</span><span class="p">(</span><span class="n">globus_compute_sdk</span><span class="o">.</span><span class="n">Executor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">))</span>
 </span></code></pre></div></td></tr></table></div>
       </details>
   </div>
