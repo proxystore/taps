@@ -33,7 +33,7 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
-from webs.data.transform import NullTransformer
+from webs.data.null import NullTransformer
 from webs.data.transform import TaskDataTransformer
 from webs.record import NullRecordLogger
 from webs.record import RecordLogger
@@ -167,6 +167,10 @@ class TaskFuture(Generic[T]):
         the call will be cancelled and the method will return `True`.
         """
         return self._future.cancel()
+
+    def done(self) -> bool:
+        """Return `True` is the call was successfully cancelled or finished."""
+        return self._future.done()
 
     def exception(self) -> BaseException | None:
         """Get the exception raised by the task or `None` if successful."""

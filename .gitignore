@@ -5,10 +5,10 @@
 .idea/
 
 # Default data download directory
-data/
+/data/
 
 # Default output directory
-runs/
+/runs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

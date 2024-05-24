@@ -7,7 +7,7 @@ from typing import TypeVar
 import pytest
 
 from webs.data.filter import ObjectTypeFilter
-from webs.data.transform import NullTransformer
+from webs.data.null import NullTransformer
 from webs.data.transform import TaskDataTransformer
 
 T = TypeVar('T')

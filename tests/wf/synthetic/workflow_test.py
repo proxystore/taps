@@ -95,7 +95,9 @@ def test_run_reduce(workflow_executor: WorkflowExecutor) -> None:
     runtime = time.perf_counter() - start
 
     layers = 2
-    assert layers * task_sleep <= runtime <= (task_count + 1) * task_sleep
+    # 1.5 is for some added margin for slower CI
+    max_time = (task_count + 1) * task_sleep * 1.5
+    assert layers * task_sleep <= runtime <= max_time
 
 
 def test_run_sequential(workflow_executor: WorkflowExecutor) -> None:

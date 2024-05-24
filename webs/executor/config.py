@@ -2,16 +2,10 @@ from __future__ import annotations
 
 import abc
 import argparse
-import sys
 from concurrent.futures import Executor
 from typing import Any
 from typing import Callable
 from typing import Sequence
-
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
 
 from webs.config import Config
 

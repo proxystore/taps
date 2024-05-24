@@ -1,20 +1,31 @@
 from __future__ import annotations
 
+import abc
+from concurrent.futures import Future
 from typing import Any
 from typing import Generic
 from typing import Iterable
 from typing import Mapping
-from typing import NoReturn
 from typing import Protocol
 from typing import runtime_checkable
 from typing import TypeVar
 
+from webs.config import Config
 from webs.data.filter import Filter
 from webs.data.filter import NullFilter
 
 K = TypeVar('K')
 T = TypeVar('T')
 IdentifierT = TypeVar('IdentifierT')
+
+
+class TransformerConfig(Config, abc.ABC):
+    """Data transformer configuration abstract base class."""
+
+    @abc.abstractmethod
+    def get_transformer(self) -> Transformer[Any]:
+        """Create a transformer instance from the config."""
+        ...
 
 
 @runtime_checkable
@@ -48,41 +59,6 @@ class Transformer(Protocol[IdentifierT]):
         ...
 
 
-class NullTransformer:
-    """Null transformer that does no transformations."""
-
-    def is_identifier(self, obj: Any) -> bool:
-        """Check if the object is an identifier instance.
-
-        Always `False` in this implementation.
-        """
-        return False
-
-    def transform(self, obj: T) -> T:
-        """Transform the object into an identifier.
-
-        Args:
-            obj: Object to transform.
-
-        Returns:
-            Identifier object that can be usd to resolve `obj`.
-        """
-        return obj
-
-    def resolve(self, identifier: Any) -> NoReturn:
-        """Resolve an object from an identifier.
-
-        Args:
-            identifier: Identifier to an object.
-
-        Returns:
-            The resolved object.
-        """
-        raise NotImplementedError(
-            f'{self.__class__.__name__} does not support identifiers',
-        )
-
-
 class TaskDataTransformer(Generic[IdentifierT]):
     """Task data transformer.
 
@@ -111,7 +87,7 @@ class TaskDataTransformer(Generic[IdentifierT]):
         Transforms `obj` into an identifier if it passes the filter check.
         The identifier can later be used to resolve the object.
         """
-        if self.filter_(obj):
+        if self.filter_(obj) and not isinstance(obj, Future):
             return self.transformer.transform(obj)
         else:
             return obj
