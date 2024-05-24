@@ -1,10 +1,10 @@
 site_name: WEBS
-site_url: https://proxystore.dev/webs
+site_url: https://proxystore.dev/taps
 site_author: Globus Labs
 site_description: Workflow Execution Benchmark Suite
 
-repo_name: proxystore/webs
-repo_url: https://github.com/proxystore/webs
+repo_name: proxystore/taps
+repo_url: https://github.com/proxystore/taps
 
 copyright: Copyright &copy; 2024-Present Globus Labs
 
@@ -93,7 +93,7 @@ markdown_extensions:
   - pymdownx.magiclink:
       repo_url_shorthand: true
       user: proxystore
-      repo: webs
+      repo: taps
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.snippets:
@@ -108,8 +108,8 @@ nav:
   - Home:
       - Overview: index.md
       - Get Started: get-started.md
-      - Issues (GitHub): https://github.com/proxystore/webs/issues
-      - Changelog (GitHub): https://github.com/proxystore/webs/releases
+      - Issues (GitHub): https://github.com/proxystore/taps/issues
+      - Changelog (GitHub): https://github.com/proxystore/taps/releases
   - Guides:
       - guides/index.md
       - Creating Workflows: guides/creating-workflows.md

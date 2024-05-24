@@ -6,7 +6,7 @@ environment with all of the required packages installed
 and WEBS installed in editable mode with the necessary extras options.
 
 ```bash
-$ git clone https://github.com/proxystore/webs
+$ git clone https://github.com/proxystore/taps
 $ cd foobar
 $ tox --devenv venv -e py311
 $ . venv/bin/activate
@@ -21,8 +21,8 @@ $ . venv/bin/activate
 
 To install manually:
 ```bash
-$ git clone https://github.com/proxystore/webs
-$ cd webs
+$ git clone https://github.com/proxystore/taps
+$ cd taps
 $ python -m venv venv
 $ . venv/bin/activate
 $ pip install -e .[dev,docs]

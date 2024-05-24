@@ -1,6 +1,6 @@
 ## Issues
 
-[Issue Tracker](https://github.com/proxystore/webs/issues){target=_blank}
+[Issue Tracker](https://github.com/proxystore/taps/issues){target=_blank}
 
 We use GitHub issues to report problems, request and track changes, and discuss
 future ideas.
