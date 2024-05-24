@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pathlib
 import time
+import uuid
 from concurrent.futures import Future
 from concurrent.futures import ThreadPoolExecutor
 
@@ -11,8 +12,8 @@ from webs.data.null import NullTransformer
 from webs.data.transform import TaskDataTransformer
 from webs.executor.dag import DAGExecutor
 from webs.executor.dask import DaskDistributedExecutor
-from webs.executor.workflow import _create_task
 from webs.executor.workflow import _TaskResult
+from webs.executor.workflow import _TaskWrapper
 from webs.executor.workflow import as_completed
 from webs.executor.workflow import TaskFuture
 from webs.executor.workflow import TaskInfo
@@ -24,8 +25,9 @@ def test_task_wrapper_call() -> None:
     def sum_(values: list[int], *, start: int = 0):
         return sum(values, start=start)
 
-    task = _create_task(
+    task = _TaskWrapper(
         sum_,
+        task_id=uuid.uuid4(),
         data_transformer=TaskDataTransformer(NullTransformer()),
     )
     assert task([1, 2, 3], start=-6).result == 0
