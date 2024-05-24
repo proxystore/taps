@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import functools
 import socket
 import sys
 import time
@@ -12,6 +13,7 @@ from concurrent.futures import wait as wait_python
 from types import TracebackType
 from typing import Any
 from typing import Callable
+from typing import cast
 from typing import Generator
 from typing import Generic
 from typing import Iterable
@@ -75,27 +77,16 @@ class _TaskResult(Generic[T]):
     info: ExecutionInfo
 
 
-class _TaskWrapper(Generic[P, T]):
-    """Workflow task wrapper.
-
-    Args:
-        function: Function that represents the work associated with the task.
-        task_id: Unique UUID of the task.
-    """
-
-    def __init__(
-        self,
-        function: Callable[P, T],
-        *,
-        task_id: uuid.UUID,
-        data_transformer: TaskDataTransformer[Any],
-    ) -> None:
-        self.function = function
-        self.task_id = uuid.uuid4() if task_id is None else task_id
-        self.data_transformer = data_transformer
-
-    def __call__(self, *args: Any, **kwargs: Any) -> _TaskResult[T]:
-        """Call the function associated with the task."""
+def _create_task(
+    function: Callable[P, T],
+    *,
+    data_transformer: TaskDataTransformer[Any],
+) -> Callable[P, _TaskResult[T]]:
+    @functools.wraps(function)
+    def wrapper(
+        *args: Any,
+        **kwargs: Any,
+    ) -> _TaskResult[T]:
         execution_start_time = time.time()
         args = tuple(
             arg.result if isinstance(arg, _TaskResult) else arg for arg in args
@@ -106,16 +97,16 @@ class _TaskWrapper(Generic[P, T]):
         }
 
         input_transform_start_time = time.time()
-        args = self.data_transformer.resolve_iterable(args)
-        kwargs = self.data_transformer.resolve_mapping(kwargs)
+        args = data_transformer.resolve_iterable(args)
+        kwargs = data_transformer.resolve_mapping(kwargs)
         input_transform_end_time = time.time()
 
         task_start_time = time.time()
-        result = self.function(*args, **kwargs)
+        result = function(*args, **kwargs)
         task_end_time = time.time()
 
         result_transform_start_time = time.time()
-        result = self.data_transformer.transform(result)
+        result = data_transformer.transform(result)
         result_transform_end_time = time.time()
 
         execution_end_time = time.time()
@@ -132,6 +123,8 @@ class _TaskWrapper(Generic[P, T]):
             result_transform_end_time=result_transform_end_time,
         )
         return _TaskResult(result, info)
+
+    return wrapper
 
 
 class TaskFuture(Generic[T]):
@@ -235,6 +228,11 @@ class WorkflowExecutor:
             record_logger if record_logger is not None else NullRecordLogger()
         )
 
+        # Maps user provided functions to the functions decorated with
+        # _create_task. This is tricky to type, so we just use Any and
+        # cast in submit().
+        self._registered_tasks: dict[Any, Any] = {}
+
         # Internal bookkeeping
         self._running_tasks: dict[Future[Any], TaskFuture[Any]] = {}
         self._total_tasks = 0
@@ -287,11 +285,15 @@ class WorkflowExecutor:
             [`TaskFuture.result()`][webs.executor.workflow.TaskFuture.result].
         """
         task_id = uuid.uuid4()
-        task = _TaskWrapper(
-            function,
-            task_id=task_id,
-            data_transformer=self.data_transformer,
-        )
+
+        if function not in self._registered_tasks:
+            self._registered_tasks[function] = _create_task(
+                function,
+                data_transformer=self.data_transformer,
+            )
+
+        task = self._registered_tasks[function]
+        task = cast(Callable[P, _TaskResult[T]], task)
 
         parents = [
             str(arg.info.task_id)

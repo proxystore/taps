@@ -5,6 +5,7 @@ from pydantic import Field
 
 from webs.executor.config import ExecutorConfig
 from webs.executor.config import register
+from webs.executor.dag import DAGExecutor
 
 
 @register(name='globus-compute')
@@ -17,6 +18,6 @@ class GlobusComputeConfig(ExecutorConfig):
 
     endpoint: str = Field(description='endpoint UUID')
 
-    def get_executor(self) -> globus_compute_sdk.Executor:
+    def get_executor(self) -> DAGExecutor:
         """Create an executor instance from the config."""
-        return globus_compute_sdk.Executor(self.endpoint)
+        return DAGExecutor(globus_compute_sdk.Executor(self.endpoint))
