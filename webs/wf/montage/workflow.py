@@ -140,7 +140,7 @@ def moverlaps(
     overlaps_log = montage.mOverlaps(str(img_tbl), str(diffs_tbl))
 
     logger.debug(overlaps_log)
-    diff_dir = pathlib.Path('diffdir')
+    diff_dir = output_dir / 'diffdir'
     diff_dir.mkdir(parents=True, exist_ok=True)
     return diff_dir, diffs_tbl
 
@@ -149,6 +149,7 @@ def mdiff(
     image_1: pathlib.Path,
     image_2: pathlib.Path,
     template: pathlib.Path,
+    output_dir: pathlib.Path,
     output_name: str,
 ) -> pathlib.Path:
     """Wrapper to Montage diff function.
@@ -158,19 +159,22 @@ def mdiff(
 
     Args:
         image_1 (pathlib.Path): first input file
-            for differencing
+            for differencing.
         image_2 (pathlib.Path): second input file
-            for differencing
+            for differencing.
         template (pathlib.Path): FITS header file used to
-            define the desired output
-        output_name (str): output difference file basename
+            define the desired output.
+        output_dir (pathlib.Path): Output directory name.
+        output_name (str): output difference file basename.
 
     Returns:
         pathlib.Path: output filepath
     """
     import montage_wrapper as montage
 
-    output_file = pathlib.Path('diffdir') / output_name
+    diff_dir = output_dir / 'diffdir'
+    diff_dir.mkdir(exist_ok=True, parents=True)
+    output_file = diff_dir / output_name
     log_str = montage.mDiff(
         str(image_1),
         str(image_2),
@@ -205,8 +209,8 @@ def bgexec_prep(
     """
     import montage_wrapper as montage
 
-    fits_tbl = pathlib.Path('fits.tbl')
-    corrections_tbl = pathlib.Path('corrections.tbl')
+    fits_tbl = output_dir / 'fits.tbl'
+    corrections_tbl = output_dir / 'corrections.tbl'
 
     fit_log = montage.mFitExec(
         str(diffs_table),
@@ -260,6 +264,37 @@ def mbackground(
     )
     logger.debug(background_log)
 
+    return out_image
+
+
+def madd(
+    images_table: pathlib.Path,
+    template_header: pathlib.Path,
+    out_image: pathlib.Path,
+    corr_dir: pathlib.Path,
+) -> pathlib.Path:
+    """Coadd reprojected images to form a mosaic.
+
+    Args:
+        images_table (pathlib.Path): table file containing metadata
+            for images to be coadded.
+        template_header (pathlib.Path): FITS header template to use
+            in generation of output FITS.
+        out_image (pathlib.Path): Output FITS image
+        corr_dir (pathlib.Path): Directory containing reprojected image
+
+    Returns:
+        pathlib.Path: FITS output header file.
+    """
+    import montage_wrapper as montage
+
+    add_log = montage.mAdd(
+        str(images_table),
+        str(template_header),
+        str(out_image),
+        str(corr_dir),
+    )
+    logger.debug(add_log)
     return out_image
 
 
@@ -369,6 +404,7 @@ class MontageWorkflow(ContextManagerAddIn):
                 image_2=image2,
                 output_name=outputs[i],
                 template=self.img_hdr,
+                output_dir=output_dir_fut,
             )
             outputs_2.append(out)
 
@@ -427,3 +463,14 @@ class MontageWorkflow(ContextManagerAddIn):
             bgexec_outputs.append(output_mb)
 
         _ = [i.result() for i in bgexec_outputs]
+
+        mosaic_out = self.output_dir / 'm17.fits'
+        mosaic_future = executor.submit(
+            madd,
+            img_tbl_fut,
+            self.img_hdr,
+            mosaic_out,
+            corrdir,
+        )
+
+        logger.info(f'Created output FITS file at {mosaic_future.result()}')
