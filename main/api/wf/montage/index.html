@@ -2321,10 +2321,17 @@
   <div class="doc doc-contents first">
   
       <p>Montage Mosaic workflow.</p>
+<p>This workflow is based on the <a href="https://github.com/Parsl/parallel_patterns/blob/master/Montage%20Mosaic.ipynb">Parsl implementation</a>
+of the Montage Getting Started tutorial.
+The workflow takes a directory of inputs and uses Montage tools to create a
+mosaic of them.</p>
 <p>Montage binaries must be pre-installed prior to execution.
 Binaries are available on Homebrew (MacOS) or
 <a href="http://montage.ipac.caltech.edu/docs/download2.html">http://montage.ipac.caltech.edu/docs/download2.html</a></p>
 <p>Input data available here: <a href="http://montage.ipac.caltech.edu/docs/Kimages.tar">http://montage.ipac.caltech.edu/docs/Kimages.tar</a></p>
+<p>Example execution command:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python -m webs.run montage         --img-folder ${PWD}/Kimages         --img-tbl Kimages.tbl         --img-hdr Ktemplate.hdr         --output-dir Kprojdir         --executor process-pool         --max-processes 10
+</span></code></pre></div></p>
 
   
 
