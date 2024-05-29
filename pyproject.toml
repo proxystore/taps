@@ -76,12 +76,8 @@ dist,
 plugins = ["covdefaults"]
 omit = [
     "examples",
-    "taps/wf/cholesky/*",
-    "taps/wf/docking/*",
-    "taps/wf/fedlearn/*",
-    "taps/wf/mapreduce/*",
-    "taps/wf/moldesign/*",
-    "taps/wf/montage/*",
+    "taps/apps/*",
+    "taps/run/apps/*",
 ]
 
 [tool.mypy]
@@ -190,6 +186,7 @@ required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
 "*/__init__.py" = ["F401"]
+"taps/**.py" = ["PLR0913"]
 "tests/**.py" = ["D10"]
 "testing/**.py" = ["D10"]
 "tests/conftest.py" = ["F401"]

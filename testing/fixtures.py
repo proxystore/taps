@@ -19,8 +19,7 @@ from taps.executor.python import ThreadPoolConfig
 from taps.executor.workflow import WorkflowExecutor
 from taps.run.config import BenchmarkConfig
 from taps.run.config import RunConfig
-from testing.workflow import TestWorkflow
-from testing.workflow import TestWorkflowConfig
+from testing.app import TestAppConfig
 
 
 @pytest.fixture()
@@ -56,15 +55,15 @@ def test_benchmark_config(
     tmp_path: pathlib.Path,
 ) -> Generator[BenchmarkConfig, None, None]:
     with mock.patch.dict(
-        taps.workflow.REGISTERED_WORKFLOWS,
-        {TestWorkflow.name: 'testing.workflow.TestWorkflow'},
+        taps.run.apps.registry._REGISTERED_APP_CONFIGS,
+        {'test-app': TestAppConfig},
     ):
         yield BenchmarkConfig(
-            name=TestWorkflow.name,
+            name='test-app',
             timestamp=datetime.now(),
+            app=TestAppConfig(tasks=3),
             executor=ThreadPoolConfig(max_thread=4),
             transformer=NullTransformerConfig(),
             filter=FilterConfig(),
             run=RunConfig(log_file_name=None, run_dir=str(tmp_path)),
-            workflow=TestWorkflowConfig(tasks=3),
         )

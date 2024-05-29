@@ -12,6 +12,7 @@ from taps.config import Config
 from taps.data.config import FilterConfig
 from taps.data.config import TransformerConfig
 from taps.executor.config import ExecutorConfig
+from taps.run.apps.registry import AppConfig
 
 
 class RunConfig(Config):
@@ -51,24 +52,25 @@ class RunConfig(Config):
 
 
 class BenchmarkConfig(Config):
-    """Workflow benchmark configuration.
+    """Application benchmark configuration.
 
     Attributes:
         name: Name of the workflow to execute.
         timestamp: Start time of the workflow.
+        app: Application config.
+        executor: Executor config.
         transformer: Transformer config.
         filter: Filter config.
-        run: Run configuration.
-        workflow: Workflow configuration.
+        run: Run config.
     """
 
     name: str
     timestamp: datetime
+    app: SerializeAsAny[AppConfig]
     executor: SerializeAsAny[ExecutorConfig]
     transformer: SerializeAsAny[TransformerConfig]
     filter: SerializeAsAny[FilterConfig]
     run: SerializeAsAny[RunConfig]
-    workflow: SerializeAsAny[Config]
 
     def get_run_dir(self) -> pathlib.Path:
         """Create and return the path to the run directory."""

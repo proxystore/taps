@@ -48,7 +48,7 @@ def _process_chunk(
 
 
 class _Task(Generic[P, T]):
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         executor: Executor,
         function: Callable[P, T],

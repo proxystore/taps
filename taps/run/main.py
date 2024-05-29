@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import collections
+import contextlib
 import functools
 import logging
 import os
@@ -13,7 +15,6 @@ from typing import Sequence
 
 # This import is necessary to ensure that all the workflow
 # implementations get imported and therefore registered.
-from taps import wf  # noqa: F401
 from taps.data.config import FilterConfig
 from taps.data.config import get_transformer_config
 from taps.data.config import TransformerChoicesConfig
@@ -24,10 +25,9 @@ from taps.executor.workflow import WorkflowExecutor
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
 from taps.record import JSONRecordLogger
+from taps.run.apps.registry import get_registered_apps
 from taps.run.config import BenchmarkConfig
 from taps.run.config import RunConfig
-from taps.workflow import get_registered_workflow
-from taps.workflow import get_registered_workflow_names
 
 logger = logging.getLogger('taps.run')
 
@@ -42,25 +42,24 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
         Configuration.
     """
     parser = argparse.ArgumentParser(
-        description='Workflow benchmark suite.',
+        description='Task Performance Suite.',
         prog='python -m taps.run',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     subparsers = parser.add_subparsers(
-        title='Workflows',
+        title='Applications',
         dest='name',
         required=True,
-        help='workflow to execute',
+        help='application to execute',
     )
 
-    workflow_names = sorted(get_registered_workflow_names())
-    for workflow_name in workflow_names:
+    apps = collections.OrderedDict(sorted(get_registered_apps().items()))
+    for name, config in apps.items():
         subparser = subparsers.add_parser(
-            workflow_name,
+            name,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
-
         RunConfig.add_argument_group(subparser, argv=argv, required=True)
         ExecutorChoicesConfig.add_argument_group(
             subparser,
@@ -77,36 +76,26 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
             argv=argv,
             required=True,
         )
-
-        # Avoid importing the workflow and its dependencies unless the
-        # user has already specified it.
-        if workflow_name in argv:
-            workflow = get_registered_workflow(workflow_name)
-            workflow.config_type.add_argument_group(
-                subparser,
-                argv=argv,
-                required=True,
-            )
+        config.add_argument_group(subparser, argv=argv, required=True)
 
     args = parser.parse_args(argv)
     options = vars(args)
 
-    workflow_name = options['name']
+    app_name = options['name']
     executor_config = get_executor_config(**options)
     transformer_config = get_transformer_config(**options)
     filter_config = FilterConfig(**options)
     run_config = RunConfig(**options)
-    workflow = get_registered_workflow(workflow_name)
-    workflow_config = workflow.config_type(**options)
+    app_config = apps[app_name](**options)
 
     return BenchmarkConfig(
-        name=workflow_name,
+        name=app_name,
         timestamp=datetime.now(),
+        app=app_config,
         executor=executor_config,
         transformer=transformer_config,
         filter=filter_config,
         run=run_config,
-        workflow=workflow_config,
     )
 
 
@@ -127,7 +116,7 @@ def _cwd_run_dir(
 
 @_cwd_run_dir
 def run(config: BenchmarkConfig) -> None:
-    """Run a workflow using the configuration.
+    """Run an application using the configuration.
 
     This function changes the current working directory to
     `config.run.run_dir` so that all paths are relative to the current
@@ -137,7 +126,7 @@ def run(config: BenchmarkConfig) -> None:
 
     cwd = pathlib.Path.cwd().resolve()
 
-    logger.log(RUN_LOG_LEVEL, f'Starting workflow (name={config.name})')
+    logger.log(RUN_LOG_LEVEL, f'Starting app (name={config.name})')
     logger.log(RUN_LOG_LEVEL, config)
     logger.log(RUN_LOG_LEVEL, f'Runtime directory: {cwd}')
 
@@ -145,10 +134,7 @@ def run(config: BenchmarkConfig) -> None:
     with open('config.json', 'w') as f:
         f.write(config_json)
 
-    workflow = get_registered_workflow(config.name).from_config(
-        config.workflow,
-    )
-
+    app = config.app.create_app()
     compute_executor = config.executor.get_executor()
     data_transformer = TaskDataTransformer(
         transformer=config.transformer.get_transformer(),
@@ -161,13 +147,13 @@ def run(config: BenchmarkConfig) -> None:
         record_logger=record_logger,
     )
 
-    with workflow, record_logger, executor:
-        workflow.run(executor=executor, run_dir=cwd)
+    with contextlib.closing(app), record_logger, executor:
+        app.run(executor=executor, run_dir=cwd)
 
     runtime = time.perf_counter() - start
     logger.log(
         RUN_LOG_LEVEL,
-        f'Finished workflow (name={config.name}, '
+        f'Finished app (name={config.name}, '
         f'runtime={runtime:.2f}s, tasks={executor.tasks_executed})',
     )
 
