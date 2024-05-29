@@ -68,6 +68,8 @@ class TaskInfo:
     parent_task_ids: list[str]
     submit_time: float
     received_time: float | None = None
+    success: bool | None = None
+    exception: str | None = None
     execution: ExecutionInfo | None = None
 
 
@@ -271,6 +273,11 @@ class WorkflowExecutor:
         execution_info = future.result().info
         task_future.info.received_time = time.time()
         task_future.info.execution = execution_info
+        exception = future.exception()
+        task_future.info.success = exception is None
+        task_future.info.exception = (
+            str(exception) if exception is not None else None
+        )
         self.record_logger.log(dataclasses.asdict(task_future.info))
 
     def submit(
