@@ -269,6 +269,10 @@ class DockingWorkflow(ContextManagerAddIn):
         self.smi_file_name_ligand = pathlib.Path(config.smi_file_name_ligand)
         self.receptor = pathlib.Path(config.receptor)
         self.tcl_path = pathlib.Path(config.tcl_path)
+        self.initial_simulations = config.initial_simulations
+        self.num_iterations = config.num_iterations
+        self.batch_size = config.batch_size
+        self.seed = config.seed
         super().__init__()
 
     @classmethod
@@ -293,22 +297,19 @@ class DockingWorkflow(ContextManagerAddIn):
         futures: list[TaskFuture[tuple[str, float] | str]] = []
         train_data = []
         smiles_simulated = []
-        initial_count = 5
-        num_loops = 3
-        batch_size = 3
-        train_output_file = pathlib.Path('training_results.json')
+        train_output_file = pathlib.Path('training-results.json')
 
         search_space = pd.read_csv(self.smi_file_name_ligand)
         search_space = search_space[['TITLE', 'SMILES']]
 
-        print(search_space.head(5))
-
         # start with an initial set of random smiles
-        for _ in range(initial_count):
-            selected = search_space.sample(1).iloc[0]
-            _, smiles = selected['TITLE'], selected['SMILES']
+        selected_smiles = search_space.sample(
+            self.initial_simulations,
+            random_state=self.seed,
+        )
+        for i in range(self.initial_simulations):
+            smiles = selected_smiles.iloc[i]['SMILES']
 
-            # workflow
             fname = uuid.uuid4().hex
 
             pdb_file = pathlib.Path(f'{fname}.pdb')
@@ -373,7 +374,7 @@ class DockingWorkflow(ContextManagerAddIn):
         training_df = pd.DataFrame(train_data)
 
         # train model, run inference, and run more simulations
-        for i in range(num_loops):
+        for i in range(self.num_iterations):
             logger.info(f'\nStarting batch {i}')
             m = train_model(training_df)
             predictions = run_model(m, search_space['SMILES'])
@@ -438,7 +439,7 @@ class DockingWorkflow(ContextManagerAddIn):
 
                     batch_count += 1
 
-                if batch_count > batch_size:
+                if batch_count > self.batch_size:
                     break
 
             # wait for all the workflows to complete
