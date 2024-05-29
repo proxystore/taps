@@ -15,6 +15,7 @@ if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
 else:  # pragma: <3.10 cover
     from typing_extensions import ParamSpec
 
+import dask
 from dask.distributed import Client
 from dask.distributed import Future as DaskFuture
 from pydantic import Field
@@ -130,12 +131,19 @@ class DaskDistributedConfig(ExecutorConfig):
         None,
         description='maximum number of dask workers',
     )
+    dask_daemon_workers: bool = Field(
+        True,
+        description='configure if workers are daemon',
+    )
 
     def get_executor(self) -> DaskDistributedExecutor:
         """Create an executor instance from the config."""
         if self.dask_scheduler_address is not None:
             client = Client(self.dask_scheduler_address)
         else:
+            dask.config.set(
+                {'distributed.worker.daemon': self.dask_daemon_workers},
+            )
             client = Client(
                 n_workers=self.dask_workers,
                 processes=not self.dask_use_threads,
