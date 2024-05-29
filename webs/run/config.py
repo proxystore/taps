@@ -38,8 +38,8 @@ class RunConfig(Config):
         description='minimum logging level',
     )
     task_record_file_name: str = Field(
-        'tasks.json',
-        description='task record JSON file name',
+        'tasks.jsonl',
+        description='task record line-delimited JSON file name',
     )
     run_dir_format: str = Field(
         'runs/{name}-{timestamp}',

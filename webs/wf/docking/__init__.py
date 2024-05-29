@@ -16,6 +16,7 @@ The environment variable MGLTOOLS_HOME needs to be set prior
 to workflow execution. A Conda `environment.yaml` is provided within
 the original notebook. It is recommended to install dependencies this way.
 **NOTE**: Dependencies are not compatible with ARM64 architecture.
+It may be necessary to set `OMP_NUM_THREADS=1` with certain executors.
 
 Sample input data provided in
 [ParslDock tutorial](https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb)

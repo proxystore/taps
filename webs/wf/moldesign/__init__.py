@@ -30,6 +30,7 @@ python -m webs.run moldesign --dataset data/QM9-search.tsv --executor process-po
 ```
 
 Additional parameters are available with `python -m webs.run moldesign --help`.
+It may be necessary to set `OMP_NUM_THREADS=1` with certain executors.
 """  # noqa: E501
 
 from __future__ import annotations

@@ -47,8 +47,9 @@ def test_synthetic_workflow(
         WorkflowStructure.SEQUENTIAL: run_sequential,
     }
 
-    for kind, function in kinds.items():
+    for i, (kind, function) in enumerate(kinds.items()):
         config.structure = kind
+        config.warmup_task = i % 2 == 0
         workflow = SyntheticWorkflow.from_config(config)
 
         with mock.patch(
