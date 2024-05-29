@@ -9,9 +9,9 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 
-from webs.config import Config
-from webs.context import ContextManagerAddIn
-from webs.executor.workflow import WorkflowExecutor
+from taps.config import Config
+from taps.context import ContextManagerAddIn
+from taps.executor.workflow import WorkflowExecutor
 
 
 def task() -> None:

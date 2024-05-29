@@ -3,13 +3,13 @@ requires = ["setuptools>=64.0", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "webs"
+name = "taps"
 version = "0.1.0"
 authors = [
     {name = "Greg Pauloski", email = "jgpauloski@uchicago.edu"},
     {name = "Globus Labs"},
 ]
-description = "Workflows benchmark suite for task-based execution frameworks."
+description = "Task Performance Suite for benchmarking parallel execution frameworks."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
@@ -76,12 +76,12 @@ dist,
 plugins = ["covdefaults"]
 omit = [
     "examples",
-    "webs/wf/cholesky/*",
-    "webs/wf/docking/*",
-    "webs/wf/fedlearn/*",
-    "webs/wf/mapreduce/*",
-    "webs/wf/moldesign/*",
-    "webs/wf/montage/*",
+    "taps/wf/cholesky/*",
+    "taps/wf/docking/*",
+    "taps/wf/fedlearn/*",
+    "taps/wf/mapreduce/*",
+    "taps/wf/moldesign/*",
+    "taps/wf/montage/*",
 ]
 
 [tool.mypy]

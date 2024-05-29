@@ -6,9 +6,9 @@ from typing import TypeVar
 
 import pytest
 
-from webs.data.filter import ObjectTypeFilter
-from webs.data.null import NullTransformer
-from webs.data.transform import TaskDataTransformer
+from taps.data.filter import ObjectTypeFilter
+from taps.data.null import NullTransformer
+from taps.data.transform import TaskDataTransformer
 
 T = TypeVar('T')
 

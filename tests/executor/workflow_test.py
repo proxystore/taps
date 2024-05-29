@@ -6,19 +6,19 @@ import uuid
 from concurrent.futures import Future
 from concurrent.futures import ThreadPoolExecutor
 
+from taps.data.file import PickleFileTransformer
+from taps.data.null import NullTransformer
+from taps.data.transform import TaskDataTransformer
+from taps.executor.dag import DAGExecutor
+from taps.executor.dask import DaskDistributedExecutor
+from taps.executor.workflow import _TaskResult
+from taps.executor.workflow import _TaskWrapper
+from taps.executor.workflow import as_completed
+from taps.executor.workflow import TaskFuture
+from taps.executor.workflow import TaskInfo
+from taps.executor.workflow import wait
+from taps.executor.workflow import WorkflowExecutor
 from testing.record import SimpleRecordLogger
-from webs.data.file import PickleFileTransformer
-from webs.data.null import NullTransformer
-from webs.data.transform import TaskDataTransformer
-from webs.executor.dag import DAGExecutor
-from webs.executor.dask import DaskDistributedExecutor
-from webs.executor.workflow import _TaskResult
-from webs.executor.workflow import _TaskWrapper
-from webs.executor.workflow import as_completed
-from webs.executor.workflow import TaskFuture
-from webs.executor.workflow import TaskInfo
-from webs.executor.workflow import wait
-from webs.executor.workflow import WorkflowExecutor
 
 
 def test_task_wrapper_call() -> None:

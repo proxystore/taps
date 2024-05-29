@@ -5,8 +5,8 @@ from unittest import mock
 import pytest
 from dask.distributed import Client
 
-from webs.executor.dask import DaskDistributedConfig
-from webs.executor.dask import DaskDistributedExecutor
+from taps.executor.dask import DaskDistributedConfig
+from taps.executor.dask import DaskDistributedExecutor
 
 
 @pytest.fixture()
@@ -43,5 +43,5 @@ def test_map_function(local_client: Client) -> None:
     ),
 )
 def test_config_get_executor(config: DaskDistributedConfig) -> None:
-    with mock.patch('webs.executor.dask.Client'):
+    with mock.patch('taps.executor.dask.Client'):
         assert isinstance(config.get_executor(), DaskDistributedExecutor)

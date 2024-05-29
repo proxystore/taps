@@ -10,8 +10,8 @@ from proxystore.store import get_store
 from proxystore.store import Store
 from proxystore.store import unregister_store
 
-from webs.data.proxy import ProxyFileTransformerConfig
-from webs.data.proxy import ProxyTransformer
+from taps.data.proxy import ProxyFileTransformerConfig
+from taps.data.proxy import ProxyTransformer
 
 
 def test_file_config() -> None:
@@ -20,7 +20,7 @@ def test_file_config() -> None:
         ps_file_dir='test',
         ps_redis_addr='localhost:0',
     )
-    with mock.patch('webs.data.proxy.FileConnector'):
+    with mock.patch('taps.data.proxy.FileConnector'):
         transformer = config.get_transformer()
         transformer.store.close()
 
@@ -31,7 +31,7 @@ def test_redis_config() -> None:
         ps_file_dir='test',
         ps_redis_addr='localhost:0',
     )
-    with mock.patch('webs.data.proxy.RedisConnector'):
+    with mock.patch('taps.data.proxy.RedisConnector'):
         transformer = config.get_transformer()
         transformer.store.close()
 

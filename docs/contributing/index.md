@@ -3,7 +3,7 @@
 We recommend using [Tox](https://tox.wiki/en/latest/index.html){target=_blank}
 to setup the development environment. This will create a new virtual
 environment with all of the required packages installed
-and WEBS installed in editable mode with the necessary extras options.
+and TaPS installed in editable mode with the necessary extras options.
 
 ```bash
 $ git clone https://github.com/proxystore/taps
@@ -50,7 +50,7 @@ This will test against multiple versions of Python and can be slow.
 
 Module-level unit-test are located in the `tests/` directory and its
 structure is intended to match that of `foobar/`.
-E.g. the tests for `webs/x/y.py` are located in
+E.g. the tests for `taps/x/y.py` are located in
 `tests/x/y_test.py`; however, additional test files can be added
 as needed. Tests should be narrowly focused and target a single aspect of the
 code's functionality, tests should not test internal implementation details of

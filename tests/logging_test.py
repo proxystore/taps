@@ -3,8 +3,8 @@ from __future__ import annotations
 import logging
 import pathlib
 
-from webs.logging import init_logging
-from webs.logging import RUN_LOG_LEVEL
+from taps.logging import init_logging
+from taps.logging import RUN_LOG_LEVEL
 
 
 def test_logging_no_file() -> None:

@@ -2,24 +2,24 @@ from __future__ import annotations
 
 from unittest import mock
 
-from webs.executor.python import ThreadPoolConfig
-from webs.run.config import BenchmarkConfig
-from webs.run.main import main
-from webs.run.main import parse_args_to_config
-from webs.run.main import run
+from taps.executor.python import ThreadPoolConfig
+from taps.run.config import BenchmarkConfig
+from taps.run.main import main
+from taps.run.main import parse_args_to_config
+from taps.run.main import run
 
 
-@mock.patch('webs.run.main.parse_args_to_config')
-@mock.patch('webs.run.main.init_logging')
+@mock.patch('taps.run.main.parse_args_to_config')
+@mock.patch('taps.run.main.init_logging')
 def test_main(mock_parse, mock_logging) -> None:
-    with mock.patch('webs.run.main.run'):
+    with mock.patch('taps.run.main.run'):
         assert main() == 0
 
 
-@mock.patch('webs.run.main.parse_args_to_config')
-@mock.patch('webs.run.main.init_logging')
+@mock.patch('taps.run.main.parse_args_to_config')
+@mock.patch('taps.run.main.init_logging')
 def test_main_error(mock_parse, mock_logging) -> None:
-    with mock.patch('webs.run.main.run', side_effect=RuntimeError):
+    with mock.patch('taps.run.main.run', side_effect=RuntimeError):
         assert main() == 1
 
 

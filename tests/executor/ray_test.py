@@ -4,7 +4,7 @@ import sys
 
 import pytest
 
-from webs.executor.ray import RayConfig
+from taps.executor.ray import RayConfig
 
 
 @pytest.mark.skipif(

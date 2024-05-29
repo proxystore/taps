@@ -10,17 +10,17 @@ from unittest import mock
 import pytest
 from dask.distributed import Client
 
-import webs
+import taps
+from taps.data.config import FilterConfig
+from taps.data.null import NullTransformerConfig
+from taps.executor.dask import DaskDistributedExecutor
+from taps.executor.python import DAGExecutor
+from taps.executor.python import ThreadPoolConfig
+from taps.executor.workflow import WorkflowExecutor
+from taps.run.config import BenchmarkConfig
+from taps.run.config import RunConfig
 from testing.workflow import TestWorkflow
 from testing.workflow import TestWorkflowConfig
-from webs.data.config import FilterConfig
-from webs.data.null import NullTransformerConfig
-from webs.executor.dask import DaskDistributedExecutor
-from webs.executor.python import DAGExecutor
-from webs.executor.python import ThreadPoolConfig
-from webs.executor.workflow import WorkflowExecutor
-from webs.run.config import BenchmarkConfig
-from webs.run.config import RunConfig
 
 
 @pytest.fixture()
@@ -56,7 +56,7 @@ def test_benchmark_config(
     tmp_path: pathlib.Path,
 ) -> Generator[BenchmarkConfig, None, None]:
     with mock.patch.dict(
-        webs.workflow.REGISTERED_WORKFLOWS,
+        taps.workflow.REGISTERED_WORKFLOWS,
         {TestWorkflow.name: 'testing.workflow.TestWorkflow'},
     ):
         yield BenchmarkConfig(

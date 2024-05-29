@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from webs.executor.dag import DAGExecutor
-from webs.executor.python import ProcessPoolConfig
-from webs.executor.python import ThreadPoolConfig
+from taps.executor.dag import DAGExecutor
+from taps.executor.python import ProcessPoolConfig
+from taps.executor.python import ThreadPoolConfig
 
 
 def test_thread_pool_config() -> None:

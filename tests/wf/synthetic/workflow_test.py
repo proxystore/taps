@@ -5,15 +5,15 @@ import pathlib
 import time
 from unittest import mock
 
-from webs.executor.workflow import WorkflowExecutor
-from webs.wf.synthetic.config import SyntheticWorkflowConfig
-from webs.wf.synthetic.config import WorkflowStructure
-from webs.wf.synthetic.workflow import noop_task
-from webs.wf.synthetic.workflow import run_bag_of_tasks
-from webs.wf.synthetic.workflow import run_diamond
-from webs.wf.synthetic.workflow import run_reduce
-from webs.wf.synthetic.workflow import run_sequential
-from webs.wf.synthetic.workflow import SyntheticWorkflow
+from taps.executor.workflow import WorkflowExecutor
+from taps.wf.synthetic.config import SyntheticWorkflowConfig
+from taps.wf.synthetic.config import WorkflowStructure
+from taps.wf.synthetic.workflow import noop_task
+from taps.wf.synthetic.workflow import run_bag_of_tasks
+from taps.wf.synthetic.workflow import run_diamond
+from taps.wf.synthetic.workflow import run_reduce
+from taps.wf.synthetic.workflow import run_sequential
+from taps.wf.synthetic.workflow import SyntheticWorkflow
 
 
 def test_noop_task() -> None:
@@ -53,7 +53,7 @@ def test_synthetic_workflow(
         workflow = SyntheticWorkflow.from_config(config)
 
         with mock.patch(
-            f'webs.wf.synthetic.workflow.{function.__name__}',
+            f'taps.wf.synthetic.workflow.{function.__name__}',
         ) as mocked:
             workflow.run(workflow_executor, tmp_path)
             mocked.assert_called_once()

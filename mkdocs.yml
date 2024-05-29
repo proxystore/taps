@@ -1,4 +1,4 @@
-site_name: WEBS
+site_name: TaPS
 site_url: https://proxystore.dev/taps
 site_author: Globus Labs
 site_description: Workflow Execution Benchmark Suite
@@ -62,7 +62,7 @@ watch:
   - mkdocs.yml
   - README.md
   - docs/
-  - webs/
+  - taps/
 
 extra:
   version:
@@ -114,7 +114,7 @@ nav:
       - guides/index.md
       - Creating Workflows: guides/creating-workflows.md
   - API Reference:
-      - WEBS: api/
+      - TaPS: api/
   - Contributing:
       - contributing/index.md
       - Style Guide: contributing/style-guide.md

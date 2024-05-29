@@ -8,7 +8,7 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
 else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
-from webs.context import ContextManagerAddIn
+from taps.context import ContextManagerAddIn
 
 
 class _TestContextManager:
