@@ -2331,10 +2331,11 @@ it can predict the strength of docking between target small molecule
 ligands (drugs) to target binding site (receptors).</p>
 <p>Need to install libGL and
 <a href="https://ccsb.scripps.edu/mgltools/download/491/mgltools_Linux-x86_64_1.5.7.tar.gz">MGLTool</a>
-The environment variable MGLTOOL_HOME needs to be set prior
+The environment variable MGLTOOLS_HOME needs to be set prior
 to workflow execution. A Conda <code>environment.yaml</code> is provided within
 the original notebook. It is recommended to install dependencies this way.
-<strong>NOTE</strong>: Dependencies are not compatible with ARM64 architecture.</p>
+<strong>NOTE</strong>: Dependencies are not compatible with ARM64 architecture.
+It may be necessary to set <code>OMP_NUM_THREADS=1</code> with certain executors.</p>
 <p>Sample input data provided in
 <a href="https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb">ParslDock tutorial</a>
 Input files needed include <code>dataset_orz_original_1k.csv</code> for

@@ -2366,7 +2366,8 @@ and then install the <code>webs</code> package into the Conda environment.</p>
 <h3 id="webs.wf.moldesign--running">Running<a class="headerlink" href="#webs.wf.moldesign--running" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>webs.run<span class="w"> </span>moldesign<span class="w"> </span>--dataset<span class="w"> </span>data/QM9-search.tsv<span class="w"> </span>--executor<span class="w"> </span>process-pool<span class="w"> </span>--max-processes<span class="w"> </span><span class="m">4</span>
 </span></code></pre></div>
-<p>Additional parameters are available with <code>python -m webs.run moldesign --help</code>.</p>
+<p>Additional parameters are available with <code>python -m webs.run moldesign --help</code>.
+It may be necessary to set <code>OMP_NUM_THREADS=1</code> with certain executors.</p>
 
   
 
