@@ -4,6 +4,7 @@ import logging
 import pathlib
 import sys
 import time
+import uuid
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -23,7 +24,12 @@ from webs.wf.synthetic.utils import randbytes
 logger = logging.getLogger(__name__)
 
 
-def noop_task(*data: bytes, output_size: int, sleep: float) -> bytes:
+def noop_task(
+    *data: bytes,
+    output_size: int,
+    sleep: float,
+    task_id: uuid.UUID | None = None,
+) -> bytes:
     """No-op sleep task.
 
     Args:
@@ -31,18 +37,26 @@ def noop_task(*data: bytes, output_size: int, sleep: float) -> bytes:
         output_size: Size in bytes of output byte-string.
         sleep: Minimum runtime of the task. Time required to generate the
             output data will be subtracted from this sleep time.
+        task_id: Optional unique task ID to prevent executors from caching
+            the task result.
 
     Returns:
         Byte-string of length `output_size`.
     """
-    assert all(isinstance(d, bytes) for d in data)
     start = time.perf_counter_ns()
+    # Validate the data is real
+    assert all(len(d) >= 0 for d in data)
     result = randbytes(output_size)
     elapsed = (time.perf_counter_ns() - start) / 1e9
 
     # Remove elapsed time for generating result from remaining sleep time.
     time.sleep(max(0, sleep - elapsed))
     return result
+
+
+def warmup_task() -> None:
+    """No-op warmup task."""
+    pass
 
 
 def run_bag_of_tasks(
@@ -62,6 +76,7 @@ def run_bag_of_tasks(
             randbytes(task_data_bytes),
             output_size=task_data_bytes,
             sleep=task_sleep,
+            task_id=uuid.uuid4(),
         )
         for _ in range(max_running_tasks)
     ]
@@ -86,6 +101,7 @@ def run_bag_of_tasks(
                 randbytes(task_data_bytes),
                 output_size=task_data_bytes,
                 sleep=task_sleep,
+                task_id=uuid.uuid4(),
             )
             for _ in finished_tasks
         ]
@@ -102,6 +118,8 @@ def run_bag_of_tasks(
             )
 
     wait(running_tasks, return_when='ALL_COMPLETED')
+    # Validate task results are real
+    assert all(len(task.result()) >= 0 for task in running_tasks)
     completed_tasks += len(running_tasks)
     rate = completed_tasks / (time.monotonic() - start)
     logger.log(
@@ -122,6 +140,7 @@ def run_diamond(
         randbytes(task_data_bytes),
         output_size=task_data_bytes,
         sleep=task_sleep,
+        task_id=uuid.uuid4(),
     )
     logger.log(WORK_LOG_LEVEL, 'Submitted initial task')
 
@@ -131,6 +150,7 @@ def run_diamond(
             initial_task,
             output_size=task_data_bytes,
             sleep=task_sleep,
+            task_id=uuid.uuid4(),
         )
         for _ in range(task_count)
     ]
@@ -144,6 +164,7 @@ def run_diamond(
         *intermediate_tasks,
         output_size=task_data_bytes,
         sleep=task_sleep,
+        task_id=uuid.uuid4(),
     )
     logger.log(WORK_LOG_LEVEL, 'Submitted final task')
 
@@ -164,6 +185,7 @@ def run_reduce(
             randbytes(task_data_bytes),
             output_size=task_data_bytes,
             sleep=task_sleep,
+            task_id=uuid.uuid4(),
         )
         for _ in range(task_count)
     ]
@@ -174,6 +196,7 @@ def run_reduce(
         *map_tasks,
         output_size=task_data_bytes,
         sleep=task_sleep,
+        task_id=uuid.uuid4(),
     )
     logger.log(WORK_LOG_LEVEL, 'Submitted reduce task')
 
@@ -199,6 +222,7 @@ def run_sequential(
             input_data,
             output_size=task_data_bytes,
             sleep=task_sleep,
+            task_id=uuid.uuid4(),
         )
         tasks.append(task)
         logger.log(
@@ -213,6 +237,9 @@ def run_sequential(
             WORK_LOG_LEVEL,
             f'Received task {i+1}/{task_count} (task_id: {task.info.task_id})',
         )
+
+    # Validate the final result in the sequence
+    assert len(tasks[-1].result()) >= 0
 
     rate = task_count / (time.monotonic() - start)
     logger.log(WORK_LOG_LEVEL, f'Task completion rate: {rate:.3f} tasks/s')
@@ -240,12 +267,15 @@ class SyntheticWorkflow(ContextManagerAddIn):
         task_data_bytes: int,
         task_sleep: float,
         bag_max_running: int,
+        *,
+        warmup_task: bool = True,
     ) -> None:
         self.structure = structure
         self.task_count = task_count
         self.task_data_bytes = task_data_bytes
         self.task_sleep = task_sleep
         self.bag_max_running = bag_max_running
+        self.warmup_task = warmup_task
         super().__init__()
 
     @classmethod
@@ -264,6 +294,7 @@ class SyntheticWorkflow(ContextManagerAddIn):
             task_data_bytes=config.task_data_bytes,
             task_sleep=config.task_sleep,
             bag_max_running=config.bag_max_running,
+            warmup_task=config.warmup_task,
         )
 
     def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
@@ -273,6 +304,11 @@ class SyntheticWorkflow(ContextManagerAddIn):
             executor: Workflow task executor.
             run_dir: Run directory.
         """
+        if self.warmup_task:
+            logger.log(WORK_LOG_LEVEL, 'Submitting warmup task')
+            executor.submit(warmup_task).result()
+            logger.log(WORK_LOG_LEVEL, 'Warmup task completed')
+
         logger.log(WORK_LOG_LEVEL, f'Starting {self.structure.value} workflow')
         if self.structure == WorkflowStructure.BAG:
             run_bag_of_tasks(

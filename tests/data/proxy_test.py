@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import pickle
 from unittest import mock
 
 import pytest
 from proxystore.connectors.local import LocalConnector
 from proxystore.proxy import Proxy
+from proxystore.store import get_store
 from proxystore.store import Store
+from proxystore.store import unregister_store
 
 from webs.data.proxy import ProxyFileTransformerConfig
 from webs.data.proxy import ProxyTransformer
@@ -18,7 +21,8 @@ def test_file_config() -> None:
         ps_redis_addr='localhost:0',
     )
     with mock.patch('webs.data.proxy.FileConnector'):
-        config.get_transformer()
+        transformer = config.get_transformer()
+        transformer.store.close()
 
 
 def test_redis_config() -> None:
@@ -28,7 +32,8 @@ def test_redis_config() -> None:
         ps_redis_addr='localhost:0',
     )
     with mock.patch('webs.data.proxy.RedisConnector'):
-        config.get_transformer()
+        transformer = config.get_transformer()
+        transformer.store.close()
 
 
 @pytest.mark.parametrize('extract', (True, False))
@@ -46,3 +51,15 @@ def test_proxy_transformer(extract: bool) -> None:
         resolved = transformer.resolve(identifier)
         assert isinstance(resolved, Proxy) != extract
         assert resolved == obj
+
+
+def test_proxy_transformer_pickling() -> None:
+    name = 'test-proxy-transformer-pickle'
+    with Store(name, LocalConnector(), register=True) as store:
+        transformer = ProxyTransformer(store)
+        pickled = pickle.dumps(transformer)
+        transformer = pickle.loads(pickled)
+
+        unregister_store(name)
+        transformer = pickle.loads(pickled)
+        assert get_store(name) is not None

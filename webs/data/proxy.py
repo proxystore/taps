@@ -11,6 +11,7 @@ from proxystore.connectors.protocols import Connector
 from proxystore.connectors.redis import RedisConnector
 from proxystore.proxy import extract
 from proxystore.proxy import Proxy
+from proxystore.store import get_store
 from proxystore.store import Store
 from pydantic import Field
 from pydantic import field_validator
@@ -71,7 +72,12 @@ class ProxyFileTransformerConfig(TransformerConfig):
             )
 
         return ProxyTransformer(
-            store=Store('transformer', connector),
+            store=Store(
+                'transformer',
+                connector=connector,
+                register=True,
+                populate_target=True,
+            ),
             extract_target=self.ps_extract_target,
         )
 
@@ -96,6 +102,20 @@ class ProxyTransformer:
     ) -> None:
         self.store = store
         self.extract_target = extract_target
+
+    def __getstate__(self) -> dict[str, Any]:
+        return {
+            'config': self.store.config(),
+            'extract_target': self.extract_target,
+        }
+
+    def __setstate__(self, state: dict[str, Any]) -> None:
+        store = get_store(state['config']['name'])
+        if store is not None:
+            self.store = store
+        else:
+            self.store = Store.from_config(state['config'])
+        self.extract_target = state['extract_target']
 
     def is_identifier(self, obj: Any) -> bool:
         """Check if the object is an identifier instance."""

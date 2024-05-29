@@ -26,3 +26,7 @@ class SyntheticWorkflowConfig(Config):
     bag_max_running: int = Field(
         description='max running tasks in bag workflow',
     )
+    warmup_task: bool = Field(
+        True,
+        description='submit a warmup task before running the workflow',
+    )

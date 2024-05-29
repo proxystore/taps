@@ -12,10 +12,11 @@ ligands (drugs) to target binding site (receptors).
 
 Need to install libGL and
 [MGLTool](https://ccsb.scripps.edu/mgltools/download/491/mgltools_Linux-x86_64_1.5.7.tar.gz)
-The environment variable MGLTOOL_HOME needs to be set prior
+The environment variable MGLTOOLS_HOME needs to be set prior
 to workflow execution. A Conda `environment.yaml` is provided within
 the original notebook. It is recommended to install dependencies this way.
 **NOTE**: Dependencies are not compatible with ARM64 architecture.
+It may be necessary to set `OMP_NUM_THREADS=1` with certain executors.
 
 Sample input data provided in
 [ParslDock tutorial](https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb)

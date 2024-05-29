@@ -12,6 +12,7 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 from webs.context import ContextManagerAddIn
+from webs.executor.workflow import wait
 from webs.executor.workflow import WorkflowExecutor
 from webs.logging import WORK_LOG_LEVEL
 from webs.wf.montage.config import MontageWorkflowConfig
@@ -371,7 +372,7 @@ class MontageWorkflow(ContextManagerAddIn):
             )
             mproject_outputs.append(out)
 
-        _ = [i.result() for i in mproject_outputs]
+        wait(mproject_outputs)
 
         img_tbl_fut = executor.submit(
             mimgtbl,
@@ -408,7 +409,7 @@ class MontageWorkflow(ContextManagerAddIn):
             )
             outputs_2.append(out)
 
-        _ = [i.result() for i in outputs_2]
+        wait(outputs_2)
 
         fcorrdir = executor.submit(
             bgexec_prep,
@@ -462,7 +463,7 @@ class MontageWorkflow(ContextManagerAddIn):
 
             bgexec_outputs.append(output_mb)
 
-        _ = [i.result() for i in bgexec_outputs]
+        wait(bgexec_outputs)
 
         mosaic_out = self.output_dir / 'm17.fits'
         mosaic_future = executor.submit(

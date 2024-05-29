@@ -37,7 +37,8 @@ def train_model(train_data: pd.DataFrame) -> Pipeline:
         ],
     )
 
-    return model.fit(train_data['smiles'], train_data['ie'])
+    # Ray arrays are immutable so need to clone.
+    return model.fit(train_data['smiles'].clone(), train_data['ie'].clone())
 
 
 def run_model(model: Pipeline, smiles: list[str]) -> pd.DataFrame:
