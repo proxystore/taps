@@ -1,17 +1,10 @@
 from __future__ import annotations
 
 import pathlib
-import sys
 
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
-
-
-from taps.apps.protocols import App
+from taps.app import App
+from taps.app import AppConfig
 from taps.executor.workflow import WorkflowExecutor
-from taps.run.apps.registry import AppConfig
 
 
 def task() -> None:

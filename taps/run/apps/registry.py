@@ -1,25 +1,9 @@
 from __future__ import annotations
 
-import abc
 from typing import Callable
 from typing import TypeVar
 
-from taps.apps.protocols import App
-from taps.config import Config
-
-
-class AppConfig(abc.ABC, Config):
-    """Application config protocol.
-
-    Application configs inherit from [`Config`][taps.config.Config]
-    and define the `create_app()` method.
-    """
-
-    @abc.abstractmethod
-    def create_app(self) -> App:
-        """Initialize an app instance from this config."""
-        ...
-
+from taps.app import AppConfig
 
 _REGISTERED_APP_CONFIGS: dict[str, type[AppConfig]] = {}
 AppConfigT = TypeVar('AppConfigT', bound=AppConfig)

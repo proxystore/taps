@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from taps.apps.protocols import App
-from taps.run.apps.registry import AppConfig
+from taps.app import App
+from taps.app import AppConfig
 from taps.run.apps.registry import register_app
 
 
