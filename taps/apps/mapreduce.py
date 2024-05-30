@@ -5,15 +5,9 @@ import os
 import pathlib
 import random
 import string
-import sys
 from collections import Counter
 
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
-
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
 from taps.logging import WORK_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
@@ -161,11 +155,11 @@ class MapreduceApp:
         """Close the application."""
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
-            executor: Workflow task executor.
+            engine: Application execution engine.
             run_dir: Run directory.
         """
         # Perform the map phase
@@ -182,7 +176,7 @@ class MapreduceApp:
                 author_lists,
             )
             map_counters.extend(
-                executor.map(
+                engine.map(
                     _map_function_for_enron_run_mode,
                     map_task_inputs,
                 ),
@@ -196,7 +190,7 @@ class MapreduceApp:
             )
 
             map_counters.extend(
-                executor.map(map_function_for_random_run_mode, paragraphs),
+                engine.map(map_function_for_random_run_mode, paragraphs),
             )
 
         logger.log(
@@ -205,7 +199,7 @@ class MapreduceApp:
         )
 
         # Perform the reduce phase
-        reduce_task = executor.submit(reduce_function, map_counters)
+        reduce_task = engine.submit(reduce_function, map_counters)
 
         # Examine the reduce phase result
         most_common_words = reduce_task.result().most_common(

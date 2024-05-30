@@ -19,9 +19,9 @@ from taps.data.config import FilterConfig
 from taps.data.config import get_transformer_config
 from taps.data.config import TransformerChoicesConfig
 from taps.data.transform import TaskDataTransformer
+from taps.engine import AppEngine
 from taps.executor.config import ExecutorChoicesConfig
 from taps.executor.config import get_executor_config
-from taps.executor.workflow import WorkflowExecutor
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
 from taps.record import JSONRecordLogger
@@ -135,26 +135,26 @@ def run(config: BenchmarkConfig) -> None:
         f.write(config_json)
 
     app = config.app.create_app()
-    compute_executor = config.executor.get_executor()
+    executor = config.executor.get_executor()
     data_transformer = TaskDataTransformer(
         transformer=config.transformer.get_transformer(),
         filter_=config.filter.get_filter(),
     )
     record_logger = JSONRecordLogger(config.run.task_record_file_name)
-    executor = WorkflowExecutor(
-        compute_executor,
+    engine = AppEngine(
+        executor,
         data_transformer=data_transformer,
         record_logger=record_logger,
     )
 
-    with contextlib.closing(app), record_logger, executor:
-        app.run(executor=executor, run_dir=cwd)
+    with contextlib.closing(app), record_logger, engine:
+        app.run(engine=engine, run_dir=cwd)
 
     runtime = time.perf_counter() - start
     logger.log(
         RUN_LOG_LEVEL,
         f'Finished app (name={config.name}, '
-        f'runtime={runtime:.2f}s, tasks={executor.tasks_executed})',
+        f'runtime={runtime:.2f}s, tasks={engine.tasks_executed})',
     )
 
 

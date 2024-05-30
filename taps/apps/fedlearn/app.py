@@ -14,9 +14,9 @@ else:  # pragma: <3.11 cover
 import numpy as np
 import torch
 
-from taps.executor.workflow import as_completed
-from taps.executor.workflow import TaskFuture
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
+from taps.engine import as_completed
+from taps.engine import TaskFuture
 from taps.logging import WORK_LOG_LEVEL
 from taps.wf.fedlearn.config import DataChoices
 from taps.wf.fedlearn.modules import create_model
@@ -153,11 +153,11 @@ class FedlearnApp:
         """Close the application."""
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
-        """Run the workflow.
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+        """Run the application.
 
         Args:
-            executor: Executor to launch jobs/tasks for the workflow.
+            engine: Application execution engine.
             run_dir: Directory for run outputs.
         """
         results = []
@@ -168,7 +168,7 @@ class FedlearnApp:
                 f'{preface} Starting local training for this round.',
             )
 
-            train_result = self._federated_round(round_idx, executor, run_dir)
+            train_result = self._federated_round(round_idx, engine, run_dir)
             results.extend(train_result)
 
             if self.test_data is not None:
@@ -176,7 +176,7 @@ class FedlearnApp:
                     WORK_LOG_LEVEL,
                     f'{preface} Starting the test for the global model.',
                 )
-                test_result = executor.submit(
+                test_result = engine.submit(
                     test_model,
                     self.global_model,
                     self.test_data,
@@ -192,7 +192,7 @@ class FedlearnApp:
     def _federated_round(
         self,
         round_idx: int,
-        executor: WorkflowExecutor,
+        engine: AppEngine,
         run_dir: pathlib.Path,
     ) -> list[Result]:
         """Perform a single round in federated learning.
@@ -205,7 +205,7 @@ class FedlearnApp:
 
         Args:
             round_idx: Round number.
-            executor: The executor to launch tasks with.
+            engine: Application execution engine.
             run_dir: Run directory for results.
         """
         job = local_train if self.train else no_local_train
@@ -224,7 +224,7 @@ class FedlearnApp:
         for client in selected_clients:
             client.model.load_state_dict(self.global_model.state_dict())
             futures.append(
-                executor.submit(
+                engine.submit(
                     job,
                     client,
                     round_idx,

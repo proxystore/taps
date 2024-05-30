@@ -4,7 +4,7 @@ import pathlib
 
 from taps.app import App
 from taps.app import AppConfig
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
 
 
 def task() -> None:
@@ -29,8 +29,8 @@ class TestApp:
     def close(self) -> None:
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
-        task_futures = [executor.submit(task) for _ in range(self.tasks)]
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+        task_futures = [engine.submit(task) for _ in range(self.tasks)]
 
         for task_future in task_futures:
             task_future.result()

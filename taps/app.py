@@ -6,7 +6,7 @@ from typing import Protocol
 from typing import runtime_checkable
 
 from taps.config import Config
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
 
 
 @runtime_checkable
@@ -15,7 +15,7 @@ class App(Protocol):
 
     def run(
         self,
-        executor: WorkflowExecutor,
+        engine: AppEngine,
         run_dir: pathlib.Path,
     ) -> None:
         """Run the application."""

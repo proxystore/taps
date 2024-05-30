@@ -2,21 +2,15 @@ from __future__ import annotations
 
 import logging
 import pathlib
-import sys
 import time
-
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
 
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from taps.executor.workflow import as_completed
-from taps.executor.workflow import TaskFuture
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
+from taps.engine import as_completed
+from taps.engine import TaskFuture
 from taps.logging import WORK_LOG_LEVEL
 from taps.wf.moldesign.chemfunctions import compute_vertical
 from taps.wf.moldesign.tasks import combine_inferences
@@ -56,11 +50,11 @@ class MoldesignApp:
         """Close the application."""
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
         """Run the application.
 
         Args:
-            executor: Workflow task executor.
+            engine: Application execution engine.
             run_dir: Run directory.
         """
         start_time = time.monotonic()
@@ -80,7 +74,7 @@ class MoldesignApp:
             )['smiles'],
         )
         sim_futures: dict[TaskFuture[float], str] = {
-            executor.submit(compute_vertical, mol): mol for mol in init_mols
+            engine.submit(compute_vertical, mol): mol for mol in init_mols
         }
         logger.log(WORK_LOG_LEVEL, 'Submitted initial computations')
         logger.info(f'Initial set: {init_mols}')
@@ -104,7 +98,7 @@ class MoldesignApp:
                     1,
                     random_state=self.seed,
                 ).iloc[0]['smiles']
-                new_future = executor.submit(
+                new_future = engine.submit(
                     compute_vertical,
                     smiles,
                 )
@@ -133,13 +127,13 @@ class MoldesignApp:
         batch = 1
         while len(train_data) < self.search_count:
             # Train and predict as show in the previous section.
-            train_future = executor.submit(train_model, train_data)
+            train_future = engine.submit(train_model, train_data)
             logger.log(WORK_LOG_LEVEL, 'Submitting inference tasks')
             inference_futures = [
-                executor.submit(run_model, train_future, chunk)
+                engine.submit(run_model, train_future, chunk)
                 for chunk in np.array_split(search_space['smiles'], 64)
             ]
-            predictions = executor.submit(
+            predictions = engine.submit(
                 combine_inferences,
                 *inference_futures,
             ).result()
@@ -154,7 +148,7 @@ class MoldesignApp:
             sim_futures = {}
             for smiles in predictions['smiles']:
                 if smiles not in already_ran:
-                    new_future = executor.submit(compute_vertical, smiles)
+                    new_future = engine.submit(compute_vertical, smiles)
                     sim_futures[new_future] = smiles
                     already_ran.add(smiles)
                     if len(sim_futures) >= self.batch_size:

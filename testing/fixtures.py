@@ -13,10 +13,10 @@ from dask.distributed import Client
 import taps
 from taps.data.config import FilterConfig
 from taps.data.null import NullTransformerConfig
+from taps.engine import AppEngine
 from taps.executor.dask import DaskDistributedExecutor
 from taps.executor.python import DAGExecutor
 from taps.executor.python import ThreadPoolConfig
-from taps.executor.workflow import WorkflowExecutor
 from taps.run.config import BenchmarkConfig
 from taps.run.config import RunConfig
 from testing.app import TestAppConfig
@@ -42,11 +42,11 @@ def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
 
 
 @pytest.fixture()
-def workflow_executor(
+def app_engine(
     thread_executor: ThreadPoolExecutor,
-) -> Generator[WorkflowExecutor, None, None]:
+) -> Generator[AppEngine, None, None]:
     dag_executor = DAGExecutor(thread_executor)
-    with WorkflowExecutor(dag_executor) as executor:
+    with AppEngine(dag_executor) as executor:
         yield executor
 
 

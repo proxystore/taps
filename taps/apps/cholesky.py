@@ -2,17 +2,11 @@ from __future__ import annotations
 
 import logging
 import pathlib
-import sys
 
 import numpy as np
 
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
-
-from taps.executor.workflow import TaskFuture
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
+from taps.engine import TaskFuture
 from taps.logging import WORK_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
@@ -69,11 +63,11 @@ class CholeskyApp:
         """Close the application."""
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
-            executor: Workflow task executor.
+            engine: Application execution engine.
             run_dir: Run directory.
         """
         max_print_size = 8
@@ -97,7 +91,7 @@ class CholeskyApp:
             end_k = min(k + block_size, n)
             lower_tasks: dict[tuple[int, int], TaskFuture[np.ndarray]] = {}
 
-            lower_tasks[(k, k)] = executor.submit(
+            lower_tasks[(k, k)] = engine.submit(
                 potrf,
                 matrix[k:end_k, k:end_k],
             )
@@ -105,7 +99,7 @@ class CholeskyApp:
             for i in range(k + block_size, n, block_size):
                 end_i = min(i + block_size, n)
 
-                lower_tasks[(i, k)] = executor.submit(
+                lower_tasks[(i, k)] = engine.submit(
                     trsm,
                     lower_tasks[(k, k)],
                     matrix[i:end_i, k:end_k],
@@ -118,13 +112,13 @@ class CholeskyApp:
                 for j in range(i, n, block_size):
                     end_j = min(j + block_size, n)
 
-                    syrk_task = executor.submit(
+                    syrk_task = engine.submit(
                         syrk,
                         matrix[i:end_i, j:end_j],
                         lower_tasks[(i, k)],
                     )
 
-                    gemm_tasks[(i, j)] = executor.submit(
+                    gemm_tasks[(i, j)] = engine.submit(
                         gemm,
                         syrk_task,
                         lower_tasks[(i, k)],

@@ -15,7 +15,7 @@ from taps.apps.synthetic import run_reduce
 from taps.apps.synthetic import run_sequential
 from taps.apps.synthetic import SyntheticApp
 from taps.apps.synthetic import WorkflowStructure
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
 
 
 @pytest.mark.parametrize('size', (0, 1, 10, 100))
@@ -38,7 +38,7 @@ def test_noop_task() -> None:
 
 
 def test_synthetic_app(
-    workflow_executor: WorkflowExecutor,
+    app_engine: AppEngine,
     tmp_path: pathlib.Path,
 ) -> None:
     kinds = {
@@ -61,16 +61,16 @@ def test_synthetic_app(
         with mock.patch(
             f'taps.apps.synthetic.{function.__name__}',
         ) as mocked:
-            app.run(workflow_executor, tmp_path)
+            app.run(app_engine, tmp_path)
             mocked.assert_called_once()
 
 
-def test_run_bag_of_tasks(workflow_executor: WorkflowExecutor) -> None:
+def test_run_bag_of_tasks(app_engine: AppEngine) -> None:
     task_count, task_sleep, max_running_tasks = 6, 0.001, 3
 
     start = time.perf_counter()
     run_bag_of_tasks(
-        workflow_executor,
+        app_engine,
         task_count,
         0,
         task_sleep,
@@ -82,33 +82,33 @@ def test_run_bag_of_tasks(workflow_executor: WorkflowExecutor) -> None:
     assert min_time <= runtime
 
 
-def test_run_diamond(workflow_executor: WorkflowExecutor) -> None:
+def test_run_diamond(app_engine: AppEngine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_diamond(workflow_executor, task_count, 0, task_sleep)
+    run_diamond(app_engine, task_count, 0, task_sleep)
     runtime = time.perf_counter() - start
 
     layers = 3
     assert layers * task_sleep <= runtime
 
 
-def test_run_reduce(workflow_executor: WorkflowExecutor) -> None:
+def test_run_reduce(app_engine: AppEngine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_reduce(workflow_executor, task_count, 0, task_sleep)
+    run_reduce(app_engine, task_count, 0, task_sleep)
     runtime = time.perf_counter() - start
 
     layers = 2
     assert layers * task_sleep <= runtime
 
 
-def test_run_sequential(workflow_executor: WorkflowExecutor) -> None:
+def test_run_sequential(app_engine: AppEngine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_sequential(workflow_executor, task_count, 0, task_sleep)
+    run_sequential(app_engine, task_count, 0, task_sleep)
     runtime = time.perf_counter() - start
 
     assert task_count * task_sleep <= runtime

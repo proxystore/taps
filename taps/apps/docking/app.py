@@ -1,15 +1,8 @@
 from __future__ import annotations
 
 import logging
-import pathlib
-import sys
-
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
-
 import os
+import pathlib
 import subprocess
 import uuid
 from pathlib import Path
@@ -17,9 +10,9 @@ from time import monotonic
 
 import pandas as pd
 
-from taps.executor.workflow import as_completed
-from taps.executor.workflow import TaskFuture
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
+from taps.engine import as_completed
+from taps.engine import TaskFuture
 from taps.wf.docking.train import run_model
 from taps.wf.docking.train import train_model
 
@@ -288,11 +281,11 @@ class DockingApp:
         """Close the application."""
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
-        """Run the workflow.
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
+        """Run the application.
 
         Args:
-            executor: Workflow task executor.
+            engine: Application execution engine.
             run_dir: Run directory.
         """
         futures: list[TaskFuture[tuple[str, float] | str]] = []
@@ -319,27 +312,27 @@ class DockingApp:
             vina_conf_file = pathlib.Path(f'{fname}-config.txt')
             output_ligand_pdbqt = pathlib.Path(f'{fname}-out.pdb')
 
-            smi_future = executor.submit(smi_to_pdb, smiles, pdb_file=pdb_file)
-            element_future = executor.submit(
+            smi_future = engine.submit(smi_to_pdb, smiles, pdb_file=pdb_file)
+            element_future = engine.submit(
                 set_element,
                 smi_future,
                 output_pdb=output_pdb,
                 tcl_path=self.tcl_path,
             )
-            pdbqt_future = executor.submit(
+            pdbqt_future = engine.submit(
                 pdb_to_pdbqt,
                 element_future,
                 pdbqt_file=pdbqt_file,
             )
-            config_future = executor.submit(
+            config_future = engine.submit(
                 make_autodock_config,
                 self.receptor,
                 pdbqt_future,
                 vina_conf_file,
                 output_ligand_pdbqt,
             )
-            dock_future = executor.submit(autodock_vina, config_future, smiles)
-            _ = executor.submit(
+            dock_future = engine.submit(autodock_vina, config_future, smiles)
+            _ = engine.submit(
                 cleanup,
                 dock_future,
                 smi_future,
@@ -398,35 +391,35 @@ class DockingApp:
                     vina_conf_file = pathlib.Path(f'{fname}-config.txt')
                     output_ligand_pdbqt = pathlib.Path(f'{fname}-out.pdb')
 
-                    smi_future = executor.submit(
+                    smi_future = engine.submit(
                         smi_to_pdb,
                         smiles,
                         pdb_file=pdb_file,
                     )
-                    element_future = executor.submit(
+                    element_future = engine.submit(
                         set_element,
                         smi_future,
                         output_pdb=output_pdb,
                         tcl_path=self.tcl_path,
                     )
-                    pdbqt_future = executor.submit(
+                    pdbqt_future = engine.submit(
                         pdb_to_pdbqt,
                         element_future,
                         pdbqt_file=pdb_file,
                     )
-                    config_future = executor.submit(
+                    config_future = engine.submit(
                         make_autodock_config,
                         self.receptor,
                         pdbqt_future,
                         vina_conf_file,
                         output_ligand_pdbqt_file=output_ligand_pdbqt,
                     )
-                    dock_future = executor.submit(
+                    dock_future = engine.submit(
                         autodock_vina,
                         config_future,
                         smiles,
                     )
-                    executor.submit(
+                    engine.submit(
                         cleanup,
                         dock_future,
                         smi_future,

@@ -9,15 +9,10 @@ import sys
 import time
 import uuid
 
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
-
-from taps.executor.workflow import as_completed
-from taps.executor.workflow import TaskFuture
-from taps.executor.workflow import wait
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
+from taps.engine import as_completed
+from taps.engine import TaskFuture
+from taps.engine import wait
 from taps.logging import WORK_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
@@ -55,7 +50,7 @@ def noop_task(
         output_size: Size in bytes of output byte-string.
         sleep: Minimum runtime of the task. Time required to generate the
             output data will be subtracted from this sleep time.
-        task_id: Optional unique task ID to prevent executors from caching
+        task_id: Optional unique task ID to prevent engines from caching
             the task result.
 
     Returns:
@@ -78,7 +73,7 @@ def warmup_task() -> None:
 
 
 def run_bag_of_tasks(
-    executor: WorkflowExecutor,
+    engine: AppEngine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
@@ -89,7 +84,7 @@ def run_bag_of_tasks(
     start = time.monotonic()
 
     running_tasks = [
-        executor.submit(
+        engine.submit(
             noop_task,
             randbytes(task_data_bytes),
             output_size=task_data_bytes,
@@ -114,7 +109,7 @@ def run_bag_of_tasks(
             completed_tasks += 1
 
         new_tasks = [
-            executor.submit(
+            engine.submit(
                 noop_task,
                 randbytes(task_data_bytes),
                 output_size=task_data_bytes,
@@ -147,13 +142,13 @@ def run_bag_of_tasks(
 
 
 def run_diamond(
-    executor: WorkflowExecutor,
+    engine: AppEngine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
 ) -> None:
     """Run diamond workflow."""
-    initial_task = executor.submit(
+    initial_task = engine.submit(
         noop_task,
         randbytes(task_data_bytes),
         output_size=task_data_bytes,
@@ -163,7 +158,7 @@ def run_diamond(
     logger.log(WORK_LOG_LEVEL, 'Submitted initial task')
 
     intermediate_tasks = [
-        executor.submit(
+        engine.submit(
             noop_task,
             initial_task,
             output_size=task_data_bytes,
@@ -177,7 +172,7 @@ def run_diamond(
         f'Submitting {task_count} intermediate tasks',
     )
 
-    final_task = executor.submit(
+    final_task = engine.submit(
         noop_task,
         *intermediate_tasks,
         output_size=task_data_bytes,
@@ -191,14 +186,14 @@ def run_diamond(
 
 
 def run_reduce(
-    executor: WorkflowExecutor,
+    engine: AppEngine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
 ) -> None:
     """Run reduce worklow."""
     map_tasks = [
-        executor.submit(
+        engine.submit(
             noop_task,
             randbytes(task_data_bytes),
             output_size=task_data_bytes,
@@ -209,7 +204,7 @@ def run_reduce(
     ]
     logger.log(WORK_LOG_LEVEL, f'Submitted {task_count} initial tasks')
 
-    reduce_task = executor.submit(
+    reduce_task = engine.submit(
         noop_task,
         *map_tasks,
         output_size=task_data_bytes,
@@ -223,7 +218,7 @@ def run_reduce(
 
 
 def run_sequential(
-    executor: WorkflowExecutor,
+    engine: AppEngine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
@@ -235,7 +230,7 @@ def run_sequential(
 
     for i in range(task_count):
         input_data = initial_data if i == 0 else tasks[-1]
-        task = executor.submit(
+        task = engine.submit(
             noop_task,
             input_data,
             output_size=task_data_bytes,
@@ -305,22 +300,22 @@ class SyntheticApp:
         """Close the application."""
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
-            executor: Workflow task executor.
+            engine: Application execution engine.
             run_dir: Run directory.
         """
         if self.warmup_task:
             logger.log(WORK_LOG_LEVEL, 'Submitting warmup task')
-            executor.submit(warmup_task).result()
+            engine.submit(warmup_task).result()
             logger.log(WORK_LOG_LEVEL, 'Warmup task completed')
 
         logger.log(WORK_LOG_LEVEL, f'Starting {self.structure.value} workflow')
         if self.structure == WorkflowStructure.BAG:
             run_bag_of_tasks(
-                executor,
+                engine,
                 task_count=self.task_count,
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,
@@ -328,21 +323,21 @@ class SyntheticApp:
             )
         elif self.structure == WorkflowStructure.DIAMOND:
             run_diamond(
-                executor,
+                engine,
                 task_count=self.task_count,
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,
             )
         elif self.structure == WorkflowStructure.REDUCE:
             run_reduce(
-                executor,
+                engine,
                 task_count=self.task_count,
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,
             )
         elif self.structure == WorkflowStructure.SEQUENTIAL:
             run_sequential(
-                executor,
+                engine,
                 task_count=self.task_count,
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,

@@ -2,17 +2,11 @@ from __future__ import annotations
 
 import logging
 import pathlib
-import sys
 
 import pandas as pd
 
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    pass
-else:  # pragma: <3.11 cover
-    pass
-
-from taps.executor.workflow import wait
-from taps.executor.workflow import WorkflowExecutor
+from taps.engine import AppEngine
+from taps.engine import wait
 from taps.logging import WORK_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
@@ -323,14 +317,14 @@ class MontageApp:
         """Close the application."""
         pass
 
-    def run(self, executor: WorkflowExecutor, run_dir: pathlib.Path) -> None:
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
-            executor: Workflow task executor.
+            engine: Application execution engine.
             run_dir: Run directory.
         """
-        output_dir_fut = executor.submit(
+        output_dir_fut = engine.submit(
             configure_montage,
             self.img_folder,
             self.img_tbl,
@@ -344,7 +338,7 @@ class MontageApp:
             input_image = self.img_folder / image
             output_image_name = f'hdu0_{image.name}'
 
-            out = executor.submit(
+            out = engine.submit(
                 mproject,
                 input_fn=input_image,
                 template=self.img_hdr,
@@ -355,14 +349,14 @@ class MontageApp:
 
         wait(mproject_outputs)
 
-        img_tbl_fut = executor.submit(
+        img_tbl_fut = engine.submit(
             mimgtbl,
             img_dir=self.output_dir,
             tbl_name='images.tbl',
             output_dir=output_dir_fut,
         )
 
-        diffs_data_fut = executor.submit(
+        diffs_data_fut = engine.submit(
             moverlaps,
             img_tbl=img_tbl_fut,
             diffs_name='diffs.tbl',
@@ -380,7 +374,7 @@ class MontageApp:
             image1 = self.output_dir / images1[i]
             image2 = self.output_dir / images2[i]
 
-            out = executor.submit(
+            out = engine.submit(
                 mdiff,
                 image_1=image1,
                 image_2=image2,
@@ -392,7 +386,7 @@ class MontageApp:
 
         wait(outputs_2)
 
-        fcorrdir = executor.submit(
+        fcorrdir = engine.submit(
             bgexec_prep,
             img_table=img_tbl_fut,
             diffs_table=diffs_tbl,
@@ -433,7 +427,7 @@ class MontageApp:
                 corrections.loc[corrections['id'] == i].values[0],
             )
 
-            output_mb = executor.submit(
+            output_mb = engine.submit(
                 mbackground,
                 in_image=input_image,
                 out_image=output_image,
@@ -447,7 +441,7 @@ class MontageApp:
         wait(bgexec_outputs)
 
         mosaic_out = self.output_dir / 'm17.fits'
-        mosaic_future = executor.submit(
+        mosaic_future = engine.submit(
             madd,
             img_tbl_fut,
             self.img_hdr,

@@ -9,15 +9,15 @@ from concurrent.futures import ThreadPoolExecutor
 from taps.data.file import PickleFileTransformer
 from taps.data.null import NullTransformer
 from taps.data.transform import TaskDataTransformer
+from taps.engine import _TaskResult
+from taps.engine import _TaskWrapper
+from taps.engine import AppEngine
+from taps.engine import as_completed
+from taps.engine import TaskFuture
+from taps.engine import TaskInfo
+from taps.engine import wait
 from taps.executor.dag import DAGExecutor
 from taps.executor.dask import DaskDistributedExecutor
-from taps.executor.workflow import _TaskResult
-from taps.executor.workflow import _TaskWrapper
-from taps.executor.workflow import as_completed
-from taps.executor.workflow import TaskFuture
-from taps.executor.workflow import TaskInfo
-from taps.executor.workflow import wait
-from taps.executor.workflow import WorkflowExecutor
 from testing.record import SimpleRecordLogger
 
 
@@ -33,42 +33,42 @@ def test_task_wrapper_call() -> None:
     assert task([1, 2, 3], start=-6).result == 0
 
 
-def test_workflow_executor_submit(workflow_executor: WorkflowExecutor) -> None:
-    task = workflow_executor.submit(sum, [1, 2, 3], start=-6)
+def test_app_engine_submit(app_engine: AppEngine) -> None:
+    task = app_engine.submit(sum, [1, 2, 3], start=-6)
     assert isinstance(task, TaskFuture)
     assert task.result() == 0
     assert not task.cancel()
-    assert workflow_executor.tasks_executed == 1
+    assert app_engine.tasks_executed == 1
 
 
-def test_workflow_executor_map(workflow_executor: WorkflowExecutor) -> None:
+def test_app_engine_map(app_engine: AppEngine) -> None:
     x = [1, -1]
-    assert list(workflow_executor.map(abs, x)) == [abs(v) for v in x]
-    assert workflow_executor.tasks_executed == len(x)
+    assert list(app_engine.map(abs, x)) == [abs(v) for v in x]
+    assert app_engine.tasks_executed == len(x)
 
 
-def test_workflow_executor_dask(
+def test_app_engine_dask(
     dask_executor: DaskDistributedExecutor,
 ) -> None:
-    with WorkflowExecutor(dask_executor) as executor:
+    with AppEngine(dask_executor) as executor:
         task = executor.submit(sum, [1, 2, 3], start=-6)
         assert task.result() == 0
 
         assert list(executor.map(abs, [1, -1])) == [1, 1]
 
 
-def test_workflow_executor_map_timeout(
-    workflow_executor: WorkflowExecutor,
+def test_app_engine_map_timeout(
+    app_engine: AppEngine,
 ) -> None:
-    assert list(workflow_executor.map(abs, [1, -1], timeout=1)) == [1, 1]
+    assert list(app_engine.map(abs, [1, -1], timeout=1)) == [1, 1]
 
 
-def test_workflow_executor_data_transformer(
+def test_app_engine_data_transformer(
     thread_executor: ThreadPoolExecutor,
     tmp_path: pathlib.Path,
 ) -> None:
     transformer = TaskDataTransformer(PickleFileTransformer(tmp_path))
-    with WorkflowExecutor(
+    with AppEngine(
         thread_executor,
         data_transformer=transformer,
     ) as executor:
@@ -76,12 +76,12 @@ def test_workflow_executor_data_transformer(
         assert task.result() == 0
 
 
-def test_workflow_executor_record_logging(
+def test_app_engine_record_logging(
     thread_executor: ThreadPoolExecutor,
     tmp_path: pathlib.Path,
 ) -> None:
     with SimpleRecordLogger() as logger:
-        with WorkflowExecutor(
+        with AppEngine(
             DAGExecutor(thread_executor),
             record_logger=logger,
         ) as executor:
@@ -98,14 +98,14 @@ def test_workflow_executor_record_logging(
         assert str(task1.info.task_id) in logger.records[1]['parent_task_ids']
 
 
-def test_as_completed(workflow_executor: WorkflowExecutor) -> None:
-    tasks = [workflow_executor.submit(sum, [x, 1]) for x in range(5)]
+def test_as_completed(app_engine: AppEngine) -> None:
+    tasks = [app_engine.submit(sum, [x, 1]) for x in range(5)]
     completed = as_completed(tasks)
     assert set(tasks) == set(completed)
 
 
 def test_as_completed_dask(dask_executor: DaskDistributedExecutor) -> None:
-    with WorkflowExecutor(dask_executor) as executor:
+    with AppEngine(dask_executor) as executor:
         tasks = [executor.submit(sum, [x, 1]) for x in range(5)]
         completed_results = {task.result() for task in as_completed(tasks)}
         assert completed_results == set(range(1, 6))
@@ -152,7 +152,7 @@ def test_wait() -> None:
 
 
 def test_wait_dask(dask_executor: DaskDistributedExecutor) -> None:
-    with WorkflowExecutor(dask_executor) as executor:
+    with AppEngine(dask_executor) as executor:
         tasks = [executor.submit(sum, [x, 1]) for x in range(5)]
         completed, not_completed = wait(tasks)
         assert len(completed) == len(tasks)

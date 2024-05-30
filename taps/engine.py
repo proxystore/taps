@@ -80,7 +80,7 @@ class _TaskResult(Generic[T]):
 
 
 class _TaskWrapper(Generic[P, T]):
-    """Workflow task wrapper.
+    """Task wrapper.
 
     Args:
         function: Function that represents the work associated with the task.
@@ -141,7 +141,7 @@ class _TaskWrapper(Generic[P, T]):
 
 
 class TaskFuture(Generic[T]):
-    """Workflow task future.
+    """Task future.
 
     Note:
         This class should not be instantiated by clients.
@@ -217,21 +217,23 @@ def _result_or_cancel(
         del future
 
 
-class WorkflowExecutor:
-    """Workflow executor.
+class AppEngine:
+    """Application execution engine.
 
     Args:
-        compute_executor: Compute executor.
+        executor: Task compute executor.
+        data_transformer: Data transformer.
+        record_logger: Task record logger.
     """
 
     def __init__(
         self,
-        compute_executor: Executor,
+        executor: Executor,
         *,
         data_transformer: TaskDataTransformer[Any] | None = None,
         record_logger: RecordLogger | None = None,
     ) -> None:
-        self.compute_executor = compute_executor
+        self.executor = executor
         self.data_transformer = (
             data_transformer
             if data_transformer is not None
@@ -290,7 +292,7 @@ class WorkflowExecutor:
         """Schedule the callable to be executed.
 
         This function can also accept
-        [`TaskFuture`][taps.executor.workflow.TaskFuture] objects as input
+        [`TaskFuture`][taps.engine.TaskFuture] objects as input
         to denote dependencies between a parent and this child task.
 
         Args:
@@ -299,10 +301,9 @@ class WorkflowExecutor:
             kwargs: Keyword arguments.
 
         Returns:
-            [`TaskFuture`][taps.executor.workflow.TaskFuture] object \
-            representing the result of the execution of the callable
-            accessible via \
-            [`TaskFuture.result()`][taps.executor.workflow.TaskFuture.result].
+            [`TaskFuture`][taps.engine.TaskFuture] object representing the
+            result of the execution of the callable accessible via
+            [`TaskFuture.result()`][taps.engine.TaskFuture.result].
         """
         task_id = uuid.uuid4()
 
@@ -342,7 +343,7 @@ class WorkflowExecutor:
         args = self.data_transformer.transform_iterable(args)
         kwargs = self.data_transformer.transform_mapping(kwargs)
 
-        future = self.compute_executor.submit(task, *args, **kwargs)
+        future = self.executor.submit(task, *args, **kwargs)
         self._total_tasks += 1
 
         task_future = TaskFuture(future, info, self.data_transformer)
@@ -412,12 +413,12 @@ class WorkflowExecutor:
                 has not started running. Only used in Python 3.9 and later.
         """
         if sys.version_info >= (3, 9):  # pragma: >=3.9 cover
-            self.compute_executor.shutdown(
+            self.executor.shutdown(
                 wait=wait,
                 cancel_futures=cancel_futures,
             )
         else:  # pragma: <3.9 cover
-            self.compute_executor.shutdown(wait=wait)
+            self.executor.shutdown(wait=wait)
 
 
 def as_completed(
