@@ -288,6 +288,9 @@ class AppEngine:
         )
         self.record_logger.log(dataclasses.asdict(task_future.info))
 
+    # Note: args/kwargs are typed as Any rather than P.args/P.kwargs
+    # because the inputs may be TaskFuture types which will get translated
+    # into the correct types before invoking the function.
     def submit(
         self,
         function: Callable[P, T],

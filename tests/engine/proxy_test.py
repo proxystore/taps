@@ -11,6 +11,7 @@ from proxystore.store import Store
 from proxystore.store.utils import get_key
 
 from taps.engine import AppEngine
+from taps.engine import TaskFuture
 
 T = TypeVar('T')
 
@@ -36,7 +37,7 @@ def test_proxy_unintentional_resolves(
     proxy = Proxy(fake_factory, cache_defaults=True, target=b'')
 
     with AppEngine(executor) as engine:
-        task = engine.submit(identity, proxy)
+        task: TaskFuture[Proxy[bytes]] = engine.submit(identity, proxy)
         result = task.result()
 
         assert isinstance(result, Proxy)
