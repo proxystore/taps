@@ -61,6 +61,7 @@ def test_benchmark_config(
         yield BenchmarkConfig(
             name='test-app',
             timestamp=datetime.now(),
+            executor_name='thread-pool',
             app=TestAppConfig(tasks=3),
             executor=ThreadPoolConfig(max_thread=4),
             transformer=NullTransformerConfig(),
