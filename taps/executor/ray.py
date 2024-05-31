@@ -30,8 +30,41 @@ P = ParamSpec('P')
 T = TypeVar('T')
 
 
+def _parse_arg(arg: Any) -> Any:
+    if isinstance(arg, Future):
+        return arg.object_ref  # type: ignore[attr-defined]  # pragma: no cover
+    else:
+        return arg
+
+
+def _parse_args(args: tuple[Any, ...]) -> tuple[Any, ...]:
+    return tuple(map(_parse_arg, args))
+
+
+def _parse_kwargs(kwargs: dict[str, Any]) -> dict[str, Any]:
+    return {k: _parse_arg(v) for k, v in kwargs.items()}
+
+
+# This wrapper is needed because Ray will raise a TypeError
+# on certain function type that fail the inspect.isfunction
+# and inspect.isclass checks in
+# https://github.com/ray-project/ray/blob/6a8997cd720e2a92c5dc2763becf39e180b8c96e/python/ray/_private/worker.py#L3018-L3037
+def _wrap_function(function: Callable[P, T]) -> Callable[P, T]:
+    def _wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
+        return function(*args, **kwargs)  # pragma: no cover
+
+    return _wrapper
+
+
 class RayExecutor(Executor):
     """Ray execution engine.
+
+    Note:
+        Ray will raise a serialization error if a
+        [`Proxy[bytes]`][proxystore.proxy.Proxy] is passed to or returned
+        by a function. This is because Ray skips serializing [`bytes`][bytes]
+        instances. Ray works with all other types of proxies, so if you need
+        to send [`bytes`][bytes] data, wrap the data in another type.
 
     Args:
         address: Address to pass to `ray.init()`.
@@ -68,32 +101,14 @@ class RayExecutor(Executor):
             [`Future`][concurrent.futures.Future]-like object representing \
             the result of the execution of the callable.
         """
-        args = cast(
-            P.args,
-            tuple(
-                arg.object_ref if isinstance(arg, Future) else arg  # type: ignore[attr-defined]
-                for arg in args
-            ),
-        )
-        kwargs = cast(
-            P.kwargs,
-            {
-                k: v.object_ref if isinstance(v, Future) else v  # type: ignore[attr-defined]
-                for k, v in kwargs.items()
-            },
-        )
+        args = cast(P.args, _parse_args(args))
+        kwargs = cast(P.kwargs, _parse_kwargs(kwargs))
 
         if function in self._remote:
             remote = self._remote[function]
         else:
-            # This wrapper is needed because Ray will raise a TypeError
-            # on certain function type that fail the inspect.isfunction
-            # and inspect.isclass checks in
-            # https://github.com/ray-project/ray/blob/6a8997cd720e2a92c5dc2763becf39e180b8c96e/python/ray/_private/worker.py#L3018-L3037
-            def _wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
-                return function(*args, **kwargs)  # pragma: no cover
-
-            remote = ray.remote(_wrapper)
+            wrapped = _wrap_function(function)
+            remote = ray.remote(wrapped)
             self._remote[function] = remote
 
         object_ref = remote.remote(*args, **kwargs)
