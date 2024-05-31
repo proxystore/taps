@@ -43,10 +43,10 @@ class RunConfig(Config):
         description='task record line-delimited JSON file name',
     )
     run_dir_format: str = Field(
-        'runs/{name}-{timestamp}',
+        'runs/{name}-{executor}-{timestamp}',
         description=(
-            'run directory format (supports "{name}" and "{timestamp}" '
-            'for formatting)'
+            'run directory format (supports "{name}", "{timestamp}", and '
+            '"{executor}" for formatting)'
         ),
     )
 
@@ -57,6 +57,7 @@ class BenchmarkConfig(Config):
     Attributes:
         name: Name of the application to execute.
         timestamp: Start time of the application.
+        executor_name: Name of the executor.
         app: Application config.
         executor: Executor config.
         filter: Filter config.
@@ -66,6 +67,7 @@ class BenchmarkConfig(Config):
 
     name: str
     timestamp: datetime
+    executor_name: str
     app: SerializeAsAny[AppConfig]
     executor: SerializeAsAny[ExecutorConfig]
     filter: SerializeAsAny[FilterConfig]
@@ -77,6 +79,7 @@ class BenchmarkConfig(Config):
         timestamp = self.timestamp.strftime('%Y-%m-%d-%H-%M-%S')
         run_dir = pathlib.Path(
             self.run.run_dir_format.format(
+                executor=self.executor_name,
                 name=self.name,
                 timestamp=timestamp,
             ),

@@ -88,6 +88,7 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
     return BenchmarkConfig(
         name=app_name,
         timestamp=datetime.now(),
+        executor_name=options['executor'],
         app=app_config,
         executor=executor_config,
         transformer=transformer_config,
