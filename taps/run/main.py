@@ -14,9 +14,6 @@ from typing import Callable
 from typing import Sequence
 
 from taps.data.config import DataTransformerChoicesConfig
-
-# This import is necessary to ensure that all the workflow
-# implementations get imported and therefore registered.
 from taps.data.config import FilterConfig
 from taps.data.config import get_transformer_config
 from taps.engine import AppEngine

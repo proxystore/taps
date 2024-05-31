@@ -55,8 +55,8 @@ class BenchmarkConfig(Config):
     """Application benchmark configuration.
 
     Attributes:
-        name: Name of the workflow to execute.
-        timestamp: Start time of the workflow.
+        name: Name of the application to execute.
+        timestamp: Start time of the application.
         app: Application config.
         executor: Executor config.
         filter: Filter config.

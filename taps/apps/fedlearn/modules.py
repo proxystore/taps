@@ -83,7 +83,7 @@ def create_model(data: DataChoices) -> nn.Module:
         data: Name of dataset that will be used for training (and testing).
 
     Returns:
-        PyTorch module to be used for FL workflow.
+        PyTorch model.
 
     Raises:
         ValueError: If an unsupported value for `data` is provided.
@@ -109,7 +109,7 @@ def load_data(
     train: bool,
     download: bool = False,
 ) -> Dataset:
-    """Load dataset to train with for FL workflow.
+    """Load dataset for training.
 
     Args:
         data_name: Dataset choice.

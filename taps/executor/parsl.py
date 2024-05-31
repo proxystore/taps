@@ -34,7 +34,7 @@ class ParslConfig(ExecutorConfig):
     parsl_workers: Optional[int] = Field(None, description='max parsl workers')  # noqa: UP007
     parsl_run_dir: str = Field(
         'parsl-runinfo',
-        description='parsl run directory within the workflow run directory',
+        description='parsl run directory within the app run directory',
     )
 
     def get_executor_config(self) -> Config:

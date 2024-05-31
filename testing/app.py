@@ -12,7 +12,7 @@ def task() -> None:
 
 
 class TestAppConfig(AppConfig):
-    """Test workflow configuration."""
+    """Test application configuration."""
 
     tasks: int = 3
 
@@ -21,7 +21,7 @@ class TestAppConfig(AppConfig):
 
 
 class TestApp:
-    """Test workflow."""
+    """Test application."""
 
     def __init__(self, tasks: int) -> None:
         self.tasks = tasks

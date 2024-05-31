@@ -17,7 +17,7 @@ import torch
 from taps.engine import AppEngine
 from taps.engine import as_completed
 from taps.engine import TaskFuture
-from taps.logging import WORK_LOG_LEVEL
+from taps.logging import APP_LOG_LEVEL
 from taps.wf.fedlearn.config import DataChoices
 from taps.wf.fedlearn.modules import create_model
 from taps.wf.fedlearn.modules import load_data
@@ -35,7 +35,7 @@ def _setup_platform() -> None:
     # On macOS, Parsl changes the default start method for
     # multiprocessing to `fork`. This causes issues with backpropagation
     # in PyTorch (i.e., `loss.backward()`), so this helper function
-    # forces the workflow to use `spawn`.
+    # forces the application to use `spawn`.
     if platform.system() == 'Darwin':
         multiprocessing.set_start_method('spawn', force=True)
 
@@ -44,11 +44,11 @@ class FedlearnApp:
     """Federated learning application.
 
     Tip:
-        Download the data of interest ahead of running the workflow
+        Download the data of interest ahead of running the application
         (i.e., set `download=False`).
 
     Args:
-        num_clients: Number of simulated clients in the FL workflow.
+        num_clients: Number of simulated clients.
         num_rounds: Number of aggregation rounds to perform.
         data_name: Data (and corresponding model) to use.
         batch_size: Batch size used for local training across all clients.
@@ -59,10 +59,10 @@ class FedlearnApp:
         device: Device to use for model training (e.g., `'cuda'`, `'cpu'`,
             `'mps'`).
         download: If `True`, the dataset will be downloaded to the `root`
-            arg directory. If `False` (default), the workflow will expect the
-            data to already be downloaded.
+            arg directory. If `False` (default), the data must already be
+            downloaded.
         train: If `True` (default), the local training will be run. If `False,
-            then a no-op version of the workflow will be performed where no
+            then a no-op version of the application will be performed where no
             training is done. This is useful for debugging purposes.
         test: If `True` (default), model testing is done at the end of each
             aggregation round.
@@ -137,7 +137,7 @@ class FedlearnApp:
             raise ValueError('Argument `data_alpha` must be greater than 0.')
         self.data_alpha = data_alpha
 
-        logger.log(WORK_LOG_LEVEL, 'Creating clients')
+        logger.log(APP_LOG_LEVEL, 'Creating clients')
         self.clients = create_clients(
             self.num_clients,
             self.data_name,
@@ -164,7 +164,7 @@ class FedlearnApp:
         for round_idx in range(self.num_rounds):
             preface = f'({round_idx+1}/{self.num_rounds})'
             logger.log(
-                WORK_LOG_LEVEL,
+                APP_LOG_LEVEL,
                 f'{preface} Starting local training for this round.',
             )
 
@@ -173,7 +173,7 @@ class FedlearnApp:
 
             if self.test_data is not None:
                 logger.log(
-                    WORK_LOG_LEVEL,
+                    APP_LOG_LEVEL,
                     f'{preface} Starting the test for the global model.',
                 )
                 test_result = engine.submit(
@@ -184,7 +184,7 @@ class FedlearnApp:
                     self.device,
                 ).result()
                 logger.log(
-                    WORK_LOG_LEVEL,
+                    APP_LOG_LEVEL,
                     f"{preface} Finished testing with test_loss="
                     f"{test_result['test_loss']}",
                 )
@@ -239,11 +239,11 @@ class FedlearnApp:
             results.extend(fut.result())
 
         preface = f'({round_idx+1}/{self.num_rounds})'
-        logger.log(WORK_LOG_LEVEL, f'{preface} Finished local training.')
+        logger.log(APP_LOG_LEVEL, f'{preface} Finished local training.')
         avg_params = unweighted_module_avg(selected_clients)
         self.global_model.load_state_dict(avg_params)
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             f'{preface} Averaged the returned locally trained models.',
         )
 

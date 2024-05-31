@@ -1,7 +1,7 @@
 site_name: TaPS
 site_url: https://taps.proxystore.dev/
 site_author: Globus Labs
-site_description: Workflow Execution Benchmark Suite
+site_description: Task Performance Suite
 
 repo_name: proxystore/taps
 repo_url: https://github.com/proxystore/taps

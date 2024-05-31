@@ -4,9 +4,9 @@ Counts words in a text corpus (randomly generated or the Enron email dataset) us
 
 ## Setup
 
-This workflow does not require any external libraries.
+This application does not require any external libraries.
 
-Executing the workflow with the Enron dataset requires downloading the maildir folder from https://www.cs.cmu.edu/~enron/.
+Executing the application with the Enron dataset requires downloading the maildir folder from https://www.cs.cmu.edu/~enron/.
 
 ## Examples
 

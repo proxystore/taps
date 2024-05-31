@@ -8,7 +8,7 @@ import string
 from collections import Counter
 
 from taps.engine import AppEngine
-from taps.logging import WORK_LOG_LEVEL
+from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
@@ -104,7 +104,7 @@ def map_function_for_enron_run_mode(
                             word_count.update(words)
                 except Exception as e:
                     logger.log(
-                        WORK_LOG_LEVEL,
+                        APP_LOG_LEVEL,
                         f"Error processing file '{file_path}': {e}",
                     )
 
@@ -163,7 +163,7 @@ class MapreduceApp:
             run_dir: Run directory.
         """
         # Perform the map phase
-        logger.log(WORK_LOG_LEVEL, 'Starting map phase')
+        logger.log(APP_LOG_LEVEL, 'Starting map phase')
         map_counters: list[Counter[str]] = []
 
         if self.mode == 'enron':
@@ -194,7 +194,7 @@ class MapreduceApp:
             )
 
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             'Map phase completed. Starting reduce phase',
         )
 
@@ -207,13 +207,13 @@ class MapreduceApp:
         )
 
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             f'{self.n_freq} most frequent words:',
         )
         for word, count in most_common_words:
-            logger.log(WORK_LOG_LEVEL, f'{word:10s}: {count}')
+            logger.log(APP_LOG_LEVEL, f'{word:10s}: {count}')
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             f'Total number of words {sum(reduce_task.result().values())}',
         )
         # Save the reduce phase result
@@ -222,4 +222,4 @@ class MapreduceApp:
             for word, count in most_common_words:
                 f.write(f'{word},{count}\n')
 
-        logger.log(WORK_LOG_LEVEL, f'Results saved to: {output_file_path}')
+        logger.log(APP_LOG_LEVEL, f'Results saved to: {output_file_path}')

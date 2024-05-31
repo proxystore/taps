@@ -27,7 +27,7 @@ def create_clients(
         num_clients: Number of clients to create.
         data_name: The name of the data used. Used for initializing the
             corresponding model.
-        train: If the workflow is using the no-op training task, then this
+        train: If the application is using the no-op training task, then this
             function skips the step for giving each client their own subset
             of data.
         train_data: The original dataset that will be split across the clients.
@@ -37,7 +37,7 @@ def create_clients(
         rng (Generator): Random number generator.
 
     Returns:
-        List of clients for the workflow.
+        List of clients.
     """
     client_ids = list(range(num_clients))
 

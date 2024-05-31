@@ -21,7 +21,7 @@ ClientID: TypeAlias = int
 """Integer IDs for `Client` instances."""
 
 Result: TypeAlias = Dict[str, Any]
-"""Result type for each FL epoch, round, and workflow."""
+"""Result type for each FL epoch, round, and task."""
 
 
 class DataChoices(enum.Enum):

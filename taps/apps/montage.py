@@ -7,14 +7,14 @@ import pandas as pd
 
 from taps.engine import AppEngine
 from taps.engine import wait
-from taps.logging import WORK_LOG_LEVEL
+from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
 
 def print_message(message: str) -> None:
     """Print a message."""
-    logger.log(WORK_LOG_LEVEL, message)
+    logger.log(APP_LOG_LEVEL, message)
 
 
 def configure_montage(
@@ -23,7 +23,7 @@ def configure_montage(
     img_hdr: pathlib.Path,
     output_dir: pathlib.Path,
 ) -> pathlib.Path:
-    """Montage Mosaic workflow setup.
+    """Montage Mosaic application setup.
 
     This function generates a header file bounding a
     collection of data specified by the input image dir.

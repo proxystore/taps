@@ -38,14 +38,14 @@ import logging
 import pathlib
 
 from taps.engine import AppEngine
-from taps.logging import WORK_LOG_LEVEL
+from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
 
 def print_message(message: str) -> None:
     """Print a message."""
-    logger.log(WORK_LOG_LEVEL, message)
+    logger.log(APP_LOG_LEVEL, message)
 
 
 class FoobarApp:
@@ -82,7 +82,7 @@ class FoobarApp:
 3. The `close()` method can be used to close any stateful connection objects create in `__init__` or perform any clean up if needed.
 4. Once `FoobarApp` is instantiated by the CLI, `FoobarApp.run()` will be invoked.
    This method takes two arguments: a [`AppEngine`][taps.engine.AppEngine] and a path to the invocations run directory.
-   Workflows are free to use the run directory as needed, such as to store result files.
+   Applications are free to use the run directory as needed, such as to store result files.
 
 The [`AppEngine`][taps.engine.AppEngine] is the key abstraction of the TaPS framework.
 The CLI arguments provided by the user for the compute engine, data management, and task logging logic are used to create a [`AppEngine`][taps.engine.AppEngine] instance which is then provided to the application.
@@ -186,8 +186,8 @@ We specify the `thread-pool` executor because this will allow our printing to sh
 $ python -m taps.run foobar --message 'Hello, World!' --repeat 3 --executor thread-pool
 RUN   (taps.run) :: Starting application (name=foobar)
 ...
-WORK  (taps.apps.foobar) :: Hello, World!
-WORK  (taps.apps.foobar) :: Hello, World!
-WORK  (taps.apps.foobar) :: Hello, World!
+APP  (taps.apps.foobar) :: Hello, World!
+APP  (taps.apps.foobar) :: Hello, World!
+APP  (taps.apps.foobar) :: Hello, World!
 RUN   (taps.run) :: Finished application (name=foobar, runtime=0.00s)
 ```

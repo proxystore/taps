@@ -1,9 +1,3 @@
-"""Functions used to perform chemistry tasks in the Parsl workflow.
-
-While Parsl does offer the ability to run functions defined in a Jupyter
-notebook, we define them here to keep the notebook cleaner
-"""
-
 from __future__ import annotations
 
 import os

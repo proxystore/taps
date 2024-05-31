@@ -16,6 +16,9 @@ Documentation on installing for local development is provided in [Contributing](
 
 ## Usage
 
+Applications can be executed from the CLI.
 ```bash
-python -m taps.run {workflow-name} {args}
+python -m taps.run {application} {args}
 ```
+
+Checkout the [Application Guides](apps/index.md).

@@ -4,7 +4,7 @@ This application is based on [Molecular Design with Parsl](https://github.com/Ex
 
 ## Installation
 
-This workflow has certain dependencies which require Conda to install.
+This application has certain dependencies which require Conda to install.
 To get started, create a Conda environment, install the Conda dependencies, and then install the `taps` package into the Conda environment.
 
 ```bash

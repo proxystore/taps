@@ -7,7 +7,7 @@ import numpy as np
 
 from taps.engine import AppEngine
 from taps.engine import TaskFuture
-from taps.logging import WORK_LOG_LEVEL
+from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
@@ -80,12 +80,12 @@ class CholeskyApp:
 
         if matrix.shape[0] <= max_print_size:
             logger.log(
-                WORK_LOG_LEVEL,
+                APP_LOG_LEVEL,
                 f'Input matrix: {matrix.shape}\n{matrix}',
             )
         else:
-            logger.log(WORK_LOG_LEVEL, f'Input matrix: {matrix.shape}')
-        logger.log(WORK_LOG_LEVEL, f'Block size: {block_size}')
+            logger.log(APP_LOG_LEVEL, f'Input matrix: {matrix.shape}')
+        logger.log(APP_LOG_LEVEL, f'Block size: {block_size}')
 
         for k in range(0, n, block_size):
             end_k = min(k + block_size, n)
@@ -136,6 +136,6 @@ class CholeskyApp:
                 matrix[i:end_i, j:end_j] = tile.result()
 
         if matrix.shape[0] <= max_print_size:
-            logger.log(WORK_LOG_LEVEL, f'Output matrix:\n{lower}')
+            logger.log(APP_LOG_LEVEL, f'Output matrix:\n{lower}')
         else:
-            logger.log(WORK_LOG_LEVEL, f'Output matrix: {lower.shape}')
+            logger.log(APP_LOG_LEVEL, f'Output matrix: {lower.shape}')

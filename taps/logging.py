@@ -7,8 +7,8 @@ from typing import Any
 
 # Used by benchmark runners and harnesses
 RUN_LOG_LEVEL = 22
-# Use within workflows
-WORK_LOG_LEVEL = 21
+# Use within applications
+APP_LOG_LEVEL = 21
 
 
 def init_logging(
@@ -19,9 +19,9 @@ def init_logging(
 ) -> None:
     """Initialize logging with custom formats.
 
-    Adds a custom log levels RUN and WORK which are higher than INFO and
-    lower than WARNING. RUN is used by the workflow benchmark harness
-    and WORK is using within the workflows.
+    Adds a custom log levels RUN and APP which are higher than INFO and
+    lower than WARNING. RUN is used by the benchmark harness
+    and APP is using within the applications.
 
     Usage:
         >>> logger = init_logger(...)
@@ -38,7 +38,7 @@ def init_logging(
             pytest (default: False).
     """
     logging.addLevelName(RUN_LOG_LEVEL, 'RUN')
-    logging.addLevelName(WORK_LOG_LEVEL, 'WORK')
+    logging.addLevelName(APP_LOG_LEVEL, 'APP')
 
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setLevel(level)

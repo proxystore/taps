@@ -13,7 +13,7 @@ from taps.engine import AppEngine
 from taps.engine import as_completed
 from taps.engine import TaskFuture
 from taps.engine import wait
-from taps.logging import WORK_LOG_LEVEL
+from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +94,7 @@ def run_bag_of_tasks(
         for _ in range(max_running_tasks)
     ]
     logger.log(
-        WORK_LOG_LEVEL,
+        APP_LOG_LEVEL,
         f'Submitted {max_running_tasks} initial tasks',
     )
 
@@ -124,7 +124,7 @@ def run_bag_of_tasks(
         if completed_tasks % max_running_tasks == 0:
             rate = completed_tasks / (time.monotonic() - start)
             logger.log(
-                WORK_LOG_LEVEL,
+                APP_LOG_LEVEL,
                 f'Completed {completed_tasks}/{task_count} tasks '
                 f'(rate: {rate:.2f} tasks/s, running tasks: '
                 f'{len(running_tasks)})',
@@ -136,7 +136,7 @@ def run_bag_of_tasks(
     completed_tasks += len(running_tasks)
     rate = completed_tasks / (time.monotonic() - start)
     logger.log(
-        WORK_LOG_LEVEL,
+        APP_LOG_LEVEL,
         f'Completed {completed_tasks}/{task_count} (rate: {rate:.2f} tasks/s)',
     )
 
@@ -155,7 +155,7 @@ def run_diamond(
         sleep=task_sleep,
         task_id=uuid.uuid4(),
     )
-    logger.log(WORK_LOG_LEVEL, 'Submitted initial task')
+    logger.log(APP_LOG_LEVEL, 'Submitted initial task')
 
     intermediate_tasks = [
         engine.submit(
@@ -168,7 +168,7 @@ def run_diamond(
         for _ in range(task_count)
     ]
     logger.log(
-        WORK_LOG_LEVEL,
+        APP_LOG_LEVEL,
         f'Submitting {task_count} intermediate tasks',
     )
 
@@ -179,10 +179,10 @@ def run_diamond(
         sleep=task_sleep,
         task_id=uuid.uuid4(),
     )
-    logger.log(WORK_LOG_LEVEL, 'Submitted final task')
+    logger.log(APP_LOG_LEVEL, 'Submitted final task')
 
     final_task.result()
-    logger.log(WORK_LOG_LEVEL, 'Final task completed')
+    logger.log(APP_LOG_LEVEL, 'Final task completed')
 
 
 def run_reduce(
@@ -202,7 +202,7 @@ def run_reduce(
         )
         for _ in range(task_count)
     ]
-    logger.log(WORK_LOG_LEVEL, f'Submitted {task_count} initial tasks')
+    logger.log(APP_LOG_LEVEL, f'Submitted {task_count} initial tasks')
 
     reduce_task = engine.submit(
         noop_task,
@@ -211,10 +211,10 @@ def run_reduce(
         sleep=task_sleep,
         task_id=uuid.uuid4(),
     )
-    logger.log(WORK_LOG_LEVEL, 'Submitted reduce task')
+    logger.log(APP_LOG_LEVEL, 'Submitted reduce task')
 
     reduce_task.result()
-    logger.log(WORK_LOG_LEVEL, 'Reduce task completed')
+    logger.log(APP_LOG_LEVEL, 'Reduce task completed')
 
 
 def run_sequential(
@@ -239,7 +239,7 @@ def run_sequential(
         )
         tasks.append(task)
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             f'Submitted task {i+1}/{task_count} '
             f'(task_id={task.info.task_id})',
         )
@@ -247,7 +247,7 @@ def run_sequential(
     for i, task in enumerate(as_completed(tasks)):
         assert task.done()
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             f'Received task {i+1}/{task_count} (task_id: {task.info.task_id})',
         )
 
@@ -255,7 +255,7 @@ def run_sequential(
     assert len(tasks[-1].result()) >= 0
 
     rate = task_count / (time.monotonic() - start)
-    logger.log(WORK_LOG_LEVEL, f'Task completion rate: {rate:.3f} tasks/s')
+    logger.log(APP_LOG_LEVEL, f'Task completion rate: {rate:.3f} tasks/s')
 
 
 class WorkflowStructure(enum.Enum):
@@ -308,11 +308,11 @@ class SyntheticApp:
             run_dir: Run directory.
         """
         if self.warmup_task:
-            logger.log(WORK_LOG_LEVEL, 'Submitting warmup task')
+            logger.log(APP_LOG_LEVEL, 'Submitting warmup task')
             engine.submit(warmup_task).result()
-            logger.log(WORK_LOG_LEVEL, 'Warmup task completed')
+            logger.log(APP_LOG_LEVEL, 'Warmup task completed')
 
-        logger.log(WORK_LOG_LEVEL, f'Starting {self.structure.value} workflow')
+        logger.log(APP_LOG_LEVEL, f'Starting {self.structure.value} workflow')
         if self.structure == WorkflowStructure.BAG:
             run_bag_of_tasks(
                 engine,

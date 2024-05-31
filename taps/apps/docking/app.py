@@ -436,7 +436,7 @@ class DockingApp:
                 if batch_count > self.batch_size:
                     break
 
-            # wait for all the workflows to complete
+            # wait for all the tasks to complete
             while len(futures) > 0:
                 future = next(as_completed(futures))
                 dock_score = future.result()

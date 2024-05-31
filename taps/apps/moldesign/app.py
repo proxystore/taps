@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 from taps.engine import AppEngine
 from taps.engine import as_completed
 from taps.engine import TaskFuture
-from taps.logging import WORK_LOG_LEVEL
+from taps.logging import APP_LOG_LEVEL
 from taps.wf.moldesign.chemfunctions import compute_vertical
 from taps.wf.moldesign.tasks import combine_inferences
 from taps.wf.moldesign.tasks import run_model
@@ -61,7 +61,7 @@ class MoldesignApp:
 
         search_space = pd.read_csv(self.dataset, sep='\s+')
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             f'Loaded search space (size={len(search_space):,})',
         )
 
@@ -76,7 +76,7 @@ class MoldesignApp:
         sim_futures: dict[TaskFuture[float], str] = {
             engine.submit(compute_vertical, mol): mol for mol in init_mols
         }
-        logger.log(WORK_LOG_LEVEL, 'Submitted initial computations')
+        logger.log(APP_LOG_LEVEL, 'Submitted initial computations')
         logger.info(f'Initial set: {init_mols}')
         already_ran = set()
 
@@ -114,12 +114,12 @@ class MoldesignApp:
                     },
                 )
 
-        logger.log(WORK_LOG_LEVEL, 'Done computing initial set')
+        logger.log(APP_LOG_LEVEL, 'Done computing initial set')
 
         # Create the initial training set as a
         train_data = pd.DataFrame(train_data_list)
         logger.log(
-            WORK_LOG_LEVEL,
+            APP_LOG_LEVEL,
             f'Created initial training set (size={len(train_data)})',
         )
 
@@ -128,7 +128,7 @@ class MoldesignApp:
         while len(train_data) < self.search_count:
             # Train and predict as show in the previous section.
             train_future = engine.submit(train_model, train_data)
-            logger.log(WORK_LOG_LEVEL, 'Submitting inference tasks')
+            logger.log(APP_LOG_LEVEL, 'Submitting inference tasks')
             inference_futures = [
                 engine.submit(run_model, train_future, chunk)
                 for chunk in np.array_split(search_space['smiles'], 64)
@@ -138,7 +138,7 @@ class MoldesignApp:
                 *inference_futures,
             ).result()
             logger.log(
-                WORK_LOG_LEVEL,
+                APP_LOG_LEVEL,
                 f'Inference results received (size={len(predictions)})',
             )
 
@@ -154,7 +154,7 @@ class MoldesignApp:
                     if len(sim_futures) >= self.batch_size:
                         break
             logger.log(
-                WORK_LOG_LEVEL,
+                APP_LOG_LEVEL,
                 f'Submitted new computations (size={len(sim_futures)})',
             )
 
