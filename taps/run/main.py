@@ -143,7 +143,7 @@ def run(config: BenchmarkConfig) -> None:
         record_logger=record_logger,
     )
 
-    with contextlib.closing(app), record_logger, engine:
+    with contextlib.closing(app), engine:
         app.run(engine=engine, run_dir=cwd)
 
     runtime = time.perf_counter() - start

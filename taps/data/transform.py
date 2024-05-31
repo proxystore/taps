@@ -26,6 +26,14 @@ class DataTransformerConfig(Config, abc.ABC):
 class DataTransformer(Protocol[IdentifierT]):
     """Object transformer protocol."""
 
+    def close(self) -> None:
+        """Close the transformer.
+
+        The transformer is only closed by the client once the application
+        has finished executing (or raised an exception).
+        """
+        ...
+
     def is_identifier(self, obj: T) -> bool:
         """Check if the object is an identifier instance."""
         ...

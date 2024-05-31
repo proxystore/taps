@@ -30,11 +30,11 @@ class SyntheticConfig(AppConfig):
         from taps.apps.synthetic import WorkflowStructure
 
         try:
-            WorkflowStructure[structure]
+            WorkflowStructure(structure)
         except KeyError:
             options = ', '.join(d.value for d in WorkflowStructure)
             raise ValueError(
-                f'{structure} is not a supported dataset. '
+                f'{structure} is not a supported structure. '
                 f'Must be one of {options}.',
             ) from None
 
@@ -46,7 +46,7 @@ class SyntheticConfig(AppConfig):
         from taps.apps.synthetic import WorkflowStructure
 
         return SyntheticApp(
-            structure=WorkflowStructure[self.structure],
+            structure=WorkflowStructure(self.structure),
             task_count=self.task_count,
             task_data_bytes=self.task_data_bytes,
             task_sleep=self.task_sleep,

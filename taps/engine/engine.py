@@ -425,6 +425,8 @@ class AppEngine:
             )
         else:  # pragma: <3.9 cover
             self.executor.shutdown(wait=wait)
+        self.data_transformer.close()
+        self.record_logger.close()
 
 
 def as_completed(

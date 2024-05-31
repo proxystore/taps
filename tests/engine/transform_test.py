@@ -15,6 +15,9 @@ class DictTransformer:
     def __init__(self) -> None:
         self.data: dict[uuid.UUID, Any] = {}
 
+    def close(self) -> None:
+        pass
+
     def is_identifier(self, obj: T) -> bool:
         return isinstance(obj, uuid.UUID)
 
@@ -35,6 +38,8 @@ def test_task_data_transfomer() -> None:
     assert obj != identifier
     assert transformer.resolve(identifier) == obj
 
+    transformer.close()
+
 
 def test_task_data_transfomer_iterable() -> None:
     transformer = TaskDataTransformer(DictTransformer(), NullFilter())
@@ -43,6 +48,8 @@ def test_task_data_transfomer_iterable() -> None:
     identifiers = transformer.transform_iterable(objs)
     assert objs != identifiers
     assert transformer.resolve_iterable(identifiers) == objs
+
+    transformer.close()
 
 
 def test_task_data_transfomer_mapping() -> None:
@@ -53,6 +60,8 @@ def test_task_data_transfomer_mapping() -> None:
     assert objs != identifiers
     assert objs.keys() == identifiers.keys()
     assert transformer.resolve_mapping(identifiers) == objs
+
+    transformer.close()
 
 
 def test_task_data_transfomer_filter() -> None:
@@ -67,6 +76,8 @@ def test_task_data_transfomer_filter() -> None:
     assert identifier is not obj
     assert transformer.resolve(identifier) == obj
 
+    transformer.close()
+
 
 def test_task_data_transfomer_iterable_filter() -> None:
     transformer = TaskDataTransformer(DictTransformer(), ObjectTypeFilter(str))
@@ -75,6 +86,8 @@ def test_task_data_transfomer_iterable_filter() -> None:
     identifiers = transformer.transform_iterable(objs)
     assert objs != identifiers
     assert transformer.resolve_iterable(identifiers) == objs
+
+    transformer.close()
 
 
 def test_task_data_transfomer_mapping_filter() -> None:
@@ -85,3 +98,5 @@ def test_task_data_transfomer_mapping_filter() -> None:
     assert objs != identifiers
     assert objs.keys() == identifiers.keys()
     assert transformer.resolve_mapping(identifiers) == objs
+
+    transformer.close()
