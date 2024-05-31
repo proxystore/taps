@@ -9,7 +9,7 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
 else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
-from webs.record import Record
+from taps.record import Record
 
 
 class SimpleRecordLogger:

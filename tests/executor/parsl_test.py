@@ -3,7 +3,7 @@ from __future__ import annotations
 import pathlib
 from concurrent.futures import Executor
 
-from webs.executor.parsl import ParslConfig
+from taps.executor.parsl import ParslConfig
 
 
 def test_get_thread_config(tmp_path: pathlib.Path) -> None:

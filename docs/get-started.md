@@ -1,6 +1,6 @@
 # Quick Start
 
-The Workflow Execution Benchmark Suite (WEBS) provides a set of standard computational workflows that can be executed with a variety of execution engines.
+TaPS is a standardized framework for evaluating task-based execution frameworks and data management systems using a suite a real and synthetic scientific applications.
 
 ## Installation
 
@@ -16,6 +16,9 @@ Documentation on installing for local development is provided in [Contributing](
 
 ## Usage
 
+Applications can be executed from the CLI.
 ```bash
-python -m webs.run {workflow-name} {args}
+python -m taps.run {application} {args}
 ```
+
+Checkout the [Application Guides](apps/index.md).

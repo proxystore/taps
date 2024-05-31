@@ -5,7 +5,7 @@ from unittest import mock
 
 import pytest
 
-from webs.config import Config
+from taps.config import Config
 
 
 class _TestConfig(Config):

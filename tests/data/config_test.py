@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from webs.data.config import FilterConfig
+from taps.data.config import FilterConfig
 
 
 def test_filter_config() -> None:

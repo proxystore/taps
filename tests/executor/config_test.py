@@ -6,10 +6,10 @@ from unittest import mock
 
 import pytest
 
-from webs.executor.config import ExecutorChoicesConfig
-from webs.executor.config import ExecutorConfig
-from webs.executor.config import get_executor_config
-from webs.executor.config import register
+from taps.executor.config import ExecutorChoicesConfig
+from taps.executor.config import ExecutorConfig
+from taps.executor.config import get_executor_config
+from taps.executor.config import register
 
 
 @register(name='test-executor')

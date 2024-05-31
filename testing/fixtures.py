@@ -10,17 +10,16 @@ from unittest import mock
 import pytest
 from dask.distributed import Client
 
-import webs
-from testing.workflow import TestWorkflow
-from testing.workflow import TestWorkflowConfig
-from webs.data.config import FilterConfig
-from webs.data.null import NullTransformerConfig
-from webs.executor.dask import DaskDistributedExecutor
-from webs.executor.python import DAGExecutor
-from webs.executor.python import ThreadPoolConfig
-from webs.executor.workflow import WorkflowExecutor
-from webs.run.config import BenchmarkConfig
-from webs.run.config import RunConfig
+import taps
+from taps.data.config import FilterConfig
+from taps.data.null import NullTransformerConfig
+from taps.engine import AppEngine
+from taps.executor.dask import DaskDistributedExecutor
+from taps.executor.python import DAGExecutor
+from taps.executor.python import ThreadPoolConfig
+from taps.run.config import BenchmarkConfig
+from taps.run.config import RunConfig
+from testing.app import TestAppConfig
 
 
 @pytest.fixture()
@@ -43,11 +42,11 @@ def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
 
 
 @pytest.fixture()
-def workflow_executor(
+def app_engine(
     thread_executor: ThreadPoolExecutor,
-) -> Generator[WorkflowExecutor, None, None]:
+) -> Generator[AppEngine, None, None]:
     dag_executor = DAGExecutor(thread_executor)
-    with WorkflowExecutor(dag_executor) as executor:
+    with AppEngine(dag_executor) as executor:
         yield executor
 
 
@@ -56,15 +55,15 @@ def test_benchmark_config(
     tmp_path: pathlib.Path,
 ) -> Generator[BenchmarkConfig, None, None]:
     with mock.patch.dict(
-        webs.workflow.REGISTERED_WORKFLOWS,
-        {TestWorkflow.name: 'testing.workflow.TestWorkflow'},
+        taps.run.apps.registry._REGISTERED_APP_CONFIGS,
+        {'test-app': TestAppConfig},
     ):
         yield BenchmarkConfig(
-            name=TestWorkflow.name,
+            name='test-app',
             timestamp=datetime.now(),
+            app=TestAppConfig(tasks=3),
             executor=ThreadPoolConfig(max_thread=4),
             transformer=NullTransformerConfig(),
             filter=FilterConfig(),
             run=RunConfig(log_file_name=None, run_dir=str(tmp_path)),
-            workflow=TestWorkflowConfig(tasks=3),
         )

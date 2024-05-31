@@ -3,8 +3,8 @@ from __future__ import annotations
 import uuid
 from concurrent.futures import Executor
 
+from taps.executor.globus import GlobusComputeConfig
 from testing.globus import mock_globus_compute
-from webs.executor.globus import GlobusComputeConfig
 
 
 def test_globus_compute_config() -> None:

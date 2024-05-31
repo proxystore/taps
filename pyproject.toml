@@ -3,13 +3,13 @@ requires = ["setuptools>=64.0", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "webs"
+name = "taps"
 version = "0.1.0"
 authors = [
     {name = "Greg Pauloski", email = "jgpauloski@uchicago.edu"},
     {name = "Globus Labs"},
 ]
-description = "Workflows benchmark suite for task-based execution frameworks."
+description = "Task Performance Suite for benchmarking parallel execution frameworks."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
@@ -29,8 +29,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/proxystore/taps"
-Documentation = "https://proxystore.dev/taps"
+Homepage = "https://taps.proxystore.dev"
+Documentation = "https://taps.proxystore.dev"
 Source = "https://github.com/proxystore/taps"
 
 [project.optional-dependencies]
@@ -76,12 +76,8 @@ dist,
 plugins = ["covdefaults"]
 omit = [
     "examples",
-    "webs/wf/cholesky/*",
-    "webs/wf/docking/*",
-    "webs/wf/fedlearn/*",
-    "webs/wf/mapreduce/*",
-    "webs/wf/moldesign/*",
-    "webs/wf/montage/*",
+    "taps/apps/*",
+    "taps/run/apps/*",
 ]
 
 [tool.mypy]
@@ -190,6 +186,7 @@ required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
 "*/__init__.py" = ["F401"]
+"taps/**.py" = ["PLR0913"]
 "tests/**.py" = ["D10"]
 "testing/**.py" = ["D10"]
 "tests/conftest.py" = ["F401"]

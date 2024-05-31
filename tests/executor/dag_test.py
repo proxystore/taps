@@ -9,8 +9,8 @@ from typing import Generator
 
 import pytest
 
-from webs.executor.dag import _Task
-from webs.executor.dag import DAGExecutor
+from taps.executor.dag import _Task
+from taps.executor.dag import DAGExecutor
 
 
 @pytest.fixture()

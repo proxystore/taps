@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from webs.run.config import BenchmarkConfig
+from taps.run.config import BenchmarkConfig
 
 
 def test_benchmark_config_paths(

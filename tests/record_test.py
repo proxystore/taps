@@ -3,8 +3,8 @@ from __future__ import annotations
 import json
 import pathlib
 
-from webs.record import JSONRecordLogger
-from webs.record import NullRecordLogger
+from taps.record import JSONRecordLogger
+from taps.record import NullRecordLogger
 
 
 def test_json_record_logger(tmp_path: pathlib.Path) -> None:

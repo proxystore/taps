@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from webs.data.filter import NullFilter
-from webs.data.filter import ObjectSizeFilter
-from webs.data.filter import ObjectTypeFilter
-from webs.data.filter import PickleSizeFilter
+from taps.data.filter import NullFilter
+from taps.data.filter import ObjectSizeFilter
+from taps.data.filter import ObjectTypeFilter
+from taps.data.filter import PickleSizeFilter
 
 
 def test_null_filter() -> None:
