@@ -22,6 +22,10 @@ class NullTransformerConfig(DataTransformerConfig):
 class NullTransformer:
     """Null transformer that does no transformations."""
 
+    def close(self) -> None:
+        """Close the transformer."""
+        pass
+
     def is_identifier(self, obj: Any) -> bool:
         """Check if the object is an identifier instance.
 

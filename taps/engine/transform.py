@@ -37,6 +37,10 @@ class TaskDataTransformer(Generic[IdentifierT]):
         self.transformer = transformer
         self.filter_ = filter_
 
+    def close(self) -> None:
+        """Close the transformer."""
+        self.transformer.close()
+
     def transform(self, obj: T) -> T | IdentifierT:
         """Transform an object.
 

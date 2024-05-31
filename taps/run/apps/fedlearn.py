@@ -67,7 +67,7 @@ class FedlearnConfig(AppConfig):
         from taps.apps.fedlearn.types import DataChoices
 
         try:
-            DataChoices[dataset]
+            DataChoices(dataset)
         except KeyError:
             options = ', '.join(d.value for d in DataChoices)
             raise ValueError(
@@ -89,7 +89,7 @@ class FedlearnConfig(AppConfig):
             epochs=self.batch_size,
             batch_size=self.batch_size,
             lr=self.lr,
-            data_name=DataChoices[self.data_name],
+            data_name=DataChoices(self.data_name),
             data_dir=self.data_root,
             download=self.data_download,
             train=self.train,

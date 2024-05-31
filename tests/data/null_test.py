@@ -12,3 +12,4 @@ def test_null_transformer() -> None:
     assert transformer.transform(obj) is obj
     with pytest.raises(NotImplementedError):
         transformer.resolve(obj)
+    transformer.close()

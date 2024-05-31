@@ -18,3 +18,6 @@ def test_pickle_file_transformer(tmp_path: pathlib.Path) -> None:
     identifier = transformer.transform(obj)
     assert transformer.is_identifier(identifier)
     assert transformer.resolve(identifier) == obj
+
+    transformer.close()
+    assert not tmp_path.exists()

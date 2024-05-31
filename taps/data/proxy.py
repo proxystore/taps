@@ -117,6 +117,10 @@ class ProxyTransformer:
             self.store = Store.from_config(state['config'])
         self.extract_target = state['extract_target']
 
+    def close(self) -> None:
+        """Close the transformer."""
+        self.store.close()
+
     def is_identifier(self, obj: Any) -> bool:
         """Check if the object is an identifier instance."""
         return isinstance(obj, Proxy)

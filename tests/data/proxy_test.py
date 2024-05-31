@@ -22,7 +22,7 @@ def test_file_config() -> None:
     )
     with mock.patch('taps.data.proxy.FileConnector'):
         transformer = config.get_transformer()
-        transformer.store.close()
+        transformer.close()
 
 
 def test_redis_config() -> None:
@@ -33,7 +33,7 @@ def test_redis_config() -> None:
     )
     with mock.patch('taps.data.proxy.RedisConnector'):
         transformer = config.get_transformer()
-        transformer.store.close()
+        transformer.close()
 
 
 @pytest.mark.parametrize('extract', (True, False))
@@ -52,6 +52,8 @@ def test_proxy_transformer(extract: bool) -> None:
         assert isinstance(resolved, Proxy) != extract
         assert resolved == obj
 
+        transformer.close()
+
 
 def test_proxy_transformer_pickling() -> None:
     name = 'test-proxy-transformer-pickle'
@@ -63,3 +65,5 @@ def test_proxy_transformer_pickling() -> None:
         unregister_store(name)
         transformer = pickle.loads(pickled)
         assert get_store(name) is not None
+
+        transformer.close()

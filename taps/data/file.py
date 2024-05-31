@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pathlib
 import pickle
+import shutil
 import uuid
 from typing import Any
 from typing import NamedTuple
@@ -60,6 +61,10 @@ class PickleFileTransformer:
         cache_dir: pathlib.Path | str,
     ) -> None:
         self.cache_dir = pathlib.Path(cache_dir).resolve()
+
+    def close(self) -> None:
+        """Close the transformer."""
+        shutil.rmtree(self.cache_dir, ignore_errors=True)
 
     def is_identifier(self, obj: Any) -> bool:
         """Check if the object is an identifier instance."""
