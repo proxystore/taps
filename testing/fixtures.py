@@ -24,7 +24,24 @@ from testing.app import TestAppConfig
 
 @pytest.fixture()
 def dask_executor() -> Generator[DaskDistributedExecutor, None, None]:
-    client = Client(n_workers=4, processes=False, dashboard_address=None)
+    client = Client(
+        n_workers=4,
+        processes=False,
+        dashboard_address=None,
+        worker_dashboard_address=None,
+    )
+    with DaskDistributedExecutor(client) as executor:
+        yield executor
+
+
+@pytest.fixture()
+def dask_process_executor() -> Generator[DaskDistributedExecutor, None, None]:
+    client = Client(
+        n_workers=4,
+        processes=True,
+        dashboard_address=None,
+        worker_dashboard_address=None,
+    )
     with DaskDistributedExecutor(client) as executor:
         yield executor
 
