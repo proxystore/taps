@@ -19,7 +19,7 @@ class TaskDataTransformer(Generic[IdentifierT]):
     """Task data transformer.
 
     This class combines a simple object
-    [`Transformer`][taps.data.transform.Transformer] and a
+    [`DataTransformer`][taps.data.transform.DataTransformer] and a
     [`Filter`][taps.data.filter.Filter] into useful methods for transforming
     the positional arguments, keyword arguments, and results of tasks.
 

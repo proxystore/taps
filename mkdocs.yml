@@ -121,7 +121,7 @@ nav:
       - Synthetic: apps/synthetic.md
   - Guides:
       - guides/index.md
-      - Creating Workflows: guides/creating-workflows.md
+      - Create an Application: guides/creating-apps.md
   - API Reference:
       - TaPS: api/
   - Contributing:

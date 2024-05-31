@@ -47,7 +47,7 @@ T = TypeVar('T')
 #   and we know the nodes where this run will get purged after tasks complete
 try:
     # sched_getaffinity is not available on all systems
-    threads = len(os.sched_getaffinity(0))  # type: ignore[attr-defined]
+    threads = len(os.sched_getaffinity(0))  # type: ignore[attr-defined, unused-ignore]
 except AttributeError:
     threads = os.cpu_count() or 1
 n_workers = max(threads - 1, 1)  # Get as many threads as we are assigned to

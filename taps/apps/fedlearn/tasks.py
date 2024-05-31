@@ -6,8 +6,8 @@ from torch.nn import functional as F  # noqa: N812
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 
-from taps.wf.fedlearn.types import Client
-from taps.wf.fedlearn.types import Result
+from taps.apps.fedlearn.types import Client
+from taps.apps.fedlearn.types import Result
 
 
 def no_local_train(
@@ -18,7 +18,7 @@ def no_local_train(
     lr: float,
     device: torch.device,
 ) -> list[Result]:
-    """No-op version of [local_train][taps.wf.fedlearn.tasks.local_train].
+    """No-op version of [local_train][taps.apps.fedlearn.tasks.local_train].
 
     Returns:
         Empty result list.
