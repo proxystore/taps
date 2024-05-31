@@ -7,8 +7,9 @@ from unittest import mock
 
 import pytest
 
+from taps.apps.synthetic import Data
+from taps.apps.synthetic import generate_data
 from taps.apps.synthetic import noop_task
-from taps.apps.synthetic import randbytes
 from taps.apps.synthetic import run_bag_of_tasks
 from taps.apps.synthetic import run_diamond
 from taps.apps.synthetic import run_reduce
@@ -19,9 +20,9 @@ from taps.engine import AppEngine
 
 
 @pytest.mark.parametrize('size', (0, 1, 10, 100))
-def test_randbytes(size: int) -> None:
-    b = randbytes(size)
-    assert isinstance(b, bytes)
+def test_generate_data(size: int) -> None:
+    b = generate_data(size)
+    assert isinstance(b, Data)
     assert len(b) == size
 
 
@@ -30,7 +31,7 @@ def test_noop_task() -> None:
     sleep = 0.001
 
     start = time.perf_counter()
-    result = noop_task(b'data', output_size=output_size, sleep=sleep)
+    result = noop_task(Data(b'data'), output_size=output_size, sleep=sleep)
     runtime = time.perf_counter() - start
 
     assert sleep <= runtime

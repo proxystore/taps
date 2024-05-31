@@ -18,35 +18,56 @@ from taps.logging import APP_LOG_LEVEL
 logger = logging.getLogger(__name__)
 
 
-def randbytes(size: int) -> bytes:
-    """Get random byte string of specified size.
+class Data:
+    """Synthetic task data."""
+
+    def __init__(self, raw: bytes) -> None:
+        self.raw = raw
+
+    def __len__(self) -> int:
+        return len(self.raw)
+
+    def __sizeof__(self) -> int:
+        return sys.getsizeof(self.raw)
+
+
+def generate_data(size: int) -> Data:
+    """Get random data of specified size.
 
     Uses `random.randbytes()` in Python 3.9 or newer and
     `os.urandom()` in Python 3.8 and older.
+
+    Note:
+        This class returns a `Data` object rather than a bytestring directly.
+        This indirection is because some serializers skip [`bytes`][bytes]
+        which will cause problems if ProxyStore is used in this application
+        because the `Proxy[bytes]` will be an instance of [`bytes`][bytes] and
+        won't get properly serialized. This is the case with Ray, for example.
 
     Args:
         size (int): size of byte string to return.
 
     Returns:
-        random byte string.
+        random data.
     """
     max_bytes = int(1e9)
     if sys.version_info >= (3, 9) and size < max_bytes:  # pragma: >=3.9 cover
-        return random.randbytes(size)
+        raw = random.randbytes(size)
     else:  # pragma: <3.9 cover
-        return os.urandom(size)
+        raw = os.urandom(size)
+    return Data(raw)
 
 
 def noop_task(
-    *data: bytes,
+    *data: Data,
     output_size: int,
     sleep: float,
     task_id: uuid.UUID | None = None,
-) -> bytes:
+) -> Data:
     """No-op sleep task.
 
     Args:
-        data: Input byte strings.
+        data: Input data.
         output_size: Size in bytes of output byte-string.
         sleep: Minimum runtime of the task. Time required to generate the
             output data will be subtracted from this sleep time.
@@ -58,8 +79,8 @@ def noop_task(
     """
     start = time.perf_counter_ns()
     # Validate the data is real
-    assert all(len(d) >= 0 for d in data)
-    result = randbytes(output_size)
+    assert all(len(d.raw) >= 0 for d in data)
+    result = generate_data(output_size)
     elapsed = (time.perf_counter_ns() - start) / 1e9
 
     # Remove elapsed time for generating result from remaining sleep time.
@@ -86,7 +107,7 @@ def run_bag_of_tasks(
     running_tasks = [
         engine.submit(
             noop_task,
-            randbytes(task_data_bytes),
+            generate_data(task_data_bytes),
             output_size=task_data_bytes,
             sleep=task_sleep,
             task_id=uuid.uuid4(),
@@ -111,7 +132,7 @@ def run_bag_of_tasks(
         new_tasks = [
             engine.submit(
                 noop_task,
-                randbytes(task_data_bytes),
+                generate_data(task_data_bytes),
                 output_size=task_data_bytes,
                 sleep=task_sleep,
                 task_id=uuid.uuid4(),
@@ -132,7 +153,7 @@ def run_bag_of_tasks(
 
     wait(running_tasks, return_when='ALL_COMPLETED')
     # Validate task results are real
-    assert all(len(task.result()) >= 0 for task in running_tasks)
+    assert all(len(task.result().raw) >= 0 for task in running_tasks)
     completed_tasks += len(running_tasks)
     rate = completed_tasks / (time.monotonic() - start)
     logger.log(
@@ -150,7 +171,7 @@ def run_diamond(
     """Run diamond workflow."""
     initial_task = engine.submit(
         noop_task,
-        randbytes(task_data_bytes),
+        generate_data(task_data_bytes),
         output_size=task_data_bytes,
         sleep=task_sleep,
         task_id=uuid.uuid4(),
@@ -195,7 +216,7 @@ def run_reduce(
     map_tasks = [
         engine.submit(
             noop_task,
-            randbytes(task_data_bytes),
+            generate_data(task_data_bytes),
             output_size=task_data_bytes,
             sleep=task_sleep,
             task_id=uuid.uuid4(),
@@ -225,8 +246,8 @@ def run_sequential(
 ) -> None:
     """Run sequential workflow."""
     start = time.monotonic()
-    initial_data = randbytes(task_data_bytes)
-    tasks: list[TaskFuture[bytes]] = []
+    initial_data = generate_data(task_data_bytes)
+    tasks: list[TaskFuture[Data]] = []
 
     for i in range(task_count):
         input_data = initial_data if i == 0 else tasks[-1]
@@ -252,7 +273,7 @@ def run_sequential(
         )
 
     # Validate the final result in the sequence
-    assert len(tasks[-1].result()) >= 0
+    assert len(tasks[-1].result().raw) >= 0
 
     rate = task_count / (time.monotonic() - start)
     logger.log(APP_LOG_LEVEL, f'Task completion rate: {rate:.3f} tasks/s')

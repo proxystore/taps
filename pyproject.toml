@@ -74,11 +74,13 @@ dist,
 
 [tool.coverage.run]
 plugins = ["covdefaults"]
+concurrency = ["multiprocessing", "thread"]
 omit = [
     "examples",
     "taps/apps/*",
     "taps/run/apps/*",
 ]
+parallel = true
 
 [tool.mypy]
 plugins = [
