@@ -31,11 +31,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://taps.proxystore.dev/latest/api/context/</loc>
-         <lastmod>2024-05-31</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://taps.proxystore.dev/latest/api/logging/</loc>
          <lastmod>2024-05-31</lastmod>
          <changefreq>daily</changefreq>
