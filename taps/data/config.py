@@ -15,7 +15,7 @@ from taps.data.filter import Filter
 from taps.data.filter import NullFilter
 from taps.data.filter import ObjectSizeFilter
 from taps.data.filter import PickleSizeFilter
-from taps.data.transform import TransformerConfig
+from taps.data.transform import DataTransformerConfig
 
 
 class FilterConfig(Config):
@@ -52,8 +52,8 @@ class FilterConfig(Config):
             raise AssertionError(f'Unknown filter type {self.filter_type}.')
 
 
-class TransformerChoicesConfig(Config):
-    """Transformer choice configuration."""
+class DataTransformerChoicesConfig(Config):
+    """Data transformer choice configuration."""
 
     transformer: str
 
@@ -94,33 +94,35 @@ class TransformerChoicesConfig(Config):
             )
 
 
-class _TransformerConfigRegistry:
+class _DataTransformerConfigRegistry:
     def __init__(self) -> None:
-        self._configs: dict[str, type[TransformerConfig]] = {}
+        self._configs: dict[str, type[DataTransformerConfig]] = {}
 
     def get_transformer_config(
         self,
         transformer: str,
         **options: Any,
-    ) -> TransformerConfig:
+    ) -> DataTransformerConfig:
         return self._configs[transformer](**options)
 
-    def get_registered(self) -> dict[str, type[TransformerConfig]]:
+    def get_registered(self) -> dict[str, type[DataTransformerConfig]]:
         return self._configs
 
     def register(
         self,
         *,
         name: str,
-    ) -> Callable[[type[TransformerConfig]], type[TransformerConfig]]:
-        def decorator(cls: type[TransformerConfig]) -> type[TransformerConfig]:
+    ) -> Callable[[type[DataTransformerConfig]], type[DataTransformerConfig]]:
+        def decorator(
+            cls: type[DataTransformerConfig],
+        ) -> type[DataTransformerConfig]:
             self._configs[name] = cls
             return cls
 
         return decorator
 
 
-_transformer_configs = _TransformerConfigRegistry()
+_transformer_configs = _DataTransformerConfigRegistry()
 register = _transformer_configs.register
 get_transformer_config = _transformer_configs.get_transformer_config
 get_registered = _transformer_configs.get_registered

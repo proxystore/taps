@@ -7,15 +7,16 @@ from concurrent.futures import Future
 from concurrent.futures import ThreadPoolExecutor
 
 from taps.data.file import PickleFileTransformer
+from taps.data.filter import NullFilter
 from taps.data.null import NullTransformer
-from taps.data.transform import TaskDataTransformer
-from taps.engine import _TaskResult
-from taps.engine import _TaskWrapper
-from taps.engine import AppEngine
-from taps.engine import as_completed
-from taps.engine import TaskFuture
-from taps.engine import TaskInfo
-from taps.engine import wait
+from taps.engine.engine import _TaskResult
+from taps.engine.engine import _TaskWrapper
+from taps.engine.engine import AppEngine
+from taps.engine.engine import as_completed
+from taps.engine.engine import TaskFuture
+from taps.engine.engine import TaskInfo
+from taps.engine.engine import wait
+from taps.engine.transform import TaskDataTransformer
 from taps.executor.dag import DAGExecutor
 from taps.executor.dask import DaskDistributedExecutor
 from testing.record import SimpleRecordLogger
@@ -28,7 +29,7 @@ def test_task_wrapper_call() -> None:
     task = _TaskWrapper(
         sum_,
         task_id=uuid.uuid4(),
-        data_transformer=TaskDataTransformer(NullTransformer()),
+        data_transformer=TaskDataTransformer(NullTransformer(), NullFilter()),
     )
     assert task([1, 2, 3], start=-6).result == 0
 
@@ -67,10 +68,9 @@ def test_app_engine_data_transformer(
     thread_executor: ThreadPoolExecutor,
     tmp_path: pathlib.Path,
 ) -> None:
-    transformer = TaskDataTransformer(PickleFileTransformer(tmp_path))
     with AppEngine(
         thread_executor,
-        data_transformer=transformer,
+        data_transformer=PickleFileTransformer(tmp_path),
     ) as executor:
         task = executor.submit(sum, [1, 2, 3], start=-6)
         assert task.result() == 0
@@ -117,7 +117,7 @@ def test_task_future_exception() -> None:
     task = TaskFuture(
         future,
         TaskInfo('test', 'test', [], 0),
-        TaskDataTransformer(NullTransformer()),
+        TaskDataTransformer(NullTransformer(), NullFilter()),
     )
 
     exception = RuntimeError()
@@ -133,12 +133,12 @@ def test_wait() -> None:
     fast_task = TaskFuture(
         fast_future,
         TaskInfo('fast-id', 'fast', [], 0),
-        TaskDataTransformer(NullTransformer()),
+        TaskDataTransformer(NullTransformer(), NullFilter()),
     )
     slow_task = TaskFuture(
         slow_future,
         TaskInfo('slow-id', 'slow', [], 0),
-        TaskDataTransformer(NullTransformer()),
+        TaskDataTransformer(NullTransformer(), NullFilter()),
     )
 
     timeout = 0.001

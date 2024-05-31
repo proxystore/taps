@@ -35,8 +35,11 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
+from taps.data.filter import Filter
+from taps.data.filter import NullFilter
 from taps.data.null import NullTransformer
-from taps.data.transform import TaskDataTransformer
+from taps.data.transform import DataTransformer
+from taps.engine.transform import TaskDataTransformer
 from taps.record import NullRecordLogger
 from taps.record import RecordLogger
 
@@ -222,6 +225,7 @@ class AppEngine:
 
     Args:
         executor: Task compute executor.
+        data_filter: Data filter.
         data_transformer: Data transformer.
         record_logger: Task record logger.
     """
@@ -230,14 +234,16 @@ class AppEngine:
         self,
         executor: Executor,
         *,
-        data_transformer: TaskDataTransformer[Any] | None = None,
+        data_filter: Filter | None = None,
+        data_transformer: DataTransformer[Any] | None = None,
         record_logger: RecordLogger | None = None,
     ) -> None:
         self.executor = executor
-        self.data_transformer = (
-            data_transformer
-            if data_transformer is not None
-            else TaskDataTransformer(NullTransformer())
+        self.data_transformer = TaskDataTransformer(
+            NullTransformer()
+            if data_transformer is None
+            else data_transformer,
+            NullFilter() if data_filter is None else data_filter,
         )
         self.record_logger = (
             record_logger if record_logger is not None else NullRecordLogger()

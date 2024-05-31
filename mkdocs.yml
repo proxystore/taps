@@ -110,6 +110,15 @@ nav:
       - Get Started: get-started.md
       - Issues (GitHub): https://github.com/proxystore/taps/issues
       - Changelog (GitHub): https://github.com/proxystore/taps/releases
+  - Apps:
+      - apps/index.md
+      - Cholesky Factorization: apps/cholesky.md
+      - Docking Proteins: apps/docking.md
+      - Federated Learning: apps/fedlearn.md
+      - MapReduce: apps/mapreduce.md
+      - Molecular Design: apps/moldesign.md
+      - Montage: apps/montage.md
+      - Synthetic: apps/synthetic.md
   - Guides:
       - guides/index.md
       - Creating Workflows: guides/creating-workflows.md

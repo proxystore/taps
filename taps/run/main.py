@@ -13,12 +13,12 @@ from datetime import datetime
 from typing import Callable
 from typing import Sequence
 
+from taps.data.config import DataTransformerChoicesConfig
+
 # This import is necessary to ensure that all the workflow
 # implementations get imported and therefore registered.
 from taps.data.config import FilterConfig
 from taps.data.config import get_transformer_config
-from taps.data.config import TransformerChoicesConfig
-from taps.data.transform import TaskDataTransformer
 from taps.engine import AppEngine
 from taps.executor.config import ExecutorChoicesConfig
 from taps.executor.config import get_executor_config
@@ -66,7 +66,7 @@ def parse_args_to_config(argv: Sequence[str]) -> BenchmarkConfig:
             argv=argv,
             required=True,
         )
-        TransformerChoicesConfig.add_argument_group(
+        DataTransformerChoicesConfig.add_argument_group(
             subparser,
             argv=argv,
             required=False,
@@ -136,14 +136,13 @@ def run(config: BenchmarkConfig) -> None:
 
     app = config.app.create_app()
     executor = config.executor.get_executor()
-    data_transformer = TaskDataTransformer(
-        transformer=config.transformer.get_transformer(),
-        filter_=config.filter.get_filter(),
-    )
+    data_transformer = config.transformer.get_transformer()
+    data_filter = config.filter.get_filter()
     record_logger = JSONRecordLogger(config.run.task_record_file_name)
     engine = AppEngine(
         executor,
         data_transformer=data_transformer,
+        data_filter=data_filter,
         record_logger=record_logger,
     )
 

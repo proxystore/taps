@@ -4,11 +4,9 @@ import uuid
 from typing import Any
 from typing import TypeVar
 
-import pytest
-
+from taps.data.filter import NullFilter
 from taps.data.filter import ObjectTypeFilter
-from taps.data.null import NullTransformer
-from taps.data.transform import TaskDataTransformer
+from taps.engine.transform import TaskDataTransformer
 
 T = TypeVar('T')
 
@@ -29,17 +27,8 @@ class DictTransformer:
         return self.data.pop(identifier)
 
 
-def test_null_transformer() -> None:
-    transformer = NullTransformer()
-    obj = object()
-    assert not transformer.is_identifier(obj)
-    assert transformer.transform(obj) is obj
-    with pytest.raises(NotImplementedError):
-        transformer.resolve(obj)
-
-
 def test_task_data_transfomer() -> None:
-    transformer = TaskDataTransformer(DictTransformer())
+    transformer = TaskDataTransformer(DictTransformer(), NullFilter())
 
     obj = object()
     identifier = transformer.transform(obj)
@@ -48,7 +37,7 @@ def test_task_data_transfomer() -> None:
 
 
 def test_task_data_transfomer_iterable() -> None:
-    transformer = TaskDataTransformer(DictTransformer())
+    transformer = TaskDataTransformer(DictTransformer(), NullFilter())
 
     objs = (object(), object())
     identifiers = transformer.transform_iterable(objs)
@@ -57,7 +46,7 @@ def test_task_data_transfomer_iterable() -> None:
 
 
 def test_task_data_transfomer_mapping() -> None:
-    transformer = TaskDataTransformer(DictTransformer())
+    transformer = TaskDataTransformer(DictTransformer(), NullFilter())
 
     objs = {'a': object(), 'b': object()}
     identifiers = transformer.transform_mapping(objs)

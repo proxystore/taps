@@ -9,8 +9,8 @@ from pydantic import Field
 from pydantic import SerializeAsAny
 
 from taps.config import Config
+from taps.data.config import DataTransformerConfig
 from taps.data.config import FilterConfig
-from taps.data.config import TransformerConfig
 from taps.executor.config import ExecutorConfig
 from taps.run.apps.registry import AppConfig
 
@@ -59,18 +59,18 @@ class BenchmarkConfig(Config):
         timestamp: Start time of the workflow.
         app: Application config.
         executor: Executor config.
-        transformer: Transformer config.
         filter: Filter config.
         run: Run config.
+        transformer: Transformer config.
     """
 
     name: str
     timestamp: datetime
     app: SerializeAsAny[AppConfig]
     executor: SerializeAsAny[ExecutorConfig]
-    transformer: SerializeAsAny[TransformerConfig]
     filter: SerializeAsAny[FilterConfig]
     run: SerializeAsAny[RunConfig]
+    transformer: SerializeAsAny[DataTransformerConfig]
 
     def get_run_dir(self) -> pathlib.Path:
         """Create and return the path to the run directory."""
