@@ -28,9 +28,13 @@ class DataChoices(enum.Enum):
     """Dataset options."""
 
     CIFAR10 = 'cifar10'
+    """Cifar10 dataset."""
     CIFAR100 = 'cifar100'
+    """Cifar100 dataset."""
     FMNIST = 'fmnist'
+    """FMNIST dataset."""
     MNIST = 'mnist'
+    """MNIST dataset."""
 
 
 class Client(BaseModel):
@@ -46,6 +50,3 @@ class Client(BaseModel):
         description='The subset of data this client will train on.',
     )
     """The subset of data this client will train on."""
-
-
-Client.model_rebuild()

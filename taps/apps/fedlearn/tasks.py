@@ -23,8 +23,7 @@ def no_local_train(
     Returns:
         Empty result list.
     """
-    results: list[Result] = []
-    return results
+    return []
 
 
 def local_train(
@@ -38,12 +37,12 @@ def local_train(
     """Local training job.
 
     Args:
-        client (Client): The client to train.
-        round_idx (int): The current round number.
-        epochs (int): Number of epochs.
-        batch_size (int): Batch size when iterating through data.
-        lr (float): Learning rate.
-        device (torch.device): Backend hardware to train with.
+        client: The client to train.
+        round_idx: The current round number.
+        epochs: Number of epochs.
+        batch_size: Batch size when iterating through data.
+        lr: Learning rate.
+        device: Backend hardware to train with.
 
     Returns:
         List of results that record the training history.

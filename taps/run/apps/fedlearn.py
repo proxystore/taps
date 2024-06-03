@@ -15,53 +15,55 @@ from taps.run.apps.registry import register_app
 class FedlearnConfig(AppConfig):
     """Federated learning application configuration."""
 
-    data_alpha: float = Field(
+    alpha: float = Field(
         1e5,
         description='alpha parameter for number of samples across clients',
     )
-    data_name: str = Field(
+    dataset: str = Field(
         'mnist',
-        description='the dataset to train on',
+        description=(
+            'training and testing dataset (cifar10, cifar100, fmnist, mnist)'
+        ),
     )
-    data_root: str = Field(
-        'data/',
-        description='location of where data are stored',
+    data_dir: str = Field(
+        'data/fedlearn',
+        description='download directory for data',
     )
-    data_download: bool = Field(
-        False,
-        description='flag to set whether to download the data',
-    )
-    device: str = Field('cpu', description='model fitting backend')
-    num_clients: int = Field(
+    device: str = Field('cpu', description='device to use (e.g., cpu or cuda)')
+    clients: int = Field(
         8,
-        description='the number of simulated clients',
+        description='number of simulated clients',
     )
-    num_rounds: int = Field(3, description='number of aggregation rounds')
+    rounds: int = Field(3, description='number of aggregation rounds')
     participation: float = Field(
         0.1,
-        description=(
-            'fraction of proportion of participating clients in each round'
-        ),
+        description='fraction of participating clients in each round',
     )
     epochs: int = Field(3, description='number of epochs for local training')
     lr: float = Field(
         1e-3,
-        description='learning rate for local training on clients',
+        description='learning rate for local training',
     )
-    batch_size: int = Field(3, description='batch size')
-    train: bool = Field(True, description='flag of whether to train or not')
+    batch_size: int = Field(3, description='batch size for local training')
+    train: bool = Field(
+        True,
+        description=(
+            'flag for performing training '
+            '(false will use no-op training tasks)'
+        ),
+    )
     test: bool = Field(
         True,
-        description='flag of whether to test the global model',
+        description='evaluate the global model on test data after each round',
     )
     seed: Optional[int] = Field(None, description='random seed')  # noqa: UP007
 
-    @field_validator('data_root', mode='before')
+    @field_validator('data_dir', mode='before')
     @classmethod
     def _resolve_data_root(cls, root: str) -> str:
         return str(pathlib.Path(root).resolve())
 
-    @field_validator('data_name', mode='after')
+    @field_validator('dataset', mode='after')
     @classmethod
     def _validate_dataset(cls, dataset: str) -> str:
         from taps.apps.fedlearn.types import DataChoices
@@ -83,17 +85,16 @@ class FedlearnConfig(AppConfig):
         from taps.apps.fedlearn.types import DataChoices
 
         return FedlearnApp(
-            num_clients=self.num_clients,
-            num_rounds=self.num_rounds,
+            clients=self.clients,
+            rounds=self.rounds,
             device=self.device,
             epochs=self.batch_size,
             batch_size=self.batch_size,
             lr=self.lr,
-            data_name=DataChoices(self.data_name),
-            data_dir=self.data_root,
-            download=self.data_download,
+            dataset=DataChoices(self.dataset),
+            data_dir=self.data_dir,
             train=self.train,
             test=self.test,
-            participation_prob=self.participation,
+            participation=self.participation,
             seed=self.seed,
         )
