@@ -5,23 +5,68 @@ This application is modified from [ParslDock](https://github.com/Parsl/parsl-doc
 Protein docking aims to predict the orientation and position of two molecules, where one molecule is a protein, and the other is a protein or a smaller molecule (ligand).
 Docking is commonly used in structure-based drug design, as it can predict the strength of docking between target small molecule ligands (drugs) to target binding site (receptors).
 
-Need to install libGL and [MGLTool](https://ccsb.scripps.edu/mgltools/download/491/mgltools_Linux-x86_64_1.5.7.tar.gz)
-The environment variable `MGLTOOLS_HOME` needs to be set prior to execution.
-A Conda `environment.yaml` is provided within the original notebook.
-It is recommended to install dependencies this way.
-**NOTE**: Dependencies are not compatible with ARM64 architecture.
-It may be necessary to set `OMP_NUM_THREADS=1` with certain executors.
+## Installation
 
-Sample input data provided in [ParslDock tutorial](https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb).
-Input files needed include `dataset_orz_original_1k.csv` for the SMILES string, `1iep_receptor.pdbqt` as the input receptor and `set_element.tcl` as the tcl script path.
+The docking application requires Conda to install all of the required dependencies.
+
+```bash
+conda create --name taps-docking python=3.11
+conda activate taps-docking
+conda install -c conda-forge -c bioconda autodock-vina libglu mgltools vmd
+python3 -m pip install -e .[docking]
+```
+
+!!! warning
+
+    This environment installs Python 2 and 3 so `python3` will need be be used for all commands.
+
+The `MGLTOOLS_HOME` environment must be set.
+If you install MGLTools with Conda, the path is likely the same as `CONDA_PREFIX`.
+```
+export MGLTOOLS_HOME=$CONDA_PREFIX
+```
+
+!!! warning
+
+    Dependencies are not compatible with ARM64 architectures.
+
+!!! tip
+
+    Certain executors do not play nicely with the parallelism used by the simulation codes.
+    If tasks appear to get suck, it may be necessary to set `OMP_NUM_THREADS=1`.
+
+## Data
+
+Sample input data is provided in the [ParslDock tutorial](https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb).
+The following CLI will download the `dataset_orz_original_1k.csv` (SMILES string), `1iep_receptor.pdbqt` (input receptor), and `set_element.tcl` (TCL script) files.
+
+```bash
+python3 -m taps.apps.docking.data --output data/docking/
+```
 
 ## Example
 
+The docking application can be invoked as follows.
+
 ```bash
-python -m taps.run docking \
+python3 -m taps.run docking \
     --executor process-pool \
     --max-processes 40 \
-    --smi-file-name-ligand ${PWD}/dataset_orz_original_1k.csv \
-    --receptor ${PWD}/1iep_receptor.pdbqt \
-    --tcl-path ${PWD}/set_element.tcl
+    --smi-file-name-ligand data/docking/dataset_orz_original_1k.csv \
+    --receptor data/docking/1iep_receptor.pdbqt \
+    --tcl-path data/docking/set_element.tcl
 ```
+
+Checkout the full list of docking parameters with `python -m taps.run docking --help`.
+For example, the `--batch-size` and `--num-iterations` parameters control the parallelism and length of the application.
+
+!!! failure
+
+    If you get an error that looks like the following:
+    ```
+    ImportError: /home/cc/miniconda3/envs/taps-docking/lib/python3.11/lib-dynload/_sqlite3.cpython-311-x86_64-linux-gnu.so: undefined symbol: sqlite3_trace_v2
+    ```
+    You may need to install `libsqlite`.
+    ```bash
+    conda install libsqlite
+    ```

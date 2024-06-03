@@ -32,3 +32,4 @@ repos:
           - globus-compute-sdk
           - proxystore >= 0.6.5
           - pydantic
+          - types-requests
