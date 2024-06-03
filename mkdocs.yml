@@ -73,6 +73,11 @@ extra_css:
   - css/extra.css
   - css/mkdocstrings.css
 
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -153,6 +158,7 @@ plugins:
             - https://extensions.proxystore.dev/main/objects.inv
             - https://distributed.dask.org/en/latest/objects.inv
             - https://docs.pydantic.dev/latest/objects.inv
+            - https://numpy.org/doc/stable/objects.inv
           options:
             annotations_path: brief
             docstring_section_style: list

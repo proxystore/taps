@@ -1,3 +1,5 @@
+"""Cholesky decomposition application."""
+
 from __future__ import annotations
 
 import logging
@@ -48,7 +50,10 @@ def create_psd_matrix(n: int) -> np.ndarray:
 
 
 class CholeskyApp:
-    """Cholesky application.
+    """Cholesky decomposition application.
+
+    Computes the tiled Cholesky decomposition of a random positive-definite
+    square matrix.
 
     Args:
         matrix_size: Matrix side length.
@@ -81,10 +86,13 @@ class CholeskyApp:
         if matrix.shape[0] <= max_print_size:
             logger.log(
                 APP_LOG_LEVEL,
-                f'Input matrix: {matrix.shape}\n{matrix}',
+                f'Generated input matrix: {matrix.shape}\n{matrix}',
             )
         else:
-            logger.log(APP_LOG_LEVEL, f'Input matrix: {matrix.shape}')
+            logger.log(
+                APP_LOG_LEVEL,
+                f'Generated input matrix: {matrix.shape}',
+            )
         logger.log(APP_LOG_LEVEL, f'Block size: {block_size}')
 
         for k in range(0, n, block_size):
