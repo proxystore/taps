@@ -1,159 +1,148 @@
 from __future__ import annotations
 
 import logging
-import os
+import math
 import pathlib
 import random
+import shutil
 import string
 from collections import Counter
+from typing import Generator
+from typing import TypeVar
 
 from taps.engine import AppEngine
 from taps.logging import APP_LOG_LEVEL
 
+T = TypeVar('T')
+
 logger = logging.getLogger(__name__)
 
 
-def generate_word(word_min_len: int, word_max_len: int) -> str:
+def map_task(*files: pathlib.Path) -> Counter[str]:
+    """Count words in files."""
+    counts: Counter[str] = Counter()
+    for file in files:
+        with open(file, errors='ignore') as f:
+            for line in f:
+                counts.update(line.split())
+    return counts
+
+
+def reduce_task(*counts: Counter[str]) -> Counter[str]:
+    """Combine word counts."""
+    total: Counter[str] = Counter()
+    for count in counts:
+        total.update(count)
+    return total
+
+
+def generate_word(word_min_length: int, word_max_length: int) -> str:
     """Generate a random word."""
-    length = random.randint(word_min_len, word_max_len)
+    length = random.randint(word_min_length, word_max_length)
     return ''.join(random.choices(string.ascii_lowercase, k=length))
 
 
-def generate_paragraph(
+def generate_text(
     word_count: int,
-    word_min_len: int,
-    word_max_len: int,
+    word_min_length: int,
+    word_max_length: int,
 ) -> str:
     """Generate a paragraph with the specified number of words."""
-    words = [
-        generate_word(word_min_len, word_max_len) for _ in range(word_count)
-    ]
-    return ' '.join(words)
+    return ' '.join(
+        generate_word(word_min_length, word_max_length)
+        for _ in range(word_count)
+    )
 
 
-def generate_paragraphs_for_map_tasks(
-    task_count: int,
-    word_count: int,
-    word_min_len: int,
-    word_max_len: int,
-) -> list[str]:
-    """Generate task_count paragraphs for the map tasks."""
-    paragraphs = [
-        generate_paragraph(word_count, word_min_len, word_max_len)
-        for _ in range(task_count)
-    ]
-    return paragraphs
+def generate_files(
+    directory: pathlib.Path,
+    file_count: int,
+    words_per_file: int,
+    *,
+    min_word_length: int = 2,
+    max_word_length: int = 10,
+) -> list[pathlib.Path]:
+    """Generate text files with random text.
+
+    Args:
+        directory: Directory to write the files to.
+        file_count: Number of files to generate.
+        words_per_file: Number of words per file.
+        min_word_length: Minimum character length of randomly generated words.
+        max_word_length: Maximum character length of randomly generated words.
+
+    Returns:
+        List of generated files.
+
+    Raises:
+        ValueError: if `directory` is not empty.
+    """
+    if directory.is_dir() and any(directory.iterdir()):
+        raise ValueError('Directory {directory} is not empty')
+
+    directory.mkdir(parents=True, exist_ok=True)
+
+    files = []
+    for i in range(file_count):
+        filename = (directory / f'{i}.txt').resolve()
+        text = generate_text(words_per_file, min_word_length, max_word_length)
+        with open(filename, 'w') as f:
+            f.write(text)
+        files.append(filename)
+
+    return files
 
 
-def generate_author_lists_for_map_tasks(
-    task_count: int,
-    mail_dir: str,
-) -> list[list[str]]:
-    """Generate task_count lists of email authors for the map tasks."""
-    mail_dir = os.path.expanduser(mail_dir)
-
-    # Get list of all immediate subdirectories
-    author_dirs = [
-        name
-        for name in os.listdir(mail_dir)
-        if os.path.isdir(os.path.join(mail_dir, name))
-    ]
-
-    # Split the list of directories into task_count sublists
-    author_lists: list[list[str]] = [[] for _ in range(task_count)]
-    for i, author in enumerate(author_dirs):
-        author_lists[i % task_count].append(author)
-
-    return author_lists
-
-
-def map_function_for_random_run_mode(paragraph: str) -> Counter[str]:
-    """Map function to count words in a paragraph."""
-    word_counts = Counter(paragraph.split())
-    return word_counts
-
-
-def reduce_function(counts_list: list[Counter[str]]) -> Counter[str]:
-    """Reduce function to combine word counts."""
-    total_counts: Counter[str] = Counter()
-    for counts in counts_list:
-        total_counts.update(counts)
-    return total_counts
-
-
-def map_function_for_enron_run_mode(
-    mail_dir: str,
-    authors: list[str],
-) -> Counter[str]:
-    """Count words in all files under mail_dir/author for each author."""
-    mail_dir = os.path.expanduser(mail_dir)
-    word_count: Counter[str] = Counter()
-
-    for author in authors:
-        author_dir = os.path.join(mail_dir, author)
-
-        # Walk through all files in the author's directory
-        for root, _, files in os.walk(author_dir):
-            for file in files:
-                file_path = os.path.join(root, file)
-
-                try:  # Count words in each file
-                    with open(file_path, errors='ignore') as f:
-                        for line in f:
-                            words = line.split()
-                            word_count.update(words)
-                except Exception as e:
-                    logger.log(
-                        APP_LOG_LEVEL,
-                        f"Error processing file '{file_path}': {e}",
-                    )
-
-    return word_count
-
-
-def _map_function_for_enron_run_mode(
-    data: tuple[str, list[str]],
-) -> Counter[str]:
-    return map_function_for_enron_run_mode(data[0], data[1])
+def _chunkify(iterable: list[T], n: int) -> Generator[list[T], None, None]:
+    chunk_size = math.ceil(len(iterable) / n)
+    for i in range(0, len(iterable), chunk_size):
+        yield iterable[i : min(i + chunk_size, len(iterable) - 1)]
 
 
 class MapreduceApp:
     """Mapreduce application.
 
     Args:
-        mode: Run mode (enron or random).
-        map_task_count: Number of map tasks.
-        word_count: Words per map task in random mode.
-        word_len_min: Min word length in random mode.
-        word_len_max: Max word length in random mode.
-        mail_dir: Path to maildir in enron mode.
-        n_freq: Save the n most frequent words.
-        out: Output file name for most frequent words.
+        data_dir: Text file directory. Either contains existing text files
+            (including in subdirectories) or will be used to store the
+            randomly generated files.
+        map_tasks: Number of map tasks. If `None`, one map task is generated
+            per text file. Otherwise, files are evenly distributed across the
+            map tasks.
+        generate: Generate random text files for the application.
+        generated_files: Number of text files to generate.
+        generated_words: Number of words per text file to generate.
     """
 
     def __init__(
         self,
-        mode: str,
-        map_task_count: int,
-        word_count: int = 500,
-        word_len_min: int = 1,
-        word_len_max: int = 10,
-        mail_dir: str = '~/maildir',
-        n_freq: int = 10,
-        out: str = 'output.txt',
+        data_dir: pathlib.Path,
+        map_tasks: int | None = None,
+        generate: bool = False,
+        generated_files: int = 10,
+        generated_words: int = 10_000,
     ) -> None:
-        self.mode = mode
-        self.map_task_count = map_task_count
-        self.word_count = word_count
-        self.word_len_min = word_len_min
-        self.word_len_max = word_len_max
-        self.mail_dir = mail_dir
-        self.n_freq = n_freq
-        self.out = out
+        self.generate = generate
+        self.data_dir = data_dir
+
+        if self.generate:
+            files = generate_files(data_dir, generated_files, generated_words)
+            logger.log(APP_LOG_LEVEL, f'Generated {len(files)} in {data_dir}')
+        else:
+            files = [f for f in data_dir.glob('**/*') if f.is_file()]
+            logger.log(APP_LOG_LEVEL, f'Found {len(files)} in {data_dir}')
+
+        self.files = files
+        self.map_tasks = len(self.files) if map_tasks is None else map_tasks
 
     def close(self) -> None:
         """Close the application."""
-        pass
+        if self.generate:
+            shutil.rmtree(self.data_dir)
+            logger.log(
+                APP_LOG_LEVEL,
+                f'Removed generated files in {self.data_dir}',
+            )
 
     def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
         """Run the application.
@@ -162,64 +151,31 @@ class MapreduceApp:
             engine: Application execution engine.
             run_dir: Run directory.
         """
-        # Perform the map phase
-        logger.log(APP_LOG_LEVEL, 'Starting map phase')
-        map_counters: list[Counter[str]] = []
-
-        if self.mode == 'enron':
-            author_lists = generate_author_lists_for_map_tasks(
-                self.map_task_count,
-                self.mail_dir,
-            )
-            map_task_inputs = zip(
-                [self.mail_dir] * self.map_task_count,
-                author_lists,
-            )
-            map_counters.extend(
-                engine.map(
-                    _map_function_for_enron_run_mode,
-                    map_task_inputs,
-                ),
-            )
-        else:
-            paragraphs = generate_paragraphs_for_map_tasks(
-                self.map_task_count,
-                self.word_count,
-                self.word_len_min,
-                self.word_len_max,
-            )
-
-            map_counters.extend(
-                engine.map(map_function_for_random_run_mode, paragraphs),
-            )
-
+        map_futures = [
+            engine.submit(map_task, *batch)
+            for batch in _chunkify(self.files, self.map_tasks)
+        ]
         logger.log(
             APP_LOG_LEVEL,
-            'Map phase completed. Starting reduce phase',
+            f'Submitted {len(map_futures):,} map tasks over '
+            f'{len(self.files):,} input files',
         )
 
-        # Perform the reduce phase
-        reduce_task = engine.submit(reduce_function, map_counters)
+        reduce_future = engine.submit(reduce_task, *map_futures)
+        logger.log(APP_LOG_LEVEL, 'Submitted reduce task')
 
-        # Examine the reduce phase result
-        most_common_words = reduce_task.result().most_common(
-            self.n_freq,
-        )
+        word_counts = reduce_future.result()
+        logger.log(APP_LOG_LEVEL, 'Reduce task finished')
 
+        most_common_words = word_counts.most_common(10)
         logger.log(
             APP_LOG_LEVEL,
-            f'{self.n_freq} most frequent words:',
+            f'{len(most_common_words)} most frequent words:',
         )
         for word, count in most_common_words:
-            logger.log(APP_LOG_LEVEL, f'{word:10s}: {count}')
+            logger.log(APP_LOG_LEVEL, f'{word} ({count:,})')
+
         logger.log(
             APP_LOG_LEVEL,
-            f'Total number of words {sum(reduce_task.result().values())}',
+            f'Total number of words: {sum(word_counts.values()):,}',
         )
-        # Save the reduce phase result
-        output_file_path = os.path.join(run_dir, self.out)
-        with open(output_file_path, 'w') as f:
-            for word, count in most_common_words:
-                f.write(f'{word},{count}\n')
-
-        logger.log(APP_LOG_LEVEL, f'Results saved to: {output_file_path}')
