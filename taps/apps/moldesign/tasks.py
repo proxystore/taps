@@ -19,12 +19,11 @@ def train_model(train_data: pd.DataFrame) -> Pipeline:
     from sklearn.neighbors import KNeighborsRegressor
     from sklearn.pipeline import Pipeline
 
-    from taps.wf.moldesign.chemfunctions import MorganFingerprintTransformer
+    from taps.apps.moldesign.chemfunctions import MorganFingerprintTransformer
 
     model = Pipeline(
         [
             ('fingerprint', MorganFingerprintTransformer()),
-            # n_jobs = -1 lets the model run all available processors
             (
                 'knn',
                 KNeighborsRegressor(
@@ -38,7 +37,7 @@ def train_model(train_data: pd.DataFrame) -> Pipeline:
     )
 
     # Ray arrays are immutable so need to clone.
-    return model.fit(train_data['smiles'].clone(), train_data['ie'].clone())
+    return model.fit(train_data['smiles'].copy(), train_data['ie'].copy())
 
 
 def run_model(model: Pipeline, smiles: list[str]) -> pd.DataFrame:

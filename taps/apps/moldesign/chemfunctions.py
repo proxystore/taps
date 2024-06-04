@@ -35,10 +35,6 @@ from xtb.ase.calculator import XTB
 P = ParamSpec('P')
 T = TypeVar('T')
 
-# Make a global pool for this particular Python thread
-#  Not a great practice, as it will not exit until Python does.
-#  Useful on HPC as it limits the number of times we call `fork`
-#   and we know the nodes where this run will get purged after tasks complete
 try:
     # sched_getaffinity is not available on all systems
     threads = len(os.sched_getaffinity(0))  # type: ignore[attr-defined, unused-ignore]
@@ -51,11 +47,10 @@ def generate_initial_xyz(mol_string: str) -> str:
     """Generate the XYZ coordinates for a molecule.
 
     Args:
-        mol_string: SMILES string
+        mol_string: SMILES string.
 
     Returns:
-        - InChI string for the molecule
-        - XYZ coordinates for the molecule
+        XYZ coordinates for the molecule.
     """
     # Generate 3D coordinates for the molecule
     mol = Chem.MolFromSmiles(mol_string)
@@ -100,13 +95,14 @@ def _run_in_process(
         return fut.result()
 
 
-def _compute_vertical(smiles: str) -> float:
+def compute_vertical(smiles: str) -> float:
     """Run the ionization potential computation.
 
     Args:
-        smiles: SMILES string to evaluate
+        smiles: SMILES string to evaluate.
+
     Returns:
-        Ionization energy in Ha
+        Ionization energy in Ha.
     """
     # Make the initial geometry
     xyz = generate_initial_xyz(smiles)
@@ -131,15 +127,6 @@ def _compute_vertical(smiles: str) -> float:
     charged_energy = atoms.get_potential_energy()
 
     return charged_energy - neutral_energy
-
-
-# Make versions that execute in separate processes
-# compute_vertical = update_wrapper(
-#     partial(_run_in_process, _compute_vertical),
-#     _compute_vertical,
-# )
-# compute_vertical.__name__ = 'compute_vertical'
-compute_vertical = _compute_vertical
 
 
 def compute_morgan_fingerprints(
@@ -231,7 +218,6 @@ def train_model(smiles: list[str], properties: list[float]) -> Pipeline:
                     n_jobs=-1,
                 ),
             ),
-            # n_jobs = -1 lets the model run all available processors
         ],
     )
 
@@ -250,8 +236,3 @@ def run_model(model: Any, smiles: list[str]) -> pd.DataFrame:
     """
     pred_y = model.predict(smiles)
     return pd.DataFrame({'smiles': smiles, 'ie': pred_y})
-
-
-if __name__ == '__main__':
-    energy = compute_vertical('OC')
-    print(energy)
