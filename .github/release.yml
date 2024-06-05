@@ -26,19 +26,19 @@ changelog:
     # All PRs not tagged as the above or below
     - title: Improvements
       labels:
-        - refactor
+        - internal
       exclude:
         labels:
-          - dependencies
           - documentation
+          - package
     # All PRs tagged as documentation
-    - title: Improvements
+    - title: Documentation
       labels:
         - documentation
-    # All PRs tagged "dependencies"
-    - title: Dependencies
+    # All PRs tagged "package"
+    - title: Package
       labels:
-        - dependencies
+        - package
     # All PRs not tagged as the above
     - title: Other Changes
       labels:
