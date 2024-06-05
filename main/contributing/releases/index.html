@@ -2381,6 +2381,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#versioning" class="md-nav__link">
+    Versioning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#creating-releases" class="md-nav__link">
     Creating Releases
   </a>
@@ -2435,6 +2442,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#versioning" class="md-nav__link">
+    Versioning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#creating-releases" class="md-nav__link">
     Creating Releases
   </a>
@@ -2463,7 +2477,13 @@
 
 <h2 id="release-timeline">Release Timeline<a class="headerlink" href="#release-timeline" title="Permanent link">&para;</a></h2>
 <p>Releases are created on an as-needed basis.
-Milestones are the <a href="https://github.com/proxystore/taps/issues" target="_blank">Issue Tracker</a> are used to track features to be included in upcoming releases.</p>
+Milestones in the <a href="https://github.com/proxystore/taps/issues" target="_blank">Issue Tracker</a> are used to track features to be included in upcoming releases.</p>
+<h2 id="versioning">Versioning<a class="headerlink" href="#versioning" title="Permanent link">&para;</a></h2>
+<p>TaPS uses <a href="https://semver.org/">semver</a> as its versioning system.
+TaPS is an application package, rather than a library package, so internal changes within the TaPS benchmarking harness are not considered breaking changes.
+Rather, changes are only considered breaking if they change the way an application is run.
+For example, the command from a prior release no longer works in the following release.</p>
+<p>While TaPS is in major version zero (0.y.z), anything may change at any time.</p>
 <h2 id="creating-releases">Creating Releases<a class="headerlink" href="#creating-releases" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Choose the next version number, referred to as <code>{VERSION}</code> for the
