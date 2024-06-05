@@ -12,50 +12,34 @@ from taps.logging import APP_LOG_LEVEL
 logger = logging.getLogger(__name__)
 
 
-def print_message(message: str) -> None:
-    """Print a message."""
-    logger.log(APP_LOG_LEVEL, message)
-
-
 def configure_montage(
     img_folder: pathlib.Path,
     img_tbl: pathlib.Path,
     img_hdr: pathlib.Path,
-    output_dir: pathlib.Path,
-) -> pathlib.Path:
+) -> None:
     """Montage Mosaic application setup.
 
     This function generates a header file bounding a
     collection of data specified by the input image dir.
 
     Args:
-        img_folder (str): path to input image directory
-        img_tbl (str): name of the image table file
-        img_hdr (str): name of the image header file
-        output_dir (str): output directory path
-
-    Returns:
-        pathlib.Path: the created output directory
+        img_folder: Path to input image directory.
+        img_tbl: Name of the image table file.
+        img_hdr: Name of the image header file.
     """
     import montage_wrapper as montage
 
     imgtbl_log = montage.mImgtbl(str(img_folder), str(img_tbl))
-
-    logger.debug(imgtbl_log)
+    logger.debug(f'mImgtbl:\n{imgtbl_log}')
 
     mkhdr_log = montage.mMakeHdr(str(img_tbl), str(img_hdr))
-    logger.debug(mkhdr_log)
-
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    return output_dir
+    logger.debug(f'mMakeHdr:\n{mkhdr_log}')
 
 
 def mproject(
-    input_fn: pathlib.Path,
-    template: pathlib.Path,
-    output_dir: pathlib.Path,
-    output_name: pathlib.Path,
+    input_path: pathlib.Path,
+    template_path: pathlib.Path,
+    output_path: pathlib.Path,
 ) -> pathlib.Path:
     """Wrapper to Montage mProject function.
 
@@ -63,28 +47,28 @@ def mproject(
     in a FITS header template file.
 
     Args:
-        input_fn (pathlib.Path): FITS file to reproject
-        template (pathlib.Path): FITS header file used to define
-            the desired output
-        output_dir (pathlib.Path): output directory path
-        output_name (pathlib.Path): output file basename
+        input_path: FITS file to reproject.
+        template_path: FITS header file used to define the desired output.
+        output_path: Output filepath.
 
     Returns:
-        pathlib.Path: output directory
+        Output filepath for chaining task dependencies.
     """
     import montage_wrapper as montage
 
-    output = output_dir / output_name
-    project_log = montage.mProject(str(input_fn), str(output), str(template))
-    logger.debug(project_log)
+    project_log = montage.mProject(
+        str(input_path),
+        str(output_path),
+        str(template_path),
+    )
+    logger.debug(f'mProject:\n{project_log}')
 
-    return output_dir  # helps establish dependencies
+    return output_path
 
 
 def mimgtbl(
     img_dir: pathlib.Path,
-    tbl_name: str,
-    output_dir: pathlib.Path,
+    tbl_path: pathlib.Path,
 ) -> pathlib.Path:
     """Wrapper to Montage Imgtbl function.
 
@@ -92,91 +76,74 @@ def mimgtbl(
     from a set of files and creates an ASCII image metadata table.
 
     Args:
-        img_dir (pathlib.Path): Input image directory
-        tbl_name (str): FITS table name
-        output_dir (pathlib.Path): Output directory to save hdr to
+        img_dir: Input image directory.
+        tbl_path: FITS table path.
 
     Returns:
-        pathlib.Path: created table file
+        Path to table file for chaining task dependencies.
     """
     import montage_wrapper as montage
 
-    # It's the same path over and over so just grab the first occurrence
-    tbl_file = output_dir / tbl_name
-    imgtbl_log = montage.mImgtbl(str(img_dir), str(tbl_file))
-    logger.debug(imgtbl_log)
+    imgtbl_log = montage.mImgtbl(str(img_dir), str(tbl_path))
+    logger.debug(f'mImgtbl:\n{imgtbl_log}')
 
-    return tbl_file
+    return tbl_path
 
 
 def moverlaps(
     img_tbl: pathlib.Path,
-    diffs_name: str,
-    output_dir: pathlib.Path,
-) -> tuple[pathlib.Path, pathlib.Path]:
+    diffs_tbl: pathlib.Path,
+) -> pathlib.Path:
     """Wrapper to Montage Overlaps function.
 
     The function takes a list of of images and generates a list of overlaps.
 
     Args:
-        img_tbl (pathlib.Path): image metadata file
-        diffs_name (str): output table name of overlapping areas
-        output_dir (pathlib.Path): output directory path
+        img_tbl: Image metadata file.
+        diffs_tbl: Path for the output diff table.
 
     Returns:
-        tuple[pathlib.Path, pathlib.Path]: directory containing
-            overlap images and difference table
+        Path to the difference table file for chaining task dependencies.
     """
     import montage_wrapper as montage
 
-    diffs_tbl = output_dir / diffs_name
     overlaps_log = montage.mOverlaps(str(img_tbl), str(diffs_tbl))
+    logger.debug(f'mOverlaps:\n{overlaps_log}')
 
-    logger.debug(overlaps_log)
-    diff_dir = output_dir / 'diffdir'
-    diff_dir.mkdir(parents=True, exist_ok=True)
-    return diff_dir, diffs_tbl
+    return diffs_tbl
 
 
 def mdiff(
     image_1: pathlib.Path,
     image_2: pathlib.Path,
     template: pathlib.Path,
-    output_dir: pathlib.Path,
-    output_name: str,
+    output_path: pathlib.Path,
 ) -> pathlib.Path:
     """Wrapper to Montage diff function.
 
-    The function subtracts one image from another
-    (both in the same projection)
+    The function subtracts one image from another (both in the same
+    projection).
 
     Args:
-        image_1 (pathlib.Path): first input file
-            for differencing.
-        image_2 (pathlib.Path): second input file
-            for differencing.
-        template (pathlib.Path): FITS header file used to
-            define the desired output.
-        output_dir (pathlib.Path): Output directory name.
-        output_name (str): output difference file basename.
+        image_1: First input file for differencing.
+        image_2: Second input file for differencing.
+        template: FITS header file used to define the desired output.
+        output_path: Output filepath.
 
     Returns:
-        pathlib.Path: output filepath
+        Output filepath for chaining task dependencies.
     """
     import montage_wrapper as montage
 
-    diff_dir = output_dir / 'diffdir'
-    diff_dir.mkdir(exist_ok=True, parents=True)
-    output_file = diff_dir / output_name
-    log_str = montage.mDiff(
+    diff_log = montage.mDiff(
         str(image_1),
         str(image_2),
-        str(output_file),
+        str(output_path),
         str(template),
     )
-    logger.debug(log_str)
+    logger.debug(f'mDiff:\n{diff_log}')
 
-    return output_file
+    return output_path
 
 
 def bgexec_prep(
@@ -184,20 +151,19 @@ def bgexec_prep(
     diffs_table: pathlib.Path,
     diff_dir: pathlib.Path,
     output_dir: pathlib.Path,
-) -> tuple[pathlib.Path, pathlib.Path]:
+) -> pathlib.Path:
     """Prep to call Montage bg function.
 
     The function creates an image-to-image difference parameter table and
     then applies a set of corrections to achieve a best global fit.
 
     Args:
-        img_table (pathlib.Path): reprojected image metadata list
-        diffs_table (pathlib.Path): table file list of input difference images
-        diff_dir (pathlib.Path): directory for temporary difference files
-        output_dir (pathlib.Path): output directory path
+        img_table: Reprojected image metadata list.
+        diffs_table: Table file list of input difference images.
+        diff_dir: Directory for temporary difference files.
+        output_dir: Output directory path.
 
     Returns:
-        tuple[pathlib.Path, pathlib.Path]: correction dir path,
             corrections table path
     """
     import montage_wrapper as montage
@@ -210,19 +176,16 @@ def bgexec_prep(
         str(fits_tbl),
         str(diff_dir),
     )
-    logger.debug(fit_log)
+    logger.debug(f'mFitExec\n{fit_log}')
 
     bg_log = montage.mBgModel(
         str(img_table),
         str(fits_tbl),
         str(corrections_tbl),
     )
-    logger.info(bg_log)
+    logger.debug(f'mBgModel\n{bg_log}')
 
-    corrdir = output_dir / 'corrdir'
-    corrdir.mkdir(parents=True, exist_ok=True)
-
-    return corrdir, corrections_tbl
+    return corrections_tbl
 
 
 def mbackground(
@@ -237,25 +200,19 @@ def mbackground(
     Function subtracts a planar background from a FITS image.
 
     Args:
-        in_image (pathlib.Path): Input FITS file
-        out_image (pathlib.Path): Output background-removed FITS file
-        a (float): A coefficient in (A*x + B*y + C) background level equation
-        b (float): B coefficient in (A*x + B*y + C) background level equation
-        c (float): C level in (A*x + B*y + C) background level equation
+        in_image: Input FITS file.
+        out_image: Output background-removed FITS file.
+        a: A coefficient in (A*x + B*y + C) background level equation.
+        b: B coefficient in (A*x + B*y + C) background level equation.
+        c: C level in (A*x + B*y + C) background level equation.
 
     Returns:
-        pathlib.Path: output image path
+        Output image path for chaining task dependencies.
     """
     import montage_wrapper as montage
 
-    background_log = montage.mBackground(
-        str(in_image),
-        str(out_image),
-        a,
-        b,
-        c,
-    )
-    logger.debug(background_log)
+    bg_log = montage.mBackground(str(in_image), str(out_image), a, b, c)
+    logger.debug(f'mBackground:\n{bg_log}')
 
     return out_image
 
@@ -269,15 +226,14 @@ def madd(
     """Coadd reprojected images to form a mosaic.
 
     Args:
-        images_table (pathlib.Path): table file containing metadata
-            for images to be coadded.
-        template_header (pathlib.Path): FITS header template to use
-            in generation of output FITS.
-        out_image (pathlib.Path): Output FITS image
-        corr_dir (pathlib.Path): Directory containing reprojected image
+        images_table: table file containing metadata for images to be coadded.
+        template_header: FITS header template to use in generation of output
+            FITS.
+        out_image: Output FITS image.
+        corr_dir: Directory containing reprojected image.
 
     Returns:
-        pathlib.Path: FITS output header file.
+        FITS output header file.
     """
     import montage_wrapper as montage
 
@@ -287,7 +243,8 @@ def madd(
         str(out_image),
         str(corr_dir),
     )
-    logger.debug(add_log)
+    logger.debug(f'mAdd:\n{add_log}')
+
     return out_image
 
 
@@ -298,155 +255,151 @@ class MontageApp:
         img_folder: Path to input image directory.
         img_tbl: Name of the image table file.
         img_hdr: Name of the image header file.
-        output_dir: Output directory path.
+        output_dir: Output directory path for intermediate and result data.
     """
 
     def __init__(
         self,
-        img_folder: str,
-        img_tbl: str,
-        img_hdr: str,
-        output_dir: str,
+        img_folder: pathlib.Path,
+        img_tbl: str = 'Kimages.tbl',
+        img_hdr: str = 'Kimages.hdr',
+        output_dir: str = 'data/',
     ) -> None:
-        self.img_folder = pathlib.Path(img_folder).absolute()
-        self.img_tbl = pathlib.Path(img_tbl).absolute()
-        self.img_hdr = pathlib.Path(img_hdr).absolute()
-        self.output_dir = pathlib.Path(output_dir).absolute()
+        self.img_folder = img_folder
+        self.img_tbl = img_tbl
+        self.img_hdr = img_hdr
+        self.output_dir = output_dir
 
     def close(self) -> None:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
         """Run the application.
 
         Args:
             engine: Application execution engine.
             run_dir: Run directory.
         """
-        output_dir_fut = engine.submit(
-            configure_montage,
-            self.img_folder,
-            self.img_tbl,
-            self.img_hdr,
-            self.output_dir,
+        output_dir = run_dir / self.output_dir
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        img_tbl = output_dir / self.img_tbl
+        img_hdr = output_dir / self.img_hdr
+        configure_montage(self.img_folder, img_tbl, img_hdr)
+
+        logger.log(
+            APP_LOG_LEVEL,
+            f'Configured output directory ({output_dir})',
         )
 
-        mproject_outputs = []
+        projections_dir = output_dir / 'projections'
+        projections_dir.mkdir(parents=True, exist_ok=True)
 
+        mproject_outputs = []
+        logger.log(APP_LOG_LEVEL, 'Starting projections')
         for image in self.img_folder.glob('*.fits'):
             input_image = self.img_folder / image
-            output_image_name = f'hdu0_{image.name}'
+            output_image_path = projections_dir / f'hdu0_{image.name}'
 
             out = engine.submit(
                 mproject,
-                input_fn=input_image,
-                template=self.img_hdr,
-                output_dir=output_dir_fut,
-                output_name=output_image_name,
+                input_path=input_image,
+                template_path=img_hdr,
+                output_path=output_image_path,
             )
             mproject_outputs.append(out)
 
         wait(mproject_outputs)
+        logger.log(APP_LOG_LEVEL, 'Projections completed')
 
         img_tbl_fut = engine.submit(
             mimgtbl,
-            img_dir=self.output_dir,
-            tbl_name='images.tbl',
-            output_dir=output_dir_fut,
+            img_dir=projections_dir,
+            tbl_path=output_dir / 'images.tbl',
         )
-
-        diffs_data_fut = engine.submit(
+        diffs_tbl_fut = engine.submit(
             moverlaps,
             img_tbl=img_tbl_fut,
-            diffs_name='diffs.tbl',
-            output_dir=output_dir_fut,
+            diffs_tbl=output_dir / 'diffs.tbl',
         )
-        diffs_dir, diffs_tbl = diffs_data_fut.result()
+        diffs_dir = output_dir / 'diffs'
+        diffs_dir.mkdir(parents=True, exist_ok=True)
 
+        diffs_tbl = diffs_tbl_fut.result()
         df = pd.read_csv(diffs_tbl, comment='#', sep='\\s+').drop(0)
         images1 = list(df['|.1'])
         images2 = list(df['cntr2'])
         outputs = list(df['|.2'])
-        outputs_2 = []
 
-        for i in range(len(images1)):
-            image1 = self.output_dir / images1[i]
-            image2 = self.output_dir / images2[i]
-
-            out = engine.submit(
+        mdiff_futures = []
+        logger.log(APP_LOG_LEVEL, 'Starting difference computations')
+        for image1, image2, output in zip(images1, images2, outputs):
+            future = engine.submit(
                 mdiff,
-                image_1=image1,
-                image_2=image2,
-                output_name=outputs[i],
-                template=self.img_hdr,
-                output_dir=output_dir_fut,
+                image_1=projections_dir / image1,
+                image_2=projections_dir / image2,
+                template=img_hdr,
+                output_path=diffs_dir / output,
             )
-            outputs_2.append(out)
+            mdiff_futures.append(future)
 
-        wait(outputs_2)
+        wait(mdiff_futures)
+        logger.log(APP_LOG_LEVEL, 'Differences completed')
 
-        fcorrdir = engine.submit(
+        corrections_fut = engine.submit(
             bgexec_prep,
             img_table=img_tbl_fut,
             diffs_table=diffs_tbl,
             diff_dir=diffs_dir,
-            output_dir=self.output_dir,
+            output_dir=output_dir,
         )
 
-        corrdir, corrtbl = fcorrdir.result()
+        corrections_dir = output_dir / 'corrections'
+        corrections_dir.mkdir(parents=True, exist_ok=True)
 
-        corrections = pd.read_csv(
-            corrtbl,
-            comment='|',
-            sep='\\s+',
-        )
+        corrections_tbl = corrections_fut.result()
+
+        corrections = pd.read_csv(corrections_tbl, comment='|', sep='\\s+')
         corrections.loc[90] = list(corrections.columns)
         corrections.columns = ['id', 'a', 'b', 'c']
-
-        # for i in range(len(corrections)):
-        #    corrections.loc['id'][i] = int(corrections['id'][i])
         corrections['id'] = corrections['id'].astype(int)
 
-        images_table = pd.read_csv(
-            img_tbl_fut.result(),
-            comment='|',
-            sep='\\s+',
-        )
+        img_tbl = img_tbl_fut.result()
+        images_table = pd.read_csv(img_tbl, comment='|', sep='\\s+')
 
-        bgexec_outputs = []
-
-        for i in range(len(images_table)):
-            input_image = list(images_table['fitshdr'])[i]
-            file_name = (list(images_table['fitshdr'])[i]).replace(
-                str(self.output_dir) + '/',
-                '',
-            )
-            output_image = corrdir / file_name
+        bgexec_futures = []
+        logger.log(APP_LOG_LEVEL, 'Starting background computations')
+        for i, input_image in enumerate(list(images_table['fitshdr'])):
+            input_path = pathlib.Path(input_image)
+            output_path = corrections_dir / input_path.name
             correction_values = list(
                 corrections.loc[corrections['id'] == i].values[0],
             )
 
-            output_mb = engine.submit(
+            future = engine.submit(
                 mbackground,
-                in_image=input_image,
-                out_image=output_image,
+                in_image=input_path,
+                out_image=output_path,
                 a=correction_values[1],
                 b=correction_values[2],
                 c=correction_values[3],
             )
 
-            bgexec_outputs.append(output_mb)
+            bgexec_futures.append(future)
 
-        wait(bgexec_outputs)
+        wait(bgexec_futures)
+        logger.log(APP_LOG_LEVEL, 'Backgrounds completed')
 
-        mosaic_out = self.output_dir / 'm17.fits'
         mosaic_future = engine.submit(
             madd,
             img_tbl_fut,
-            self.img_hdr,
-            mosaic_out,
-            corrdir,
+            img_hdr,
+            output_dir / 'm17.fits',
+            corrections_dir,
         )
 
-        logger.info(f'Created output FITS file at {mosaic_future.result()}')
+        logger.log(
+            APP_LOG_LEVEL,
+            f'Created output FITS file at {mosaic_future.result()}',
+        )

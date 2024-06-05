@@ -8,14 +8,14 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from taps.apps.moldesign.chemfunctions import compute_vertical
+from taps.apps.moldesign.tasks import combine_inferences
+from taps.apps.moldesign.tasks import run_model
+from taps.apps.moldesign.tasks import train_model
 from taps.engine import AppEngine
 from taps.engine import as_completed
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
-from taps.wf.moldesign.chemfunctions import compute_vertical
-from taps.wf.moldesign.tasks import combine_inferences
-from taps.wf.moldesign.tasks import run_model
-from taps.wf.moldesign.tasks import train_model
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ class MoldesignApp:
         """
         start_time = time.monotonic()
 
-        search_space = pd.read_csv(self.dataset, sep='\s+')
+        search_space = pd.read_csv(self.dataset, sep='\\s+')
         logger.log(
             APP_LOG_LEVEL,
             f'Loaded search space (size={len(search_space):,})',
@@ -180,13 +180,16 @@ class MoldesignApp:
             )
 
         fig, ax = plt.subplots(figsize=(4.5, 3.0))
-
         ax.scatter(train_data['time'], train_data['ie'])
         ax.step(train_data['time'], train_data['ie'].cummax(), 'k--')
-
         ax.set_xlabel('Walltime (s)')
         ax.set_ylabel('Ion. Energy (Ha)')
-
         fig.tight_layout()
 
-        train_data.to_csv(run_dir / 'results.csv', index=False)
+        figure_path = run_dir / 'results.png'
+        fig.savefig(figure_path)
+        logger.log(APP_LOG_LEVEL, f'Saved figure to {figure_path}')
+
+        training_path = run_dir / 'results.csv'
+        train_data.to_csv(training_path, index=False)
+        logger.log(APP_LOG_LEVEL, f'Saved results to {training_path}')

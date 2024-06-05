@@ -1,7 +1,16 @@
 from __future__ import annotations
 
+import sys
+from typing import Optional
+
+if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
+    from typing import Self
+else:  # pragma: <3.11 cover
+    from typing_extensions import Self
+
 from pydantic import Field
 from pydantic import field_validator
+from pydantic import model_validator
 
 from taps.app import App
 from taps.app import AppConfig
@@ -14,9 +23,10 @@ class SyntheticConfig(AppConfig):
 
     structure: str = Field(description='workflow structure')
     task_count: int = Field(description='number of tasks in the workflow')
-    task_data_bytes: int = Field(description='intermediate task data size')
-    task_sleep: float = Field(description='minimum duration of each task')
-    bag_max_running: int = Field(
+    task_data_bytes: int = Field(0, description='intermediate task data size')
+    task_sleep: float = Field(0, description='minimum duration of each task')
+    bag_max_running: Optional[int] = Field(  # noqa: UP007
+        None,
         description='max running tasks in bag workflow',
     )
     warmup_task: bool = Field(
@@ -39,6 +49,19 @@ class SyntheticConfig(AppConfig):
             ) from None
 
         return structure
+
+    @model_validator(mode='after')
+    def _validate_options(self) -> Self:
+        from taps.apps.synthetic import WorkflowStructure
+
+        structure = WorkflowStructure(self.structure)
+        if structure == WorkflowStructure.BAG and self.bag_max_running is None:
+            raise ValueError(
+                '--bag-max-running must be specified when --structure bag '
+                'is selected.',
+            )
+
+        return self
 
     def create_app(self) -> App:
         """Create an application instance from the config."""

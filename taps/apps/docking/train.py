@@ -1,4 +1,7 @@
-"""Module adapted from `<https://github.com/Parsl/parsl-docking-tutorial/blob/main/ml_functions.py>`."""
+"""Protein docking model training.
+
+Module adapted from [ParslDock](https://github.com/Parsl/parsl-docking-tutorial/blob/1460cb2d79c4660cfc7144c394606fd101e272e6/ml_functions.py).
+"""
 
 from __future__ import annotations
 
@@ -16,14 +19,17 @@ def compute_morgan_fingerprints(
 ) -> tuple[int, int]:
     """Get Morgan Fingerprint of a specific SMILES string.
 
-    Adapted from: `<https://github.com/google-research/google-research/blob/>
-    dfac4178ccf521e8d6eae45f7b0a33a6a5b691ee/mol_dqn/chemgraph/dqn/deep_q_networks.py#L750>`
+    Adapted from: https://github.com/google-research/google-research/blob/>
+    dfac4178ccf521e8d6eae45f7b0a33a6a5b691ee/mol_dqn/chemgraph/dqn/deep_q_networks.py#L750
+
     Args:
-      graph (str): The molecule as a SMILES string
-      fingerprint_length (int): Bit-length of fingerprint
-      fingerprint_radius (int): Radius used to compute fingerprint
+        smiles: The molecule as a SMILES string.
+        fingerprint_length: Bit-length of fingerprint.
+        fingerprint_radius: Radius used to compute fingerprint.
+
     Returns:
-      np.array.shape = [hparams, fingerprint_length]. The Morgan fingerprint.
+        Array containing the Morgan fingerprint with shape
+        `[hparams, fingerprint_length]`.
     """
     from rdkit import Chem
     from rdkit import DataStructs
@@ -63,12 +69,11 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
         """Train model.
 
         Args:
-            X (list[str]): list of SMILES strings
-            y (np.array[int] | None): array of true fingerprints.
-                Defaults to None.
+            X: List of SMILES strings.
+            y: Array of true fingerprints.
 
         Returns:
-            MorganFingerprintTransformer: the trained model
+            The trained model.
         """
         return self  # Don't need to do anything
 
@@ -80,18 +85,16 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
         """Compute the fingerprints.
 
         Args:
-            X: List of SMILES strings
-            y (np.array[int] | None): array of true fingerprints.
-                Defaults to None.
+            X: List of SMILES strings.
+            y: Array of true fingerprints.
 
         Returns:
-            np.array[int]: Array of predicted fingerprints
+            Array of predicted fingerprints.
         """
         fps = []
         for x in X:
-            fps.append(
-                compute_morgan_fingerprints(x, self.length, self.radius),
-            )
+            fp = compute_morgan_fingerprints(x, self.length, self.radius)
+            fps.append(fp)
 
         return fps
 
@@ -104,7 +107,7 @@ def train_model(training_data: pd.DataFrame) -> Pipeline:
             that contains molecule structure and docking score, respectfully.
 
     Returns:
-        sklearn.Pipeline: A trained model
+        A trained model.
     """
     from sklearn.neighbors import KNeighborsRegressor
     from sklearn.pipeline import Pipeline
@@ -120,7 +123,7 @@ def train_model(training_data: pd.DataFrame) -> Pipeline:
                     metric='jaccard',
                     n_jobs=-1,
                 ),
-            ),  # n_jobs = -1 lets the model run all available processors
+            ),
         ],
     )
 
@@ -131,9 +134,9 @@ def run_model(model: Pipeline, smiles: list[str]) -> pd.DataFrame:
     """Run a model on a list of smiles strings.
 
     Args:
-        model (sklearn.Pipeline): Trained model that
-            takes SMILES strings as inputs
-        smiles (list[str]): List of molecules to evaluate
+        model: Trained model that takes SMILES strings as inputs.
+        smiles: List of molecules to evaluate.
+
     Returns:
         A dataframe with the molecules and their predicted outputs
     """

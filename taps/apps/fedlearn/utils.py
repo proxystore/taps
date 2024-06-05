@@ -7,10 +7,10 @@ from numpy.random import Generator
 from torch.utils.data import Dataset
 from torch.utils.data import Subset
 
-from taps.wf.fedlearn.config import DataChoices
-from taps.wf.fedlearn.modules import create_model
-from taps.wf.fedlearn.types import Client
-from taps.wf.fedlearn.types import ClientID
+from taps.apps.fedlearn.modules import create_model
+from taps.apps.fedlearn.types import Client
+from taps.apps.fedlearn.types import ClientID
+from taps.apps.fedlearn.types import DataChoices
 
 
 def create_clients(
@@ -34,7 +34,7 @@ def create_clients(
         data_alpha: The
             [Dirichlet](https://en.wikipedia.org/wiki/Dirichlet_distribution)
             distribution alpha value for the number of samples across clients.
-        rng (Generator): Random number generator.
+        rng: Random number generator.
 
     Returns:
         List of clients.

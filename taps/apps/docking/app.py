@@ -3,22 +3,23 @@ from __future__ import annotations
 import logging
 import os
 import pathlib
+import shutil
 import subprocess
 import uuid
-from pathlib import Path
 from time import monotonic
 
 import pandas as pd
 
+from taps.apps.docking.train import run_model
+from taps.apps.docking.train import train_model
 from taps.engine import AppEngine
 from taps.engine import as_completed
 from taps.engine import TaskFuture
-from taps.wf.docking.train import run_model
-from taps.wf.docking.train import train_model
+from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
-autodocktools_path = os.getenv('MGLTOOLS_HOME')
+MGLTOOLS_HOME_ENV = 'MGLTOOLS_HOME'
 
 
 def smi_to_pdb(smiles: str, pdb_file: pathlib.Path) -> pathlib.Path:
@@ -28,13 +29,11 @@ def smi_to_pdb(smiles: str, pdb_file: pathlib.Path) -> pathlib.Path:
     that will be used for docking.
 
     Args:
-        smiles (str): the molecule representation in
-            SMILES format
-        pdb_file (pathlib.Path): the path of the PDB file
-            to create
+        smiles: Molecule representation in SMILES format.
+        pdb_file: Path of the PDB file to create.
 
     Returns:
-        pathlib.Path: The created PDB file
+        The created PDB file.
     """
     from rdkit import Chem
     from rdkit.Chem import AllChem
@@ -63,17 +62,16 @@ def set_element(
     """Add coordinated to the PDB file using VMD.
 
     Args:
-        input_pdb (pathlib.Path): path of input PDB file.
-        output_pdb (pathlib.Path): path to PDB file with atomic coordinates
-        tcl_path (pathlib.Path): path to TCL script
+        input_pdb: Path of input PDB file.
+        output_pdb: Path to PDB file with atomic coordinates.
+        tcl_path: Path to TCL script.
 
     Returns:
-        pathlib.Path: the newly created PDB file path
+        The newly created PDB file path.
     """
     command = f'vmd -dispdev text -e {tcl_path} -args {input_pdb} {output_pdb}'
 
-    result = subprocess.check_output(command.split())
-    logger.info(result)
+    subprocess.check_output(command.split())
     return output_pdb
 
 
@@ -84,20 +82,23 @@ def pdb_to_pdbqt(
 ) -> pathlib.Path:
     """Convert PDB file to PDBQT format.
 
-    PDBQT files are similar to the PDB format, but also
-    includes connectivity information
+    PDBQT files are similar to the PDB format, but also includes connectivity
+    information.
 
     Args:
-        pdb_file (pathlib.Path): input PDB file to convert
-        pdbqt_file (pathlib.Path): output converted PDBQT file
-        ligand (bool, optional): If the molecule is a ligand or not.
-            Defaults to True.
+        pdb_file: input PDB file to convert.
+        pdbqt_file: output converted PDBQT file.
+        ligand: If the molecule is a ligand or not.
 
     Returns:
-        pathlib.Path: the path to the created PDBQT file
+        The path to the created PDBQT file.
+
+    Raises:
+        RuntimeError: If `MGLTOOLS_HOME` is not set.
     """
-    autodocktools_path: str | None = os.getenv('MGLTOOLS_HOME')
-    assert autodocktools_path is not None
+    autodocktools_path = os.getenv(MGLTOOLS_HOME_ENV)
+    if autodocktools_path is None:
+        raise RuntimeError(f'{MGLTOOLS_HOME_ENV} is not set.')
 
     script, flag = (
         ('prepare_ligand4.py', 'l')
@@ -105,21 +106,20 @@ def pdb_to_pdbqt(
         else ('prepare_receptor4.py', 'r')
     )
 
-    command = (
-        f"{'python2.7'} "
-        f"""{(Path(autodocktools_path)
-            / 'MGLToolsPckgs/AutoDockTools/Utilities24'
-            / script)} """
-        f" -{flag} {pdb_file} "
-        f" -o {pdbqt_file} "
-        f" -U nphs_lps_waters"
+    script_path = (
+        pathlib.Path(autodocktools_path)
+        / 'MGLToolsPckgs/AutoDockTools/Utilities24'
+        / script
     )
-    result = subprocess.check_output(
+    command = (
+        f'python2.7 {script_path} -{flag} {pdb_file} -o {pdbqt_file} '
+        '-U nphs_lps_waters'
+    )
+    subprocess.check_output(
         command.split(),
         cwd=pdb_file.parent,
         encoding='utf-8',
     )
-    logger.info(result)
 
     return pdbqt_file
 
@@ -142,23 +142,19 @@ def make_autodock_config(
     docking experiment.
 
     Args:
-        input_receptor_pdbqt_file (pathlib.Path): target receptor PDBQT file
-        input_ligand_pdbqt_file (pathlib.Path): target ligand PDBQT file
-        output_conf_file (pathlib.Path): the generated Vina conf file
-        output_ligand_pdbqt_file (pathlib.Path): output ligand PDBQT file path
-        center (Tuple[float, float, float]): center coordinates.
-            Defaults to (15.614, 53.380, 15.455).
-        size (Tuple[int, int, int]): size of the search space.
-            Defaults to (20, 20, 20).
-        exhaustiveness (int, optional): number of monte carlo simulations.
-            Defaults to 20.
-        num_modes (int, optional): number of binding modes. Defaults to 20.
-        energy_range (int, optional): maximum energy difference between
+        input_receptor_pdbqt_file: Target receptor PDBQT file.
+        input_ligand_pdbqt_file: Target ligand PDBQT file.
+        output_conf_file: The generated Vina conf file.
+        output_ligand_pdbqt_file: Output ligand PDBQT file path.
+        center: Center coordinates.
+        size: Size of the search space.
+        exhaustiveness: Number of monte carlo simulations.
+        num_modes: Number of binding modes.
+        energy_range: Maximum energy difference between
             the best binding mode and the worst one displayed (kcal/mol).
-            Defaults to 10.
 
     Returns:
-        pathlib.Path: path of created output configuration file
+        Path of created output configuration file
     """
     # Format configuration file
     file_contents = (
@@ -186,68 +182,36 @@ def autodock_vina(
     config_file: pathlib.Path,
     smiles: str,
     num_cpu: int = 1,
-) -> tuple[str, float] | str:
+) -> tuple[str, float]:
     """Compute the docking score.
 
-    The docking score captures the potential energy change
-    when the protein and ligand are docked. A strong binding
-    is represented by a negative score, weaker (or no) binders
-    are represented by positive scores.
+    The docking score captures the potential energy change when the protein
+    and ligand are docked. A strong binding is represented by a negative score,
+    weaker (or no) binders are represented by positive scores.
 
     Args:
-        config_file (pathlib.Path): Vina configuration file
-        smiles (str): the SMILES string of molecule
-        num_cpu (int, optional): number of CPUs to use. Defaults to 1.
+        config_file: Vina configuration file.
+        smiles: The SMILES string of molecule.
+        num_cpu: Number of CPUs to use.
 
     Returns:
-        tuple[str, float] | str: the docking score for the associated
-            molecule or the error statement
+        A tuple containing the SMILES string.
     """
-    autodock_vina_exe = 'vina'
-    try:
-        command = f'{autodock_vina_exe} --config {config_file} --cpu {num_cpu}'
-        result = subprocess.check_output(command.split(), encoding='utf-8')
+    command = ['vina', '--config', str(config_file), '--cpu', str(num_cpu)]
+    result = subprocess.check_output(command, encoding='utf-8')
 
-        # find the last row of the table and extract the affinity score
-        result_list = result.split('\n')
-        last_row = result_list[-3]
-        score = last_row.split()
-        return (smiles, float(score[1]))
-    except subprocess.CalledProcessError as e:
-        return (
-            f"Command '{e.cmd}' returned non-zero exit status {e.returncode}"
-        )
-    except Exception as e:
-        return f'Error: {e}'
-
-
-def cleanup(
-    dock_result: tuple[str, float] | str,
-    pdb: pathlib.Path,
-    pdb_coords: pathlib.Path,
-    pdb_qt: pathlib.Path,
-    autodoc_config: pathlib.Path,
-    docking: pathlib.Path,
-) -> None:
-    """Cleanup output directory.
-
-    Args:
-        dock_result (tuple[str, float] | str): Docking score output
-        pdb (pathlib.Path): pdb file generated from SMILES string
-        pdb_coords (pathlib.Path): pdb file with atomic coordinates
-        pdb_qt (pathlib.Path): pdqt file
-        autodoc_config (pathlib.Path): autodock vina config file
-        docking (pathlib.Path): output ligand file
-    """
-    pdb.unlink(missing_ok=True)
-    pdb_coords.unlink(missing_ok=True)
-    pdb_qt.unlink(missing_ok=True)
-    autodoc_config.unlink(missing_ok=True)
-    docking.unlink(missing_ok=True)
+    # find the last row of the table and extract the affinity score
+    result_list = result.split('\n')
+    last_row = result_list[-3]
+    score = last_row.split()
+    return (smiles, float(score[1]))
 
 
 class DockingApp:
     """Protein docking application.
+
+    Based on the
+    [Parsl Docking Tutorial](https://github.com/Parsl/parsl-docking-tutorial).
 
     Args:
         smi_file_name_ligand_path: Path to ligand SMILES string.
@@ -281,17 +245,20 @@ class DockingApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
+    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
             engine: Application execution engine.
             run_dir: Run directory.
         """
-        futures: list[TaskFuture[tuple[str, float] | str]] = []
+        docking_futures: list[TaskFuture[tuple[str, float]]] = []
         train_data = []
         smiles_simulated = []
-        train_output_file = pathlib.Path('training-results.json')
+
+        train_output_file = run_dir / 'training-results.json'
+        task_data_dir = run_dir / 'tasks'
+        task_data_dir.mkdir(parents=True, exist_ok=True)
 
         search_space = pd.read_csv(self.smi_file_name_ligand)
         search_space = search_space[['TITLE', 'SMILES']]
@@ -301,67 +268,27 @@ class DockingApp:
             self.initial_simulations,
             random_state=self.seed,
         )
+        logger.log(
+            APP_LOG_LEVEL,
+            f'Submitting {self.initial_simulations} initial simulations',
+        )
         for i in range(self.initial_simulations):
             smiles = selected_smiles.iloc[i]['SMILES']
+            working_dir = task_data_dir / uuid.uuid4().hex
+            working_dir.mkdir()
+            future = self._submit_task_for_smiles(engine, smiles, working_dir)
+            docking_futures.append(future)
+            logger.log(APP_LOG_LEVEL, f'Submitted computations for {smiles}')
 
-            fname = uuid.uuid4().hex
-
-            pdb_file = pathlib.Path(f'{fname}.pdb')
-            output_pdb = pathlib.Path(f'{fname}-coords.pdb')
-            pdbqt_file = pathlib.Path(f'{fname}-coords.pdbqt')
-            vina_conf_file = pathlib.Path(f'{fname}-config.txt')
-            output_ligand_pdbqt = pathlib.Path(f'{fname}-out.pdb')
-
-            smi_future = engine.submit(smi_to_pdb, smiles, pdb_file=pdb_file)
-            element_future = engine.submit(
-                set_element,
-                smi_future,
-                output_pdb=output_pdb,
-                tcl_path=self.tcl_path,
+        for future in as_completed(docking_futures):
+            smiles, score = future.result()
+            logger.log(
+                APP_LOG_LEVEL,
+                f'Computation for {smiles} succeeded with score = {score}',
             )
-            pdbqt_future = engine.submit(
-                pdb_to_pdbqt,
-                element_future,
-                pdbqt_file=pdbqt_file,
-            )
-            config_future = engine.submit(
-                make_autodock_config,
-                self.receptor,
-                pdbqt_future,
-                vina_conf_file,
-                output_ligand_pdbqt,
-            )
-            dock_future = engine.submit(autodock_vina, config_future, smiles)
-            _ = engine.submit(
-                cleanup,
-                dock_future,
-                smi_future,
-                element_future,
-                pdbqt_future,
-                config_future,
-                output_ligand_pdbqt,
-            )
-
-            futures.append(dock_future)
-
-        # wait for all the futures to finish
-        while len(futures) > 0:
-            future = next(as_completed(futures))
-            dock_score = future.result()
-
-            assert isinstance(dock_score, tuple), dock_score
-            smiles, score = dock_score
-
-            futures.remove(future)
-
-            logger.info(f'Computation for {smiles} succeeded: {score}')
 
             train_data.append(
-                {
-                    'smiles': smiles,
-                    'score': score,
-                    'time': monotonic(),
-                },
+                {'smiles': smiles, 'score': score, 'time': monotonic()},
             )
             smiles_simulated.append(smiles)
 
@@ -369,91 +296,49 @@ class DockingApp:
 
         # train model, run inference, and run more simulations
         for i in range(self.num_iterations):
-            logger.info(f'\nStarting batch {i}')
-            m = train_model(training_df)
-            predictions = run_model(m, search_space['SMILES'])
-            predictions.sort_values(
-                'score',
-                ascending=True,
-                inplace=True,
+            logger.log(
+                APP_LOG_LEVEL,
+                f'Starting iteration {i+1}/{self.num_iterations}',
             )
+
+            model = train_model(training_df)
+            logger.log(APP_LOG_LEVEL, 'Model training finished')
+
+            predictions = run_model(model, search_space['SMILES'])
+            predictions.sort_values('score', ascending=True, inplace=True)
+            logger.log(APP_LOG_LEVEL, 'Model inference finished')
 
             train_data = []
             futures = []
             batch_count = 0
             for smiles in predictions['smiles']:
                 if smiles not in smiles_simulated:
-                    fname = uuid.uuid4().hex
-
-                    pdb_file = pathlib.Path(f'{fname}.pdb')
-                    output_pdb = pathlib.Path(f'{fname}-coords.pdb')
-                    pdbqt_file = pathlib.Path(f'{fname}-coords.pdbqt')
-                    vina_conf_file = pathlib.Path(f'{fname}-config.txt')
-                    output_ligand_pdbqt = pathlib.Path(f'{fname}-out.pdb')
-
-                    smi_future = engine.submit(
-                        smi_to_pdb,
+                    working_dir = task_data_dir / uuid.uuid4().hex
+                    working_dir.mkdir()
+                    future = self._submit_task_for_smiles(
+                        engine,
                         smiles,
-                        pdb_file=pdb_file,
+                        working_dir,
                     )
-                    element_future = engine.submit(
-                        set_element,
-                        smi_future,
-                        output_pdb=output_pdb,
-                        tcl_path=self.tcl_path,
-                    )
-                    pdbqt_future = engine.submit(
-                        pdb_to_pdbqt,
-                        element_future,
-                        pdbqt_file=pdb_file,
-                    )
-                    config_future = engine.submit(
-                        make_autodock_config,
-                        self.receptor,
-                        pdbqt_future,
-                        vina_conf_file,
-                        output_ligand_pdbqt_file=output_ligand_pdbqt,
-                    )
-                    dock_future = engine.submit(
-                        autodock_vina,
-                        config_future,
-                        smiles,
-                    )
-                    engine.submit(
-                        cleanup,
-                        dock_future,
-                        smi_future,
-                        element_future,
-                        pdbqt_future,
-                        config_future,
-                        output_ligand_pdbqt,
-                    )
-
-                    futures.append(dock_future)
-
+                    futures.append(future)
                     batch_count += 1
+                    logger.log(
+                        APP_LOG_LEVEL,
+                        f'Submitted computations for {smiles}',
+                    )
 
-                if batch_count > self.batch_size:
+                if batch_count >= self.batch_size:
                     break
 
-            # wait for all the tasks to complete
-            while len(futures) > 0:
-                future = next(as_completed(futures))
-                dock_score = future.result()
-
-                assert isinstance(dock_score, tuple), dock_score
-
-                smiles, score = dock_score
-                futures.remove(future)
-
-                logger.info(f'Computation for {smiles} succeeded: {score}')
+            for future in as_completed(futures):
+                smiles, score = future.result()
+                logger.log(
+                    APP_LOG_LEVEL,
+                    f'Computation for {smiles} succeeded with score = {score}',
+                )
 
                 train_data.append(
-                    {
-                        'smiles': smiles,
-                        'score': score,
-                        'time': monotonic(),
-                    },
+                    {'smiles': smiles, 'score': score, 'time': monotonic()},
                 )
                 smiles_simulated.append(smiles)
 
@@ -463,3 +348,41 @@ class DockingApp:
             )
 
         training_df.to_json(train_output_file)
+        logger.log(
+            APP_LOG_LEVEL,
+            f'Training data saved to {train_output_file}',
+        )
+        shutil.rmtree(task_data_dir)
+
+    def _submit_task_for_smiles(
+        self,
+        engine: AppEngine,
+        smiles: str,
+        working_dir: pathlib.Path,
+    ) -> TaskFuture[tuple[str, float]]:
+        pdb_file = working_dir / 'in.pdb'
+        output_pdb = working_dir / 'coords.pdb'
+        pdbqt_file = working_dir / 'coords.pdbqt'
+        vina_conf_file = working_dir / 'config.txt'
+        output_ligand_pdbqt = working_dir / 'out.pdb'
+
+        smi_future = engine.submit(smi_to_pdb, smiles, pdb_file=pdb_file)
+        element_future = engine.submit(
+            set_element,
+            smi_future,
+            output_pdb=output_pdb,
+            tcl_path=self.tcl_path,
+        )
+        pdbqt_future = engine.submit(
+            pdb_to_pdbqt,
+            element_future,
+            pdbqt_file=pdbqt_file,
+        )
+        config_future = engine.submit(
+            make_autodock_config,
+            self.receptor,
+            pdbqt_future,
+            vina_conf_file,
+            output_ligand_pdbqt,
+        )
+        return engine.submit(autodock_vina, config_future, smiles)

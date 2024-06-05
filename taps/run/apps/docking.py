@@ -3,6 +3,7 @@ from __future__ import annotations
 import pathlib
 
 from pydantic import Field
+from pydantic import field_validator
 
 from taps.app import App
 from taps.app import AppConfig
@@ -33,6 +34,16 @@ class DockingConfig(AppConfig):
         description='number of simulations per iteration',
     )
     seed: int = Field(0, description='random seed for sampling')
+
+    @field_validator(
+        'smi_file_name_ligand',
+        'receptor',
+        'tcl_path',
+        mode='before',
+    )
+    @classmethod
+    def _resolve_filepaths(cls, path: str) -> str:
+        return str(pathlib.Path(path).resolve())
 
     def create_app(self) -> App:
         """Create an application instance from the config."""

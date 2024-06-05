@@ -9,7 +9,7 @@ from torch.nn import functional as F  # noqa: N812
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from taps.wf.fedlearn.config import DataChoices
+from taps.apps.fedlearn.types import DataChoices
 
 
 class CifarModule(nn.Module):
