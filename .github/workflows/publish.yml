@@ -37,9 +37,9 @@ jobs:
 
       - name: Check version matches release title
         run: |
-          if [ "${{ format('ProxyStore v{0}', env.PACKAGE_VERSION) }}" != "${{ github.event.release.name }}" ]
+          if [ "${{ format('TaPS v{0}', env.PACKAGE_VERSION) }}" != "${{ github.event.release.name }}" ]
           then
-            echo "ProxyStore v\$\{PACKAGE_VERSION\} = ProxyStore v${{ env.PACKAGE_VERSION }} does not match release title: ${{ github.event.release.name }}"
+            echo "TaPS v\$\{PACKAGE_VERSION\} = TaPS v${{ env.PACKAGE_VERSION }} does not match release title: ${{ github.event.release.name }}"
             exit 1
           fi
 
