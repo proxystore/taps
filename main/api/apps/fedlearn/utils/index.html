@@ -1038,6 +1038,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../../docking/data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../docking/train/" class="md-nav__link">
         
   
@@ -2505,12 +2525,12 @@
 <a href="#taps.apps.fedlearn.utils.create_clients" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">create_clients</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">num_clients</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">data_name</span><span class="p">:</span> <span class="n"><span title="taps.wf.fedlearn.config.DataChoices">DataChoices</span></span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">data_name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.apps.fedlearn.types.DataChoices" href="../types/#taps.apps.fedlearn.types.DataChoices">DataChoices</a></span><span class="p">,</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">train</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">,</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">train_data</span><span class="p">:</span> <span class="n"><span title="torch.utils.data.Dataset">Dataset</span></span><span class="p">,</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">data_alpha</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">rng</span><span class="p">:</span> <span class="n"><span title="numpy.random.Generator">Generator</span></span><span class="p">,</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><span title="taps.wf.fedlearn.types.Client">Client</span></span><span class="p">]</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">rng</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="numpy.random.Generator" href="https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.Generator">Generator</a></span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="taps.apps.fedlearn.types.Client" href="../types/#taps.apps.fedlearn.types.Client">Client</a></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2531,7 +2551,7 @@
       </li>
       <li class="field-body">
         <b><code>data_name</code></b>
-            (<code><span title="taps.wf.fedlearn.config.DataChoices">DataChoices</span></code>)
+            (<code><a class="autorefs autorefs-internal" title="taps.apps.fedlearn.types.DataChoices" href="../types/#taps.apps.fedlearn.types.DataChoices">DataChoices</a></code>)
         –
         <div class="doc-md-description">
           <p>The name of the data used. Used for initializing the
@@ -2568,7 +2588,7 @@ distribution alpha value for the number of samples across clients.</p>
       </li>
       <li class="field-body">
         <b><code>rng</code></b>
-            (<code><span title="numpy.random.Generator">Generator</span></code>)
+            (<code><a class="autorefs autorefs-external" title="numpy.random.Generator" href="https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.Generator">Generator</a></code>)
         –
         <div class="doc-md-description">
           <p>Random number generator.</p>
@@ -2581,7 +2601,7 @@ distribution alpha value for the number of samples across clients.</p>
   <p>Returns:</p>
   <ul>
       <li class="field-body">
-            <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<span title="taps.wf.fedlearn.types.Client">Client</span>]</code>
+            <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="taps.apps.fedlearn.types.Client" href="../types/#taps.apps.fedlearn.types.Client">Client</a>]</code>
         –
         <div class="doc-md-description">
           <p>List of clients.</p>
@@ -2669,7 +2689,7 @@ distribution alpha value for the number of samples across clients.</p>
 </span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="sd">        data_alpha: The</span>
 </span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="sd">            [Dirichlet](https://en.wikipedia.org/wiki/Dirichlet_distribution)</span>
 </span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="sd">            distribution alpha value for the number of samples across clients.</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="sd">        rng (Generator): Random number generator.</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="sd">        rng: Random number generator.</span>
 </span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>
 </span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">    Returns:</span>
 </span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">        List of clients.</span>
@@ -2722,7 +2742,7 @@ distribution alpha value for the number of samples across clients.</p>
 
 <a href="#taps.apps.fedlearn.utils.unweighted_module_avg" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">unweighted_module_avg</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">selected_clients</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><span title="taps.wf.fedlearn.types.Client">Client</span></span><span class="p">],</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">selected_clients</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="taps.apps.fedlearn.types.Client" href="../types/#taps.apps.fedlearn.types.Client">Client</a></span><span class="p">],</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="collections.OrderedDict" href="https://docs.python.org/3/library/collections.html#collections.OrderedDict">OrderedDict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><span title="torch.Tensor">Tensor</span></span><span class="p">]</span>
 </span></code></pre></div>
 
@@ -2832,6 +2852,12 @@ distribution alpha value for the number of samples across clients.</p>
     
     
       <script src="../../../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

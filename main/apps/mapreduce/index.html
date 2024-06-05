@@ -671,15 +671,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
+  <a href="#installation" class="md-nav__link">
+    Installation
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
   </a>
   
 </li>
@@ -1071,6 +1078,26 @@
   
   <span class="md-ellipsis">
     app
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/apps/docking/data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data
   </span>
   
 
@@ -2416,15 +2443,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
+  <a href="#installation" class="md-nav__link">
+    Installation
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
   </a>
   
 </li>
@@ -2448,53 +2482,30 @@
 
 
 <h1 id="mapreduce">MapReduce<a class="headerlink" href="#mapreduce" title="Permanent link">&para;</a></h1>
-<p>Counts words in a text corpus (randomly generated or the Enron email dataset) using a mapreduce strategy.</p>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
-<p>This application does not require any external libraries.</p>
-<p>Executing the application with the Enron dataset requires downloading the maildir folder from <a href="https://www.cs.cmu.edu/~enron/">https://www.cs.cmu.edu/~enron/</a>.</p>
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>Counts words in a text corpus using a mapreduce strategy.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>This application only requires TaPS to be installed.</p>
+<h2 id="data">Data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
+<p>The Enron email dataset is available at <a href="https://www.cs.cmu.edu/~enron/">https://www.cs.cmu.edu/~enron/</a>.
+The following command will download and extract the tarfile to <code>data/maildir</code>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>https://www.cs.cmu.edu/~enron/enron_mail_20150507.tar.gz<span class="w"> </span><span class="p">|</span><span class="w"> </span>tar<span class="w"> </span>-xz<span class="w"> </span>-C<span class="w"> </span>data/
+</span></code></pre></div>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <p>To see all parameters, run the following command:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--help
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--help
 </span></code></pre></div></p>
-<p>The following commands work on any platform, but the specific results were recorded on an M3 MacBook Air.</p>
-<ol>
-<li><strong>Simple configuration:</strong>
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">1</span>
-</span></code></pre></div>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Result:
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Total words: 500
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  Runtime: 0.01s
-</span></code></pre></div></li>
-<li><strong>Increased map task count:</strong>
-   Optionally, specify the number of most frequent words to save and the
-   output file name:
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--n-freq<span class="w"> </span><span class="m">20</span><span class="w"> </span>--out<span class="w"> </span>my-out.txt
-</span></code></pre></div>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Result:
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  Total words: 5000
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  Runtime: 0.01s
-</span></code></pre></div></li>
-<li><strong>Longer paragraphs with longer word length:</strong>
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--word-count<span class="w"> </span><span class="m">1000000</span><span class="w"> </span>--word-len-min<span class="w"> </span><span class="m">2</span><span class="w"> </span>--word-len-max<span class="w"> </span><span class="m">2</span>
-</span></code></pre></div>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Result:
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  Total words: 10000000
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  Runtime: 7.09s
-</span></code></pre></div></li>
-<li><strong>Invalid word length range:</strong>
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>random<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--word-count<span class="w"> </span><span class="m">1000000</span><span class="w"> </span>--word-len-min<span class="w"> </span><span class="m">5</span><span class="w"> </span>--word-len-max<span class="w"> </span><span class="m">1</span>
-</span></code></pre></div>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Result:
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  Error: ValueError: empty range for randrange() (5, 2, -3)
-</span></code></pre></div></li>
-<li><strong>Use the Enron email dataset:</strong>
-   This requires specifying the root path of the maildir through <code>--mail-dir</code>.
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>thread-pool<span class="w"> </span>--mode<span class="w"> </span>enron<span class="w"> </span>--map-task-count<span class="w"> </span><span class="m">10</span><span class="w"> </span>--mail-dir<span class="w"> </span>~/Downloads/maildir
-</span></code></pre></div>
-   <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Result:
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  Runtime: 52.12s
-</span></code></pre></div></li>
-</ol>
+<p><strong>Enron Corpus</strong></p>
+<p>The following command distributes the text files of the Enron Corpus within <code>data/maildir</code> across 16 map tasks.
+Once the computations have finished, the top 10 most common tokens will be printed.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>process-pool<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span>--data-dir<span class="w"> </span>data/maildir<span class="w"> </span>--map-tasks<span class="w"> </span><span class="m">16</span>
+</span></code></pre></div></p>
+<p><strong>Randomly Generated</strong></p>
+<p>Here, we will generate 16 random files for each of 16 map tasks.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>mapreduce<span class="w"> </span>--executor<span class="w"> </span>process-pool<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span>--data-dir<span class="w"> </span>/tmp/generated-files<span class="w"> </span>--map-tasks<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span>--generate<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--generated-files<span class="w"> </span><span class="m">16</span>
+</span></code></pre></div></p>
 
 
 
@@ -2547,6 +2558,12 @@
     
     
       <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

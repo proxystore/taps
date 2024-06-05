@@ -651,6 +651,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     Example
   </a>
@@ -1064,6 +1071,26 @@
   
   <span class="md-ellipsis">
     app
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/apps/docking/data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data
   </span>
   
 
@@ -2409,6 +2436,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     Example
   </a>
@@ -2434,18 +2468,43 @@
 
 
 <h1 id="federated-learning">Federated Learning<a class="headerlink" href="#federated-learning" title="Permanent link">&para;</a></h1>
-<p>This submodule implements a <em>Federated Learning</em> (FL) application.</p>
+<p>An implementation of a <em>Federated Learning</em> (FL) application.</p>
 <p>At a high level, FL is a paradigm for performing deep learning on decentralized data hosted on decentralized devices (e.g., Internet-of-Things devices).
 Each of these devices separately train their own copy of a shared model architecture.
 Their locally-trained copies are aggregated over time to update a global model which has essentially been able to learn over all the data in the system without directly accessing any data.</p>
-<p>For more information on FL as a whole, please refer to the following <a href="http://proceedings.mlr.press/v54/mcmahan17a/mcmahan17a.pdf">paper</a>.</p>
-<p>The <code>fedlear</code> application simulates FL with simple deep neural networks and select set of baseline datasets.</p>
-<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>fedlearn<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>--executor<span class="w"> </span>process-pool<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--data-name<span class="w"> </span>mnist<span class="w"> </span>--data-root<span class="w"> </span>data/<span class="w"> </span>--data-download<span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>--num-rounds<span class="w"> </span><span class="m">1</span><span class="w"> </span>--participation<span class="w"> </span><span class="m">0</span>.5
+<p>Check out this <a href="http://proceedings.mlr.press/v54/mcmahan17a/mcmahan17a.pdf">paper</a> to learn more about FL.</p>
+<p>The <code>fedlearn</code> application uses simple deep neural networks and select set of baseline datasets to evaluate the task overheads and data costs associated with tasks in an FL app.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>This application requires numpy, PyTorch, and torchvision which can be installed automatically when installing the TaPS package.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>fedlearn<span class="o">]</span>
 </span></code></pre></div>
+If you want to use an accelerator for training (e.g., a GPU), you may need to follow specific instructions for the hardware or device driver versions.
+Check out the <a href="https://pytorch.org/">PyTorch docs</a> for more details.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>The <code>fedlearn</code> application has many parameters, so we suggest taking a look at those available with <code>python -m taps.run fedlearn --help</code>.
+A simple example can be run with:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>fedlearn<span class="w"> </span>--executor<span class="w"> </span>process-pool<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>--dataset<span class="w"> </span>mnist<span class="w"> </span>--data-dir<span class="w"> </span>data/fedlearn<span class="w"> </span>--rounds<span class="w"> </span><span class="m">1</span><span class="w"> </span>--participation<span class="w"> </span><span class="m">0</span>.5
+</span></code></pre></div>
+<p>The script will automatically download the training and testing data to <code>data/fedlearn</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>CPU training can sometimes hang with certain executors (e.g., process pool).
+If this happens, try setting <code>OMP_NUM_THREADS=1</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using the <code>fork</code> multiprocessing backend on MacOS can cause issues with
+PyTorch's backpropogation on CPU. This is most common with Parsl which
+forces the use of <code>fork</code>. If you encounter this issue, you may need
+to set the following.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">multiprocessing</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span> <span class="nn">platform</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Darwin&#39;</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">multiprocessing</span><span class="o">.</span><span class="n">set_start_method</span><span class="p">(</span><span class="s1">&#39;spawn&#39;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
 
 
 
@@ -2498,6 +2557,12 @@ Their locally-trained copies are aggregated over time to update a global model w
     
     
       <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

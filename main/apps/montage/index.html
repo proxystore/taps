@@ -711,6 +711,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     Example
   </a>
@@ -1064,6 +1078,26 @@
   
   <span class="md-ellipsis">
     app
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/apps/docking/data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data
   </span>
   
 
@@ -2409,6 +2443,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     Example
   </a>
@@ -2434,20 +2482,50 @@
 
 
 <h1 id="montage-mosaic">Montage Mosaic<a class="headerlink" href="#montage-mosaic" title="Permanent link">&para;</a></h1>
-<p>This workflow is based on the <a href="https://github.com/Parsl/parallel_patterns/blob/master/Montage%20Mosaic.ipynb">Parsl implementation</a> of the Montage Getting Started tutorial.
-The workflow takes a directory of inputs and uses Montage tools to create a mosaic of them.</p>
-<p>Montage binaries must be pre-installed prior to execution.
-Binaries are available on Homebrew (MacOS) or <a href="http://montage.ipac.caltech.edu/docs/download2.html">http://montage.ipac.caltech.edu/docs/download2.html</a></p>
-<p>Input data available here: <a href="http://montage.ipac.caltech.edu/docs/Kimages.tar">http://montage.ipac.caltech.edu/docs/Kimages.tar</a></p>
-<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>montage<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>--img-folder<span class="w"> </span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/Kimages<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--img-tbl<span class="w"> </span>Kimages.tbl<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>--img-hdr<span class="w"> </span>Ktemplate.hdr<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>--output-dir<span class="w"> </span>Kprojdir<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span>--executor<span class="w"> </span>process-pool<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span>--max-processes<span class="w"> </span><span class="m">10</span>
+<p>This application is based on the <a href="https://github.com/Parsl/parallel_patterns/blob/master/Montage%20Mosaic.ipynb">Parsl implementation</a> of the Montage Getting Started tutorial.</p>
+<p>The Montage Mosaic application takes a directory of input astronomy images and stitches them into a single mosaic using Montage tools.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>This application requires additional package dependencies and for the Montage binaries to be installed.
+We suggest using Conda so the correct compilers for Montage can be installed.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>taps-montage<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>taps-montage
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">gcc</span><span class="o">=</span><span class="m">9</span>.5<span class="w"> </span>libnsl
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>montage<span class="o">]</span>
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Build instructions may be different depending on your system.
+Here we used Ubuntu 22.04.</p>
+</div>
+<p>Next, download, build, and install Montage, available at <a href="http://montage.ipac.caltech.edu/docs/download2.html">http://montage.ipac.caltech.edu/docs/download2.html</a>.
+We will do this inside of our Conda environment directory.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$CONDA_PREFIX</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>-L<span class="w"> </span>http://montage.ipac.caltech.edu/download/Montage_v6.0.tar.gz<span class="w"> </span><span class="p">|</span><span class="w"> </span>tar<span class="w"> </span>-xz
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">cd</span><span class="w"> </span>Montage
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>make
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CONDA_PREFIX</span><span class="s2">/Montage/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </span></code></pre></div>
+You can now return to your TaPS directory.</p>
+<h2 id="data">Data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
+<p>Input data available at <a href="http://montage.ipac.caltech.edu/docs/Kimages.tar">http://montage.ipac.caltech.edu/docs/Kimages.tar</a>.
+The following command will download and extract the tarfile to <code>data/Kimages</code>.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>http://montage.ipac.caltech.edu/docs/Kimages.tar<span class="w"> </span><span class="p">|</span><span class="w"> </span>tar<span class="w"> </span>-x<span class="w"> </span>-C<span class="w"> </span>data/
+</span></code></pre></div></p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>The application can be invoked using the downloaded data.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>montage<span class="w"> </span>--executor<span class="w"> </span>process-pool<span class="w"> </span>--img-folder<span class="w"> </span>data/Kimages
+</span></code></pre></div>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>If you get an error like:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>montage_wrapper.status.MontageError: mProject: File (/home/cc/taps/data/Kimages/._aK_asky_990502s1350092.fits) is not a FITS image
+</span></code></pre></div>
+This is a side-effect of the tarfile being created on MacOS and MacOS using these special files for extra information.
+Simply remove those files from the image directory.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>rm<span class="w"> </span>-rf<span class="w"> </span>data/Kimages/._*
+</span></code></pre></div></p>
+</div>
+<p>This will produce a single final FITS file within <code>data/</code> inside of the run directory.</p>
 
 
 
@@ -2500,6 +2578,12 @@ Binaries are available on Homebrew (MacOS) or <a href="http://montage.ipac.calte
     
     
       <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

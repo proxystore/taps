@@ -631,6 +631,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     Example
   </a>
@@ -1064,6 +1078,26 @@
   
   <span class="md-ellipsis">
     app
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/apps/docking/data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data
   </span>
   
 
@@ -2409,6 +2443,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     Example
   </a>
@@ -2437,22 +2485,55 @@
 <p>This application is modified from <a href="https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb">ParslDock</a>.</p>
 <p>Protein docking aims to predict the orientation and position of two molecules, where one molecule is a protein, and the other is a protein or a smaller molecule (ligand).
 Docking is commonly used in structure-based drug design, as it can predict the strength of docking between target small molecule ligands (drugs) to target binding site (receptors).</p>
-<p>Need to install libGL and <a href="https://ccsb.scripps.edu/mgltools/download/491/mgltools_Linux-x86_64_1.5.7.tar.gz">MGLTool</a>
-The environment variable <code>MGLTOOLS_HOME</code> needs to be set prior to execution.
-A Conda <code>environment.yaml</code> is provided within the original notebook.
-It is recommended to install dependencies this way.
-<strong>NOTE</strong>: Dependencies are not compatible with ARM64 architecture.
-It may be necessary to set <code>OMP_NUM_THREADS=1</code> with certain executors.</p>
-<p>Sample input data provided in <a href="https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb">ParslDock tutorial</a>.
-Input files needed include <code>dataset_orz_original_1k.csv</code> for the SMILES string, <code>1iep_receptor.pdbqt</code> as the input receptor and <code>set_element.tcl</code> as the tcl script path.</p>
-<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>docking<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>--executor<span class="w"> </span>process-pool<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--max-processes<span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>--smi-file-name-ligand<span class="w"> </span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/dataset_orz_original_1k.csv<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>--receptor<span class="w"> </span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/1iep_receptor.pdbqt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span>--tcl-path<span class="w"> </span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/set_element.tcl
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>The docking application requires Conda to install all of the required dependencies.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>taps-docking<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>conda<span class="w"> </span>activate<span class="w"> </span>taps-docking
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>-c<span class="w"> </span>bioconda<span class="w"> </span>autodock-vina<span class="w"> </span>libglu<span class="w"> </span>mgltools<span class="w"> </span>vmd
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>docking<span class="o">]</span>
 </span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This environment installs Python 2 and 3 so <code>python3</code> will need be be used for all commands.</p>
+</div>
+<p>The <code>MGLTOOLS_HOME</code> environment must be set.
+If you install MGLTools with Conda, the path is likely the same as <code>CONDA_PREFIX</code>.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>export MGLTOOLS_HOME=$CONDA_PREFIX
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Dependencies are not compatible with ARM64 architectures.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Certain executors do not play nicely with the parallelism used by the simulation codes.
+If tasks appear to get suck, it may be necessary to set <code>OMP_NUM_THREADS=1</code>.</p>
+</div>
+<h2 id="data">Data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
+<p>Sample input data is provided in the <a href="https://github.com/Parsl/parsl-docking-tutorial/blob/main/ParslDock.ipynb">ParslDock tutorial</a>.
+The following CLI will download the <code>dataset_orz_original_1k.csv</code> (SMILES string), <code>1iep_receptor.pdbqt</code> (input receptor), and <code>set_element.tcl</code> (TCL script) files.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>taps.apps.docking.data<span class="w"> </span>--output<span class="w"> </span>data/docking/
+</span></code></pre></div>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>The docking application can be invoked as follows.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>docking<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span>--executor<span class="w"> </span>process-pool<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span>--max-processes<span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span>--smi-file-name-ligand<span class="w"> </span>data/docking/dataset_orz_original_1k.csv<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span>--receptor<span class="w"> </span>data/docking/1iep_receptor.pdbqt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span>--tcl-path<span class="w"> </span>data/docking/set_element.tcl
+</span></code></pre></div>
+<p>Checkout the full list of docking parameters with <code>python -m taps.run docking --help</code>.
+For example, the <code>--batch-size</code> and <code>--num-iterations</code> parameters control the parallelism and length of the application.</p>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>If you get an error that looks like the following:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ImportError: /home/cc/miniconda3/envs/taps-docking/lib/python3.11/lib-dynload/_sqlite3.cpython-311-x86_64-linux-gnu.so: undefined symbol: sqlite3_trace_v2
+</span></code></pre></div>
+You may need to install <code>libsqlite</code>.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>conda<span class="w"> </span>install<span class="w"> </span>libsqlite
+</span></code></pre></div></p>
+</div>
 
 
 
@@ -2505,6 +2586,12 @@ Input files needed include <code>dataset_orz_original_1k.csv</code> for the SMIL
     
     
       <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>
