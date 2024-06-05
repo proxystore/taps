@@ -306,7 +306,7 @@ class SyntheticApp:
         task_count: int,
         task_data_bytes: int,
         task_sleep: float,
-        bag_max_running: int,
+        bag_max_running: int | None,
         *,
         warmup_task: bool = True,
     ) -> None:
@@ -335,6 +335,7 @@ class SyntheticApp:
 
         logger.log(APP_LOG_LEVEL, f'Starting {self.structure.value} workflow')
         if self.structure == WorkflowStructure.BAG:
+            assert self.bag_max_running is not None
             run_bag_of_tasks(
                 engine,
                 task_count=self.task_count,
