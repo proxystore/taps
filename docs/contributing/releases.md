@@ -1,7 +1,16 @@
 ## Release Timeline
 
 Releases are created on an as-needed basis.
-Milestones are the [Issue Tracker](https://github.com/proxystore/taps/issues){target=_blank} are used to track features to be included in upcoming releases.
+Milestones in the [Issue Tracker](https://github.com/proxystore/taps/issues){target=_blank} are used to track features to be included in upcoming releases.
+
+## Versioning
+
+TaPS uses [semver](https://semver.org/) as its versioning system.
+TaPS is an application package, rather than a library package, so internal changes within the TaPS benchmarking harness are not considered breaking changes.
+Rather, changes are only considered breaking if they change the way an application is run.
+For example, the command from a prior release no longer works in the following release.
+
+While TaPS is in major version zero (0.y.z), anything may change at any time.
 
 ## Creating Releases
 
