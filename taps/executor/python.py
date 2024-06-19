@@ -6,15 +6,13 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Literal
 from typing import Optional
 
+from pydantic import BaseModel
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
-from taps.executor.config import register
 from taps.executor.dag import DAGExecutor
 
 
-@register(name='process-pool')
-class ProcessPoolConfig(ExecutorConfig):
+class ProcessPoolConfig(BaseModel):
     """Process pool executor configuration.
 
     Attributes:
@@ -25,7 +23,7 @@ class ProcessPoolConfig(ExecutorConfig):
         multiprocessing.cpu_count(),
         description='maximum number of processes',
     )
-    multiprocessing_context: Optional[  # noqa: UP007
+    context: Optional[  # noqa: UP007
         Literal['fork', 'spawn', 'forkserver']
     ] = Field(
         None,
@@ -36,14 +34,13 @@ class ProcessPoolConfig(ExecutorConfig):
 
     def get_executor(self) -> DAGExecutor:
         """Create an executor instance from the config."""
-        context = multiprocessing.get_context(self.multiprocessing_context)
+        context = multiprocessing.get_context(self.context)
         return DAGExecutor(
             ProcessPoolExecutor(self.max_processes, mp_context=context),
         )
 
 
-@register(name='thread-pool')
-class ThreadPoolConfig(ExecutorConfig):
+class ThreadPoolConfig(BaseModel):
     """Thread pool executor configuration.
 
     Attributes:

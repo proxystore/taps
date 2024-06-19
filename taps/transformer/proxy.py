@@ -13,38 +13,35 @@ from proxystore.proxy import extract
 from proxystore.proxy import Proxy
 from proxystore.store import get_store
 from proxystore.store import Store
+from pydantic import BaseModel
 from pydantic import Field
 from pydantic import field_validator
-
-from taps.data.config import register
-from taps.data.transform import DataTransformerConfig
 
 T = TypeVar('T')
 
 
-@register(name='proxy')
-class ProxyFileTransformerConfig(DataTransformerConfig):
-    """Proxy file transformer config."""
+class ProxyTransformerConfig(BaseModel):
+    """Proxy transformer config."""
 
-    ps_type: Literal['file', 'redis'] = Field(
+    connector: Literal['file', 'redis'] = Field(
         description='connector type (file or redis)',
     )
-    ps_file_dir: Optional[str] = Field(  # noqa: UP007
+    file_dir: Optional[str] = Field(  # noqa: UP007
         None,
         description='file connector cache directory',
     )
-    ps_redis_addr: Optional[str] = Field(  # noqa: UP007
+    redis_addr: Optional[str] = Field(  # noqa: UP007
         None,
         description='redis connector server address',
     )
-    ps_extract_target: bool = Field(
+    extract_target: bool = Field(
         False,
         description=(
             'extract the target from the proxy when resolving the identifier'
         ),
     )
 
-    @field_validator('ps_file_dir', mode='before')
+    @field_validator('file_dir', mode='before')
     @classmethod
     def _resolve_file_dir(cls, path: str) -> str:
         return str(pathlib.Path(path).resolve())
@@ -52,23 +49,23 @@ class ProxyFileTransformerConfig(DataTransformerConfig):
     def get_transformer(self) -> ProxyTransformer:
         """Create a transformer instance from the config."""
         connector: Connector[Any]
-        if self.ps_type == 'file':
-            if self.ps_file_dir is None:  # pragma: no cover
+        if self.connector == 'file':
+            if self.file_dir is None:  # pragma: no cover
                 raise ValueError(
-                    'Option --ps-file-dir is required when --ps-type file.',
+                    'Option file_dir is required for the file connector.',
                 )
-            connector = FileConnector(self.ps_file_dir)
-        elif self.ps_type == 'redis':
-            if self.ps_redis_addr is None:
+            connector = FileConnector(self.file_dir)
+        elif self.connector == 'redis':
+            if self.redis_addr is None:
                 raise ValueError(  # pragma: no cover
-                    'Option --ps-redis-addr is required when --ps-type redis.',
+                    'Option redis_addr is required for the Redis connector.',
                 )
-            parts = self.ps_redis_addr.split(':')
+            parts = self.redis_addr.split(':')
             host, port = parts[0], int(parts[1])
             connector = RedisConnector(host, port)
         else:
             raise AssertionError(
-                f'Unknown proxy transformer type: {self.ps_type}.',
+                f'Unknown ProxyStore connector type: {self.connector}.',
             )
 
         return ProxyTransformer(
@@ -78,7 +75,7 @@ class ProxyFileTransformerConfig(DataTransformerConfig):
                 register=True,
                 populate_target=True,
             ),
-            extract_target=self.ps_extract_target,
+            extract_target=self.extract_target,
         )
 
 

@@ -1,25 +1,13 @@
 from __future__ import annotations
 
-import abc
 from typing import Any
 from typing import Protocol
 from typing import runtime_checkable
 from typing import TypeVar
 
-from taps.config import Config
-
 K = TypeVar('K')
 T = TypeVar('T')
 IdentifierT = TypeVar('IdentifierT')
-
-
-class DataTransformerConfig(Config, abc.ABC):
-    """Data transformer configuration abstract base class."""
-
-    @abc.abstractmethod
-    def get_transformer(self) -> DataTransformer[Any]:
-        """Create a transformer instance from the config."""
-        ...
 
 
 @runtime_checkable

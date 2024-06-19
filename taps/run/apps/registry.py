@@ -29,7 +29,7 @@ def register_app(
         class FooConfig(Config):
             n: int = Field(1, description='count')
 
-            def create_app(self) -> App:
+            def get_app(self) -> App:
                 from taps.apps.foo import FooApp
 
                 return FooApp(n=self.n)

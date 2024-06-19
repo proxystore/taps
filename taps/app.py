@@ -5,7 +5,8 @@ import pathlib
 from typing import Protocol
 from typing import runtime_checkable
 
-from taps.config import Config
+from pydantic import BaseModel
+
 from taps.engine import AppEngine
 
 
@@ -26,14 +27,13 @@ class App(Protocol):
         ...
 
 
-class AppConfig(abc.ABC, Config):
+class AppConfig(BaseModel, abc.ABC):
     """Application config protocol.
 
-    Application configs inherit from [`Config`][taps.config.Config]
-    and define the `create_app()` method.
+    Application configs must define the `create_app()` method.
     """
 
     @abc.abstractmethod
-    def create_app(self) -> App:
+    def get_app(self) -> App:
         """Initialize an app instance from this config."""
         ...

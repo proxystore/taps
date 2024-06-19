@@ -36,7 +36,7 @@ class MontageConfig(AppConfig):
     def _resolve_paths(cls, root: str) -> str:
         return str(pathlib.Path(root).resolve())
 
-    def create_app(self) -> App:
+    def get_app(self) -> App:
         """Create an application instance from the config."""
         from taps.apps.montage import MontageApp
 

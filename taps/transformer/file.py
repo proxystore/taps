@@ -8,17 +8,14 @@ from typing import Any
 from typing import NamedTuple
 from typing import TypeVar
 
+from pydantic import BaseModel
 from pydantic import Field
 from pydantic import field_validator
-
-from taps.data.config import register
-from taps.data.transform import DataTransformerConfig
 
 T = TypeVar('T')
 
 
-@register(name='file')
-class PickleFileTransformerConfig(DataTransformerConfig):
+class PickleFileTransformerConfig(BaseModel):
     """Pickle file transformer config."""
 
     file_dir: str = Field(description='Object file directory')

@@ -9,7 +9,7 @@ from testing.globus import mock_globus_compute
 
 def test_globus_compute_config() -> None:
     with mock_globus_compute():
-        config = GlobusComputeConfig(globus_compute_endpoint=str(uuid.uuid4()))
+        config = GlobusComputeConfig(endpoint=str(uuid.uuid4()))
 
         with config.get_executor() as executor:
             assert isinstance(executor, Executor)

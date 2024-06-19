@@ -1,52 +1,21 @@
 from __future__ import annotations
 
-import argparse
 from concurrent.futures import Executor
-from unittest import mock
 
 import pytest
 
-from taps.executor.config import ExecutorChoicesConfig
-from taps.executor.config import ExecutorConfig
-from taps.executor.config import get_executor_config
-from taps.executor.config import register
+from taps.executor.config import ExecutorConfigs
 
 
-@register(name='test-executor')
-class _TestConfig(ExecutorConfig):
-    x: int
-    y: str
+def test_get_executor_from_config() -> None:
+    config = ExecutorConfigs()
 
-    def get_executor(self) -> Executor:
-        raise NotImplementedError
+    assert isinstance(config.get_executor('thread_pool'), Executor)
+    assert isinstance(config.get_executor('thread-pool'), Executor)
 
 
-def test_executor_choices_argument_group():
-    config = _TestConfig(x=42, y='default')
-    argv = [
-        '--executor',
-        'test-executor',
-        '--x',
-        str(config.x),
-        '--y',
-        config.y,
-    ]
+def test_get_executor_from_config_error() -> None:
+    config = ExecutorConfigs()
 
-    parser = argparse.ArgumentParser()
-    ExecutorChoicesConfig.add_argument_group(parser)
-
-    args = parser.parse_args(argv)
-
-    assert get_executor_config(**vars(args)) == config
-
-
-def test_executor_choices_argument_group_required():
-    argv = ['--executor', 'test-executor']
-
-    parser = argparse.ArgumentParser()
-    ExecutorChoicesConfig.add_argument_group(parser, argv=argv, required=True)
-
-    # Suppress argparse error message
-    with mock.patch('argparse.ArgumentParser._print_message'):
-        with pytest.raises(SystemExit):
-            parser.parse_args(argv)
+    with pytest.raises(ValueError, match='No executor named missing.'):
+        config.get_executor('missing')

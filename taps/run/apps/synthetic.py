@@ -63,7 +63,7 @@ class SyntheticConfig(AppConfig):
 
         return self
 
-    def create_app(self) -> App:
+    def get_app(self) -> App:
         """Create an application instance from the config."""
         from taps.apps.synthetic import SyntheticApp
         from taps.apps.synthetic import WorkflowStructure

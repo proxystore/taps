@@ -44,7 +44,7 @@ class MapreduceConfig(AppConfig):
     def _resolve_paths(cls, path: str) -> str:
         return str(pathlib.Path(path).resolve())
 
-    def create_app(self) -> App:
+    def get_app(self) -> App:
         """Create an application instance from the config."""
         from taps.apps.mapreduce import MapreduceApp
 

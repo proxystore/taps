@@ -4,14 +4,12 @@ from typing import Any
 from typing import NoReturn
 from typing import TypeVar
 
-from taps.data.config import DataTransformerConfig
-from taps.data.config import register
+from pydantic import BaseModel
 
 T = TypeVar('T')
 
 
-@register(name='null')
-class NullTransformerConfig(DataTransformerConfig):
+class NullTransformerConfig(BaseModel):
     """Null transformer config."""
 
     def get_transformer(self) -> NullTransformer:

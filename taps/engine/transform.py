@@ -7,8 +7,8 @@ from typing import Iterable
 from typing import Mapping
 from typing import TypeVar
 
-from taps.data.filter import Filter
-from taps.data.transform import DataTransformer
+from taps.filter import Filter
+from taps.transformer import DataTransformer
 
 K = TypeVar('K')
 T = TypeVar('T')

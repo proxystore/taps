@@ -33,7 +33,7 @@ class MoldesignConfig(AppConfig):
     def _resolve_dataset_path(cls, value: str) -> str:
         return str(pathlib.Path(value).resolve())
 
-    def create_app(self) -> App:
+    def get_app(self) -> App:
         """Create an application instance from the config."""
         from taps.apps.moldesign.app import MoldesignApp
 

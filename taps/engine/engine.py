@@ -35,13 +35,13 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
-from taps.data.filter import Filter
-from taps.data.filter import NullFilter
-from taps.data.null import NullTransformer
-from taps.data.transform import DataTransformer
 from taps.engine.transform import TaskDataTransformer
+from taps.filter import Filter
+from taps.filter import NullFilter
 from taps.record import NullRecordLogger
 from taps.record import RecordLogger
+from taps.transformer.null import NullTransformer
+from taps.transformer.protocol import DataTransformer
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -239,7 +239,7 @@ class AppEngine:
         record_logger: RecordLogger | None = None,
     ) -> None:
         self.executor = executor
-        self.data_transformer = TaskDataTransformer(
+        self.data_transformer: TaskDataTransformer[Any] = TaskDataTransformer(
             NullTransformer()
             if data_transformer is None
             else data_transformer,

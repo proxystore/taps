@@ -17,7 +17,6 @@ from taps.engine import AppEngine
 from taps.executor.dask import DaskDistributedExecutor
 from taps.executor.python import DAGExecutor
 from taps.executor.python import ThreadPoolConfig
-from taps.run.config import BenchmarkConfig
 from taps.run.config import RunConfig
 from testing.app import TestAppConfig
 
