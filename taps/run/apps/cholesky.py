@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import Field
 
 from taps.app import App
@@ -11,6 +13,7 @@ from taps.run.apps.registry import register_app
 class CholeskyConfig(AppConfig):
     """Cholesky application configuration."""
 
+    name: Literal['cholesky'] = 'cholesky'
     matrix_size: int = Field(description='size of the square matrix')
     block_size: int = Field(description='block size')
 

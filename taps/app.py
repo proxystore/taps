@@ -33,6 +33,8 @@ class AppConfig(BaseModel, abc.ABC):
     Application configs must define the `create_app()` method.
     """
 
+    name: str
+
     @abc.abstractmethod
     def get_app(self) -> App:
         """Initialize an app instance from this config."""

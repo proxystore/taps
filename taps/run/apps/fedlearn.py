@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Literal
 from typing import Optional
 
 from pydantic import Field
@@ -15,6 +16,7 @@ from taps.run.apps.registry import register_app
 class FedlearnConfig(AppConfig):
     """Federated learning application configuration."""
 
+    name: Literal['fedlearn'] = 'fedlearn'
     alpha: float = Field(
         1e5,
         description='alpha parameter for number of samples across clients',

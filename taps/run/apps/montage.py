@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Literal
 
 from pydantic import Field
 from pydantic import field_validator
@@ -14,6 +15,7 @@ from taps.run.apps.registry import register_app
 class MontageConfig(AppConfig):
     """Montage application configuration."""
 
+    name: Literal['montage'] = 'montage'
     img_folder: str = Field(description='input images folder path')
     img_tbl: str = Field(
         'Kimages.tbl',

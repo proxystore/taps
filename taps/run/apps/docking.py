@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Literal
 
 from pydantic import Field
 from pydantic import field_validator
@@ -14,6 +15,7 @@ from taps.run.apps.registry import register_app
 class DockingConfig(AppConfig):
     """Docking application configuration."""
 
+    name: Literal['docking'] = 'docking'
     smi_file_name_ligand: str = Field(
         description='absolute path to ligand SMILES string',
     )

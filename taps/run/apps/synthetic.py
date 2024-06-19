@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+from typing import Literal
 from typing import Optional
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
@@ -21,6 +22,7 @@ from taps.run.apps.registry import register_app
 class SyntheticConfig(AppConfig):
     """Synthetic application configuration."""
 
+    name: Literal['synthetic'] = 'synthetic'
     structure: str = Field(description='workflow structure')
     task_count: int = Field(description='number of tasks in the workflow')
     task_data_bytes: int = Field(0, description='intermediate task data size')

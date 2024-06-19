@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Literal
 
 from pydantic import Field
 from pydantic import field_validator
@@ -14,6 +15,7 @@ from taps.run.apps.registry import register_app
 class MoldesignConfig(AppConfig):
     """Moldesign application configuration."""
 
+    name: Literal['moldesign'] = 'moldesign'
     dataset: str = Field(description='molecule search space dataset')
     initial_count: int = Field(8, description='number of initial calculations')
     search_count: int = Field(

@@ -18,10 +18,13 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
 else:  # pragma: <3.11 cover
     import tomli as tomllib
 
+from pydantic import create_model
+from pydantic import Field
 from pydantic_settings import CliSettingsSource
 
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
+from taps.run.apps.registry import get_registered_apps
 from taps.run.config import Config
 from taps.run.config import make_run_dir
 
@@ -78,13 +81,32 @@ def parse_args_to_config(argv: Sequence[str]) -> Config:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
+        'app.name',
+        choices=list(get_registered_apps().keys()),
+        help='application to execute',
+    )
+    parser.add_argument(
         '-c',
         '--config',
         help='toml configuration file to load',
     )
 
+    for name, config_type in get_registered_apps().items():
+        if name in argv:
+            settings_cls = create_model(
+                'Config',
+                app=(
+                    config_type,
+                    Field(description=f'{name} application options'),
+                ),
+                __base__=Config,
+            )
+            break
+    else:
+        settings_cls = Config
+
     cli_settings = CliSettingsSource(
-        Config,
+        settings_cls,
         cli_avoid_json=True,
         cli_parse_args=argv,
         cli_parse_none_str='null',
@@ -93,7 +115,7 @@ def parse_args_to_config(argv: Sequence[str]) -> Config:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    return Config(_cli_settings_source=cli_settings)
+    return settings_cls(_cli_settings_source=cli_settings)
 
 
 def _cwd_run_dir(

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Literal
 from typing import Optional
 
 from pydantic import Field
@@ -15,6 +16,7 @@ from taps.run.apps.registry import register_app
 class MapreduceConfig(AppConfig):
     """Mapreduce application configuration."""
 
+    name: Literal['mapreduce'] = 'mapreduce'
     data_dir: str = Field(description='text file directory')
     map_tasks: Optional[int] = Field(  # noqa: UP007
         32,

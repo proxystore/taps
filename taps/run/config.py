@@ -1,63 +1,17 @@
 from __future__ import annotations
 
 import pathlib
-import sys
 from datetime import datetime
 from typing import Optional
-from typing import TYPE_CHECKING
 from typing import Union
-
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    from typing import Self
-else:  # pragma: <3.11 cover
-    from typing_extensions import Self
 
 import tomli_w
 from pydantic import BaseModel
-from pydantic import create_model
 from pydantic import Field
-from pydantic import model_validator
 from pydantic_settings import BaseSettings
 
-from taps.app import App
+from taps.app import AppConfig
 from taps.engine import AppEngineConfig
-from taps.run.apps.registry import get_registered_apps
-
-
-class BaseAppConfigs(BaseModel):
-    name: str
-
-    @model_validator(mode='after')
-    def _validate_model(self) -> Self:
-        if not hasattr(self, self.name):
-            raise ValueError(
-                f'{type(self).__name__} has no application named {self.name}.',
-            )
-        if getattr(self, self.name) is None:
-            app_type = get_registered_apps()[self.name]
-            raise ValueError(
-                f'The specified app is {self.name} but the configuration '
-                f'parameters for {app_type} were not provided.',
-            )
-        return self
-
-    def get_app(self) -> App:
-        attr = self.name.replace('-', '_')
-        config = getattr(self, attr, None)
-        if config is None:
-            raise ValueError(f'No application named {self.name}')
-        return config.get_app()
-
-
-_app_fields = {
-    name: (type_, Field(None)) for name, type_ in get_registered_apps().items()
-}
-
-if TYPE_CHECKING:
-    # mypy can't infer the dynamically generated AppConfigs
-    AppConfigs = BaseAppConfigs
-else:
-    AppConfigs = create_model('Apps', **_app_fields, __base__=BaseAppConfigs)
 
 
 class LoggingConfig(BaseModel):
@@ -107,7 +61,7 @@ class Config(BaseSettings):
         output: Output configuration.
     """
 
-    app: AppConfigs
+    app: AppConfig
     engine: AppEngineConfig = Field(default_factory=AppEngineConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     output: OutputConfig = Field(default_factory=OutputConfig)
