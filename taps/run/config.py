@@ -93,7 +93,7 @@ def make_run_dir(config: Config) -> pathlib.Path:
     timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
     run_dir = pathlib.Path(
         config.run.dir_format.format(
-            executor=config.engine.executor,
+            executor=config.engine.executor.name,
             name=config.app.name,
             timestamp=timestamp,
         ),
