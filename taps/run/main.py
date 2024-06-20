@@ -22,9 +22,10 @@ from pydantic import create_model
 from pydantic import Field
 from pydantic_settings import CliSettingsSource
 
+from taps import plugins
+from taps.engine import AppEngineConfig
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
-from taps.run.apps.registry import get_registered_apps
 from taps.run.config import Config
 from taps.run.config import make_run_dir
 
@@ -48,22 +49,77 @@ def _flatten_dict(
     return dict(items)
 
 
-def _parse_args(
+def _parse_toml_options(filepath: str | None) -> dict[str, Any]:
+    if filepath is None:
+        return {}
+
+    with open(filepath, 'rb') as f:
+        options = tomllib.load(f)
+
+    return _flatten_dict(options)
+
+
+def _add_argument(
     parser: argparse.ArgumentParser,
-    args: Sequence[str],
-) -> argparse.Namespace:
-    cli_args = parser.parse_args(args)
+    *names: str,
+    **kwargs: Any,
+) -> None:
+    if any(name.endswith('.name') for name in names):
+        return
 
-    if cli_args.config is not None:
-        with open(cli_args.config, 'rb') as f:
-            config_options = tomllib.load(f)
-        toml_args = argparse.Namespace(**_flatten_dict(config_options))
-    else:
-        toml_args = argparse.Namespace()
+    parser.add_argument(*names, **kwargs)
 
-    # cli_args takes precedence when the same key is present in both.
-    final_args = {**vars(toml_args), **vars(cli_args)}
-    return argparse.Namespace(**final_args)
+
+def _add_argument_group(
+    parser: argparse.ArgumentParser,
+    **kwargs: Any,
+) -> argparse._ArgumentGroup:
+    title = kwargs.get('title', None)
+
+    for group in parser._action_groups:
+        if group.title == title:
+            return group
+
+    return parser.add_argument_group(**kwargs)
+
+
+def _make_settings_cls(options: dict[str, Any]) -> type[Config]:
+    app_name = options.get('app.name')
+    assert isinstance(app_name, str)
+    app_cls = plugins.get_app_configs()[app_name]
+
+    executor_name = options.get('engine.executor.name', 'process-pool')
+    executor_cls = plugins.get_executor_configs()[executor_name]
+
+    filter_name = options.get('engine.filter.name', 'null')
+    filter_cls = plugins.get_filter_configs()[filter_name]
+
+    transformer_name = options.get('engine.transformer.name', 'null')
+    transformer_cls = plugins.get_transformer_configs()[transformer_name]
+
+    engine_cls = create_model(
+        'AppEngineConfig',
+        executor=(
+            executor_cls,
+            Field(description=f'{executor_name} executor options'),
+        ),
+        filter=(
+            filter_cls,
+            Field(description=f'{filter_name} filter options'),
+        ),
+        transformer=(
+            transformer_cls,
+            Field(description=f'{transformer_name} transformer options'),
+        ),
+        __base__=AppEngineConfig,
+    )
+
+    return create_model(
+        'Config',
+        app=(app_cls, Field(description=f'{app_name} app options')),
+        engine=(engine_cls, Field(description='engine options')),
+        __base__=Config,
+    )
 
 
 def parse_args_to_config(argv: Sequence[str]) -> Config:
@@ -75,35 +131,78 @@ def parse_args_to_config(argv: Sequence[str]) -> Config:
     Returns:
         Configuration.
     """
+    apps = plugins.get_app_configs()
+
     parser = argparse.ArgumentParser(
         description='Task Performance Suite.',
         prog='python -m taps.run',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        'app.name',
-        choices=list(get_registered_apps().keys()),
-        help='application to execute',
-    )
-    parser.add_argument(
-        '-c',
         '--config',
+        '-c',
+        default=argparse.SUPPRESS,
         help='toml configuration file to load',
     )
 
-    for name, config_type in get_registered_apps().items():
-        if name in argv:
-            settings_cls = create_model(
-                'Config',
-                app=(
-                    config_type,
-                    Field(description=f'{name} application options'),
-                ),
-                __base__=Config,
-            )
-            break
-    else:
-        settings_cls = Config
+    group = parser.add_argument_group('app options')
+    group.add_argument(
+        '--app',
+        choices=list(apps.keys()),
+        dest='app.name',
+        metavar='APP',
+        help='app choice {%(choices)s}',
+    )
+
+    group = parser.add_argument_group('engine options')
+    group.add_argument(
+        '--engine.executor',
+        '--executor',
+        choices=list(plugins.get_executor_configs().keys()),
+        default=argparse.SUPPRESS,
+        dest='engine.executor.name',
+        metavar='EXECUTOR',
+        help='executor choice {%(choices)s} (default: process-pool)',
+    )
+    group.add_argument(
+        '--engine.filter',
+        '--filter',
+        choices=list(plugins.get_filter_configs().keys()),
+        default=argparse.SUPPRESS,
+        dest='engine.filter.name',
+        metavar='FILTER',
+        help='filter choice {%(choices)s} (default: null)',
+    )
+    group.add_argument(
+        '--engine.transformer',
+        '--transformer',
+        choices=list(plugins.get_transformer_configs().keys()),
+        default=argparse.SUPPRESS,
+        dest='engine.transformer.name',
+        metavar='TRANSFORMER',
+        help='transformer choice {%(choices)s} (default: null)',
+    )
+
+    # Strip --help from argv so we can quickly parse the base options
+    # to figure out which config types we will need to use. --help
+    # will be parsed again by CliSettingsSource.
+    _argv = list(filter(lambda v: v not in ['-h', '--help'], argv))
+    base_options = vars(parser.parse_known_args(_argv)[0])
+    base_options = {k: v for k, v in base_options.items() if v is not None}
+    config_file = base_options.pop('config', None)
+    toml_options = _parse_toml_options(config_file)
+
+    # base_options takes precedence over toml_options if there are
+    # matching keys.
+    base_options = {**toml_options, **base_options}
+    if 'app.name' not in base_options or base_options['app.name'] is None:
+        raise ValueError(
+            'Missing the app name option. Either provides --app {APP} via '
+            'the CLI args or add the app.name attribute the config file.',
+        )
+
+    settings_cls = _make_settings_cls(base_options)
+    base_namespace = argparse.Namespace(**base_options)
 
     cli_settings = CliSettingsSource(
         settings_cls,
@@ -111,7 +210,12 @@ def parse_args_to_config(argv: Sequence[str]) -> Config:
         cli_parse_args=argv,
         cli_parse_none_str='null',
         root_parser=parser,
-        parse_args_method=_parse_args,
+        add_argument_method=_add_argument,
+        add_argument_group_method=_add_argument_group,
+        parse_args_method=functools.partial(
+            argparse.ArgumentParser.parse_args,
+            namespace=base_namespace,
+        ),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 

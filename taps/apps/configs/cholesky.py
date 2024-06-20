@@ -4,12 +4,12 @@ from typing import Literal
 
 from pydantic import Field
 
-from taps.app import App
-from taps.app import AppConfig
-from taps.run.apps.registry import register_app
+from taps import plugins
+from taps.apps.app import App
+from taps.apps.app import AppConfig
 
 
-@register_app(name='cholesky')
+@plugins.register('app')
 class CholeskyConfig(AppConfig):
     """Cholesky application configuration."""
 

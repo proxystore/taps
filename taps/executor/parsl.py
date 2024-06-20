@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import multiprocessing
+from typing import Literal
 from typing import Optional
 
 import globus_compute_sdk
@@ -11,17 +12,21 @@ from parsl.config import Config
 from parsl.executors import HighThroughputExecutor
 from parsl.executors import ThreadPoolExecutor
 from parsl.providers import LocalProvider
-from pydantic import BaseModel
 from pydantic import Field
 
+from taps import plugins
+from taps.executor.config import ExecutorConfig
 
-class ParslConfig(BaseModel):
+
+@plugins.register('executor')
+class ParslConfig(ExecutorConfig):
     """Parsl configuration.
 
     Attributes:
         endpoint: Globus Compute endpoint UUID.
     """
 
+    name: Literal['parsl'] = 'parsl'
     use_threads: bool = Field(
         False,
         description=(

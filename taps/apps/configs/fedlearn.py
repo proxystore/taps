@@ -7,12 +7,12 @@ from typing import Optional
 from pydantic import Field
 from pydantic import field_validator
 
-from taps.app import App
-from taps.app import AppConfig
-from taps.run.apps.registry import register_app
+from taps import plugins
+from taps.apps.app import App
+from taps.apps.app import AppConfig
 
 
-@register_app(name='fedlearn')
+@plugins.register('app')
 class FedlearnConfig(AppConfig):
     """Federated learning application configuration."""
 

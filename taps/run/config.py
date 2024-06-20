@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
-from taps.app import AppConfig
+from taps.apps import AppConfig
 from taps.engine import AppEngineConfig
 
 

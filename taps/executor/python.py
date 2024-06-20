@@ -6,19 +6,22 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Literal
 from typing import Optional
 
-from pydantic import BaseModel
 from pydantic import Field
 
+from taps import plugins
+from taps.executor.config import ExecutorConfig
 from taps.executor.dag import DAGExecutor
 
 
-class ProcessPoolConfig(BaseModel):
+@plugins.register('executor')
+class ProcessPoolConfig(ExecutorConfig):
     """Process pool executor configuration.
 
     Attributes:
         max_processes: Maximum number of processes.
     """
 
+    name: Literal['process-pool'] = 'process-pool'
     max_processes: int = Field(
         multiprocessing.cpu_count(),
         description='maximum number of processes',
@@ -40,13 +43,15 @@ class ProcessPoolConfig(BaseModel):
         )
 
 
-class ThreadPoolConfig(BaseModel):
+@plugins.register('executor')
+class ThreadPoolConfig(ExecutorConfig):
     """Thread pool executor configuration.
 
     Attributes:
         max_threads: Maximum number of threads.
     """
 
+    name: Literal['thread-pool'] = 'thread-pool'
     max_threads: int = Field(
         multiprocessing.cpu_count(),
         description='maximum number of threads',

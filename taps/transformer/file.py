@@ -5,19 +5,24 @@ import pickle
 import shutil
 import uuid
 from typing import Any
+from typing import Literal
 from typing import NamedTuple
 from typing import TypeVar
 
-from pydantic import BaseModel
 from pydantic import Field
 from pydantic import field_validator
+
+from taps import plugins
+from taps.transformer.config import DataTransformerConfig
 
 T = TypeVar('T')
 
 
-class PickleFileTransformerConfig(BaseModel):
+@plugins.register('transformer')
+class PickleFileTransformerConfig(DataTransformerConfig):
     """Pickle file transformer config."""
 
+    name: Literal['file'] = 'file'
     file_dir: str = Field(description='Object file directory')
 
     def get_transformer(self) -> PickleFileTransformer:

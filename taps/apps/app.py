@@ -4,10 +4,12 @@ import abc
 import pathlib
 from typing import Protocol
 from typing import runtime_checkable
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 
-from taps.engine import AppEngine
+if TYPE_CHECKING:
+    from taps.engine import AppEngine
 
 
 @runtime_checkable

@@ -13,16 +13,20 @@ from proxystore.proxy import extract
 from proxystore.proxy import Proxy
 from proxystore.store import get_store
 from proxystore.store import Store
-from pydantic import BaseModel
 from pydantic import Field
 from pydantic import field_validator
+
+from taps import plugins
+from taps.transformer.config import DataTransformerConfig
 
 T = TypeVar('T')
 
 
-class ProxyTransformerConfig(BaseModel):
+@plugins.register('transformer')
+class ProxyTransformerConfig(DataTransformerConfig):
     """Proxy transformer config."""
 
+    name: Literal['proxy'] = 'proxy'
     connector: Literal['file', 'redis'] = Field(
         description='connector type (file or redis)',
     )

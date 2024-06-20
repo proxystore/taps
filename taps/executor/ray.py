@@ -6,6 +6,7 @@ from concurrent.futures import Future
 from typing import Any
 from typing import Callable
 from typing import cast
+from typing import Literal
 from typing import Optional
 from typing import TypeVar
 
@@ -21,8 +22,10 @@ try:
 except ImportError as e:  # pragma: no cover
     RAY_IMPORT_ERROR = e
 
-from pydantic import BaseModel
 from pydantic import Field
+
+from taps import plugins
+from taps.executor.config import ExecutorConfig
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -123,7 +126,8 @@ class RayExecutor(Executor):
         ray.shutdown()
 
 
-class RayConfig(BaseModel):
+@plugins.register('executor')
+class RayConfig(ExecutorConfig):
     """Ray configuration.
 
     Attributes:
@@ -133,6 +137,7 @@ class RayConfig(BaseModel):
             on this machine.
     """
 
+    name: Literal['ray'] = 'ray'
     address: Optional[str] = Field(  # noqa: UP007
         'local',
         description='ray scheduler address (default spawns local cluster)',

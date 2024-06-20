@@ -7,6 +7,7 @@ from typing import Callable
 from typing import Generator
 from typing import Iterable
 from typing import Iterator
+from typing import Literal
 from typing import Optional
 from typing import TypeVar
 
@@ -18,8 +19,10 @@ else:  # pragma: <3.10 cover
 import dask
 from dask.distributed import Client
 from dask.distributed import Future as DaskFuture
-from pydantic import BaseModel
 from pydantic import Field
+
+from taps import plugins
+from taps.executor.config import ExecutorConfig
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -107,7 +110,8 @@ class DaskDistributedExecutor(Executor):
         self.client.close()
 
 
-class DaskDistributedConfig(BaseModel):
+@plugins.register('executor')
+class DaskDistributedConfig(ExecutorConfig):
     """Dask Distributed configuration.
 
     Attributes:
@@ -116,6 +120,7 @@ class DaskDistributedConfig(BaseModel):
         dask_workers: Number of Dask workers for local clusters.
     """
 
+    name: Literal['dask'] = 'dask'
     scheduler: Optional[str] = Field(  # noqa: UP007
         None,
         description='dask scheduler address',

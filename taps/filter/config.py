@@ -1,17 +1,37 @@
 from __future__ import annotations
 
+import abc
 import math
+from typing import Literal
 
 from pydantic import BaseModel
 from pydantic import Field
 
+from taps import plugins
 from taps.filter.filters import Filter
 from taps.filter.filters import NullFilter
 from taps.filter.filters import ObjectSizeFilter
 from taps.filter.filters import PickleSizeFilter
 
 
-class ObjectSizeConfig(BaseModel):
+class FilterConfig(BaseModel, abc.ABC):
+    name: str
+
+    @abc.abstractmethod
+    def get_filter(self) -> Filter: ...
+
+
+@plugins.register('filter')
+class NullFilterConfig(FilterConfig):
+    name: Literal['null'] = 'null'
+
+    def get_filter(self) -> Filter:
+        return NullFilter()
+
+
+@plugins.register('filter')
+class ObjectSizeConfig(FilterConfig):
+    name: Literal['object-size'] = 'object-size'
     min_size: int = Field(0)
     max_size: float = Field(math.inf)
 
@@ -22,7 +42,9 @@ class ObjectSizeConfig(BaseModel):
         )
 
 
-class PickleSizeConfig(BaseModel):
+@plugins.register('filter')
+class PickleSizeConfig(FilterConfig):
+    name: Literal['pickle-size'] = 'pickle-size'
     min_size: int = Field(0)
     max_size: float = Field(math.inf)
 
@@ -31,16 +53,3 @@ class PickleSizeConfig(BaseModel):
             min_bytes=self.min_size,
             max_bytes=self.max_size,
         )
-
-
-class FilterConfigs(BaseModel):
-    # TODO: add type
-    object_size: ObjectSizeConfig = Field(default_factory=ObjectSizeConfig)
-    pickle_size: PickleSizeConfig = Field(default_factory=PickleSizeConfig)
-
-    def get_filter(self, name: str | None = None) -> Filter:
-        if name is None:
-            return NullFilter()
-        attr = name.replace('-', '_')
-        config = getattr(self, attr)
-        return config.get_filter()

@@ -1,19 +1,24 @@
 from __future__ import annotations
 
+from typing import Literal
+
 import globus_compute_sdk
-from pydantic import BaseModel
 from pydantic import Field
 
+from taps import plugins
+from taps.executor.config import ExecutorConfig
 from taps.executor.dag import DAGExecutor
 
 
-class GlobusComputeConfig(BaseModel):
+@plugins.register('executor')
+class GlobusComputeConfig(ExecutorConfig):
     """Globus Compute configuration.
 
     Attributes:
         endpoint: Globus Compute endpoint UUID.
     """
 
+    name: Literal['globus'] = 'globus'
     endpoint: str = Field(description='endpoint UUID')
     batch_size: int = Field(
         128,

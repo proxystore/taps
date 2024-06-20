@@ -1,16 +1,21 @@
 from __future__ import annotations
 
 from typing import Any
+from typing import Literal
 from typing import NoReturn
 from typing import TypeVar
 
-from pydantic import BaseModel
+from taps import plugins
+from taps.transformer.config import DataTransformerConfig
 
 T = TypeVar('T')
 
 
-class NullTransformerConfig(BaseModel):
+@plugins.register('transformer')
+class NullTransformerConfig(DataTransformerConfig):
     """Null transformer config."""
+
+    name: Literal['null'] = 'null'
 
     def get_transformer(self) -> NullTransformer:
         """Create a transformer instance from the config."""
