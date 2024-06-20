@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import pathlib
 from unittest import mock
 
 from taps.executor.python import ThreadPoolConfig
-from taps.run.config import BenchmarkConfig
+from taps.run.config import Config
 from taps.run.main import main
 from taps.run.main import parse_args_to_config
 from taps.run.main import run
@@ -23,11 +24,11 @@ def test_main_error(mock_parse, mock_logging) -> None:
         assert main() == 1
 
 
-def test_run(test_benchmark_config: BenchmarkConfig) -> None:
-    run(test_benchmark_config)
+def test_run(test_benchmark_config: Config, tmp_path: pathlib.Path) -> None:
+    run(test_benchmark_config, tmp_path)
 
 
-def test_parse_args_to_config(test_benchmark_config: BenchmarkConfig) -> None:
+def test_parse_args_to_config(test_benchmark_config: Config) -> None:
     argv = [
         test_benchmark_config.name,
         '--executor',

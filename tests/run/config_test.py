@@ -9,14 +9,11 @@ else:  # pragma: <3.11 cover
     import tomli as tomllib
 
 from taps.run.config import Config
+from testing.app import TestAppConfig
 
 
 def test_read_write_toml_config(tmp_path: pathlib.Path) -> None:
-    app = AppConfigs(
-        name='cholesky',
-        cholesky=CholeskyConfig(matrix_size=100, block_size=100),
-    )
-    config = Config(app=app)
+    config = Config(app=TestAppConfig())
 
     config_file = tmp_path / 'config.toml'
     config.write_toml(config_file)

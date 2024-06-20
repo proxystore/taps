@@ -34,36 +34,33 @@ PluginType: TypeAlias = Literal['app', 'executor', 'filter', 'transformer']
 def register(
     kind: PluginType,
 ) -> Callable[[type[ConfigType]], type[ConfigType]]:
-    """Decorator for registering an app config type.
+    """Decorator for registering plugin configurations.
 
     Example:
         An app config can be defined and registered using a name.
         ```python
+        from concurrent.futures import Executor
+
         from pydantic import Field
 
-        from taps.apps.app import App
-        from taps.config import Config
-        from taps.run.app import register_app
+        from taps import plugins
+        from taps.executor.config import ExecutorConfig
 
-        @register('foo')
-        class FooConfig(Config):
+        @plugins.register('executor')
+        class FooConfig(ExecutorConfig):
+            name: Literal['foo'] = 'foo'
             n: int = Field(1, description='count')
 
-            def get_app(self) -> App:
-                from taps.apps.foo import FooApp
-
-                return FooApp(n=self.n)
+            def get_executor(self) -> Executor:
+                ...
         ```
 
-        Registration will make the app named "foo" available within the CLI.
-        ```bash
-        python -m taps.run foo --n 1 ...
-        ```
+        Registration will make the executor named "foo" available within
+        the CLI and configuration files.
         ```
 
     Args:
-        name: Name of the application. This will be used as the app option
-            within the CLI.
+        kind: Kind of plugin that is being registered.
     """
 
     def _decorator(cls: type[ConfigType]) -> type[ConfigType]:
@@ -122,4 +119,8 @@ def get_transformer_configs() -> dict[str, type[DataTransformerConfig]]:
 
 
 # Ensure that register() decorators on app configs get executed.
-import taps.apps.configs  # noqa: F401
+# This is at the end of the file because register() needs to be initialized
+# before we import the app configs because those module import and use
+# register(). Otherwise, we'd get an AttributeError on register() due to
+# a circular import.
+import taps.apps.configs  # noqa: E402, F401

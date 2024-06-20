@@ -5,6 +5,8 @@ from typing import Literal
 from typing import NoReturn
 from typing import TypeVar
 
+from pydantic import Field
+
 from taps import plugins
 from taps.transformer.config import DataTransformerConfig
 
@@ -13,12 +15,15 @@ T = TypeVar('T')
 
 @plugins.register('transformer')
 class NullTransformerConfig(DataTransformerConfig):
-    """Null transformer config."""
+    """Null transformer configuration."""
 
-    name: Literal['null'] = 'null'
+    name: Literal['null'] = Field(
+        'null',
+        description='name of transformer type',
+    )
 
     def get_transformer(self) -> NullTransformer:
-        """Create a transformer instance from the config."""
+        """Create a transformer from the configuration."""
         return NullTransformer()
 
 

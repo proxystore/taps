@@ -112,6 +112,7 @@ def _make_settings_cls(options: dict[str, Any]) -> type[Config]:
             Field(description=f'{transformer_name} transformer options'),
         ),
         __base__=AppEngineConfig,
+        __doc__=AppEngineConfig.__doc__,
     )
 
     return create_model(
@@ -119,7 +120,15 @@ def _make_settings_cls(options: dict[str, Any]) -> type[Config]:
         app=(app_cls, Field(description=f'{app_name} app options')),
         engine=(engine_cls, Field(description='engine options')),
         __base__=Config,
+        __doc__=Config.__doc__,
     )
+
+
+class _ArgparseFormatter(
+    argparse.ArgumentDefaultsHelpFormatter,
+    argparse.RawDescriptionHelpFormatter,
+):
+    pass
 
 
 def parse_args_to_config(argv: Sequence[str]) -> Config:
@@ -134,15 +143,27 @@ def parse_args_to_config(argv: Sequence[str]) -> Config:
     apps = plugins.get_app_configs()
 
     parser = argparse.ArgumentParser(
-        description='Task Performance Suite.',
+        description="""\
+Task Performance Suite (TaPS) CLI.
+
+Application benchmarks can be configured via CLI options, a TOML
+configuration file, or a mix of both. CLI options take precedence
+over configuration files.
+
+The default behavior of -h/--help is to show only the minimally
+relevant set of options. For example, only the process-pool
+executor options will be shown if --engine.executor process-pool
+is specified; the options for other executors will be suppressed.
+This behavior applies to all plugin types.
+""",
         prog='python -m taps.run',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=_ArgparseFormatter,
     )
     parser.add_argument(
         '--config',
         '-c',
         default=argparse.SUPPRESS,
-        help='toml configuration file to load',
+        help='base toml configuration file to load',
     )
 
     group = parser.add_argument_group('app options')
@@ -209,6 +230,7 @@ def parse_args_to_config(argv: Sequence[str]) -> Config:
         cli_avoid_json=True,
         cli_parse_args=argv,
         cli_parse_none_str='null',
+        cli_use_class_docs_for_groups=False,
         root_parser=parser,
         add_argument_method=_add_argument,
         add_argument_group_method=_add_argument_group,

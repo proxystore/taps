@@ -24,9 +24,12 @@ T = TypeVar('T')
 
 @plugins.register('transformer')
 class ProxyTransformerConfig(DataTransformerConfig):
-    """Proxy transformer config."""
+    """Proxy transformer configuration."""
 
-    name: Literal['proxy'] = 'proxy'
+    name: Literal['proxy'] = Field(
+        'proxy',
+        description='name of transformer type',
+    )
     connector: Literal['file', 'redis'] = Field(
         description='connector type (file or redis)',
     )
@@ -51,7 +54,7 @@ class ProxyTransformerConfig(DataTransformerConfig):
         return str(pathlib.Path(path).resolve())
 
     def get_transformer(self) -> ProxyTransformer:
-        """Create a transformer instance from the config."""
+        """Create a transformer from the configuration."""
         connector: Connector[Any]
         if self.connector == 'file':
             if self.file_dir is None:  # pragma: no cover

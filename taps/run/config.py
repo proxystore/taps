@@ -15,14 +15,13 @@ from taps.engine import AppEngineConfig
 
 
 class LoggingConfig(BaseModel):
-    """Run configuration.
+    """Logging configuration.
 
     Attributes:
-        log_file_level: Logging level for the log file.
-        log_file_name: Logging file name. If `None`, only logging to `stdout`
+        level: Logging level for `stdout`.
+        file_level: Logging level for the log file.
+        file_name: Logging file name. If `None`, only logging to `stdout`
             is used.
-        log_level: Logging level for `stdout`.
-        run_dir: Runtime directory.
     """
 
     level: Union[int, str] = Field(  # noqa: UP007
@@ -39,8 +38,14 @@ class LoggingConfig(BaseModel):
     )
 
 
-class OutputConfig(BaseModel):
-    run_dir_format: str = Field(
+class RunConfig(BaseModel):
+    """Run configuration.
+
+    Attributes:
+        dir_format: Run directory format.
+    """
+
+    dir_format: str = Field(
         'runs/{name}-{executor}-{timestamp}',
         description=(
             'run directory format (supports "{name}", "{timestamp}", and '
@@ -53,20 +58,28 @@ class Config(BaseSettings):
     """Application benchmark configuration.
 
     Attributes:
-        config: Optional path to TOML file containing the base configuration
-            options.
         app: Application configuration.
         engine: Engine configuration.
         logging: Logging configuration.
-        output: Output configuration.
+        run: Run configuration.
     """
 
-    app: AppConfig
-    engine: AppEngineConfig = Field(default_factory=AppEngineConfig)
-    logging: LoggingConfig = Field(default_factory=LoggingConfig)
-    output: OutputConfig = Field(default_factory=OutputConfig)
+    app: AppConfig = Field(description='application configuration')
+    engine: AppEngineConfig = Field(
+        default_factory=AppEngineConfig,
+        description='app engine configuration',
+    )
+    logging: LoggingConfig = Field(
+        default_factory=LoggingConfig,
+        description='logging configuration',
+    )
+    run: RunConfig = Field(
+        default_factory=RunConfig,
+        description='run configuration',
+    )
 
     def write_toml(self, filepath: str | pathlib.Path) -> None:
+        """Write the configuration to a TOML file."""
         model = self.model_dump(exclude_none=True)
 
         filepath = pathlib.Path(filepath)
@@ -76,9 +89,10 @@ class Config(BaseSettings):
 
 
 def make_run_dir(config: Config) -> pathlib.Path:
+    """Create and return the run directory path created from the config."""
     timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
     run_dir = pathlib.Path(
-        config.output.run_dir_format.format(
+        config.run.dir_format.format(
             executor=config.engine.executor,
             name=config.app.name,
             timestamp=timestamp,

@@ -15,27 +15,43 @@ from taps.filter.filters import PickleSizeFilter
 
 
 class FilterConfig(BaseModel, abc.ABC):
-    name: str
+    """Abstract filter configuration."""
+
+    name: str = Field(description='name of filter type')
 
     @abc.abstractmethod
-    def get_filter(self) -> Filter: ...
+    def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
+        ...
 
 
 @plugins.register('filter')
 class NullFilterConfig(FilterConfig):
-    name: Literal['null'] = 'null'
+    """Null filter configuration."""
+
+    name: Literal['null'] = Field('null', description='name of filter type')
 
     def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
         return NullFilter()
 
 
 @plugins.register('filter')
 class ObjectSizeConfig(FilterConfig):
-    name: Literal['object-size'] = 'object-size'
-    min_size: int = Field(0)
-    max_size: float = Field(math.inf)
+    """Object size filter configuration."""
+
+    name: Literal['object-size'] = Field(
+        'object-size',
+        description='name of filter type',
+    )
+    min_size: int = Field(0, description='minimum object size in bytes')
+    max_size: float = Field(
+        math.inf,
+        description='maximum object size in bytes',
+    )
 
     def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
         return ObjectSizeFilter(
             min_bytes=self.min_size,
             max_bytes=self.max_size,
@@ -44,11 +60,20 @@ class ObjectSizeConfig(FilterConfig):
 
 @plugins.register('filter')
 class PickleSizeConfig(FilterConfig):
-    name: Literal['pickle-size'] = 'pickle-size'
-    min_size: int = Field(0)
-    max_size: float = Field(math.inf)
+    """Pickled object size filter configuration."""
+
+    name: Literal['pickle-size'] = Field(
+        'pickle-size',
+        description='name of filter type',
+    )
+    min_size: int = Field(0, description='minimum object size in bytes')
+    max_size: float = Field(
+        math.inf,
+        description='maximum object size in bytes',
+    )
 
     def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
         return PickleSizeFilter(
             min_bytes=self.min_size,
             max_bytes=self.max_size,

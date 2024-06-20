@@ -7,9 +7,11 @@ from pydantic import BaseModel
 
 
 class ExecutorConfig(BaseModel, abc.ABC):
-    """Executor configuration."""
+    """Abstract executor configuration."""
 
     name: str
 
     @abc.abstractmethod
-    def get_executor(self) -> Executor: ...
+    def get_executor(self) -> Executor:
+        """Create an executor from the configuration."""
+        ...

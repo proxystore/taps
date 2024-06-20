@@ -20,13 +20,16 @@ T = TypeVar('T')
 
 @plugins.register('transformer')
 class PickleFileTransformerConfig(DataTransformerConfig):
-    """Pickle file transformer config."""
+    """Pickle file transformer configuration."""
 
-    name: Literal['file'] = 'file'
-    file_dir: str = Field(description='Object file directory')
+    name: Literal['file'] = Field(
+        'file',
+        description='name of transformer type',
+    )
+    file_dir: str = Field(description='object file directory')
 
     def get_transformer(self) -> PickleFileTransformer:
-        """Create a transformer instance from the config."""
+        """Create a transformer from the configuration."""
         return PickleFileTransformer(self.file_dir)
 
     @field_validator('file_dir', mode='before')
