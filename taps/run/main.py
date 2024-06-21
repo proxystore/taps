@@ -10,11 +10,14 @@ import time
 from typing import Callable
 from typing import Sequence
 
+from pydantic import ValidationError
+
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
 from taps.run.config import Config
 from taps.run.config import make_run_dir
 from taps.run.parse import parse_args_to_config
+from taps.run.utils import prettify_validation_error
 
 logger = logging.getLogger('taps.run')
 
@@ -66,9 +69,13 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
 
 def main(argv: Sequence[str] | None = None) -> int:  # noqa: D103
     argv = argv if argv is not None else sys.argv[1:]
-    config = parse_args_to_config(argv)
-    run_dir = make_run_dir(config)
 
+    try:
+        config = parse_args_to_config(argv)
+    except ValidationError as e:  # pragma: no cover
+        raise prettify_validation_error(e, Config) from e
+
+    run_dir = make_run_dir(config)
     log_file = (
         None
         if config.logging.file_name is None

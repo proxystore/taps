@@ -3,6 +3,9 @@ from __future__ import annotations
 from collections.abc import MutableMapping
 from typing import Any
 
+from pydantic import BaseModel
+from pydantic import ValidationError
+
 
 def flatten_mapping(
     mapping: MutableMapping[str, Any],
@@ -30,3 +33,65 @@ def flatten_mapping(
         else:
             items.append((new_key, value))
     return dict(items)
+
+
+def prettify_validation_error(
+    error: ValidationError,
+    model: type[BaseModel] | None = None,
+) -> ValueError:
+    """Parse a Pydantic validation error into a ValueError.
+
+    Given a [`ValidationError`][pydantic.ValidationError],
+    ```
+    pydantic_core._pydantic_core.ValidationError: 2 validation errors for GeneratedConfig
+    app.matrix_size
+      Input should be a valid integer, unable to parse string as an integer [type=int_parsing, input_value='100x', input_type=str]
+        For further information visit https://errors.pydantic.dev/2.7/v/int_parsing
+    engine.executor.max_threads
+      Input should be a valid integer, unable to parse string as an integer [type=int_parsing, input_value='1.5', input_type=str]
+        For further information visit https://errors.pydantic.dev/2.7/v/int_parsing
+    ```
+    returns a [`ValueError`][ValueError] with a more readable output.
+    ```
+    ValueError: Found 2 validation errors:
+      - Input should be a valid integer, unable to parse string as an integer
+        Attribute: app.matrix_size
+        Input (str): '100x'
+        Error type: int_parsing (https://errors.pydantic.dev/2.7/v/int_parsing)
+      - Input should be a valid integer, unable to parse string as an integer
+        Attribute: engine.executor.max_threads
+        Input (str): '1.5'
+        Error type: int_parsing (https://errors.pydantic.dev/2.7/v/int_parsing)
+    ```
+    """  # noqa: E501
+    errors: list[str] = []
+
+    for e in error.errors():
+        attribute = '.'.join(str(v) for v in e['loc'])
+        input_ = e['input']
+        message = e['msg']
+        type_ = e['type']
+        url = e.get(
+            'url',
+            'https://docs.pydantic.dev/latest/errors/validation_errors/',
+        )
+
+        errors.append(f"""\
+  - {message}
+    Attribute: {attribute}
+    Input ({type(input_).__name__}): {input_!r}
+    Error type: {type_} ({url})\
+""")
+
+    errors_str = '\n'.join(errors)
+    count = error.error_count()
+
+    if model is not None:
+        model_str = f' for {model.__module__}.{model.__name__}'
+    else:
+        model_str = ''
+
+    return ValueError(f"""\
+Found {count} validation error{"" if count == 1 else "s"}{model_str}
+{errors_str}\
+""")
