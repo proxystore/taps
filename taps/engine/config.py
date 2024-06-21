@@ -13,8 +13,8 @@ from taps.executor import ProcessPoolConfig
 from taps.filter import FilterConfig
 from taps.filter import NullFilterConfig
 from taps.record import JSONRecordLogger
-from taps.transformer import DataTransformerConfig
 from taps.transformer import NullTransformerConfig
+from taps.transformer import TransformerConfig
 
 
 class AppEngineConfig(BaseModel):
@@ -30,7 +30,7 @@ class AppEngineConfig(BaseModel):
 
     executor: ExecutorConfig = Field(default_factory=ProcessPoolConfig)
     filter: FilterConfig = Field(default_factory=NullFilterConfig)
-    transformer: DataTransformerConfig = Field(
+    transformer: TransformerConfig = Field(
         default_factory=NullTransformerConfig,
     )
     task_record_file_name: Optional[str] = Field('tasks.jsonl')  # noqa: UP007

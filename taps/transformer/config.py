@@ -7,10 +7,10 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
-from taps.transformer.protocol import DataTransformer
+from taps.transformer.protocol import Transformer
 
 
-class DataTransformerConfig(BaseModel, abc.ABC):
+class TransformerConfig(BaseModel, abc.ABC):
     """Abstract transformer configuration."""
 
     name: str = Field(description='name of transformer type')
@@ -22,6 +22,6 @@ class DataTransformerConfig(BaseModel, abc.ABC):
     )
 
     @abc.abstractmethod
-    def get_transformer(self) -> DataTransformer[Any]:
+    def get_transformer(self) -> Transformer[Any]:
         """Create a transformer from the configuration."""
         ...

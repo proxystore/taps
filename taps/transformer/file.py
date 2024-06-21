@@ -13,13 +13,13 @@ from pydantic import Field
 from pydantic import field_validator
 
 from taps.plugins import register
-from taps.transformer.config import DataTransformerConfig
+from taps.transformer.config import TransformerConfig
 
 T = TypeVar('T')
 
 
 @register('transformer')
-class PickleFileTransformerConfig(DataTransformerConfig):
+class PickleFileTransformerConfig(TransformerConfig):
     """Pickle file transformer configuration."""
 
     name: Literal['file'] = Field(

@@ -13,7 +13,7 @@ from taps.engine.engine import as_completed
 from taps.engine.engine import TaskFuture
 from taps.engine.engine import TaskInfo
 from taps.engine.engine import wait
-from taps.engine.transform import TaskDataTransformer
+from taps.engine.transform import TaskTransformer
 from taps.executor import DAGExecutor
 from taps.executor import DaskDistributedExecutor
 from taps.filter import NullFilter
@@ -29,7 +29,7 @@ def test_task_wrapper_call() -> None:
     task = _TaskWrapper(
         sum_,
         task_id=uuid.uuid4(),
-        data_transformer=TaskDataTransformer(NullTransformer(), NullFilter()),
+        data_transformer=TaskTransformer(NullTransformer(), NullFilter()),
     )
     assert task([1, 2, 3], start=-6).result == 0
 
@@ -117,7 +117,7 @@ def test_task_future_exception() -> None:
     task = TaskFuture(
         future,
         TaskInfo('test', 'test', [], 0),
-        TaskDataTransformer(NullTransformer(), NullFilter()),
+        TaskTransformer(NullTransformer(), NullFilter()),
     )
 
     exception = RuntimeError()
@@ -133,12 +133,12 @@ def test_wait() -> None:
     fast_task = TaskFuture(
         fast_future,
         TaskInfo('fast-id', 'fast', [], 0),
-        TaskDataTransformer(NullTransformer(), NullFilter()),
+        TaskTransformer(NullTransformer(), NullFilter()),
     )
     slow_task = TaskFuture(
         slow_future,
         TaskInfo('slow-id', 'slow', [], 0),
-        TaskDataTransformer(NullTransformer(), NullFilter()),
+        TaskTransformer(NullTransformer(), NullFilter()),
     )
 
     timeout = 0.001

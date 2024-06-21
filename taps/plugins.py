@@ -18,12 +18,12 @@ from taps.apps import AppConfig
 if TYPE_CHECKING:
     from taps.executor import ExecutorConfig
     from taps.filter import FilterConfig
-    from taps.transformer import DataTransformerConfig
+    from taps.transformer import TransformerConfig
 
 _REGISTERED_APP_CONFIGS: dict[str, type[AppConfig]] = {}
 _REGISTERED_EXECUTOR_CONFIGS: dict[str, type[ExecutorConfig]] = {}
 _REGISTERED_FILTER_CONFIGS: dict[str, type[FilterConfig]] = {}
-_REGISTERED_TRANSFORMER_CONFIGS: dict[str, type[DataTransformerConfig]] = {}
+_REGISTERED_TRANSFORMER_CONFIGS: dict[str, type[TransformerConfig]] = {}
 
 _REGISTERED_CONFIGS = {
     'app': _REGISTERED_APP_CONFIGS,
@@ -114,7 +114,7 @@ def get_filter_configs() -> dict[str, type[FilterConfig]]:
     return _REGISTERED_FILTER_CONFIGS.copy()
 
 
-def get_transformer_configs() -> dict[str, type[DataTransformerConfig]]:
+def get_transformer_configs() -> dict[str, type[TransformerConfig]]:
     """Get all registered transformer configs.
 
     Returns:

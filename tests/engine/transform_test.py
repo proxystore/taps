@@ -4,7 +4,7 @@ import uuid
 from typing import Any
 from typing import TypeVar
 
-from taps.engine.transform import TaskDataTransformer
+from taps.engine.transform import TaskTransformer
 from taps.filter import NullFilter
 from taps.filter import ObjectTypeFilter
 
@@ -31,7 +31,7 @@ class DictTransformer:
 
 
 def test_task_data_transfomer() -> None:
-    transformer = TaskDataTransformer(DictTransformer(), NullFilter())
+    transformer = TaskTransformer(DictTransformer(), NullFilter())
 
     obj = object()
     identifier = transformer.transform(obj)
@@ -42,7 +42,7 @@ def test_task_data_transfomer() -> None:
 
 
 def test_task_data_transfomer_iterable() -> None:
-    transformer = TaskDataTransformer(DictTransformer(), NullFilter())
+    transformer = TaskTransformer(DictTransformer(), NullFilter())
 
     objs = (object(), object())
     identifiers = transformer.transform_iterable(objs)
@@ -53,7 +53,7 @@ def test_task_data_transfomer_iterable() -> None:
 
 
 def test_task_data_transfomer_mapping() -> None:
-    transformer = TaskDataTransformer(DictTransformer(), NullFilter())
+    transformer = TaskTransformer(DictTransformer(), NullFilter())
 
     objs = {'a': object(), 'b': object()}
     identifiers = transformer.transform_mapping(objs)
@@ -65,7 +65,7 @@ def test_task_data_transfomer_mapping() -> None:
 
 
 def test_task_data_transfomer_filter() -> None:
-    transformer = TaskDataTransformer(DictTransformer(), ObjectTypeFilter(str))
+    transformer = TaskTransformer(DictTransformer(), ObjectTypeFilter(str))
 
     obj = object()
     identifier = transformer.transform(obj)
@@ -80,7 +80,7 @@ def test_task_data_transfomer_filter() -> None:
 
 
 def test_task_data_transfomer_iterable_filter() -> None:
-    transformer = TaskDataTransformer(DictTransformer(), ObjectTypeFilter(str))
+    transformer = TaskTransformer(DictTransformer(), ObjectTypeFilter(str))
 
     objs = (object(), 'object')
     identifiers = transformer.transform_iterable(objs)
@@ -91,7 +91,7 @@ def test_task_data_transfomer_iterable_filter() -> None:
 
 
 def test_task_data_transfomer_mapping_filter() -> None:
-    transformer = TaskDataTransformer(DictTransformer(), ObjectTypeFilter(str))
+    transformer = TaskTransformer(DictTransformer(), ObjectTypeFilter(str))
 
     objs = {'a': object(), 'b': 'object'}
     identifiers = transformer.transform_mapping(objs)

@@ -11,7 +11,7 @@ IdentifierT = TypeVar('IdentifierT')
 
 
 @runtime_checkable
-class DataTransformer(Protocol[IdentifierT]):
+class Transformer(Protocol[IdentifierT]):
     """Object transformer protocol."""
 
     def close(self) -> None:

@@ -35,13 +35,13 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
-from taps.engine.transform import TaskDataTransformer
+from taps.engine.transform import TaskTransformer
 from taps.filter import Filter
 from taps.filter import NullFilter
 from taps.record import NullRecordLogger
 from taps.record import RecordLogger
 from taps.transformer.null import NullTransformer
-from taps.transformer.protocol import DataTransformer
+from taps.transformer.protocol import Transformer
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -95,7 +95,7 @@ class _TaskWrapper(Generic[P, T]):
         function: Callable[P, T],
         *,
         task_id: uuid.UUID,
-        data_transformer: TaskDataTransformer[Any],
+        data_transformer: TaskTransformer[Any],
     ) -> None:
         self.function = function
         self.task_id = uuid.uuid4() if task_id is None else task_id
@@ -162,7 +162,7 @@ class TaskFuture(Generic[T]):
         self,
         future: Future[_TaskResult[T]],
         info: TaskInfo,
-        data_transformer: TaskDataTransformer[Any],
+        data_transformer: TaskTransformer[Any],
     ) -> None:
         self.info = info
         self._future = future
@@ -235,11 +235,11 @@ class AppEngine:
         executor: Executor,
         *,
         data_filter: Filter | None = None,
-        data_transformer: DataTransformer[Any] | None = None,
+        data_transformer: Transformer[Any] | None = None,
         record_logger: RecordLogger | None = None,
     ) -> None:
         self.executor = executor
-        self.data_transformer: TaskDataTransformer[Any] = TaskDataTransformer(
+        self.data_transformer: TaskTransformer[Any] = TaskTransformer(
             NullTransformer()
             if data_transformer is None
             else data_transformer,

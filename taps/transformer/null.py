@@ -8,13 +8,13 @@ from typing import TypeVar
 from pydantic import Field
 
 from taps.plugins import register
-from taps.transformer.config import DataTransformerConfig
+from taps.transformer.config import TransformerConfig
 
 T = TypeVar('T')
 
 
 @register('transformer')
-class NullTransformerConfig(DataTransformerConfig):
+class NullTransformerConfig(TransformerConfig):
     """Null transformer configuration."""
 
     name: Literal['null'] = Field(

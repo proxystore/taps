@@ -17,13 +17,13 @@ from pydantic import Field
 from pydantic import field_validator
 
 from taps.plugins import register
-from taps.transformer.config import DataTransformerConfig
+from taps.transformer.config import TransformerConfig
 
 T = TypeVar('T')
 
 
 @register('transformer')
-class ProxyTransformerConfig(DataTransformerConfig):
+class ProxyTransformerConfig(TransformerConfig):
     """Proxy transformer configuration."""
 
     name: Literal['proxy'] = Field(

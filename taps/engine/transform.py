@@ -8,18 +8,18 @@ from typing import Mapping
 from typing import TypeVar
 
 from taps.filter import Filter
-from taps.transformer import DataTransformer
+from taps.transformer import Transformer
 
 K = TypeVar('K')
 T = TypeVar('T')
 IdentifierT = TypeVar('IdentifierT')
 
 
-class TaskDataTransformer(Generic[IdentifierT]):
+class TaskTransformer(Generic[IdentifierT]):
     """Task data transformer.
 
     This class combines a simple object
-    [`DataTransformer`][taps.data.transform.DataTransformer] and a
+    [`Transformer`][taps.data.transform.Transformer] and a
     [`Filter`][taps.data.filter.Filter] into useful methods for transforming
     the positional arguments, keyword arguments, and results of tasks.
 
@@ -31,7 +31,7 @@ class TaskDataTransformer(Generic[IdentifierT]):
 
     def __init__(
         self,
-        transformer: DataTransformer[IdentifierT],
+        transformer: Transformer[IdentifierT],
         filter_: Filter,
     ) -> None:
         self.transformer = transformer
