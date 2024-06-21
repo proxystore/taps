@@ -8,8 +8,8 @@ from typing import Generator
 import pytest
 from dask.distributed import Client
 
-from taps.engine import AppEngine
-from taps.engine import AppEngineConfig
+from taps.engine import Engine
+from taps.engine import EngineConfig
 from taps.executor import DAGExecutor
 from taps.executor import DaskDistributedExecutor
 from taps.executor import ThreadPoolConfig
@@ -60,9 +60,9 @@ def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
 @pytest.fixture()
 def app_engine(
     thread_executor: ThreadPoolExecutor,
-) -> Generator[AppEngine, None, None]:
+) -> Generator[Engine, None, None]:
     dag_executor = DAGExecutor(thread_executor)
-    with AppEngine(dag_executor) as executor:
+    with Engine(dag_executor) as executor:
         yield executor
 
 
@@ -70,7 +70,7 @@ def app_engine(
 def test_benchmark_config(tmp_path: pathlib.Path) -> Config:
     return Config(
         app=MockAppConfig(tasks=3),
-        engine=AppEngineConfig(
+        engine=EngineConfig(
             executor=ThreadPoolConfig(max_threads=4),
             filter=NullFilterConfig(),
             transformer=NullTransformerConfig(),

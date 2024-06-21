@@ -9,8 +9,8 @@ import sys
 import time
 import uuid
 
-from taps.engine import AppEngine
 from taps.engine import as_completed
+from taps.engine import Engine
 from taps.engine import TaskFuture
 from taps.engine import wait
 from taps.logging import APP_LOG_LEVEL
@@ -94,7 +94,7 @@ def warmup_task() -> None:
 
 
 def run_bag_of_tasks(
-    engine: AppEngine,
+    engine: Engine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
@@ -163,7 +163,7 @@ def run_bag_of_tasks(
 
 
 def run_diamond(
-    engine: AppEngine,
+    engine: Engine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
@@ -207,7 +207,7 @@ def run_diamond(
 
 
 def run_reduce(
-    engine: AppEngine,
+    engine: Engine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
@@ -239,7 +239,7 @@ def run_reduce(
 
 
 def run_sequential(
-    engine: AppEngine,
+    engine: Engine,
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
@@ -321,7 +321,7 @@ class SyntheticApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:

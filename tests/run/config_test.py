@@ -13,7 +13,7 @@ else:  # pragma: <3.11 cover
 import pytest
 from pydantic import ValidationError
 
-from taps.engine import AppEngineConfig
+from taps.engine import EngineConfig
 from taps.executor import ThreadPoolConfig
 from taps.run.config import Config
 from taps.run.config import LoggingConfig
@@ -29,7 +29,7 @@ def test_create_config_default_plugins() -> None:
 def test_create_config_manual_plugins() -> None:
     Config(
         app=MockAppConfig(),
-        engine=AppEngineConfig(),
+        engine=EngineConfig(),
         logging=LoggingConfig(),
         run=RunConfig(),
     )
@@ -84,7 +84,7 @@ def test_make_run_dir(tmp_path: pathlib.Path) -> None:
     dir_format = str(tmp_path / '{name}__{executor}__{timestamp}')
     config = Config(
         app=MockAppConfig(),
-        engine=AppEngineConfig(executor=ThreadPoolConfig()),
+        engine=EngineConfig(executor=ThreadPoolConfig()),
         run=RunConfig(dir_format=dir_format),
     )
 

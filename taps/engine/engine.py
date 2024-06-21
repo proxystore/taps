@@ -220,7 +220,7 @@ def _result_or_cancel(
         del future
 
 
-class AppEngine:
+class Engine:
     """Application execution engine.
 
     Args:

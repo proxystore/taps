@@ -7,7 +7,7 @@ from pydantic import Field
 
 from taps.apps import App
 from taps.apps import AppConfig
-from taps.engine import AppEngine
+from taps.engine import Engine
 from taps.plugins import register
 
 
@@ -35,7 +35,7 @@ class MockApp:
     def close(self) -> None:
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         task_futures = [engine.submit(task) for _ in range(self.tasks)]
 
         for task_future in task_futures:

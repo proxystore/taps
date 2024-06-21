@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
-from taps.engine.engine import AppEngine
+from taps.engine.engine import Engine
 from taps.executor import ExecutorConfig
 from taps.executor import ProcessPoolConfig
 from taps.filter import FilterConfig
@@ -17,7 +17,7 @@ from taps.transformer import NullTransformerConfig
 from taps.transformer import TransformerConfig
 
 
-class AppEngineConfig(BaseModel):
+class EngineConfig(BaseModel):
     """App engine configuration.
 
     Attributes:
@@ -42,10 +42,10 @@ class AppEngineConfig(BaseModel):
     )
 
     def __eq__(self, other: Any) -> bool:
-        if not isinstance(other, AppEngineConfig):
+        if not isinstance(other, EngineConfig):
             raise NotImplementedError(
-                'AppEngineConfig equality is not implemented for '
-                'non-AppEngineConfig types.',
+                'EngineConfig equality is not implemented for '
+                'non-EngineConfig types.',
             )
 
         return (
@@ -55,7 +55,7 @@ class AppEngineConfig(BaseModel):
             and self.task_record_file_name == other.task_record_file_name
         )
 
-    def get_engine(self) -> AppEngine:
+    def get_engine(self) -> Engine:
         """Create an engine from the configuration."""
         record_logger = (
             JSONRecordLogger(self.task_record_file_name)
@@ -63,7 +63,7 @@ class AppEngineConfig(BaseModel):
             else None
         )
 
-        return AppEngine(
+        return Engine(
             executor=self.executor.get_executor(),
             data_filter=self.filter.get_filter(),
             data_transformer=self.transformer.get_transformer(),

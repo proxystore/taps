@@ -12,8 +12,8 @@ import pandas as pd
 
 from taps.apps.docking.train import run_model
 from taps.apps.docking.train import train_model
-from taps.engine import AppEngine
 from taps.engine import as_completed
+from taps.engine import Engine
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
 
@@ -245,7 +245,7 @@ class DockingApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
@@ -356,7 +356,7 @@ class DockingApp:
 
     def _submit_task_for_smiles(
         self,
-        engine: AppEngine,
+        engine: Engine,
         smiles: str,
         working_dir: pathlib.Path,
     ) -> TaskFuture[tuple[str, float]]:

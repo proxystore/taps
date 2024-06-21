@@ -15,8 +15,8 @@ from taps.apps.fedlearn.types import DataChoices
 from taps.apps.fedlearn.types import Result
 from taps.apps.fedlearn.utils import create_clients
 from taps.apps.fedlearn.utils import unweighted_module_avg
-from taps.engine import AppEngine
 from taps.engine import as_completed
+from taps.engine import Engine
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
 
@@ -126,7 +126,7 @@ class FedlearnApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
@@ -165,7 +165,7 @@ class FedlearnApp:
     def _federated_round(
         self,
         round_idx: int,
-        engine: AppEngine,
+        engine: Engine,
         run_dir: pathlib.Path,
     ) -> list[Result]:
         """Perform a single round in federated learning.

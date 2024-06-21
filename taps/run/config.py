@@ -25,7 +25,7 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 from taps.apps import AppConfig
-from taps.engine import AppEngineConfig
+from taps.engine import EngineConfig
 from taps.plugins import get_app_configs
 from taps.plugins import get_executor_configs
 from taps.plugins import get_filter_configs
@@ -90,7 +90,7 @@ class Config(BaseSettings):
     )
 
     app: AppConfig = Field(description='application configuration')
-    engine: AppEngineConfig = Field(default_factory=AppEngineConfig)
+    engine: EngineConfig = Field(default_factory=EngineConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     run: RunConfig = Field(default_factory=RunConfig)
 
@@ -138,10 +138,10 @@ class Config(BaseSettings):
 
 
 def _make_config_cls(options: dict[str, Any]) -> type[Config]:
-    # The Config and AppEngineConfig BaseModels contain attributes that
+    # The Config and EngineConfig BaseModels contain attributes that
     # are typed using ABCs. Thus, CliSettingsSource cannot infer the
     # CLI options to add from the ABC. To get around this, we dynamically
-    # create a new Config/AppEngineConfig using concrete types based on
+    # create a new Config/EngineConfig using concrete types based on
     # the plugin names provided by the user.
     app_name = options.get('app.name')
     assert isinstance(app_name, str)
@@ -170,12 +170,12 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
     )
 
     engine_cls = create_model(
-        'AppEngineConfig',
+        'EngineConfig',
         executor=(executor_cls, executor_field),
         filter=(filter_cls, filter_field),
         transformer=(transformer_cls, transformer_field),
-        __base__=AppEngineConfig,
-        __doc__=AppEngineConfig.__doc__,
+        __base__=EngineConfig,
+        __doc__=EngineConfig.__doc__,
     )
     engine_field = Field(
         default_factory=engine_cls,

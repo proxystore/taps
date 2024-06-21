@@ -10,7 +10,7 @@ from proxystore.store import get_store
 from proxystore.store import Store
 from proxystore.store.utils import get_key
 
-from taps.engine import AppEngine
+from taps.engine import Engine
 from taps.engine import TaskFuture
 
 T = TypeVar('T')
@@ -36,7 +36,7 @@ def test_proxy_unintentional_resolves(
 
     proxy = Proxy(fake_factory, cache_defaults=True, target=b'')
 
-    with AppEngine(executor) as engine:
+    with Engine(executor) as engine:
         task: TaskFuture[Proxy[bytes]] = engine.submit(identity, proxy)
         result = task.result()
 
@@ -75,7 +75,7 @@ def test_proxy_resolve_count(
         metrics=True,
         populate_target=True,
         register=True,
-    ) as store, AppEngine(executor) as engine:
+    ) as store, Engine(executor) as engine:
         value = 'test-value'
         proxy = store.proxy(value)
         task = engine.submit(check, proxy, size=len(value))

@@ -7,7 +7,7 @@ import pathlib
 
 import numpy as np
 
-from taps.engine import AppEngine
+from taps.engine import Engine
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
 
@@ -68,7 +68,7 @@ class CholeskyApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:

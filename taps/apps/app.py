@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 
 if TYPE_CHECKING:
-    from taps.engine import AppEngine
+    from taps.engine import Engine
 
 
 @runtime_checkable
@@ -19,7 +19,7 @@ class App(Protocol):
 
     def run(
         self,
-        engine: AppEngine,
+        engine: Engine,
         run_dir: pathlib.Path,
     ) -> None:
         """Run the application."""

@@ -12,8 +12,8 @@ from taps.apps.moldesign.chemfunctions import compute_vertical
 from taps.apps.moldesign.tasks import combine_inferences
 from taps.apps.moldesign.tasks import run_model
 from taps.apps.moldesign.tasks import train_model
-from taps.engine import AppEngine
 from taps.engine import as_completed
+from taps.engine import Engine
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
 
@@ -50,7 +50,7 @@ class MoldesignApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
         """Run the application.
 
         Args:

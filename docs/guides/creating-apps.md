@@ -37,7 +37,7 @@ from __future__ import annotations
 import logging
 import pathlib
 
-from taps.engine import AppEngine
+from taps.engine import Engine
 from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ class FoobarApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
@@ -81,16 +81,16 @@ class FoobarApp:
 2. The `FoobarApp` implements the [`App`][taps.app.App] protocol.
 3. The `close()` method can be used to close any stateful connection objects create in `__init__` or perform any clean up if needed.
 4. Once `FoobarApp` is instantiated by the CLI, `FoobarApp.run()` will be invoked.
-   This method takes two arguments: a [`AppEngine`][taps.engine.AppEngine] and a path to the invocations run directory.
+   This method takes two arguments: a [`Engine`][taps.engine.Engine] and a path to the invocations run directory.
    Applications are free to use the run directory as needed, such as to store result files.
 
-The [`AppEngine`][taps.engine.AppEngine] is the key abstraction of the TaPS framework.
-The CLI arguments provided by the user for the compute engine, data management, and task logging logic are used to create a [`AppEngine`][taps.engine.AppEngine] instance which is then provided to the application.
-[`AppEngine.submit()`][taps.engine.AppEngine.submit] is the primary method that application will use to execute tasks asynchronously.
+The [`Engine`][taps.engine.Engine] is the key abstraction of the TaPS framework.
+The CLI arguments provided by the user for the compute engine, data management, and task logging logic are used to create a [`Engine`][taps.engine.Engine] instance which is then provided to the application.
+[`Engine.submit()`][taps.engine.Engine.submit] is the primary method that application will use to execute tasks asynchronously.
 This method returns a [`TaskFuture`][taps.engine.TaskFuture] object with a [`result()`][taps.engine.TaskFuture.result] which will wait on the task to finish and return the result.
-Alternatively, [`AppEngine.map()`][taps.engine.AppEngine.map] can be used to map a task onto a sequence of inputs, compute the tasks in parallel, and gather the results.
+Alternatively, [`Engine.map()`][taps.engine.Engine.map] can be used to map a task onto a sequence of inputs, compute the tasks in parallel, and gather the results.
 Importantly, a [`TaskFuture`][taps.engine.TaskFuture] can also be passed as input to another tasks.
-Doing so indicates to the [`AppEngine`][taps.engine.AppEngine] that there is a dependency between those two tasks.
+Doing so indicates to the [`Engine`][taps.engine.Engine] that there is a dependency between those two tasks.
 
 ### The `AppConfig`
 
