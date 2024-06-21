@@ -19,7 +19,7 @@ curl -L https://www.cs.cmu.edu/~enron/enron_mail_20150507.tar.gz | tar -xz -C da
 
 To see all parameters, run the following command:
 ```bash
-python -m taps.run mapreduce --help
+python -m taps.run --app mapreduce --help
 ```
 
 **Enron Corpus**
@@ -27,15 +27,17 @@ python -m taps.run mapreduce --help
 The following command distributes the text files of the Enron Corpus within `data/maildir` across 16 map tasks.
 Once the computations have finished, the top 10 most common tokens will be printed.
 ```bash
-python -m taps.run mapreduce --executor process-pool \
-    --data-dir data/maildir --map-tasks 16
+python -m taps.run --app mapreduce
+    --app.data-dir data/maildir --app.map-tasks 16 \
+    --engine.executor process-pool
 ```
 
 **Randomly Generated**
 
 Here, we will generate 16 random files for each of 16 map tasks.
 ```bash
-python -m taps.run mapreduce --executor process-pool \
-    --data-dir /tmp/generated-files --map-tasks 16 \
-    --generate true --generated-files 16
+python -m taps.run -app mapreduce \
+    --app.data-dir /tmp/generated-files --app.map-tasks 16 \
+    --app.generate true --app.generated-files 16 \
+    --engine.executor process-pool
 ```

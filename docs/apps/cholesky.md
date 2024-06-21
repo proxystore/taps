@@ -17,7 +17,7 @@ pip install -e .[cholesky]
 
 The following command computes the decomposition of a 10,000 x 10,000 matrix using 1000 x 1000 block/tile sizes.
 ```bash
-$ python -m taps.run cholesky --executor process-pool --matrix-size 10000 --block-size 1000
+$ python -m taps.run --app cholesky --engine.executor process-pool --app.matrix-size 10000 --block-size 1000
 [2024-05-17 11:09:24.779] RUN   (taps.run) :: Starting application (name=cholesky)
 ...
 [2024-05-17 11:09:24.810] APP  (taps.apps.cholesky) :: Input matrix: (10000, 10000)

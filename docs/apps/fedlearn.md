@@ -21,12 +21,14 @@ Check out the [PyTorch docs](https://pytorch.org/) for more details.
 
 ## Example
 
-The `fedlearn` application has many parameters, so we suggest taking a look at those available with `python -m taps.run fedlearn --help`.
+The `fedlearn` application has many parameters, so we suggest taking a look at those available with `python -m taps.run --app fedlearn --help`.
 A simple example can be run with:
 
 ```bash
-python -m taps.run fedlearn --executor process-pool \
-    --dataset mnist --data-dir data/fedlearn --rounds 1 --participation 0.5
+python -m taps.run --app fedlearn \
+    --app.dataset mnist --app.data-dir data/fedlearn \
+    --app.rounds 1 --app.participation 0.5 \
+    --engine.executor process-pool
 ```
 
 The script will automatically download the training and testing data to `data/fedlearn`.

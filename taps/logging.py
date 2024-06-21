@@ -19,23 +19,29 @@ def init_logging(
 ) -> None:
     """Initialize logging with custom formats.
 
-    Adds a custom log levels RUN and APP which are higher than INFO and
-    lower than WARNING. RUN is used by the benchmark harness
-    and APP is using within the applications.
+    Adds a custom log levels `RUN` and `APP` which are higher than `INFO` and
+    lower than `WARNING`. `RUN` is used by the benchmark harness
+    and `APP` is using within the applications.
 
     Usage:
-        >>> logger = init_logger(...)
-        >>> logger.log(RUN_LOG_LEVEL, 'message')
+        ```python
+        import logging
+        from taps.logging import init_logger
+
+        init_logger(...)
+
+        logger = logging.getLogger(__name__)
+        logger.log(RUN_LOG_LEVEL, 'message')
+        ```
 
     Args:
-        logfile (str): option filepath to write log to (default: None).
-        level (int, str): minimum logging level (default: INFO).
-        logfile_level (int, str): minimum logging level for the logfile
-            (default: INFO).
+        logfile (str): option filepath to write log to.
+        level (int, str): minimum logging level.
+        logfile_level (int, str): minimum logging level for the logfile.
         force (bool): remove any existing handlers attached to the root
             handler. This option is useful to silencing the third-party
             package logging. Note: should not be set when running inside
-            pytest (default: False).
+            pytest.
     """
     logging.addLevelName(RUN_LOG_LEVEL, 'RUN')
     logging.addLevelName(APP_LOG_LEVEL, 'APP')

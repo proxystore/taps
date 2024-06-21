@@ -48,6 +48,8 @@ def _add_argument(
         # so do not need to be added again by CliSettingsSource.
         return
 
+    names = tuple(name.replace('_', '-') for name in names)
+
     parser.add_argument(*names, **kwargs)
 
 

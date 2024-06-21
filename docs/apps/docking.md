@@ -49,16 +49,16 @@ python3 -m taps.apps.docking.data --output data/docking/
 The docking application can be invoked as follows.
 
 ```bash
-python3 -m taps.run docking \
-    --executor process-pool \
-    --max-processes 40 \
-    --smi-file-name-ligand data/docking/dataset_orz_original_1k.csv \
-    --receptor data/docking/1iep_receptor.pdbqt \
-    --tcl-path data/docking/set_element.tcl
+python3 -m taps.run --app docking \
+    --app.smi-file-name-ligand data/docking/dataset_orz_original_1k.csv \
+    --app.receptor data/docking/1iep_receptor.pdbqt \
+    --app.tcl-path data/docking/set_element.tcl
+    --engine.executor process-pool \
+    --engine.executor.max-processes 40 \
 ```
 
-Checkout the full list of docking parameters with `python -m taps.run docking --help`.
-For example, the `--batch-size` and `--num-iterations` parameters control the parallelism and length of the application.
+Checkout the full list of docking parameters with `python -m taps.run --app docking --help`.
+For example, the `--app.batch-size` and `--app.num-iterations` parameters control the parallelism and length of the application.
 
 !!! failure
 

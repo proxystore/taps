@@ -26,8 +26,8 @@ The following example runs a bag of tasks workflow across four processes.
 A maximum of four task can be running at any time, a total of 40 tasks will be submitted, each tasks sleeps for one second, and each task takes and produces 10 kB of data.
 
 ```bash
-python -m taps.run synthetic \
-    --executor process-pool --max-processes 4 \
-    --structure bag --task-count 40 \
-    --task-data-bytes 10000 --task-sleep 1 --bag-max-running 4
+python -m taps.run --app synthetic \
+    --app.structure bag --app.task-count 40 \
+    --app.task-data-bytes 10000 --app.task-sleep 1 --app.bag-max-running 4 \
+    --engine.executor process-pool --engine.executor.max-processes 4
 ```

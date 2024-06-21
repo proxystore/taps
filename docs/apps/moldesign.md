@@ -29,13 +29,13 @@ Then, the application will iteratively submit new batches of simulations for the
 After the batch of simulations completes, the model is retrained and the cycle starts again until `search_count` molecules have been simulated.
 
 ```bash
-python -m taps.run moldesign \
-    --executor process-pool --max-processes 4 \
-    --dataset data/moldesign/QM9-search.tsv \
-    --initial-count 4 --batch-size 4 --search-count 16
+python -m taps.run --app moldesign \
+    --app.dataset data/moldesign/QM9-search.tsv \
+    --app.initial-count 4 --app.batch-size 4 --app.search-count 16 \
+    --engine.executor process-pool --engine.executor.max-processes 4
 ```
 
-Additional parameters are available with `python -m taps.run moldesign --help`.
+Additional parameters are available with `python -m taps.run --app moldesign --help`.
 
 !!! warning
 

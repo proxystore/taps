@@ -310,8 +310,8 @@ class Engine:
             kwargs: Keyword arguments.
 
         Returns:
-            [`TaskFuture`][taps.engine.TaskFuture] object representing the
-            result of the execution of the callable accessible via
+            [`TaskFuture`][taps.engine.TaskFuture] object representing the \
+            result of the execution of the callable accessible via \
             [`TaskFuture.result()`][taps.engine.TaskFuture.result].
         """
         task_id = uuid.uuid4()

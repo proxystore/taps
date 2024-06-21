@@ -41,7 +41,7 @@ def prettify_validation_error(
 ) -> ValueError:
     """Parse a Pydantic validation error into a ValueError.
 
-    Given a [`ValidationError`][pydantic.ValidationError],
+    Given a [`ValidationError`][pydantic_core.ValidationError],
     ```
     pydantic_core._pydantic_core.ValidationError: 2 validation errors for GeneratedConfig
     app.matrix_size

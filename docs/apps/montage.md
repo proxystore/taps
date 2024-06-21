@@ -44,7 +44,7 @@ curl -L http://montage.ipac.caltech.edu/docs/Kimages.tar | tar -x -C data/
 The application can be invoked using the downloaded data.
 
 ```bash
-python -m taps.run montage --executor process-pool --img-folder data/Kimages
+python -m taps.run --app montage --app.img-folder data/Kimages --engine.executor process-pool
 ```
 
 !!! failure
