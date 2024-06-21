@@ -3,6 +3,8 @@ from __future__ import annotations
 import pathlib
 from typing import Literal
 
+from pydantic import Field
+
 from taps import plugins
 from taps.apps import App
 from taps.apps import AppConfig
@@ -18,7 +20,7 @@ class MockAppConfig(AppConfig):
     """Test application configuration."""
 
     name: Literal['mock-app'] = 'mock-app'
-    tasks: int = 3
+    tasks: int = Field(3, description='number of tasks to perform')
 
     def get_app(self) -> App:
         return MockApp(self.tasks)

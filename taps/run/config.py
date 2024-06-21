@@ -114,7 +114,12 @@ class Config(BaseSettings):
 
     def write_toml(self, filepath: str | pathlib.Path) -> None:
         """Write the configuration to a TOML file."""
-        model = self.model_dump(exclude_none=True)
+        model = self.model_dump(
+            exclude_unset=False,
+            exclude_defaults=False,
+            exclude_none=True,
+            serialize_as_any=True,
+        )
 
         filepath = pathlib.Path(filepath)
         filepath.parent.mkdir(parents=True, exist_ok=True)

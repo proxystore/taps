@@ -1,8 +1,14 @@
 from __future__ import annotations
 
 import pathlib
+import sys
 from datetime import datetime
 from datetime import timedelta
+
+if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
+    import tomllib
+else:  # pragma: <3.11 cover
+    import tomli as tomllib
 
 import pytest
 
@@ -49,6 +55,23 @@ def test_read_write_toml_config(tmp_path: pathlib.Path) -> None:
 
     new_config = Config.from_toml(config_file)
     assert config == new_config
+
+
+def test_write_toml_config_includes_defaults(tmp_path: pathlib.Path) -> None:
+    config = Config(app=MockAppConfig())
+
+    config_file = tmp_path / 'config.toml'
+    config.write_toml(config_file)
+
+    with open(config_file, 'rb') as f:
+        config_dict = tomllib.load(f)
+
+    # We did not define the engine config, but the default engine config
+    # should be included in the written config file.
+    engine_dict = config_dict['engine']
+    assert 'executor' in engine_dict
+    assert 'filter' in engine_dict
+    assert 'transformer' in engine_dict
 
 
 def test_make_run_dir(tmp_path: pathlib.Path) -> None:
