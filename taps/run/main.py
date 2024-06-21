@@ -17,6 +17,7 @@ from taps.logging import RUN_LOG_LEVEL
 from taps.run.config import Config
 from taps.run.config import make_run_dir
 from taps.run.parse import parse_args_to_config
+from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
 
 logger = logging.getLogger('taps.run')
@@ -48,7 +49,10 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
     start = time.perf_counter()
 
     logger.log(RUN_LOG_LEVEL, f'Starting app (name={config.app.name})')
-    logger.log(RUN_LOG_LEVEL, config)
+    logger.log(
+        RUN_LOG_LEVEL,
+        f'Configuration:\n{prettify_mapping(config.model_dump())}',
+    )
     logger.log(RUN_LOG_LEVEL, f'Runtime directory: {run_dir}')
 
     config.write_toml('config.toml')

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from collections.abc import MutableMapping
 from typing import Any
 
@@ -24,6 +25,7 @@ def flatten_mapping(
         Flattened dictionary.
     """
     items: list[tuple[str, Any]] = []
+
     for key, value in mapping.items():
         new_key = parent_key + separator + key if parent_key else key
         if isinstance(value, MutableMapping):
@@ -33,6 +35,47 @@ def flatten_mapping(
         else:
             items.append((new_key, value))
     return dict(items)
+
+
+def prettify_mapping(
+    mapping: Mapping[str, Any],
+    level: int = 0,
+    indent: int = 2,
+) -> str:
+    """Turn a mapping into a nicely formatted string.
+
+    Example:
+        ```python
+        >>> from taps.run.utils import prettify_mapping
+        >>> data = {'a': {'b': [1, 2, 3], 'name': 'foo'}, 'c': 'baz', 'b': 'bar'}
+        >>> print(prettify_mapping(data))
+        a:
+          name: 'foo'
+          b: [1, 2, 3]
+        b: 'bar'
+        c: 'baz'
+        ```
+    """  # noqa: E501
+    lines: list[str] = []
+    space = ' ' * indent * level
+
+    keys = sorted(mapping.keys())
+
+    # Move the 'name' key to the front
+    if 'name' in keys:
+        keys.remove('name')
+        keys = ['name', *keys]
+
+    for key in keys:
+        value = mapping[key]
+
+        if isinstance(value, Mapping):
+            lines.append(f'{space}{key}:')
+            lines.append(prettify_mapping(value, level + 1, indent))
+        else:
+            lines.append(f'{space}{key}: {value!r}')
+
+    return '\n'.join(lines)
 
 
 def prettify_validation_error(

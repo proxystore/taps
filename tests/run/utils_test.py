@@ -6,6 +6,7 @@ import pytest
 from pydantic import ValidationError
 
 from taps.run.utils import flatten_mapping
+from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
 from testing.app import MockAppConfig
 
@@ -25,6 +26,18 @@ def test_flatten_mapping(
 ) -> None:
     result = flatten_mapping(given)
     assert result == expected
+
+
+def test_prettify_mapping() -> None:
+    data = {'a': {'c': [1, 2, 3], 'name': 'foo'}, 'c': 'baz', 'b': 'bar'}
+    expected = """\
+a:
+  name: 'foo'
+  c: [1, 2, 3]
+b: 'bar'
+c: 'baz'\
+"""
+    assert prettify_mapping(data) == expected
 
 
 @pytest.mark.parametrize('pass_model', (True, False))
