@@ -5,6 +5,7 @@ import math
 from typing import Literal
 
 from pydantic import BaseModel
+from pydantic import ConfigDict
 from pydantic import Field
 
 from taps import plugins
@@ -18,6 +19,12 @@ class FilterConfig(BaseModel, abc.ABC):
     """Abstract filter configuration."""
 
     name: str = Field(description='name of filter type')
+
+    model_config: ConfigDict = ConfigDict(  # type: ignore[misc]
+        extra='forbid',
+        validate_default=True,
+        validate_return=True,
+    )
 
     @abc.abstractmethod
     def get_filter(self) -> Filter:

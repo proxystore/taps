@@ -12,6 +12,6 @@ def test_thread_pool_config() -> None:
 
 
 def test_process_pool_config() -> None:
-    config = ProcessPoolConfig(max_threads=1)
+    config = ProcessPoolConfig(max_processes=1)
     with config.get_executor() as executor:
         assert isinstance(executor, DAGExecutor)

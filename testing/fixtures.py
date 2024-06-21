@@ -71,7 +71,7 @@ def test_benchmark_config(tmp_path: pathlib.Path) -> Config:
     return Config(
         app=MockAppConfig(tasks=3),
         engine=AppEngineConfig(
-            executor=ThreadPoolConfig(max_thread=4),
+            executor=ThreadPoolConfig(max_threads=4),
             filter=NullFilterConfig(),
             transformer=NullTransformerConfig(),
             task_record_file_name=None,

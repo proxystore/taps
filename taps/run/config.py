@@ -19,6 +19,7 @@ else:  # pragma: <3.11 cover
 
 import tomli_w
 from pydantic import BaseModel
+from pydantic import ConfigDict
 from pydantic import create_model
 from pydantic import Field
 from pydantic_settings import BaseSettings
@@ -78,6 +79,12 @@ class Config(BaseSettings):
         logging: Logging configuration.
         run: Run configuration.
     """
+
+    model_config = ConfigDict(
+        extra='forbid',
+        validate_default=True,
+        validate_return=True,
+    )
 
     app: AppConfig = Field(description='application configuration')
     engine: AppEngineConfig = Field(default_factory=AppEngineConfig)

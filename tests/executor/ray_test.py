@@ -12,7 +12,7 @@ from taps.executor.ray import RayConfig
     reason='Ray wheels for Python 3.12 are not available',
 )
 def test_ray_executor() -> None:
-    config = RayConfig(ray_address='local', ray_num_cpus=2)
+    config = RayConfig(address='local', num_cpus=2)
     executor = config.get_executor()
 
     with executor:

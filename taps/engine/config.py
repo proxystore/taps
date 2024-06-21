@@ -4,6 +4,7 @@ from typing import Any
 from typing import Optional
 
 from pydantic import BaseModel
+from pydantic import ConfigDict
 from pydantic import Field
 
 from taps.engine.engine import AppEngine
@@ -33,6 +34,12 @@ class AppEngineConfig(BaseModel):
         default_factory=NullTransformerConfig,
     )
     task_record_file_name: Optional[str] = Field('tasks.jsonl')  # noqa: UP007
+
+    model_config: ConfigDict = ConfigDict(  # type: ignore[misc]
+        extra='forbid',
+        validate_default=True,
+        validate_return=True,
+    )
 
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, AppEngineConfig):

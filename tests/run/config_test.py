@@ -11,6 +11,7 @@ else:  # pragma: <3.11 cover
     import tomli as tomllib
 
 import pytest
+from pydantic import ValidationError
 
 from taps.engine import AppEngineConfig
 from taps.executor import ThreadPoolConfig
@@ -32,6 +33,11 @@ def test_create_config_manual_plugins() -> None:
         logging=LoggingConfig(),
         run=RunConfig(),
     )
+
+
+def test_config_forbids_extra_args() -> None:
+    with pytest.raises(ValidationError, match='unknown_options'):
+        Config(app=MockAppConfig(), unknown_options=True)
 
 
 def test_config_equality() -> None:
