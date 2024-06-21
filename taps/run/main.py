@@ -12,9 +12,9 @@ from typing import Sequence
 
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
-from taps.run._args import parse_args_to_config
 from taps.run.config import Config
 from taps.run.config import make_run_dir
+from taps.run.parse import parse_args_to_config
 
 logger = logging.getLogger('taps.run')
 

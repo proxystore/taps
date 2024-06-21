@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import sys
 from typing import Callable
 from typing import Literal
 from typing import TYPE_CHECKING
-from typing import TypeAlias
 from typing import TypeVar
+
+if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
+    from typing import TypeAlias
+else:  # pragma: <3.10 cover
+    from typing_extensions import TypeAlias
 
 from pydantic import BaseModel
 
@@ -74,7 +79,7 @@ def register(
             registry[name] = cls  # type: ignore[index]
         except Exception as e:
             raise RuntimeError(
-                f'Failed to register {cls.__name__} as an {kind} plugin.',
+                f'Failed to register {cls.__name__} as a {kind} plugin.',
             ) from e
 
         return cls

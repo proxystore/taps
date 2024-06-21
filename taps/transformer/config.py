@@ -17,4 +17,4 @@ class DataTransformerConfig(BaseModel, abc.ABC):
     @abc.abstractmethod
     def get_transformer(self) -> DataTransformer[Any]:
         """Create a transformer from the configuration."""
-        pass
+        ...

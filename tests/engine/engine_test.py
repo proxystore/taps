@@ -6,9 +6,6 @@ import uuid
 from concurrent.futures import Future
 from concurrent.futures import ThreadPoolExecutor
 
-from taps.data.file import PickleFileTransformer
-from taps.data.filter import NullFilter
-from taps.data.null import NullTransformer
 from taps.engine.engine import _TaskResult
 from taps.engine.engine import _TaskWrapper
 from taps.engine.engine import AppEngine
@@ -17,8 +14,11 @@ from taps.engine.engine import TaskFuture
 from taps.engine.engine import TaskInfo
 from taps.engine.engine import wait
 from taps.engine.transform import TaskDataTransformer
-from taps.executor.dag import DAGExecutor
-from taps.executor.dask import DaskDistributedExecutor
+from taps.executor import DAGExecutor
+from taps.executor import DaskDistributedExecutor
+from taps.filter import NullFilter
+from taps.transformer import NullTransformer
+from taps.transformer import PickleFileTransformer
 from testing.record import SimpleRecordLogger
 
 

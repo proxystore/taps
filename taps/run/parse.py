@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import functools
 import sys
-from collections.abc import MutableMapping
 from typing import Any
 from typing import Sequence
 
@@ -12,30 +11,12 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
 else:  # pragma: <3.11 cover
     import tomli as tomllib
 
-from pydantic import create_model
-from pydantic import Field
 from pydantic_settings import CliSettingsSource
 
 from taps import plugins
-from taps.engine import AppEngineConfig
+from taps.run.config import _make_config_cls
 from taps.run.config import Config
-
-
-def _flatten_dict(
-    d: MutableMapping[str, Any],
-    parent_key: str = '',
-    separator: str = '.',
-) -> dict[str, Any]:
-    items: list[tuple[str, Any]] = []
-    for key, value in d.items():
-        new_key = parent_key + separator + key if parent_key else key
-        if isinstance(value, MutableMapping):
-            items.extend(
-                _flatten_dict(value, new_key, separator=separator).items(),
-            )
-        else:
-            items.append((new_key, value))
-    return dict(items)
+from taps.run.utils import flatten_mapping
 
 
 def _parse_toml_options(filepath: str | None) -> dict[str, Any]:
@@ -43,9 +24,14 @@ def _parse_toml_options(filepath: str | None) -> dict[str, Any]:
         return {}
 
     with open(filepath, 'rb') as f:
-        options = tomllib.load(f)
+        return tomllib.load(f)
 
-    return _flatten_dict(options)
+
+class _ArgparseFormatter(
+    argparse.ArgumentDefaultsHelpFormatter,
+    argparse.RawDescriptionHelpFormatter,
+):
+    pass
 
 
 def _add_argument(
@@ -77,67 +63,6 @@ def _add_argument_group(
             return group
 
     return parser.add_argument_group(**kwargs)
-
-
-def _make_settings_cls(options: dict[str, Any]) -> type[Config]:
-    # The Config and AppEngineConfig BaseModels contain attributes that
-    # are typed using ABCs. Thus, CliSettingsSource cannot infer the
-    # CLI options to add from the ABC. To get around this, we dynamically
-    # create a new Config/AppEngineConfig using concrete types based on
-    # the plugin names provided by the user.
-    app_name = options.get('app.name')
-    assert isinstance(app_name, str)
-    app_cls = plugins.get_app_configs()[app_name]
-    app_field = Field(description=f'{app_name} app options')
-
-    executor_name = options.get('engine.executor.name', 'process-pool')
-    executor_cls = plugins.get_executor_configs()[executor_name]
-    executor_field = Field(
-        default_factory=executor_cls,
-        description=f'{executor_name} executor options',
-    )
-
-    filter_name = options.get('engine.filter.name', 'null')
-    filter_cls = plugins.get_filter_configs()[filter_name]
-    filter_field = Field(
-        default_factory=filter_cls,
-        description=f'{filter_name} filter options',
-    )
-
-    transformer_name = options.get('engine.transformer.name', 'null')
-    transformer_cls = plugins.get_transformer_configs()[transformer_name]
-    transformer_field = Field(
-        default_factory=transformer_cls,
-        description=f'{transformer_name} transformer options',
-    )
-
-    engine_cls = create_model(
-        'AppEngineConfig',
-        executor=(executor_cls, executor_field),
-        filter=(filter_cls, filter_field),
-        transformer=(transformer_cls, transformer_field),
-        __base__=AppEngineConfig,
-        __doc__=AppEngineConfig.__doc__,
-    )
-    engine_field = Field(
-        default_factory=engine_cls,
-        description='engine options',
-    )
-
-    return create_model(
-        'Config',
-        app=(app_cls, app_field),
-        engine=(engine_cls, engine_field),
-        __base__=Config,
-        __doc__=Config.__doc__,
-    )
-
-
-class _ArgparseFormatter(
-    argparse.ArgumentDefaultsHelpFormatter,
-    argparse.RawDescriptionHelpFormatter,
-):
-    pass
 
 
 def parse_args_to_config(argv: Sequence[str]) -> Config:
@@ -175,8 +100,8 @@ This behavior applies to all plugin types.
         help='base toml configuration file to load',
     )
 
-    group = parser.add_argument_group('app options')
-    group.add_argument(
+    app_group = parser.add_argument_group('app options')
+    app_group.add_argument(
         '--app',
         choices=list(apps.keys()),
         dest='app.name',
@@ -184,8 +109,8 @@ This behavior applies to all plugin types.
         help='app choice {%(choices)s}',
     )
 
-    group = parser.add_argument_group('engine options')
-    group.add_argument(
+    engine_group = parser.add_argument_group('engine options')
+    engine_group.add_argument(
         '--engine.executor',
         '--executor',
         choices=list(plugins.get_executor_configs().keys()),
@@ -194,7 +119,7 @@ This behavior applies to all plugin types.
         metavar='EXECUTOR',
         help='executor choice {%(choices)s} (default: process-pool)',
     )
-    group.add_argument(
+    engine_group.add_argument(
         '--engine.filter',
         '--filter',
         choices=list(plugins.get_filter_configs().keys()),
@@ -203,7 +128,7 @@ This behavior applies to all plugin types.
         metavar='FILTER',
         help='filter choice {%(choices)s} (default: null)',
     )
-    group.add_argument(
+    engine_group.add_argument(
         '--engine.transformer',
         '--transformer',
         choices=list(plugins.get_transformer_configs().keys()),
@@ -213,6 +138,11 @@ This behavior applies to all plugin types.
         help='transformer choice {%(choices)s} (default: null)',
     )
 
+    if len(argv) == 0 or argv[0] in ['-h', '--help']:
+        # Shortcut to print help output if no args or just -h/--help
+        # are provided.
+        parser.parse_args(['--help'])  # pragma: no cover
+
     # Strip --help from argv so we can quickly parse the base options
     # to figure out which config types we will need to use. --help
     # will be parsed again by CliSettingsSource.
@@ -220,7 +150,7 @@ This behavior applies to all plugin types.
     base_options = vars(parser.parse_known_args(_argv)[0])
     base_options = {k: v for k, v in base_options.items() if v is not None}
     config_file = base_options.pop('config', None)
-    toml_options = _parse_toml_options(config_file)
+    toml_options = flatten_mapping(_parse_toml_options(config_file))
 
     # base_options takes precedence over toml_options if there are
     # matching keys.
@@ -231,7 +161,9 @@ This behavior applies to all plugin types.
             'the CLI args or add the app.name attribute the config file.',
         )
 
-    settings_cls = _make_settings_cls(base_options)
+    app_group.description = f'selected app: {base_options["app.name"]}'
+
+    settings_cls = _make_config_cls(base_options)
     base_namespace = argparse.Namespace(**base_options)
 
     cli_settings = CliSettingsSource(

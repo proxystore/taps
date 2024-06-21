@@ -10,28 +10,28 @@ from proxystore.store import get_store
 from proxystore.store import Store
 from proxystore.store import unregister_store
 
-from taps.data.proxy import ProxyFileTransformerConfig
-from taps.data.proxy import ProxyTransformer
+from taps.transformer.proxy import ProxyTransformer
+from taps.transformer.proxy import ProxyTransformerConfig
 
 
 def test_file_config() -> None:
-    config = ProxyFileTransformerConfig(
-        ps_type='file',
-        ps_file_dir='test',
-        ps_redis_addr='localhost:0',
+    config = ProxyTransformerConfig(
+        connector='file',
+        file_dir='test',
+        redis_addr='localhost:0',
     )
-    with mock.patch('taps.data.proxy.FileConnector'):
+    with mock.patch('taps.transformer.proxy.FileConnector'):
         transformer = config.get_transformer()
         transformer.close()
 
 
 def test_redis_config() -> None:
-    config = ProxyFileTransformerConfig(
-        ps_type='redis',
-        ps_file_dir='test',
-        ps_redis_addr='localhost:0',
+    config = ProxyTransformerConfig(
+        connector='redis',
+        file_dir='test',
+        redis_addr='localhost:0',
     )
-    with mock.patch('taps.data.proxy.RedisConnector'):
+    with mock.patch('taps.transformer.proxy.RedisConnector'):
         transformer = config.get_transformer()
         transformer.close()
 

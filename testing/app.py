@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Literal
 
-from taps.app import App
-from taps.app import AppConfig
+from taps import plugins
+from taps.apps import App
+from taps.apps import AppConfig
 from taps.engine import AppEngine
 
 
@@ -11,16 +13,18 @@ def task() -> None:
     pass
 
 
-class TestAppConfig(AppConfig):
+@plugins.register('app')
+class MockAppConfig(AppConfig):
     """Test application configuration."""
 
+    name: Literal['mock-app'] = 'mock-app'
     tasks: int = 3
 
-    def create_app(self) -> App:
-        return TestApp(self.tasks)
+    def get_app(self) -> App:
+        return MockApp(self.tasks)
 
 
-class TestApp:
+class MockApp:
     """Test application."""
 
     def __init__(self, tasks: int) -> None:

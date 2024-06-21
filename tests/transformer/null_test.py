@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from taps.data.null import NullTransformer
+from taps.transformer.null import NullTransformer
 
 
 def test_null_transformer() -> None:

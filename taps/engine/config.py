@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from typing import Any
+from typing import Optional
+
 from pydantic import BaseModel
 from pydantic import Field
 
@@ -29,7 +32,21 @@ class AppEngineConfig(BaseModel):
     transformer: DataTransformerConfig = Field(
         default_factory=NullTransformerConfig,
     )
-    task_record_file_name: str | None = Field('tasks.jsonl')
+    task_record_file_name: Optional[str] = Field('tasks.jsonl')  # noqa: UP007
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, AppEngineConfig):
+            raise NotImplementedError(
+                'AppEngineConfig equality is not implemented for '
+                'non-AppEngineConfig types.',
+            )
+
+        return (
+            self.executor == other.executor
+            and self.filter == other.filter
+            and self.transformer == other.transformer
+            and self.task_record_file_name == other.task_record_file_name
+        )
 
     def get_engine(self) -> AppEngine:
         """Create an engine from the configuration."""

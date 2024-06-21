@@ -38,8 +38,8 @@ def test_map_function(local_client: Client) -> None:
 @pytest.mark.parametrize(
     'config',
     (
-        DaskDistributedConfig(dask_scheduler_address='localhost'),
-        DaskDistributedConfig(dask_workers=1, dask_use_threads=True),
+        DaskDistributedConfig(scheduler='localhost'),
+        DaskDistributedConfig(workers=1, use_threads=True),
     ),
 )
 def test_config_get_executor(config: DaskDistributedConfig) -> None:

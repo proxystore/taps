@@ -18,7 +18,7 @@ from taps.run.config import Config
 from taps.run.config import LoggingConfig
 from taps.run.config import RunConfig
 from taps.transformer import NullTransformerConfig
-from testing.app import TestAppConfig
+from testing.app import MockAppConfig
 
 
 @pytest.fixture()
@@ -69,7 +69,7 @@ def app_engine(
 @pytest.fixture()
 def test_benchmark_config(tmp_path: pathlib.Path) -> Config:
     return Config(
-        app=TestAppConfig(tasks=3),
+        app=MockAppConfig(tasks=3),
         engine=AppEngineConfig(
             executor=ThreadPoolConfig(max_thread=4),
             filter=NullFilterConfig(),

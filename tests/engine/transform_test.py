@@ -4,9 +4,9 @@ import uuid
 from typing import Any
 from typing import TypeVar
 
-from taps.data.filter import NullFilter
-from taps.data.filter import ObjectTypeFilter
 from taps.engine.transform import TaskDataTransformer
+from taps.filter import NullFilter
+from taps.filter import ObjectTypeFilter
 
 T = TypeVar('T')
 

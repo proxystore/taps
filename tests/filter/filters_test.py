@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from taps.data.filter import NullFilter
-from taps.data.filter import ObjectSizeFilter
-from taps.data.filter import ObjectTypeFilter
-from taps.data.filter import PickleSizeFilter
+from taps.filter import NullFilter
+from taps.filter import ObjectSizeFilter
+from taps.filter import ObjectTypeFilter
+from taps.filter import PickleSizeFilter
 
 
 def test_null_filter() -> None:
