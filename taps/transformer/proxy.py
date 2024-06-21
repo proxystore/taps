@@ -16,13 +16,13 @@ from proxystore.store import Store
 from pydantic import Field
 from pydantic import field_validator
 
-from taps import plugins
+from taps.plugins import register
 from taps.transformer.config import DataTransformerConfig
 
 T = TypeVar('T')
 
 
-@plugins.register('transformer')
+@register('transformer')
 class ProxyTransformerConfig(DataTransformerConfig):
     """Proxy transformer configuration."""
 

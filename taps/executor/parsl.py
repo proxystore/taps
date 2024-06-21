@@ -14,11 +14,11 @@ from parsl.executors import ThreadPoolExecutor
 from parsl.providers import LocalProvider
 from pydantic import Field
 
-from taps import plugins
 from taps.executor.config import ExecutorConfig
+from taps.plugins import register
 
 
-@plugins.register('executor')
+@register('executor')
 class ParslConfig(ExecutorConfig):
     """Parsl configuration.
 

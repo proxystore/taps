@@ -5,17 +5,17 @@ from typing import Literal
 
 from pydantic import Field
 
-from taps import plugins
 from taps.apps import App
 from taps.apps import AppConfig
 from taps.engine import AppEngine
+from taps.plugins import register
 
 
 def task() -> None:
     pass
 
 
-@plugins.register('app')
+@register('app')
 class MockAppConfig(AppConfig):
     """Test application configuration."""
 

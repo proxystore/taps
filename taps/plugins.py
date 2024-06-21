@@ -48,10 +48,10 @@ def register(
 
         from pydantic import Field
 
-        from taps import plugins
+        from taps.plugins import register
         from taps.executor.config import ExecutorConfig
 
-        @plugins.register('executor')
+        @register('executor')
         class FooConfig(ExecutorConfig):
             name: Literal['foo'] = 'foo'
             n: int = Field(1, description='count')

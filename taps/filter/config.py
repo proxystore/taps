@@ -8,11 +8,11 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
-from taps import plugins
 from taps.filter.filters import Filter
 from taps.filter.filters import NullFilter
 from taps.filter.filters import ObjectSizeFilter
 from taps.filter.filters import PickleSizeFilter
+from taps.plugins import register
 
 
 class FilterConfig(BaseModel, abc.ABC):
@@ -32,7 +32,7 @@ class FilterConfig(BaseModel, abc.ABC):
         ...
 
 
-@plugins.register('filter')
+@register('filter')
 class NullFilterConfig(FilterConfig):
     """Null filter configuration."""
 
@@ -43,7 +43,7 @@ class NullFilterConfig(FilterConfig):
         return NullFilter()
 
 
-@plugins.register('filter')
+@register('filter')
 class ObjectSizeConfig(FilterConfig):
     """Object size filter configuration."""
 
@@ -65,7 +65,7 @@ class ObjectSizeConfig(FilterConfig):
         )
 
 
-@plugins.register('filter')
+@register('filter')
 class PickleSizeConfig(FilterConfig):
     """Pickled object size filter configuration."""
 

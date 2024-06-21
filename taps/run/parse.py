@@ -13,7 +13,10 @@ else:  # pragma: <3.11 cover
 
 from pydantic_settings import CliSettingsSource
 
-from taps import plugins
+from taps.plugins import get_app_configs
+from taps.plugins import get_executor_configs
+from taps.plugins import get_filter_configs
+from taps.plugins import get_transformer_configs
 from taps.run.config import _make_config_cls
 from taps.run.config import Config
 from taps.run.utils import flatten_mapping
@@ -74,8 +77,6 @@ def parse_args_to_config(argv: Sequence[str]) -> Config:
     Returns:
         Configuration.
     """
-    apps = plugins.get_app_configs()
-
     parser = argparse.ArgumentParser(
         description="""\
 Task Performance Suite (TaPS) CLI.
@@ -103,7 +104,7 @@ This behavior applies to all plugin types.
     app_group = parser.add_argument_group('app options')
     app_group.add_argument(
         '--app',
-        choices=list(apps.keys()),
+        choices=list(get_app_configs().keys()),
         dest='app.name',
         metavar='APP',
         help='app choice {%(choices)s}',
@@ -113,7 +114,7 @@ This behavior applies to all plugin types.
     engine_group.add_argument(
         '--engine.executor',
         '--executor',
-        choices=list(plugins.get_executor_configs().keys()),
+        choices=list(get_executor_configs().keys()),
         default=argparse.SUPPRESS,
         dest='engine.executor.name',
         metavar='EXECUTOR',
@@ -122,7 +123,7 @@ This behavior applies to all plugin types.
     engine_group.add_argument(
         '--engine.filter',
         '--filter',
-        choices=list(plugins.get_filter_configs().keys()),
+        choices=list(get_filter_configs().keys()),
         default=argparse.SUPPRESS,
         dest='engine.filter.name',
         metavar='FILTER',
@@ -131,7 +132,7 @@ This behavior applies to all plugin types.
     engine_group.add_argument(
         '--engine.transformer',
         '--transformer',
-        choices=list(plugins.get_transformer_configs().keys()),
+        choices=list(get_transformer_configs().keys()),
         default=argparse.SUPPRESS,
         dest='engine.transformer.name',
         metavar='TRANSFORMER',

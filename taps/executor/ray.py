@@ -24,8 +24,8 @@ except ImportError as e:  # pragma: no cover
 
 from pydantic import Field
 
-from taps import plugins
 from taps.executor.config import ExecutorConfig
+from taps.plugins import register
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -126,7 +126,7 @@ class RayExecutor(Executor):
         ray.shutdown()
 
 
-@plugins.register('executor')
+@register('executor')
 class RayConfig(ExecutorConfig):
     """Ray configuration.
 

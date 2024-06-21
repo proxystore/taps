@@ -21,8 +21,8 @@ from dask.distributed import Client
 from dask.distributed import Future as DaskFuture
 from pydantic import Field
 
-from taps import plugins
 from taps.executor.config import ExecutorConfig
+from taps.plugins import register
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -110,7 +110,7 @@ class DaskDistributedExecutor(Executor):
         self.client.close()
 
 
-@plugins.register('executor')
+@register('executor')
 class DaskDistributedConfig(ExecutorConfig):
     """Dask Distributed configuration.
 

@@ -8,12 +8,12 @@ from typing import Optional
 
 from pydantic import Field
 
-from taps import plugins
 from taps.executor.config import ExecutorConfig
 from taps.executor.dag import DAGExecutor
+from taps.plugins import register
 
 
-@plugins.register('executor')
+@register('executor')
 class ProcessPoolConfig(ExecutorConfig):
     """Process pool executor configuration.
 
@@ -43,7 +43,7 @@ class ProcessPoolConfig(ExecutorConfig):
         )
 
 
-@plugins.register('executor')
+@register('executor')
 class ThreadPoolConfig(ExecutorConfig):
     """Thread pool executor configuration.
 

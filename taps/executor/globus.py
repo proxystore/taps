@@ -5,12 +5,12 @@ from typing import Literal
 import globus_compute_sdk
 from pydantic import Field
 
-from taps import plugins
 from taps.executor.config import ExecutorConfig
 from taps.executor.dag import DAGExecutor
+from taps.plugins import register
 
 
-@plugins.register('executor')
+@register('executor')
 class GlobusComputeConfig(ExecutorConfig):
     """Globus Compute configuration.
 

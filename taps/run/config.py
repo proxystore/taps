@@ -24,9 +24,12 @@ from pydantic import create_model
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
-from taps import plugins
 from taps.apps import AppConfig
 from taps.engine import AppEngineConfig
+from taps.plugins import get_app_configs
+from taps.plugins import get_executor_configs
+from taps.plugins import get_filter_configs
+from taps.plugins import get_transformer_configs
 from taps.run.utils import flatten_mapping
 
 
@@ -142,25 +145,25 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
     # the plugin names provided by the user.
     app_name = options.get('app.name')
     assert isinstance(app_name, str)
-    app_cls = plugins.get_app_configs()[app_name]
+    app_cls = get_app_configs()[app_name]
     app_field = Field(description=f'selected app: {app_name}')
 
     executor_name = options.get('engine.executor.name', 'process-pool')
-    executor_cls = plugins.get_executor_configs()[executor_name]
+    executor_cls = get_executor_configs()[executor_name]
     executor_field = Field(
         default_factory=executor_cls,
         description=f'selected executor: {executor_name}',
     )
 
     filter_name = options.get('engine.filter.name', 'null')
-    filter_cls = plugins.get_filter_configs()[filter_name]
+    filter_cls = get_filter_configs()[filter_name]
     filter_field = Field(
         default_factory=filter_cls,
         description=f'selected filter: {filter_name}',
     )
 
     transformer_name = options.get('engine.transformer.name', 'null')
-    transformer_cls = plugins.get_transformer_configs()[transformer_name]
+    transformer_cls = get_transformer_configs()[transformer_name]
     transformer_field = Field(
         default_factory=transformer_cls,
         description=f'selected transformer: {transformer_name}',

@@ -13,12 +13,12 @@ from pydantic import Field
 from pydantic import field_validator
 from pydantic import model_validator
 
-from taps import plugins
 from taps.apps.app import App
 from taps.apps.app import AppConfig
+from taps.plugins import register
 
 
-@plugins.register('app')
+@register('app')
 class SyntheticConfig(AppConfig):
     """Synthetic application configuration."""
 
