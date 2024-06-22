@@ -10,8 +10,8 @@ from dask.distributed import Client
 
 from taps.engine import Engine
 from taps.engine import EngineConfig
-from taps.executor import DAGExecutor
 from taps.executor import DaskDistributedExecutor
+from taps.executor import FutureDependencyExecutor
 from taps.executor import ThreadPoolConfig
 from taps.filter import NullFilterConfig
 from taps.run.config import Config
@@ -61,7 +61,7 @@ def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
 def app_engine(
     thread_executor: ThreadPoolExecutor,
 ) -> Generator[Engine, None, None]:
-    dag_executor = DAGExecutor(thread_executor)
+    dag_executor = FutureDependencyExecutor(thread_executor)
     with Engine(dag_executor) as executor:
         yield executor
 

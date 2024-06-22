@@ -9,15 +9,15 @@ from typing import Generator
 
 import pytest
 
-from taps.executor.dag import _Task
-from taps.executor.dag import DAGExecutor
+from taps.executor.utils import _Task
+from taps.executor.utils import FutureDependencyExecutor
 
 
 @pytest.fixture()
 def executor(
     thread_executor: ThreadPoolExecutor,
-) -> Generator[DAGExecutor, None, None]:
-    with DAGExecutor(thread_executor) as executor:
+) -> Generator[FutureDependencyExecutor, None, None]:
+    with FutureDependencyExecutor(thread_executor) as executor:
         yield executor
 
 
@@ -26,19 +26,19 @@ def abs_(value: Future[int] | int) -> int:
     return abs(value)
 
 
-def test_dag_executor_submit(executor: DAGExecutor) -> None:
+def test_dag_executor_submit(executor: FutureDependencyExecutor) -> None:
     future = executor.submit(sum, [1, 2, 3], start=-6)
     assert future.result() == 0
 
 
-def test_dag_executor_map(executor: DAGExecutor) -> None:
+def test_dag_executor_map(executor: FutureDependencyExecutor) -> None:
     values = [1, 0, -1]
     results = executor.map(abs_, values)
     assert list(results) == list(map(abs, values))
 
 
 def test_dag_executor_shutdown(thread_executor: ThreadPoolExecutor) -> None:
-    executor = DAGExecutor(thread_executor)
+    executor = FutureDependencyExecutor(thread_executor)
     executor.shutdown()
     with pytest.raises(
         RuntimeError,
@@ -47,7 +47,9 @@ def test_dag_executor_shutdown(thread_executor: ThreadPoolExecutor) -> None:
         executor.submit(sum, [1, 2, 3])
 
 
-def test_dag_executor_map_value_error(executor: DAGExecutor) -> None:
+def test_dag_executor_map_value_error(
+    executor: FutureDependencyExecutor,
+) -> None:
     with pytest.raises(ValueError, match='chunksize must be >= 1.'):
         executor.map(abs, [], chunksize=0)
 
@@ -55,7 +57,7 @@ def test_dag_executor_map_value_error(executor: DAGExecutor) -> None:
 def test_dag_executor_chained_dependencies_threads(
     thread_executor: ThreadPoolExecutor,
 ) -> None:
-    with DAGExecutor(thread_executor) as executor:
+    with FutureDependencyExecutor(thread_executor) as executor:
         fut1 = executor.submit(sum, [-1, -2, -3])
         fut2 = executor.submit(abs_, fut1)
         expected = 6
@@ -65,7 +67,7 @@ def test_dag_executor_chained_dependencies_threads(
 def test_dag_executor_chained_dependencies_process(
     process_executor: ProcessPoolExecutor,
 ) -> None:
-    with DAGExecutor(process_executor) as executor:
+    with FutureDependencyExecutor(process_executor) as executor:
         fut1 = executor.submit(sum, [-1, -2, -3])
         fut2 = executor.submit(abs_, fut1)
         expected = 6

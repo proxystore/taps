@@ -6,7 +6,7 @@ import globus_compute_sdk
 from pydantic import Field
 
 from taps.executor.config import ExecutorConfig
-from taps.executor.dag import DAGExecutor
+from taps.executor.utils import FutureDependencyExecutor
 from taps.plugins import register
 
 
@@ -25,10 +25,10 @@ class GlobusComputeConfig(ExecutorConfig):
         description='maximum number of tasks to coalesce before submitting',
     )
 
-    def get_executor(self) -> DAGExecutor:
+    def get_executor(self) -> FutureDependencyExecutor:
         """Create an executor instance from the config."""
         executor = globus_compute_sdk.Executor(
             self.endpoint,
             batch_size=self.batch_size,
         )
-        return DAGExecutor(executor)
+        return FutureDependencyExecutor(executor)

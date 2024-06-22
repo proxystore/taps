@@ -116,7 +116,7 @@ class _Task(Generic[P, T]):
         self.task_future.add_done_callback(self._task_future_callback)
 
 
-class DAGExecutor(Executor):
+class FutureDependencyExecutor(Executor):
     """Executor wrapper that adds DAG-like features.
 
     An [`Executor`][concurrent.futures.Executor] implementation that wraps
