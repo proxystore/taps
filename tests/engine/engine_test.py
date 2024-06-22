@@ -14,8 +14,8 @@ from taps.engine.engine import TaskFuture
 from taps.engine.engine import TaskInfo
 from taps.engine.engine import wait
 from taps.engine.transform import TaskTransformer
-from taps.executor import DAGExecutor
 from taps.executor import DaskDistributedExecutor
+from taps.executor import FutureDependencyExecutor
 from taps.filter import NullFilter
 from taps.transformer import NullTransformer
 from taps.transformer import PickleFileTransformer
@@ -82,7 +82,7 @@ def test_app_engine_record_logging(
 ) -> None:
     with SimpleRecordLogger() as logger:
         with Engine(
-            DAGExecutor(thread_executor),
+            FutureDependencyExecutor(thread_executor),
             record_logger=logger,
         ) as executor:
             task1 = executor.submit(sum, [1, 2, 3], start=-6)

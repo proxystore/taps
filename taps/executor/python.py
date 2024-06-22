@@ -9,7 +9,7 @@ from typing import Optional
 from pydantic import Field
 
 from taps.executor.config import ExecutorConfig
-from taps.executor.dag import DAGExecutor
+from taps.executor.utils import FutureDependencyExecutor
 from taps.plugins import register
 
 
@@ -35,10 +35,10 @@ class ProcessPoolConfig(ExecutorConfig):
         ),
     )
 
-    def get_executor(self) -> DAGExecutor:
+    def get_executor(self) -> FutureDependencyExecutor:
         """Create an executor instance from the config."""
         context = multiprocessing.get_context(self.context)
-        return DAGExecutor(
+        return FutureDependencyExecutor(
             ProcessPoolExecutor(self.max_processes, mp_context=context),
         )
 
@@ -57,6 +57,6 @@ class ThreadPoolConfig(ExecutorConfig):
         description='maximum number of threads',
     )
 
-    def get_executor(self) -> DAGExecutor:
+    def get_executor(self) -> FutureDependencyExecutor:
         """Create an executor instance from the config."""
-        return DAGExecutor(ThreadPoolExecutor(self.max_threads))
+        return FutureDependencyExecutor(ThreadPoolExecutor(self.max_threads))
