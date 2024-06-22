@@ -206,11 +206,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://taps.proxystore.dev/latest/api/executor/dag/</loc>
-         <lastmod>2024-06-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/dask/</loc>
          <lastmod>2024-06-22</lastmod>
          <changefreq>daily</changefreq>
@@ -232,6 +227,11 @@
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/ray/</loc>
+         <lastmod>2024-06-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/api/executor/utils/</loc>
          <lastmod>2024-06-22</lastmod>
          <changefreq>daily</changefreq>
     </url>

@@ -12,13 +12,13 @@
         <meta name="author" content="Globus Labs">
       
       
-        <link rel="canonical" href="https://taps.proxystore.dev/latest/api/executor/dag/">
+        <link rel="canonical" href="https://taps.proxystore.dev/latest/api/executor/utils/">
       
       
-        <link rel="prev" href="../config/">
+        <link rel="prev" href="../ray/">
       
       
-        <link rel="next" href="../dask/">
+        <link rel="next" href="../../filter/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>dag - TaPS</title>
+        <title>utils - TaPS</title>
       
     
     
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tapsexecutordag" class="md-skip">
+        <a href="#tapsexecutorutils" class="md-skip">
           Skip to content
         </a>
       
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              dag
+              utils
             
           </span>
         </div>
@@ -1784,107 +1784,6 @@
                 
   
   
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    dag
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    dag
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#taps.executor.dag" class="md-nav__link">
-    taps.executor.dag
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor" class="md-nav__link">
-    DAGExecutor
-  </a>
-  
-    <nav class="md-nav" aria-label="DAGExecutor">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor.submit" class="md-nav__link">
-    submit()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor.map" class="md-nav__link">
-    map()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor.shutdown" class="md-nav__link">
-    shutdown()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
   
     <li class="md-nav__item">
       <a href="../dask/" class="md-nav__link">
@@ -1976,6 +1875,107 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#taps.executor.utils" class="md-nav__link">
+    taps.executor.utils
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taps.executor.utils.FutureDependencyExecutor" class="md-nav__link">
+    FutureDependencyExecutor
+  </a>
+  
+    <nav class="md-nav" aria-label="FutureDependencyExecutor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#taps.executor.utils.FutureDependencyExecutor.submit" class="md-nav__link">
+    submit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.executor.utils.FutureDependencyExecutor.map" class="md-nav__link">
+    map()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.executor.utils.FutureDependencyExecutor.shutdown" class="md-nav__link">
+    shutdown()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2581,36 +2581,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#taps.executor.dag" class="md-nav__link">
-    taps.executor.dag
+  <a href="#taps.executor.utils" class="md-nav__link">
+    taps.executor.utils
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor" class="md-nav__link">
-    DAGExecutor
+  <a href="#taps.executor.utils.FutureDependencyExecutor" class="md-nav__link">
+    FutureDependencyExecutor
   </a>
   
-    <nav class="md-nav" aria-label="DAGExecutor">
+    <nav class="md-nav" aria-label="FutureDependencyExecutor">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor.submit" class="md-nav__link">
+  <a href="#taps.executor.utils.FutureDependencyExecutor.submit" class="md-nav__link">
     submit()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor.map" class="md-nav__link">
+  <a href="#taps.executor.utils.FutureDependencyExecutor.map" class="md-nav__link">
     map()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#taps.executor.dag.DAGExecutor.shutdown" class="md-nav__link">
+  <a href="#taps.executor.utils.FutureDependencyExecutor.shutdown" class="md-nav__link">
     shutdown()
   </a>
   
@@ -2639,15 +2639,15 @@
   
 
 
-<h1 id="tapsexecutordag">taps.executor.dag<a class="headerlink" href="#tapsexecutordag" title="Permanent link">&para;</a></h1>
+<h1 id="tapsexecutorutils">taps.executor.utils<a class="headerlink" href="#tapsexecutorutils" title="Permanent link">&para;</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
-<a id="taps.executor.dag"></a>
+<a id="taps.executor.utils"></a>
   <div class="doc doc-contents">
-      <a target="_blank" href="https://github.com/proxystore/taps/blob/main/taps/executor/dag.py"><code>taps/executor/dag.py</code></a>
+      <a target="_blank" href="https://github.com/proxystore/taps/blob/main/taps/executor/utils.py"><code>taps/executor/utils.py</code></a>
   </div>
 
   <div class="doc doc-contents first">
@@ -2667,12 +2667,12 @@
 
 
 
-<h2 id="taps.executor.dag.DAGExecutor" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">DAGExecutor</span>
+<h2 id="taps.executor.utils.FutureDependencyExecutor" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">FutureDependencyExecutor</span>
 
 
-<a href="#taps.executor.dag.DAGExecutor" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">DAGExecutor</span><span class="p">(</span><span class="n">executor</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="concurrent.futures.Executor" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor">Executor</a></span><span class="p">)</span>
+<a href="#taps.executor.utils.FutureDependencyExecutor" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">FutureDependencyExecutor</span><span class="p">(</span><span class="n">executor</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="concurrent.futures.Executor" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor">Executor</a></span><span class="p">)</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2702,7 +2702,7 @@ scheduled until the results of the child's parent tasks are available.</p>
   </ul>
 
                 <details class="quote">
-                  <summary>Source code in <code>taps/executor/dag.py</code></summary>
+                  <summary>Source code in <code>taps/executor/utils.py</code></summary>
                   <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-132">132</a></span>
 <span class="normal"><a href="#__codelineno-0-133">133</a></span>
 <span class="normal"><a href="#__codelineno-0-134">134</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-132"><a id="__codelineno-0-132" name="__codelineno-0-132"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">executor</span><span class="p">:</span> <span class="n">Executor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2727,17 +2727,17 @@ scheduled until the results of the child's parent tasks are available.</p>
 
 
 
-<h3 id="taps.executor.dag.DAGExecutor.submit" class="doc doc-heading">
+<h3 id="taps.executor.utils.FutureDependencyExecutor.submit" class="doc doc-heading">
         <span class="doc doc-object-name doc-function-name">submit()</span>
 
 
-<a href="#taps.executor.dag.DAGExecutor.submit" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#taps.executor.utils.FutureDependencyExecutor.submit" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">submit</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">function</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[</span><span class="n"><span title="taps.executor.dag.P">P</span></span><span class="p">,</span> <span class="n"><span title="taps.executor.dag.T">T</span></span><span class="p">],</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">function</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[</span><span class="n"><span title="taps.executor.utils.P">P</span></span><span class="p">,</span> <span class="n"><span title="taps.executor.utils.T">T</span></span><span class="p">],</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">/</span><span class="p">,</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><span title="taps.executor.dag.P.args">args</span></span><span class="p">,</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n"><span title="taps.executor.dag.P.kwargs">kwargs</span></span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="concurrent.futures.Future" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future">Future</a></span><span class="p">[</span><span class="n"><span title="taps.executor.dag.T">T</span></span><span class="p">]</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><span title="taps.executor.utils.P.args">args</span></span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n"><span title="taps.executor.utils.P.kwargs">kwargs</span></span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="concurrent.futures.Future" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future">Future</a></span><span class="p">[</span><span class="n"><span title="taps.executor.utils.T">T</span></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2750,7 +2750,7 @@ scheduled until the results of the child's parent tasks are available.</p>
   <ul>
       <li class="field-body">
         <b><code>function</code></b>
-            (<code><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a>[<span title="taps.executor.dag.P">P</span>, <span title="taps.executor.dag.T">T</span>]</code>)
+            (<code><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a>[<span title="taps.executor.utils.P">P</span>, <span title="taps.executor.utils.T">T</span>]</code>)
         –
         <div class="doc-md-description">
           <p>Callable to execute.</p>
@@ -2758,7 +2758,7 @@ scheduled until the results of the child's parent tasks are available.</p>
       </li>
       <li class="field-body">
         <b><code>args</code></b>
-            (<code><span title="taps.executor.dag.P.args">args</span></code>, default:
+            (<code><span title="taps.executor.utils.P.args">args</span></code>, default:
                 <code>()</code>
 )
         –
@@ -2768,7 +2768,7 @@ scheduled until the results of the child's parent tasks are available.</p>
       </li>
       <li class="field-body">
         <b><code>kwargs</code></b>
-            (<code><span title="taps.executor.dag.P.kwargs">kwargs</span></code>, default:
+            (<code><span title="taps.executor.utils.P.kwargs">kwargs</span></code>, default:
                 <code>{}</code>
 )
         –
@@ -2783,7 +2783,7 @@ scheduled until the results of the child's parent tasks are available.</p>
   <p>Returns:</p>
   <ul>
       <li class="field-body">
-            <code><a class="autorefs autorefs-external" title="concurrent.futures.Future" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future">Future</a>[<span title="taps.executor.dag.T">T</span>]</code>
+            <code><a class="autorefs autorefs-external" title="concurrent.futures.Future" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future">Future</a>[<span title="taps.executor.utils.T">T</span>]</code>
         –
         <div class="doc-md-description">
           <p><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future"><code>Future</code></a> object representing the             result of the execution of the callable.</p>
@@ -2792,7 +2792,7 @@ scheduled until the results of the child's parent tasks are available.</p>
   </ul>
 
       <details class="quote">
-        <summary>Source code in <code>taps/executor/dag.py</code></summary>
+        <summary>Source code in <code>taps/executor/utils.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-151">151</a></span>
 <span class="normal"><a href="#__codelineno-0-152">152</a></span>
 <span class="normal"><a href="#__codelineno-0-153">153</a></span>
@@ -2848,17 +2848,17 @@ scheduled until the results of the child's parent tasks are available.</p>
 
 
 
-<h3 id="taps.executor.dag.DAGExecutor.map" class="doc doc-heading">
+<h3 id="taps.executor.utils.FutureDependencyExecutor.map" class="doc doc-heading">
         <span class="doc doc-object-name doc-function-name">map()</span>
 
 
-<a href="#taps.executor.dag.DAGExecutor.map" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#taps.executor.utils.FutureDependencyExecutor.map" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">map</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">function</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[</span><span class="n"><span title="taps.executor.dag.P">P</span></span><span class="p">,</span> <span class="n"><span title="taps.executor.dag.T">T</span></span><span class="p">],</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">*</span><span class="n">iterables</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterable" href="https://docs.python.org/3/library/typing.html#typing.Iterable">Iterable</a></span><span class="p">[</span><span class="n"><span title="taps.executor.dag.P.args">args</span></span><span class="p">],</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">function</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a></span><span class="p">[</span><span class="n"><span title="taps.executor.utils.P">P</span></span><span class="p">,</span> <span class="n"><span title="taps.executor.utils.T">T</span></span><span class="p">],</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">*</span><span class="n">iterables</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterable" href="https://docs.python.org/3/library/typing.html#typing.Iterable">Iterable</a></span><span class="p">[</span><span class="n"><span title="taps.executor.utils.P.args">args</span></span><span class="p">],</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">timeout</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">chunksize</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a></span><span class="p">[</span><span class="n"><span title="taps.executor.dag.T">T</span></span><span class="p">]</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a></span><span class="p">[</span><span class="n"><span title="taps.executor.utils.T">T</span></span><span class="p">]</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2871,7 +2871,7 @@ scheduled until the results of the child's parent tasks are available.</p>
   <ul>
       <li class="field-body">
         <b><code>function</code></b>
-            (<code><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a>[<span title="taps.executor.dag.P">P</span>, <span title="taps.executor.dag.T">T</span>]</code>)
+            (<code><a class="autorefs autorefs-external" title="typing.Callable" href="https://docs.python.org/3/library/typing.html#typing.Callable">Callable</a>[<span title="taps.executor.utils.P">P</span>, <span title="taps.executor.utils.T">T</span>]</code>)
         –
         <div class="doc-md-description">
           <p>A callable that will take as many arguments as there are
@@ -2880,7 +2880,7 @@ passed iterables.</p>
       </li>
       <li class="field-body">
         <b><code>iterables</code></b>
-            (<code><a class="autorefs autorefs-external" title="typing.Iterable" href="https://docs.python.org/3/library/typing.html#typing.Iterable">Iterable</a>[<span title="taps.executor.dag.P.args">args</span>]</code>, default:
+            (<code><a class="autorefs autorefs-external" title="typing.Iterable" href="https://docs.python.org/3/library/typing.html#typing.Iterable">Iterable</a>[<span title="taps.executor.utils.P.args">args</span>]</code>, default:
                 <code>()</code>
 )
         –
@@ -2918,7 +2918,7 @@ to one, the items in the list will be sent one at a time.</p>
   <p>Returns:</p>
   <ul>
       <li class="field-body">
-            <code><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<span title="taps.executor.dag.T">T</span>]</code>
+            <code><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<span title="taps.executor.utils.T">T</span>]</code>
         –
         <div class="doc-md-description">
           <p>An iterator equivalent to: <code>map(func, *iterables)</code> but the calls             may be evaluated out-of-order.</p>
@@ -2940,7 +2940,7 @@ to one, the items in the list will be sent one at a time.</p>
   </ul>
 
       <details class="quote">
-        <summary>Source code in <code>taps/executor/dag.py</code></summary>
+        <summary>Source code in <code>taps/executor/utils.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-175">175</a></span>
 <span class="normal"><a href="#__codelineno-0-176">176</a></span>
 <span class="normal"><a href="#__codelineno-0-177">177</a></span>
@@ -3042,11 +3042,11 @@ to one, the items in the list will be sent one at a time.</p>
 
 
 
-<h3 id="taps.executor.dag.DAGExecutor.shutdown" class="doc doc-heading">
+<h3 id="taps.executor.utils.FutureDependencyExecutor.shutdown" class="doc doc-heading">
         <span class="doc doc-object-name doc-function-name">shutdown()</span>
 
 
-<a href="#taps.executor.dag.DAGExecutor.shutdown" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#taps.executor.utils.FutureDependencyExecutor.shutdown" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">shutdown</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">wait</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cancel_futures</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
@@ -3084,7 +3084,7 @@ has not started running. Only used in Python 3.9 and later.</p>
   </ul>
 
       <details class="quote">
-        <summary>Source code in <code>taps/executor/dag.py</code></summary>
+        <summary>Source code in <code>taps/executor/utils.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-222">222</a></span>
 <span class="normal"><a href="#__codelineno-0-223">223</a></span>
 <span class="normal"><a href="#__codelineno-0-224">224</a></span>
