@@ -25,7 +25,9 @@ dependencies = [
     "parsl",
     "proxystore[redis]>=0.6.5",
     "pydantic>=2",
+    "pydantic-settings>=2.3.0",
     "ray[client] ; python_version<'3.12'",
+    "tomli-w",
 ]
 
 [project.urls]

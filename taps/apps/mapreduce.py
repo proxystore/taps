@@ -10,7 +10,7 @@ from collections import Counter
 from typing import Generator
 from typing import TypeVar
 
-from taps.engine import AppEngine
+from taps.engine import Engine
 from taps.logging import APP_LOG_LEVEL
 
 T = TypeVar('T')
@@ -144,7 +144,7 @@ class MapreduceApp:
                 f'Removed generated files in {self.data_dir}',
             )
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:

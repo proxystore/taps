@@ -1,26 +1,32 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Literal
 
-from taps.app import App
-from taps.app import AppConfig
-from taps.engine import AppEngine
+from pydantic import Field
+
+from taps.apps import App
+from taps.apps import AppConfig
+from taps.engine import Engine
+from taps.plugins import register
 
 
 def task() -> None:
     pass
 
 
-class TestAppConfig(AppConfig):
+@register('app')
+class MockAppConfig(AppConfig):
     """Test application configuration."""
 
-    tasks: int = 3
+    name: Literal['mock-app'] = 'mock-app'
+    tasks: int = Field(3, description='number of tasks to perform')
 
-    def create_app(self) -> App:
-        return TestApp(self.tasks)
+    def get_app(self) -> App:
+        return MockApp(self.tasks)
 
 
-class TestApp:
+class MockApp:
     """Test application."""
 
     def __init__(self, tasks: int) -> None:
@@ -29,7 +35,7 @@ class TestApp:
     def close(self) -> None:
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         task_futures = [engine.submit(task) for _ in range(self.tasks)]
 
         for task_future in task_futures:

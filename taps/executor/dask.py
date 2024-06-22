@@ -7,6 +7,7 @@ from typing import Callable
 from typing import Generator
 from typing import Iterable
 from typing import Iterator
+from typing import Literal
 from typing import Optional
 from typing import TypeVar
 
@@ -21,7 +22,7 @@ from dask.distributed import Future as DaskFuture
 from pydantic import Field
 
 from taps.executor.config import ExecutorConfig
-from taps.executor.config import register
+from taps.plugins import register
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -109,7 +110,7 @@ class DaskDistributedExecutor(Executor):
         self.client.close()
 
 
-@register(name='dask')
+@register('executor')
 class DaskDistributedConfig(ExecutorConfig):
     """Dask Distributed configuration.
 
@@ -119,34 +120,35 @@ class DaskDistributedConfig(ExecutorConfig):
         dask_workers: Number of Dask workers for local clusters.
     """
 
-    dask_scheduler_address: Optional[str] = Field(  # noqa: UP007
+    name: Literal['dask'] = 'dask'
+    scheduler: Optional[str] = Field(  # noqa: UP007
         None,
         description='dask scheduler address',
     )
-    dask_use_threads: bool = Field(
+    use_threads: bool = Field(
         False,
         description='use threads instead of processes for dask workers',
     )
-    dask_workers: Optional[int] = Field(  # noqa: UP007
+    workers: Optional[int] = Field(  # noqa: UP007
         None,
         description='maximum number of dask workers',
     )
-    dask_daemon_workers: bool = Field(
+    daemon_workers: bool = Field(
         True,
         description='configure if workers are daemon',
     )
 
     def get_executor(self) -> DaskDistributedExecutor:
         """Create an executor instance from the config."""
-        if self.dask_scheduler_address is not None:
-            client = Client(self.dask_scheduler_address)
+        if self.scheduler is not None:
+            client = Client(self.scheduler)
         else:
             dask.config.set(
-                {'distributed.worker.daemon': self.dask_daemon_workers},
+                {'distributed.worker.daemon': self.daemon_workers},
             )
             client = Client(
-                n_workers=self.dask_workers,
-                processes=not self.dask_use_threads,
+                n_workers=self.workers,
+                processes=not self.use_threads,
                 dashboard_address=None,
             )
         return DaskDistributedExecutor(client)

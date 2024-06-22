@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import multiprocessing
+from typing import Literal
 from typing import Optional
 
 import globus_compute_sdk
@@ -14,10 +15,10 @@ from parsl.providers import LocalProvider
 from pydantic import Field
 
 from taps.executor.config import ExecutorConfig
-from taps.executor.config import register
+from taps.plugins import register
 
 
-@register(name='parsl')
+@register('executor')
 class ParslConfig(ExecutorConfig):
     """Parsl configuration.
 
@@ -25,14 +26,15 @@ class ParslConfig(ExecutorConfig):
         endpoint: Globus Compute endpoint UUID.
     """
 
-    parsl_use_threads: bool = Field(
+    name: Literal['parsl'] = 'parsl'
+    use_threads: bool = Field(
         False,
         description=(
             'use parsl ThreadPoolExecutor instead of HighThroughputExecutor'
         ),
     )
-    parsl_workers: Optional[int] = Field(None, description='max parsl workers')  # noqa: UP007
-    parsl_run_dir: str = Field(
+    workers: Optional[int] = Field(None, description='max parsl workers')  # noqa: UP007
+    run_dir: str = Field(
         'parsl-runinfo',
         description='parsl run directory within the app run directory',
     )
@@ -40,12 +42,12 @@ class ParslConfig(ExecutorConfig):
     def get_executor_config(self) -> Config:
         """Create a Parsl config from this config."""
         workers = (
-            self.parsl_workers
-            if self.parsl_workers is not None
+            self.workers
+            if self.workers is not None
             else multiprocessing.cpu_count()
         )
 
-        if self.parsl_use_threads:
+        if self.use_threads:
             executor = ThreadPoolExecutor(max_threads=workers)
         else:
             executor = HighThroughputExecutor(
@@ -60,7 +62,7 @@ class ParslConfig(ExecutorConfig):
                 ),
             )
 
-        return Config(executors=[executor], run_dir=self.parsl_run_dir)
+        return Config(executors=[executor], run_dir=self.run_dir)
 
     def get_executor(self) -> globus_compute_sdk.Executor:
         """Create an executor instance from the config."""

@@ -3,23 +3,22 @@ from __future__ import annotations
 import pathlib
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
 from typing import Generator
-from unittest import mock
 
 import pytest
 from dask.distributed import Client
 
-import taps
-from taps.data.config import FilterConfig
-from taps.data.null import NullTransformerConfig
-from taps.engine import AppEngine
-from taps.executor.dask import DaskDistributedExecutor
-from taps.executor.python import DAGExecutor
-from taps.executor.python import ThreadPoolConfig
-from taps.run.config import BenchmarkConfig
+from taps.engine import Engine
+from taps.engine import EngineConfig
+from taps.executor import DAGExecutor
+from taps.executor import DaskDistributedExecutor
+from taps.executor import ThreadPoolConfig
+from taps.filter import NullFilterConfig
+from taps.run.config import Config
+from taps.run.config import LoggingConfig
 from taps.run.config import RunConfig
-from testing.app import TestAppConfig
+from taps.transformer import NullTransformerConfig
+from testing.app import MockAppConfig
 
 
 @pytest.fixture()
@@ -61,27 +60,22 @@ def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
 @pytest.fixture()
 def app_engine(
     thread_executor: ThreadPoolExecutor,
-) -> Generator[AppEngine, None, None]:
+) -> Generator[Engine, None, None]:
     dag_executor = DAGExecutor(thread_executor)
-    with AppEngine(dag_executor) as executor:
+    with Engine(dag_executor) as executor:
         yield executor
 
 
 @pytest.fixture()
-def test_benchmark_config(
-    tmp_path: pathlib.Path,
-) -> Generator[BenchmarkConfig, None, None]:
-    with mock.patch.dict(
-        taps.run.apps.registry._REGISTERED_APP_CONFIGS,
-        {'test-app': TestAppConfig},
-    ):
-        yield BenchmarkConfig(
-            name='test-app',
-            timestamp=datetime.now(),
-            executor_name='thread-pool',
-            app=TestAppConfig(tasks=3),
-            executor=ThreadPoolConfig(max_thread=4),
+def test_benchmark_config(tmp_path: pathlib.Path) -> Config:
+    return Config(
+        app=MockAppConfig(tasks=3),
+        engine=EngineConfig(
+            executor=ThreadPoolConfig(max_threads=4),
+            filter=NullFilterConfig(),
             transformer=NullTransformerConfig(),
-            filter=FilterConfig(),
-            run=RunConfig(log_file_name=None, run_dir=str(tmp_path)),
-        )
+            task_record_file_name=None,
+        ),
+        logging=LoggingConfig(file_name=None),
+        run=RunConfig(dir_format=str(tmp_path.resolve())),
+    )

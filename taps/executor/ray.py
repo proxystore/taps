@@ -6,6 +6,7 @@ from concurrent.futures import Future
 from typing import Any
 from typing import Callable
 from typing import cast
+from typing import Literal
 from typing import Optional
 from typing import TypeVar
 
@@ -24,7 +25,7 @@ except ImportError as e:  # pragma: no cover
 from pydantic import Field
 
 from taps.executor.config import ExecutorConfig
-from taps.executor.config import register
+from taps.plugins import register
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -125,7 +126,7 @@ class RayExecutor(Executor):
         ray.shutdown()
 
 
-@register(name='ray')
+@register('executor')
 class RayConfig(ExecutorConfig):
     """Ray configuration.
 
@@ -136,18 +137,16 @@ class RayConfig(ExecutorConfig):
             on this machine.
     """
 
-    ray_address: Optional[str] = Field(  # noqa: UP007
+    name: Literal['ray'] = 'ray'
+    address: Optional[str] = Field(  # noqa: UP007
         'local',
         description='ray scheduler address (default spawns local cluster)',
     )
-    ray_num_cpus: Optional[int] = Field(  # noqa: UP007,
+    num_cpus: Optional[int] = Field(  # noqa: UP007,
         None,
         description='maximum number of CPUs that ray will use',
     )
 
     def get_executor(self) -> RayExecutor:
         """Create an executor instance from the config."""
-        return RayExecutor(
-            address=self.ray_address,
-            num_cpus=self.ray_num_cpus,
-        )
+        return RayExecutor(address=self.address, num_cpus=self.num_cpus)

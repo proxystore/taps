@@ -20,9 +20,9 @@ See [Getting Started for Local Development](../contributing/index.md#getting-sta
 
 Our example application is going to be called `foobar`.
 All applications in TaPS are composed of two required components:
-[`AppConfig`][taps.app.AppConfig] and [`Config`][taps.app.App].
-The [`AppConfig`][taps.app.AppConfig] is a Pydantic [`BaseModel`][pydantic.BaseModel] with some extra functionality for constructing a config instance from command line arguments.
-The [`App`][taps.app.App] has a [`run()`][taps.app.App.run] method which is the entry point to running the applications.
+[`AppConfig`][taps.apps.AppConfig] and [`Config`][taps.apps.App].
+The [`AppConfig`][taps.apps.AppConfig] is a Pydantic [`BaseModel`][pydantic.BaseModel] containing all configuration options that should be exposed via the CLI.
+The [`App`][taps.apps.App] has a [`run()`][taps.apps.App.run] method which is the entry point to running the applications.
 
 ### The `App`
 
@@ -37,7 +37,7 @@ from __future__ import annotations
 import logging
 import pathlib
 
-from taps.engine import AppEngine
+from taps.engine import Engine
 from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ class FoobarApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:
         """Run the application.
 
         Args:
@@ -78,56 +78,60 @@ class FoobarApp:
 
 1. Applications in TaPS are composed on tasks which are just Python functions.
    Here, our task is the `print_message` function.
-2. The `FoobarApp` implements the [`App`][taps.app.App] protocol.
-3. The `close()` method can be used to close any stateful connection objects create in `__init__` or perform any clean up if needed.
+2. The `FoobarApp` implements the [`App`][taps.apps.App] protocol.
+3. The `close()` method can be used to close any stateful connection objects created in `__init__` or perform any clean up if needed.
 4. Once `FoobarApp` is instantiated by the CLI, `FoobarApp.run()` will be invoked.
-   This method takes two arguments: a [`AppEngine`][taps.engine.AppEngine] and a path to the invocations run directory.
+   This method takes two arguments: an [`Engine`][taps.engine.Engine] and a path to the invocations run directory.
    Applications are free to use the run directory as needed, such as to store result files.
 
-The [`AppEngine`][taps.engine.AppEngine] is the key abstraction of the TaPS framework.
-The CLI arguments provided by the user for the compute engine, data management, and task logging logic are used to create a [`AppEngine`][taps.engine.AppEngine] instance which is then provided to the application.
-[`AppEngine.submit()`][taps.engine.AppEngine.submit] is the primary method that application will use to execute tasks asynchronously.
+The [`Engine`][taps.engine.Engine] is the key abstraction of the TaPS framework.
+The CLI arguments provided by the user for the compute engine, data management, and task logging logic are used to create an [`Engine`][taps.engine.Engine] instance which is then provided to the application.
+[`Engine.submit()`][taps.engine.Engine.submit] is the primary method that application will use to execute tasks asynchronously.
 This method returns a [`TaskFuture`][taps.engine.TaskFuture] object with a [`result()`][taps.engine.TaskFuture.result] which will wait on the task to finish and return the result.
-Alternatively, [`AppEngine.map()`][taps.engine.AppEngine.map] can be used to map a task onto a sequence of inputs, compute the tasks in parallel, and gather the results.
+Alternatively, [`Engine.map()`][taps.engine.Engine.map] can be used to map a task onto a sequence of inputs, compute the tasks in parallel, and gather the results.
 Importantly, a [`TaskFuture`][taps.engine.TaskFuture] can also be passed as input to another tasks.
-Doing so indicates to the [`AppEngine`][taps.engine.AppEngine] that there is a dependency between those two tasks.
+Doing so indicates to the [`Engine`][taps.engine.Engine] that there is a dependency between those two tasks.
 
 ### The `AppConfig`
 
-An `AppConfig` is registered with the TaPS CLI and defines (1) what arguments should be available in the CLI and (2) how to construct and `App` from the configuration.
-Each `App` definition has a corresponding `AppConfig` defined in `taps/run/apps/`.
-Here, we'll create a file `taps/run/apps/foobar.py` for our `FoobarConfig`.
-This configuration will contain all of the parameters that the user is required to provide and any optional parameters..
+An [`AppConfig`][taps.apps.AppConfig] is registered with the TaPS CLI and defines (1) what arguments should be available in the CLI and (2) how to construct and [`App`][taps.apps.AppConfig] from the configuration.
+Each [`App`][taps.apps.App] definition has a corresponding [`AppConfig`][taps.apps.AppConfig] defined in `taps/apps/configs/`.
+Here, we'll create a file `taps/apps/configs/foobar.py` for our `FoobarConfig`.
+This configuration will contain all of the parameters that the user is required to provide and any optional parameters.
 
-```python title="taps/run/apps/foobar.py" linenums="1"
+```python title="taps/apps/configs/foobar.py" linenums="1"
 from __future__ import annotations
+
+from typing import Literal
 
 from pydantic import Field
 
-from taps.app import App
-from taps.app import AppConfig
-from taps.run.apps.registry import register_app
+from taps.apps import App
+from taps.apps import AppConfig
+from taps.plugins import register
 
 
-@register_app(name='foobar')
+@register('app')
 class FoobarConfig(AppConfig):
     """Foobar application configuration."""
 
+    name: Literal['foobar'] = 'foobar'
     message: str = Field(description='message to print')
     repeat: int = Field(1, description='number of times to repeat message')
 
-    def create_app(self) -> App:
+    def get_app(self) -> App:
+        """Create an application instance from the config."""
         from taps.apps.foobar import FoobarApp
 
         return FoobarApp(message=self.message, repeat=self.repeat)
 ```
 
-1. The [`@register_app()`][taps.run.apps.registry.register_app] decorator registers the `FoobarConfig` with the TaPS CLI.
-   The name specified in the decorator is the name under which the application will be available in the CLI.
-   For example, here we can use `python -m taps.run foobar {args}` to run our application.
-2. The [`AppConfig`][taps.app.AppConfig] class supports required arguments without default values (e.g., `message`) and optional arguments with default values (e.g., `repeat`).
-3. The [`create_app()`][taps.app.AppConfig.create_app] method is required and is invoked by the CLI to create an [`App`][taps.app.App] instance.
-4. **Note:** `FoobarApp` is imported inside of [`create_app()`][taps.app.AppConfig.create_app] to delay importing dependencies specific to the application until the user has decided which application they want to execute.
+1. The [`@register()`][taps.plugins.register] decorator registers the `FoobarConfig` with the TaPS as an `'app'` plugin.
+   The `name` attribute of the config is the name under which the application will be available in the CLI.
+   For example, here we can use `python -m taps.run --app foobar {args}` to run our application.
+2. The [`AppConfig`][taps.apps.AppConfig] class supports required arguments without default values (e.g., `message`) and optional arguments with default values (e.g., `repeat`).
+3. The [`get_app()`][taps.apps.AppConfig.get_app] method is required and is invoked by the CLI to create an [`App`][taps.apps.App] instance.
+4. **Note:** `FoobarApp` is imported inside of [`get_app()`][taps.apps.AppConfig.get_app] to delay importing dependencies specific to the application until the user has decided which application they want to execute.
 
 ### Dependencies
 
@@ -175,15 +179,16 @@ You will be able to inspect that your page is visible in the "Apps" section of t
 
 Once an application is created and registered within TaPS, the application is available within the CLI.
 ```bash
-python -m taps.run foobar --help
+python -m taps.run --app foobar --help
 ```
-Using `foobar` as the first positional argument indicates we want to execute the `foobar` application, and `--help` will print all of the required and optional arguments as specified in the `FoobarConfig`.
-The arguments will be separated into sections, such as for arguments specific to `foobar` or for executor arguments.
+The `--help` flag will print all of the required and optional arguments as specified in the `FoobarConfig` because `--app foobar` was specified.
+If no app is specified, `--help` will just print the available apps that can be used.
+The arguments will be separated into sections, such as for arguments specific the `foobar` app or for executor arguments.
 
 The following command will execute the application to print "Hello, World!" three times.
 We specify the `thread-pool` executor because this will allow our printing to show up in the main process.
 ```bash
-$ python -m taps.run foobar --message 'Hello, World!' --repeat 3 --executor thread-pool
+$ python -m taps.run --app foobar --app.message 'Hello, World!' --app.repeat 3 --engine.executor thread-pool
 RUN   (taps.run) :: Starting application (name=foobar)
 ...
 APP  (taps.apps.foobar) :: Hello, World!

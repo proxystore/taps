@@ -16,7 +16,7 @@ from taps.apps.synthetic import run_reduce
 from taps.apps.synthetic import run_sequential
 from taps.apps.synthetic import SyntheticApp
 from taps.apps.synthetic import WorkflowStructure
-from taps.engine import AppEngine
+from taps.engine import Engine
 
 
 @pytest.mark.parametrize('size', (0, 1, 10, 100))
@@ -39,7 +39,7 @@ def test_noop_task() -> None:
 
 
 def test_synthetic_app(
-    app_engine: AppEngine,
+    app_engine: Engine,
     tmp_path: pathlib.Path,
 ) -> None:
     kinds = {
@@ -66,7 +66,7 @@ def test_synthetic_app(
             mocked.assert_called_once()
 
 
-def test_run_bag_of_tasks(app_engine: AppEngine) -> None:
+def test_run_bag_of_tasks(app_engine: Engine) -> None:
     task_count, task_sleep, max_running_tasks = 6, 0.001, 3
 
     start = time.perf_counter()
@@ -83,7 +83,7 @@ def test_run_bag_of_tasks(app_engine: AppEngine) -> None:
     assert min_time <= runtime
 
 
-def test_run_diamond(app_engine: AppEngine) -> None:
+def test_run_diamond(app_engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
@@ -94,7 +94,7 @@ def test_run_diamond(app_engine: AppEngine) -> None:
     assert layers * task_sleep <= runtime
 
 
-def test_run_reduce(app_engine: AppEngine) -> None:
+def test_run_reduce(app_engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
@@ -105,7 +105,7 @@ def test_run_reduce(app_engine: AppEngine) -> None:
     assert layers * task_sleep <= runtime
 
 
-def test_run_sequential(app_engine: AppEngine) -> None:
+def test_run_sequential(app_engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()

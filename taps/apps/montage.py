@@ -5,7 +5,7 @@ import pathlib
 
 import pandas as pd
 
-from taps.engine import AppEngine
+from taps.engine import Engine
 from taps.engine import wait
 from taps.logging import APP_LOG_LEVEL
 
@@ -274,7 +274,7 @@ class MontageApp:
         """Close the application."""
         pass
 
-    def run(self, engine: AppEngine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
+    def run(self, engine: Engine, run_dir: pathlib.Path) -> None:  # noqa: PLR0915
         """Run the application.
 
         Args:
