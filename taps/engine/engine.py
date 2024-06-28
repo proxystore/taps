@@ -10,6 +10,7 @@ from concurrent.futures import as_completed as as_completed_python
 from concurrent.futures import Executor
 from concurrent.futures import Future
 from concurrent.futures import wait as wait_python
+from traceback import TracebackException
 from types import TracebackType
 from typing import Any
 from typing import Callable
@@ -48,6 +49,15 @@ T = TypeVar('T')
 
 
 @dataclasses.dataclass
+class ExceptionInfo:
+    """Task exception information."""
+
+    type: str
+    message: str
+    traceback: str
+
+
+@dataclasses.dataclass
 class ExecutionInfo:
     """Task execution information."""
 
@@ -72,7 +82,7 @@ class TaskInfo:
     submit_time: float
     received_time: float | None = None
     success: bool | None = None
-    exception: str | None = None
+    exception: ExceptionInfo | None = None
     execution: ExecutionInfo | None = None
 
 
@@ -278,14 +288,21 @@ class Engine:
 
     def _task_done_callback(self, future: Future[Any]) -> None:
         task_future = self._running_tasks.pop(future)
-        execution_info = future.result().info
+        try:
+            execution_info = future.result().info
+        except Exception as e:
+            task_future.info.success = False
+            tb = TracebackException.from_exception(e)
+            info = ExceptionInfo(
+                type=type(e).__name__,
+                message=str(e),
+                traceback=''.join(tb.format()),
+            )
+            task_future.info.exception = info
+        else:
+            task_future.info.success = True
+            task_future.info.execution = execution_info
         task_future.info.received_time = time.time()
-        task_future.info.execution = execution_info
-        exception = future.exception()
-        task_future.info.success = exception is None
-        task_future.info.exception = (
-            str(exception) if exception is not None else None
-        )
         self.record_logger.log(dataclasses.asdict(task_future.info))
 
     # Note: args/kwargs are typed as Any rather than P.args/P.kwargs
