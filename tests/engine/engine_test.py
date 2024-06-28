@@ -98,6 +98,33 @@ def test_app_engine_record_logging(
         assert str(task1.info.task_id) in logger.records[1]['parent_task_ids']
 
 
+def test_app_engine_record_logging_exception(
+    thread_executor: ThreadPoolExecutor,
+    tmp_path: pathlib.Path,
+) -> None:
+    def _error() -> None:
+        raise ValueError('bad task')
+
+    with SimpleRecordLogger() as logger:
+        with Engine(
+            FutureDependencyExecutor(thread_executor),
+            record_logger=logger,
+        ) as executor:
+            task = executor.submit(_error)
+
+            assert task.exception() is not None
+
+        assert len(logger.records) == 1
+        task_info = logger.records[0]
+        import pprint
+
+        pprint.pprint(task_info)
+        assert not task_info['success']
+        assert task_info['exception']['type'] == 'ValueError'
+        assert task_info['exception']['message'] == 'bad task'
+        assert len(task_info['exception']['traceback']) > 0
+
+
 def test_as_completed(app_engine: Engine) -> None:
     tasks = [app_engine.submit(sum, [x, 1]) for x in range(5)]
     completed = as_completed(tasks)
