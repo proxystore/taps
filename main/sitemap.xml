@@ -81,6 +81,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://taps.proxystore.dev/latest/api/apps/configs/failures/</loc>
+         <lastmod>2024-06-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/fedlearn/</loc>
          <lastmod>2024-06-28</lastmod>
          <changefreq>daily</changefreq>
@@ -122,6 +127,21 @@
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/docking/train/</loc>
+         <lastmod>2024-06-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/api/apps/failures/</loc>
+         <lastmod>2024-06-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/api/apps/failures/app/</loc>
+         <lastmod>2024-06-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/api/apps/failures/types/</loc>
          <lastmod>2024-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -317,6 +337,11 @@
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/docking/</loc>
+         <lastmod>2024-06-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/apps/failures/</loc>
          <lastmod>2024-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
