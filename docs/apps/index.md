@@ -11,7 +11,7 @@ These applications, summarized below, span many domains, datasets, and structure
 | ------------------------------------- | ---------------- | ---------------- | ---------------- |
 | [Cholesky Factorization](cholesky.md) | Linear Algebra   | Python Functions | In-memory        |
 | [Docking Proteins](docking.md)        | Drug Discovery   | Executable, Python Functions | File |
-| [Failure Injection](failinject.md)    | N/A              | Python Functions | Depends on true workflow |
+| [Failure Injection](failures.md)      | N/A              | Any              | Any |
 | [Federated Learning](fedlearn.md)     | Machine Learning | Python Functions | In-memory        |
 | [MapReduce](mapreduce.md)             | Text Analysis    | Python Functions | File, In-memory  |
 | [Molecular Design](moldesign.md)      | Molecular Design | Python Functions | In-memory        |
