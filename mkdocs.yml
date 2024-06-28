@@ -119,6 +119,7 @@ nav:
       - apps/index.md
       - Cholesky Factorization: apps/cholesky.md
       - Docking Proteins: apps/docking.md
+      - Failure Injection: apps/failures.md
       - Federated Learning: apps/fedlearn.md
       - MapReduce: apps/mapreduce.md
       - Molecular Design: apps/moldesign.md

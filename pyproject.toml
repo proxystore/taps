@@ -38,6 +38,7 @@ Source = "https://github.com/proxystore/taps"
 [project.optional-dependencies]
 cholesky = ["numpy"]
 docking = ["numpy", "pandas", "requests", "scikit-learn", "rdkit"]
+failures = ["psutil"]
 fedlearn = ["numpy", "torch", "torchvision"]
 moldesign = ["ase", "matplotlib", "numpy", "pandas", "rdkit==2023.9.6", "scikit-learn", "tqdm"]
 montage = ["montage_wrapper", "pandas"]
