@@ -66,7 +66,7 @@ class FedlearnApp:
         batch_size: int,
         epochs: int,
         lr: float,
-        data_dir: str = 'data/',
+        data_dir: pathlib.Path,
         device: str = 'cpu',
         download: bool = False,
         train: bool = True,

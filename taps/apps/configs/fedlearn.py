@@ -27,8 +27,8 @@ class FedlearnConfig(AppConfig):
             'training and testing dataset (cifar10, cifar100, fmnist, mnist)'
         ),
     )
-    data_dir: str = Field(
-        'data/fedlearn',
+    data_dir: pathlib.Path = Field(
+        pathlib.Path('data/fedlearn'),
         description='download directory for data',
     )
     device: str = Field('cpu', description='device to use (e.g., cpu or cuda)')
@@ -59,11 +59,6 @@ class FedlearnConfig(AppConfig):
         description='evaluate the global model on test data after each round',
     )
     seed: Optional[int] = Field(None, description='random seed')  # noqa: UP007
-
-    @field_validator('data_dir', mode='before')
-    @classmethod
-    def _resolve_data_root(cls, root: str) -> str:
-        return str(pathlib.Path(root).resolve())
 
     @field_validator('dataset', mode='after')
     @classmethod

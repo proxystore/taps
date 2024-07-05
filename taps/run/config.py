@@ -128,7 +128,6 @@ class Config(BaseSettings):
             exclude_unset=False,
             exclude_defaults=False,
             exclude_none=True,
-            serialize_as_any=True,
         )
 
         filepath = pathlib.Path(filepath)

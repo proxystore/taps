@@ -34,7 +34,7 @@ class MoldesignApp:
 
     def __init__(
         self,
-        dataset: str,
+        dataset: pathlib.Path,
         initial_count: int = 8,
         search_count: int = 64,
         batch_size: int = 4,

@@ -5,7 +5,6 @@ from typing import Literal
 from typing import Optional
 
 from pydantic import Field
-from pydantic import field_validator
 
 from taps.apps.app import App
 from taps.apps.app import AppConfig
@@ -17,7 +16,7 @@ class MapreduceConfig(AppConfig):
     """Mapreduce application configuration."""
 
     name: Literal['mapreduce'] = 'mapreduce'
-    data_dir: str = Field(description='text file directory')
+    data_dir: pathlib.Path = Field(description='text file directory')
     map_tasks: Optional[int] = Field(  # noqa: UP007
         32,
         description=(
@@ -40,11 +39,6 @@ class MapreduceConfig(AppConfig):
         10000,
         description='number of words to generate per file',
     )
-
-    @field_validator('data_dir', mode='before')
-    @classmethod
-    def _resolve_paths(cls, path: str) -> str:
-        return str(pathlib.Path(path).resolve())
 
     def get_app(self) -> App:
         """Create an application instance from the config."""
