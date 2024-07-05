@@ -67,6 +67,34 @@ tasks = 0
     assert config.app.tasks == 0
 
 
+def test_parse_multiple_config_file(tmp_path: pathlib.Path) -> None:
+    config_text_1 = """\
+[app]
+name = "mock-app"
+tasks = 0
+"""
+    config_text_2 = """\
+[app]
+tasks = 1
+"""
+
+    config_file_1 = tmp_path / 'config-1.toml'
+    with open(config_file_1, 'w') as f:
+        f.write(config_text_1)
+
+    config_file_2 = tmp_path / 'config-2.toml'
+    with open(config_file_2, 'w') as f:
+        f.write(config_text_2)
+
+    config = parse_args_to_config(
+        ['--config', str(config_file_1), str(config_file_2)],
+    )
+
+    assert isinstance(config.app, MockAppConfig)
+    # config 2 should override config 1
+    assert config.app.tasks == 1
+
+
 def test_parse_cli_args_and_config_file(tmp_path: pathlib.Path) -> None:
     config_text = """\
 [app]
