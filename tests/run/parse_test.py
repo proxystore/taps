@@ -26,14 +26,14 @@ def test_exit_on_only_help(capsys) -> None:
 
 
 def test_parse_args_missing_app(tmp_path: pathlib.Path) -> None:
-    with pytest.raises(ValueError, match='Missing the app name option.'):
+    with pytest.raises(ValueError, match='App name option is required.'):
         parse_args_to_config(['--engine.executor', 'process-pool'])
 
     config_file = tmp_path / 'config.toml'
     with open(config_file, 'w') as f:
         f.write('[app]')
 
-    with pytest.raises(ValueError, match='Missing the app name option.'):
+    with pytest.raises(ValueError, match='App name option is required.'):
         parse_args_to_config(['--config', str(config_file)])
 
 
