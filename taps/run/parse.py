@@ -22,10 +22,7 @@ from taps.run.config import Config
 from taps.run.utils import flatten_mapping
 
 
-def _parse_toml_options(filepath: str | None) -> dict[str, Any]:
-    if filepath is None:
-        return {}
-
+def _parse_toml_options(filepath: str) -> dict[str, Any]:
     with open(filepath, 'rb') as f:
         return tomllib.load(f)
 
@@ -100,7 +97,11 @@ This behavior applies to all plugin types.
         '--config',
         '-c',
         default=argparse.SUPPRESS,
-        help='base toml configuration file to load',
+        nargs='+',
+        help=(
+            'base toml configuration files to load '
+            '(file are parsed in order)'
+        ),
     )
 
     app_group = parser.add_argument_group('app options')
@@ -152,8 +153,10 @@ This behavior applies to all plugin types.
     _argv = list(filter(lambda v: v not in ['-h', '--help'], argv))
     base_options = vars(parser.parse_known_args(_argv)[0])
     base_options = {k: v for k, v in base_options.items() if v is not None}
-    config_file = base_options.pop('config', None)
-    toml_options = flatten_mapping(_parse_toml_options(config_file))
+    config_files = base_options.pop('config', [])
+    toml_options: dict[str, Any] = {}
+    for config_file in config_files:
+        toml_options.update(flatten_mapping(_parse_toml_options(config_file)))
 
     # base_options takes precedence over toml_options if there are
     # matching keys.
