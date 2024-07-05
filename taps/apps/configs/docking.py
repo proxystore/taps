@@ -4,7 +4,6 @@ import pathlib
 from typing import Literal
 
 from pydantic import Field
-from pydantic import field_validator
 
 from taps.apps.app import App
 from taps.apps.app import AppConfig
@@ -16,13 +15,13 @@ class DockingConfig(AppConfig):
     """Docking application configuration."""
 
     name: Literal['docking'] = 'docking'
-    smi_file_name_ligand: str = Field(
+    smi_file_name_ligand: pathlib.Path = Field(
         description='absolute path to ligand SMILES string',
     )
-    receptor: str = Field(
+    receptor: pathlib.Path = Field(
         description='absolute path to target receptor pdbqt file',
     )
-    tcl_path: str = Field(description='absolute path to TCL script')
+    tcl_path: pathlib.Path = Field(description='absolute path to TCL script')
     initial_simulations: int = Field(
         8,
         description='initial number of simulations to perform',
@@ -36,16 +35,6 @@ class DockingConfig(AppConfig):
         description='number of simulations per iteration',
     )
     seed: int = Field(0, description='random seed for sampling')
-
-    @field_validator(
-        'smi_file_name_ligand',
-        'receptor',
-        'tcl_path',
-        mode='before',
-    )
-    @classmethod
-    def _resolve_filepaths(cls, path: str) -> str:
-        return str(pathlib.Path(path).resolve())
 
     def get_app(self) -> App:
         """Create an application instance from the config."""

@@ -160,8 +160,9 @@ This behavior applies to all plugin types.
     base_options = {**toml_options, **base_options}
     if 'app.name' not in base_options or base_options['app.name'] is None:
         raise ValueError(
-            'Missing the app name option. Either provides --app {APP} via '
-            'the CLI args or add the app.name attribute the config file.',
+            'App name option is required. Either pass --app {APP} via the'
+            'CLI arguments or add the app.name attribute to the config '
+            'file with --config {PATH}.',
         )
 
     app_group.description = f'selected app: {base_options["app.name"]}'

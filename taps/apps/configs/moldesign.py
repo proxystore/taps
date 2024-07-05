@@ -4,7 +4,6 @@ import pathlib
 from typing import Literal
 
 from pydantic import Field
-from pydantic import field_validator
 
 from taps.apps.app import App
 from taps.apps.app import AppConfig
@@ -16,7 +15,7 @@ class MoldesignConfig(AppConfig):
     """Moldesign application configuration."""
 
     name: Literal['moldesign'] = 'moldesign'
-    dataset: str = Field(description='molecule search space dataset')
+    dataset: pathlib.Path = Field(description='molecule search space dataset')
     initial_count: int = Field(8, description='number of initial calculations')
     search_count: int = Field(
         64,
@@ -29,11 +28,6 @@ class MoldesignConfig(AppConfig):
         ),
     )
     seed: int = Field(0, description='random seed')
-
-    @field_validator('dataset', mode='before')
-    @classmethod
-    def _resolve_dataset_path(cls, value: str) -> str:
-        return str(pathlib.Path(value).resolve())
 
     def get_app(self) -> App:
         """Create an application instance from the config."""

@@ -4,7 +4,6 @@ import pathlib
 from typing import Literal
 
 from pydantic import Field
-from pydantic import field_validator
 
 from taps.apps.app import App
 from taps.apps.app import AppConfig
@@ -16,7 +15,11 @@ class MontageConfig(AppConfig):
     """Montage application configuration."""
 
     name: Literal['montage'] = 'montage'
-    img_folder: str = Field(description='input images folder path')
+    img_folder: pathlib.Path = Field(description='input images folder path')
+    # Note: the following are annotated as str rather than pathlib.Path
+    # because we don't want the AppConfig model_validator to convert
+    # them to absolute paths. They are relative to whatever the run
+    # directory is.
     img_tbl: str = Field(
         'Kimages.tbl',
         description='input image table filename',
@@ -32,11 +35,6 @@ class MontageConfig(AppConfig):
             '(relative to run directory)'
         ),
     )
-
-    @field_validator('img_folder', mode='before')
-    @classmethod
-    def _resolve_paths(cls, root: str) -> str:
-        return str(pathlib.Path(root).resolve())
 
     def get_app(self) -> App:
         """Create an application instance from the config."""
