@@ -95,7 +95,15 @@ def test_app_engine_record_logging(
 
         # Four tasks: task1, task2, and the two tasks in the map
         assert len(logger.records) == 4  # noqa: PLR2004
-        assert str(task1.info.task_id) in logger.records[1]['parent_task_ids']
+
+        for record in logger.records:
+            if record['task_id'] == str(task2.info.task_id):
+                assert str(task1.info.task_id) in record['parent_task_ids']
+                break
+        else:  # pragma: no cover
+            raise RuntimeError(
+                f'Did not find record for task {task1.info.task_id}',
+            )
 
 
 def test_app_engine_record_logging_exception(
