@@ -127,7 +127,7 @@ nav:
       - Synthetic: apps/synthetic.md
   - Guides:
       - guides/index.md
-      - Create an Application: guides/creating-apps.md
+      - Benchmarking Apps: guides/apps.md
   - API Reference:
       - TaPS: api/
   - Contributing:
