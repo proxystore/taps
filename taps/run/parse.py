@@ -130,7 +130,7 @@ This behavior applies to all plugin types.
         default=argparse.SUPPRESS,
         dest='engine.filter.name',
         metavar='FILTER',
-        help='filter choice {%(choices)s} (default: null)',
+        help='filter choice {%(choices)s} (default: all)',
     )
     engine_group.add_argument(
         '--engine.transformer',

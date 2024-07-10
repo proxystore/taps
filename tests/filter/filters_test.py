@@ -1,14 +1,20 @@
 from __future__ import annotations
 
+from taps.filter import AllFilter
 from taps.filter import NullFilter
 from taps.filter import ObjectSizeFilter
 from taps.filter import ObjectTypeFilter
 from taps.filter import PickleSizeFilter
 
 
+def test_all_filter() -> None:
+    filter_ = AllFilter()
+    assert filter_(object())
+
+
 def test_null_filter() -> None:
     filter_ = NullFilter()
-    assert filter_(object())
+    assert not filter_(object())
 
 
 def test_object_size_filter() -> None:

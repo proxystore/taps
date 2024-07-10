@@ -75,10 +75,11 @@ In order to ensure that the registration is performed, the `FooTransformerConfig
 ## Filter Types
 
 As mentioned above, a [`Filter`][taps.filter.filters.Filter] determine what objects (i.e., task arguments and/or results) get passed to the transformer.
-The default filter, [`NullFilter`][taps.filter.filters.NullFilter], lets all objects through.
+The default filter, [`AllFilter`][taps.filter.filters.AllFilter], lets all objects through.
 
 Other [`Filter`][taps.filter.filters.Filter] types are provided to give fine-grained control over what objects get transformed.
 
+* [`NullFilter`][taps.filter.filters.NullFilter] (`#!toml name = "null"`): no objects are transformed.
 * [`ObjectSizeFilter`][taps.filter.filters.ObjectSizeFilter] (`#!toml name = "object-size"`): checks if the size of an object (computed using [`sys.getsizeof()`][sys.getsizeof]) is greater than a minimum size and less than a maximum size.
 * [`PickleSizeFilter`][taps.filter.filters.PickleSizeFilter] (`#!toml name = "pickle-size"`): checks if the size of an object (computed using the size of the pickled object) is greater than a minimum size and less than a maximum size.
 * [`ObjectTypeFilter`][taps.filter.filters.ObjectTypeFilter] (`#!toml name = "object-type"`): checks if the object is of a certain type.

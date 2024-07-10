@@ -154,7 +154,7 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
         description=f'selected executor: {executor_name}',
     )
 
-    filter_name = options.get('engine.filter.name', 'null')
+    filter_name = options.get('engine.filter.name', 'all')
     filter_cls = get_filter_configs()[filter_name]
     filter_field = Field(
         default_factory=filter_cls,
