@@ -1,15 +1,22 @@
 from __future__ import annotations
 
+from taps.filter.config import AllFilterConfig
 from taps.filter.config import NullFilterConfig
 from taps.filter.config import ObjectSizeConfig
 from taps.filter.config import PickleSizeConfig
+from taps.filter.filters import AllFilter
 from taps.filter.filters import Filter
+from taps.filter.filters import NullFilter
+
+
+def test_all_filter_config() -> None:
+    config = AllFilterConfig()
+    assert isinstance(config.get_filter(), AllFilter)
 
 
 def test_null_filter_config() -> None:
     config = NullFilterConfig()
-
-    assert isinstance(config.get_filter(), Filter)
+    assert isinstance(config.get_filter(), NullFilter)
 
 
 def test_object_size_filter() -> None:

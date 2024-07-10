@@ -17,12 +17,20 @@ class Filter(Protocol):
         ...
 
 
-class NullFilter:
-    """Null filter that lets all objects pass through."""
+class AllFilter:
+    """All filter that lets all objects pass through."""
 
     def __call__(self, obj: Any) -> bool:
         """Check if an object passes through the filter."""
         return True
+
+
+class NullFilter:
+    """Null filter that lets no objects pass through."""
+
+    def __call__(self, obj: Any) -> bool:
+        """Check if an object passes through the filter."""
+        return False
 
 
 class ObjectSizeFilter:

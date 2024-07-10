@@ -5,7 +5,7 @@ from typing import Any
 from typing import TypeVar
 
 from taps.engine.transform import TaskTransformer
-from taps.filter import NullFilter
+from taps.filter import AllFilter
 from taps.filter import ObjectTypeFilter
 
 T = TypeVar('T')
@@ -31,7 +31,7 @@ class DictTransformer:
 
 
 def test_task_data_transfomer() -> None:
-    transformer = TaskTransformer(DictTransformer(), NullFilter())
+    transformer = TaskTransformer(DictTransformer(), AllFilter())
 
     obj = object()
     identifier = transformer.transform(obj)
@@ -42,7 +42,7 @@ def test_task_data_transfomer() -> None:
 
 
 def test_task_data_transfomer_iterable() -> None:
-    transformer = TaskTransformer(DictTransformer(), NullFilter())
+    transformer = TaskTransformer(DictTransformer(), AllFilter())
 
     objs = (object(), object())
     identifiers = transformer.transform_iterable(objs)
@@ -53,7 +53,7 @@ def test_task_data_transfomer_iterable() -> None:
 
 
 def test_task_data_transfomer_mapping() -> None:
-    transformer = TaskTransformer(DictTransformer(), NullFilter())
+    transformer = TaskTransformer(DictTransformer(), AllFilter())
 
     objs = {'a': object(), 'b': object()}
     identifiers = transformer.transform_mapping(objs)

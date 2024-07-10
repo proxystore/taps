@@ -10,8 +10,8 @@ from pydantic import Field
 from taps.engine.engine import Engine
 from taps.executor import ExecutorConfig
 from taps.executor import ProcessPoolConfig
+from taps.filter import AllFilterConfig
 from taps.filter import FilterConfig
-from taps.filter import NullFilterConfig
 from taps.record import JSONRecordLogger
 from taps.transformer import NullTransformerConfig
 from taps.transformer import TransformerConfig
@@ -29,7 +29,7 @@ class EngineConfig(BaseModel):
     """
 
     executor: ExecutorConfig = Field(default_factory=ProcessPoolConfig)
-    filter: FilterConfig = Field(default_factory=NullFilterConfig)
+    filter: FilterConfig = Field(default_factory=AllFilterConfig)
     transformer: TransformerConfig = Field(
         default_factory=NullTransformerConfig,
     )

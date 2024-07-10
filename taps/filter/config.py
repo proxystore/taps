@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
+from taps.filter.filters import AllFilter
 from taps.filter.filters import Filter
 from taps.filter.filters import NullFilter
 from taps.filter.filters import ObjectSizeFilter
@@ -30,6 +31,17 @@ class FilterConfig(BaseModel, abc.ABC):
     def get_filter(self) -> Filter:
         """Create a filter from the configuration."""
         ...
+
+
+@register('filter')
+class AllFilterConfig(FilterConfig):
+    """All filter configuration."""
+
+    name: Literal['all'] = Field('all', description='name of filter type')
+
+    def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
+        return AllFilter()
 
 
 @register('filter')
