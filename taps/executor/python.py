@@ -19,6 +19,7 @@ class ProcessPoolConfig(ExecutorConfig):
 
     Attributes:
         max_processes: Maximum number of processes.
+        context: Multiprocessing context type (fork, spawn, or forkserver).
     """
 
     name: Literal['process-pool'] = 'process-pool'

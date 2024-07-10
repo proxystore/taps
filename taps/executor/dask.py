@@ -115,9 +115,10 @@ class DaskDistributedConfig(ExecutorConfig):
     """Dask Distributed configuration.
 
     Attributes:
-        dask_scheduler_address: Dask scheduler address.
-        dask_use_threads: Use threads rather than processes for local clusters.
-        dask_workers: Number of Dask workers for local clusters.
+        scheduler: Dask scheduler address.
+        use_threads: Use threads rather than processes for local clusters.
+        workers: Number of Dask workers for local clusters.
+        daemon_workers: Daemonize Dask workers.
     """
 
     name: Literal['dask'] = 'dask'
