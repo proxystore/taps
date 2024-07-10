@@ -129,6 +129,7 @@ nav:
       - guides/index.md
       - Benchmarking Apps: guides/apps.md
       - Benchmark Configuration: guides/config.md
+      - Task Executors: guides/executor.md
   - API Reference:
       - TaPS: api/
   - Contributing:

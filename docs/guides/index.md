@@ -3,3 +3,4 @@
 <!-- Links are relative to file -->
 - [Benchmarking Apps](apps.md)
 - [Benchmark Configuration](config.md)
+- [Task Executors](executor.md)
