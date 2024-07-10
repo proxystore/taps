@@ -1,4 +1,7 @@
 # Guides
 
 <!-- Links are relative to file -->
-- [Create an Application](creating-apps.md)
+- [Benchmarking Apps](apps.md)
+- [Benchmark Configuration](config.md)
+- [Task Data Management](data.md)
+- [Task Executors](executor.md)

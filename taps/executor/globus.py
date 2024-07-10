@@ -16,6 +16,7 @@ class GlobusComputeConfig(ExecutorConfig):
 
     Attributes:
         endpoint: Globus Compute endpoint UUID.
+        batch_size: Maximum number of tasks to coalesce before submitting.
     """
 
     name: Literal['globus'] = 'globus'

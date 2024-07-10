@@ -127,7 +127,10 @@ nav:
       - Synthetic: apps/synthetic.md
   - Guides:
       - guides/index.md
-      - Create an Application: guides/creating-apps.md
+      - Benchmarking Apps: guides/apps.md
+      - Benchmark Configuration: guides/config.md
+      - Task Data Management: guides/data.md
+      - Task Executors: guides/executor.md
   - API Reference:
       - TaPS: api/
   - Contributing:
@@ -160,6 +163,7 @@ plugins:
             - https://distributed.dask.org/en/latest/objects.inv
             - https://docs.pydantic.dev/latest/objects.inv
             - https://numpy.org/doc/stable/objects.inv
+            - https://parsl.readthedocs.io/en/stable/objects.inv
           options:
             annotations_path: brief
             docstring_section_style: list

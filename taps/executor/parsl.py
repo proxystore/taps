@@ -23,7 +23,12 @@ class ParslConfig(ExecutorConfig):
     """Parsl configuration.
 
     Attributes:
-        endpoint: Globus Compute endpoint UUID.
+        use_threads: Use Parsl's
+            [`ThreadPoolExecutor`][parsl.executors.ThreadPoolExecutor]
+            rather than
+            [`HighThroughputExecutor][parsl.executors.HighThroughputExecutor].
+        workers: Maximum number of Parsl workers.
+        run_dir: Parsl run directory.
     """
 
     name: Literal['parsl'] = 'parsl'

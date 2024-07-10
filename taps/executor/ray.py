@@ -131,8 +131,8 @@ class RayConfig(ExecutorConfig):
     """Ray configuration.
 
     Attributes:
-        ray_address: Address of the Ray cluster to run on.
-        processes: Number of actor processes to start in the pool. Defaults to
+        address: Address of the Ray cluster to run on.
+        num_cpus: Number of actor processes to start in the pool. Defaults to
             the number of cores in the Ray cluster, or the number of cores
             on this machine.
     """

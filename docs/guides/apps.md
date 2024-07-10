@@ -1,6 +1,15 @@
-# Create an Application
+# Benchmarking Apps
 
-This guide describes creating a benchmarking application within the TaPS framework.
+Benchmarking applications are real or synthetic workloads that can be used to evaluate task execution and data management frameworks.
+TaPS provides a framework for the creation and execution of these applications.
+
+In TaPS, an application is composed of tasks which are the remote execution of function which takes in some data and produces data.
+Tasks can have implicit dependencies when the result of one task is consumed by one or more other tasks.
+
+TaPS provides many benchmarking apps out-of-the-box, representing a wide variety of domains, patterns, and charatersitics.
+Check out the [Applications](../apps/index.md) to learn more.
+
+This rest of this guide describes creating a benchmarking app within the TaPS framework.
 
 ## Installation
 

@@ -20,7 +20,11 @@ T = TypeVar('T')
 
 @register('transformer')
 class PickleFileTransformerConfig(TransformerConfig):
-    """Pickle file transformer configuration."""
+    """Pickle file transformer configuration.
+
+    Attributes:
+        file_dir: Object file directory.
+    """
 
     name: Literal['file'] = Field(
         'file',
