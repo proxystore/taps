@@ -45,7 +45,8 @@ def _add_argument(
         # so do not need to be added again by CliSettingsSource.
         return
 
-    names = tuple(name.replace('_', '-') for name in names)
+    dash_names = tuple(name.replace('_', '-') for name in names if '_' in name)
+    names = (*dash_names, *names)
 
     parser.add_argument(*names, **kwargs)
 

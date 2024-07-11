@@ -52,7 +52,7 @@ The `config.toml` file will contain the same information but formatted as TOML.
 
 !!! note
 
-    The CLI converts underscores (`_`) in field names to dashes (`-`) when constructing the argument parser.
+    The CLI supports dashes (`-`) and underscores (`_`) for field names, but underscores are required in TOML config files.
 
 ### TOML Configuration
 
