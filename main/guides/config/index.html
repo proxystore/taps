@@ -885,6 +885,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    Environment Variables
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2827,6 +2834,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    Environment Variables
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2944,6 +2958,19 @@ As an example, we'll create one for Python's process pool, Parsl, and Dask.
 <p class="admonition-title">Note</p>
 <p>When multiple configuration files are provided, files will be parsed in order with latter files overriding previous files when the same field is present in both.</p>
 </div>
+<h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
+<p>Some applications, executors, etc. may require configuring environment variables.
+The TaPS configuration system provides a mechanism to configure environment variables to be set during execution of a benchmark.
+The benefit of setting environment variables within the TaPS configuration system (rather than exporting variables manually) is that those variables will be included in the resulting configuration files that can be shared.</p>
+<p>For example, we can set <code>ENV_VAR_1="foo"</code> and <code>ENV_VAR_2="bar"</code> variables using a JSON CLI parameter or fields in a config file.
+<div class="language-bash highlight"><span class="filename">CLI Environment Variables</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span><span class="o">{</span>args<span class="o">}</span><span class="w"> </span>--run.env-vars<span class="w"> </span><span class="s1">&#39;{&quot;ENV_VAR_1&quot;: &quot;foo&quot;, &quot;ENV_VAR_2&quot;: &quot;bar&quot;}&#39;</span>
+</span></code></pre></div>
+<div class="language-toml highlight"><span class="filename">TOML Environment Variables</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">[run.env_vars]</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">ENV_VAR_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;foo&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">ENV_VAR_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;bar&quot;</span>
+</span></code></pre></div>
+<code>ENV_VAR_1="foo"</code> and <code>ENV_VAR_2="bar"</code> will be set when the application starts and then unset when finished.
+If an environment variable is already populated, the original value will be cached and restored when the application finishes.</p>
 
 
 
