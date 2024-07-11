@@ -24,6 +24,7 @@ from pydantic import create_model
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
+import taps
 from taps.apps import AppConfig
 from taps.engine import EngineConfig
 from taps.plugins import get_app_configs
@@ -81,6 +82,9 @@ class Config(BaseSettings):
         engine: Engine configuration.
         logging: Logging configuration.
         run: Run configuration.
+        version: TaPS version used to create the config. Loading a config
+            with a version that does not match the current version will
+            log a warning that behavior could be different.
     """
 
     model_config = ConfigDict(
@@ -93,6 +97,10 @@ class Config(BaseSettings):
     engine: EngineConfig = Field(default_factory=EngineConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     run: RunConfig = Field(default_factory=RunConfig)
+    version: str = Field(
+        taps.__version__,
+        description='TaPS version (do not alter)',
+    )
 
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Config):
@@ -109,6 +117,7 @@ class Config(BaseSettings):
             and self.engine == other.engine
             and self.logging == other.logging
             and self.run == other.run
+            and self.version == other.version
         )
 
     @classmethod

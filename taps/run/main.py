@@ -12,6 +12,7 @@ from typing import Sequence
 
 from pydantic import ValidationError
 
+import taps
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
 from taps.run.config import Config
@@ -38,6 +39,19 @@ def _cwd_run_dir(
     return _decorator
 
 
+def _log_config(config: Config) -> None:
+    logger.log(
+        RUN_LOG_LEVEL,
+        f'Configuration:\n{prettify_mapping(config.model_dump())}',
+    )
+    if config.version != taps.__version__:
+        logger.warning(
+            f'The configuration specifies TaPS version {config.version}, but '
+            f'the current version of TaPS is {taps.__version__}. '
+            'Application behavior can differ across versions',
+        )
+
+
 @_cwd_run_dir
 def run(config: Config, run_dir: pathlib.Path) -> None:
     """Run an application using the configuration.
@@ -49,10 +63,7 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
     start = time.perf_counter()
 
     logger.log(RUN_LOG_LEVEL, f'Starting app (name={config.app.name})')
-    logger.log(
-        RUN_LOG_LEVEL,
-        f'Configuration:\n{prettify_mapping(config.model_dump())}',
-    )
+    _log_config(config)
     logger.log(RUN_LOG_LEVEL, f'Runtime directory: {run_dir}')
 
     config.write_toml('config.toml')
