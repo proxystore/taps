@@ -18,11 +18,10 @@ This is useful to understanding how an application or execution engine handles c
 
 ## Installation
 
-This application requires some extra dependencies which can be installed automatically when installing the TaPS package.
-The base application that failures are injected into may have additional requirements.
+The `failures` application requires executing a base application (the application into which failures are injected), and some base applications have additional requirements.
 For example, to use `failures` with the `cholesky` application, install TaPS using:
 ```bash
-pip install -e .[cholesky,failures]
+pip install -e .[cholesky]
 ```
 
 ## Data

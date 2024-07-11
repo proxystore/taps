@@ -12,10 +12,12 @@ from typing import Sequence
 
 from pydantic import ValidationError
 
+import taps
 from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
 from taps.run.config import Config
 from taps.run.config import make_run_dir
+from taps.run.env import Environment
 from taps.run.parse import parse_args_to_config
 from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
@@ -38,6 +40,19 @@ def _cwd_run_dir(
     return _decorator
 
 
+def _log_config(config: Config) -> None:
+    logger.log(
+        RUN_LOG_LEVEL,
+        f'Configuration:\n{prettify_mapping(config.model_dump())}',
+    )
+    if config.version != taps.__version__:
+        logger.warning(
+            f'The configuration specifies TaPS version {config.version}, but '
+            f'the current version of TaPS is {taps.__version__}. '
+            'Application behavior can differ across versions',
+        )
+
+
 @_cwd_run_dir
 def run(config: Config, run_dir: pathlib.Path) -> None:
     """Run an application using the configuration.
@@ -49,10 +64,7 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
     start = time.perf_counter()
 
     logger.log(RUN_LOG_LEVEL, f'Starting app (name={config.app.name})')
-    logger.log(
-        RUN_LOG_LEVEL,
-        f'Configuration:\n{prettify_mapping(config.model_dump())}',
-    )
+    _log_config(config)
     logger.log(RUN_LOG_LEVEL, f'Runtime directory: {run_dir}')
 
     config.write_toml('config.toml')
@@ -90,6 +102,12 @@ def main(argv: Sequence[str] | None = None) -> int:  # noqa: D103
         config.logging.level,
         config.logging.file_level,
         force=True,
+    )
+
+    logger.log(RUN_LOG_LEVEL, f'CLI Arguments: {" ".join(argv)}')
+    logger.log(
+        RUN_LOG_LEVEL,
+        f'Environment:\n{Environment.collect().format()}',
     )
 
     try:

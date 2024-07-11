@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import pathlib
 from unittest import mock
 
@@ -34,3 +35,20 @@ def test_main_error(mock_logging, mock_parse, tmp_path: pathlib.Path) -> None:
 
 def test_run(test_benchmark_config: Config, tmp_path: pathlib.Path) -> None:
     run(test_benchmark_config, tmp_path)
+
+
+def test_run_log_version_mismatch(
+    test_benchmark_config: Config,
+    tmp_path: pathlib.Path,
+    caplog,
+) -> None:
+    test_benchmark_config.version = '0.0.0'
+    with caplog.at_level(logging.WARNING, logger='taps.run'):
+        run(test_benchmark_config, tmp_path)
+
+    messages = [
+        message
+        for message in caplog.messages
+        if 'The configuration specifies TaPS version 0.0.0' in message
+    ]
+    assert len(messages) == 1
