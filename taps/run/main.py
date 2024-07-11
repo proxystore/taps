@@ -17,6 +17,7 @@ from taps.logging import init_logging
 from taps.logging import RUN_LOG_LEVEL
 from taps.run.config import Config
 from taps.run.config import make_run_dir
+from taps.run.env import Environment
 from taps.run.parse import parse_args_to_config
 from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
@@ -101,6 +102,12 @@ def main(argv: Sequence[str] | None = None) -> int:  # noqa: D103
         config.logging.level,
         config.logging.file_level,
         force=True,
+    )
+
+    logger.log(RUN_LOG_LEVEL, f'CLI Arguments: {" ".join(argv)}')
+    logger.log(
+        RUN_LOG_LEVEL,
+        f'Environment:\n{Environment.collect().format()}',
     )
 
     try:
