@@ -124,3 +124,21 @@ python -m taps.run --config app-config.toml dask-config.toml
 !!! note
 
     When multiple configuration files are provided, files will be parsed in order with latter files overriding previous files when the same field is present in both.
+
+## Environment Variables
+
+Some applications, executors, etc. may require configuring environment variables.
+The TaPS configuration system provides a mechanism to configure environment variables to be set during execution of a benchmark.
+The benefit of setting environment variables within the TaPS configuration system (rather than exporting variables manually) is that those variables will be included in the resulting configuration files that can be shared.
+
+For example, we can set `ENV_VAR_1="foo"` and `ENV_VAR_2="bar"` variables using a JSON CLI parameter or fields in a config file.
+```bash title="CLI Environment Variables"
+python -m taps.run {args} --run.env-vars '{"ENV_VAR_1": "foo", "ENV_VAR_2": "bar"}'
+```
+```toml title="TOML Environment Variables"
+[run.env_vars]
+ENV_VAR_1 = "foo"
+ENV_VAR_2 = "bar"
+```
+`ENV_VAR_1="foo"` and `ENV_VAR_2="bar"` will be set when the application starts and then unset when finished.
+If an environment variable is already populated, the original value will be cached and restored when the application finishes.

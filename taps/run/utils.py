@@ -1,11 +1,17 @@
 from __future__ import annotations
 
+import contextlib
+import logging
+import os
 from collections.abc import Mapping
 from collections.abc import MutableMapping
 from typing import Any
+from typing import Generator
 
 from pydantic import BaseModel
 from pydantic import ValidationError
+
+logger = logging.getLogger(__name__)
 
 
 def flatten_mapping(
@@ -138,3 +144,35 @@ def prettify_validation_error(
 Found {count} validation error{"" if count == 1 else "s"}{model_str}
 {errors_str}\
 """)
+
+
+@contextlib.contextmanager
+def update_environment(
+    variables: Mapping[str, str],
+) -> Generator[None, None, None]:
+    """Context manager that updates environment variables.
+
+    Args:
+        variables: Mapping of environment variable name to value to
+            temporarily set.
+    """
+    previous = {
+        name: value for name, value in os.environ.items() if name in variables
+    }
+    os.environ.update(variables)
+    logger.debug(
+        f'Updated {len(variables)} environment variable(s) '
+        f'({", ".join(variables.keys())})',
+    )
+    try:
+        yield
+    finally:
+        # Remove the added variables then restore any old variables
+        for name in variables:
+            os.environ.pop(name)
+        os.environ.update(previous)
+        if len(previous) > 0:
+            logger.debug(
+                f'Restored {len(previous)} environment variable(s) '
+                f'({",".join(previous.keys())})',
+            )

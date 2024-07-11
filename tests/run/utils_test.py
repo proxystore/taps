@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+import uuid
 from typing import Any
 
 import pytest
@@ -8,6 +10,7 @@ from pydantic import ValidationError
 from taps.run.utils import flatten_mapping
 from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
+from taps.run.utils import update_environment
 from testing.app import MockAppConfig
 
 
@@ -53,3 +56,23 @@ def test_prettify_validation_error(pass_model: bool) -> None:
     assert isinstance(error, ValueError)
     assert 'extra_forbidden' in str(error)
     assert 'int_parsing' in str(error)
+
+
+def test_update_environment() -> None:
+    name = str(uuid.uuid4())
+    value = str(uuid.uuid4())
+
+    with update_environment({name: value}):
+        assert name in os.environ
+        assert os.environ[name] == value
+
+
+def test_update_environment_restore() -> None:
+    name = str(uuid.uuid4())
+    initial_value = str(uuid.uuid4())
+    temp_value = str(uuid.uuid4())
+
+    os.environ[name] = initial_value
+    with update_environment({name: temp_value}):
+        assert os.environ[name] == temp_value
+    assert os.environ[name] == initial_value

@@ -21,6 +21,7 @@ from taps.run.env import Environment
 from taps.run.parse import parse_args_to_config
 from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
+from taps.run.utils import update_environment
 
 logger = logging.getLogger('taps.run')
 
@@ -69,11 +70,12 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
 
     config.write_toml('config.toml')
 
-    app = config.app.get_app()
-    engine = config.engine.get_engine()
+    with update_environment(config.run.env_vars):
+        app = config.app.get_app()
+        engine = config.engine.get_engine()
 
-    with contextlib.closing(app), engine:
-        app.run(engine=engine, run_dir=run_dir)
+        with contextlib.closing(app), engine:
+            app.run(engine=engine, run_dir=run_dir)
 
     runtime = time.perf_counter() - start
     logger.log(

@@ -4,6 +4,7 @@ import pathlib
 import sys
 from datetime import datetime
 from typing import Any
+from typing import Dict
 from typing import Optional
 from typing import Union
 
@@ -63,6 +64,8 @@ class RunConfig(BaseModel):
 
     Attributes:
         dir_format: Run directory format.
+        env_vars: Dictionary mapping environment variables to values.
+            The environment variables will be set once the benchmark starts.
     """
 
     dir_format: str = Field(
@@ -71,6 +74,10 @@ class RunConfig(BaseModel):
             'run directory format (supports "{name}", "{timestamp}", and '
             '"{executor}" for formatting)'
         ),
+    )
+    env_vars: Dict[str, str] = Field(  # noqa: UP006
+        default_factory=dict,
+        description='environment variables to set during benchmarking',
     )
 
 
