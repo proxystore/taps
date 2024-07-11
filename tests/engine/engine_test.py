@@ -124,9 +124,7 @@ def test_app_engine_record_logging_exception(
 
         assert len(logger.records) == 1
         task_info = logger.records[0]
-        import pprint
 
-        pprint.pprint(task_info)
         assert not task_info['success']
         assert task_info['exception']['type'] == 'ValueError'
         assert task_info['exception']['message'] == 'bad task'

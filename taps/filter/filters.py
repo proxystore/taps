@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import math
 import pickle
+import re
 import sys
 from typing import Any
 from typing import Protocol
 from typing import runtime_checkable
+from typing import Sequence
 
 
 @runtime_checkable
@@ -69,18 +71,34 @@ class ObjectSizeFilter:
 class ObjectTypeFilter:
     """Object type filter.
 
-    Checks if an object is of a certain type.
+    Checks if an object is of a certain type using [`isinstance()`][isinstance]
+    or by pattern matching against the name of the type.
 
     Args:
         types: Types to check.
+        patterns: Regex compatible patterns to compare against the name of the
+            object's type.
     """
 
-    def __init__(self, *types: type) -> None:
+    def __init__(
+        self,
+        *types: type,
+        patterns: Sequence[str] | None = None,
+    ) -> None:
         self.types = types
+        self.patterns = tuple(patterns if patterns is not None else [])
 
     def __call__(self, obj: Any) -> bool:
         """Check if an object passes through the filter."""
-        return isinstance(obj, self.types)
+        if isinstance(obj, self.types):
+            return True
+
+        cls_name = type(obj).__name__
+        for pattern in self.patterns:
+            if re.search(pattern, cls_name) is not None:
+                return True
+
+        return False
 
 
 class PickleSizeFilter:

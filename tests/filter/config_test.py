@@ -3,6 +3,7 @@ from __future__ import annotations
 from taps.filter.config import AllFilterConfig
 from taps.filter.config import NullFilterConfig
 from taps.filter.config import ObjectSizeConfig
+from taps.filter.config import ObjectTypeConfig
 from taps.filter.config import PickleSizeConfig
 from taps.filter.filters import AllFilter
 from taps.filter.filters import Filter
@@ -17,6 +18,15 @@ def test_all_filter_config() -> None:
 def test_null_filter_config() -> None:
     config = NullFilterConfig()
     assert isinstance(config.get_filter(), NullFilter)
+
+
+def test_object_type_filter() -> None:
+    config = ObjectTypeConfig(patterns=['bytes', 'str'])
+
+    filter_ = config.get_filter()
+    assert filter_(b'')
+    assert filter_('')
+    assert not filter_(42)
 
 
 def test_object_size_filter() -> None:
