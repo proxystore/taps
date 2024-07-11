@@ -33,6 +33,25 @@ def test_object_type_filter() -> None:
     assert not filter_([])
 
 
+def test_object_type_filter_patterns() -> None:
+    filter_ = ObjectTypeFilter(patterns=('bytes', 'Foo'))
+
+    class Foo:
+        pass
+
+    class Foobar:
+        pass
+
+    assert filter_(b'')
+    assert filter_(Foo())
+    assert filter_(Foobar())
+    assert not filter_(42)
+
+    filter_ = ObjectTypeFilter(patterns=('Foo$',))
+    assert filter_(Foo())
+    assert not filter_(Foobar())
+
+
 def test_pickle_size_filter() -> None:
     filter_ = PickleSizeFilter(min_bytes=64, max_bytes=128)
 
