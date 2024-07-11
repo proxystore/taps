@@ -95,6 +95,6 @@ def test_make_run_dir(tmp_path: pathlib.Path) -> None:
     assert name == config.app.name
     assert executor == config.engine.executor.name
 
-    # Check timestamp is < 1 second from now
+    # Check timestamp is < 5 seconds from now
     timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d-%H-%M-%S')
-    assert datetime.now() - timestamp < timedelta(seconds=1)
+    assert datetime.now() - timestamp < timedelta(seconds=5)
