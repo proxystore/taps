@@ -2397,6 +2397,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/run/env/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    env
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/run/main/" class="md-nav__link">
         
   
@@ -2869,7 +2889,7 @@ All of the fields we specified are here, as well as all of the default fields.
 The <code>config.toml</code> file will contain the same information but formatted as TOML.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The CLI converts underscores (<code>_</code>) in field names to dashes (<code>-</code>) when constructing the argument parser.</p>
+<p>The CLI supports dashes (<code>-</code>) and underscores (<code>_</code>) for field names, but underscores are required in TOML config files.</p>
 </div>
 <h3 id="toml-configuration">TOML Configuration<a class="headerlink" href="#toml-configuration" title="Permanent link">&para;</a></h3>
 <p>Alternatively, TOML configuration files can be used to execute benchmarks using the <code>--config &lt;PATH&gt;</code> option.

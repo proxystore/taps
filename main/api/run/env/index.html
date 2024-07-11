@@ -12,13 +12,13 @@
         <meta name="author" content="Globus Labs">
       
       
-        <link rel="canonical" href="https://taps.proxystore.dev/latest/api/filter/filters/">
+        <link rel="canonical" href="https://taps.proxystore.dev/latest/api/run/env/">
       
       
         <link rel="prev" href="../config/">
       
       
-        <link rel="next" href="../../logging/">
+        <link rel="next" href="../main/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>filters - TaPS</title>
+        <title>env - TaPS</title>
       
     
     
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tapsfilterfilters" class="md-skip">
+        <a href="#tapsrunenv" class="md-skip">
           Skip to content
         </a>
       
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              filters
+              env
             
           </span>
         </div>
@@ -2102,25 +2102,23 @@
                 
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_5" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../filter/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2137,7 +2135,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1_5">
             <span class="md-nav__icon md-icon"></span>
             taps.filter
@@ -2150,7 +2148,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../config/" class="md-nav__link">
+      <a href="../../filter/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2168,29 +2166,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    filters
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../filter/filters/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2199,153 +2177,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters" class="md-nav__link">
-    taps.filter.filters
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.Filter" class="md-nav__link">
-    Filter
-  </a>
-  
-    <nav class="md-nav" aria-label="Filter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.Filter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.AllFilter" class="md-nav__link">
-    AllFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="AllFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.AllFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.NullFilter" class="md-nav__link">
-    NullFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="NullFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.NullFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectSizeFilter" class="md-nav__link">
-    ObjectSizeFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="ObjectSizeFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectSizeFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectTypeFilter" class="md-nav__link">
-    ObjectTypeFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="ObjectTypeFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectTypeFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.PickleSizeFilter" class="md-nav__link">
-    PickleSizeFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="PickleSizeFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.PickleSizeFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2423,23 +2254,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_9" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../run/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2456,7 +2289,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_1_9">
             <span class="md-nav__icon md-icon"></span>
             taps.run
@@ -2469,7 +2302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../run/config/" class="md-nav__link">
+      <a href="../config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2487,9 +2320,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../run/env/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    env
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2498,6 +2351,60 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#taps.run.env" class="md-nav__link">
+    taps.run.env
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taps.run.env.Environment" class="md-nav__link">
+    Environment
+  </a>
+  
+    <nav class="md-nav" aria-label="Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#taps.run.env.Environment.collect" class="md-nav__link">
+    collect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.run.env.Environment.format" class="md-nav__link">
+    format()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2509,7 +2416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../run/main/" class="md-nav__link">
+      <a href="../main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2529,7 +2436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../run/parse/" class="md-nav__link">
+      <a href="../parse/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2549,7 +2456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../run/utils/" class="md-nav__link">
+      <a href="../utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2879,123 +2786,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#taps.filter.filters" class="md-nav__link">
-    taps.filter.filters
+  <a href="#taps.run.env" class="md-nav__link">
+    taps.run.env
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#taps.filter.filters.Filter" class="md-nav__link">
-    Filter
+  <a href="#taps.run.env.Environment" class="md-nav__link">
+    Environment
   </a>
   
-    <nav class="md-nav" aria-label="Filter">
+    <nav class="md-nav" aria-label="Environment">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#taps.filter.filters.Filter.__call__" class="md-nav__link">
-    __call__()
+  <a href="#taps.run.env.Environment.collect" class="md-nav__link">
+    collect()
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.AllFilter" class="md-nav__link">
-    AllFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="AllFilter">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#taps.filter.filters.AllFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.NullFilter" class="md-nav__link">
-    NullFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="NullFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.NullFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectSizeFilter" class="md-nav__link">
-    ObjectSizeFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="ObjectSizeFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectSizeFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectTypeFilter" class="md-nav__link">
-    ObjectTypeFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="ObjectTypeFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.ObjectTypeFilter.__call__" class="md-nav__link">
-    __call__()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.filter.filters.PickleSizeFilter" class="md-nav__link">
-    PickleSizeFilter
-  </a>
-  
-    <nav class="md-nav" aria-label="PickleSizeFilter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.filter.filters.PickleSizeFilter.__call__" class="md-nav__link">
-    __call__()
+  <a href="#taps.run.env.Environment.format" class="md-nav__link">
+    format()
   </a>
   
 </li>
@@ -3023,15 +2837,15 @@
   
 
 
-<h1 id="tapsfilterfilters">taps.filter.filters<a class="headerlink" href="#tapsfilterfilters" title="Permanent link">&para;</a></h1>
+<h1 id="tapsrunenv">taps.run.env<a class="headerlink" href="#tapsrunenv" title="Permanent link">&para;</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
-<a id="taps.filter.filters"></a>
+<a id="taps.run.env"></a>
   <div class="doc doc-contents">
-      <a target="_blank" href="https://github.com/proxystore/taps/blob/main/taps/filter/filters.py"><code>taps/filter/filters.py</code></a>
+      <a target="_blank" href="https://github.com/proxystore/taps/blob/main/taps/run/env.py"><code>taps/run/env.py</code></a>
   </div>
 
   <div class="doc doc-contents first">
@@ -3051,86 +2865,29 @@
 
 
 
-<h2 id="taps.filter.filters.Filter" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">Filter</span>
+<h2 id="taps.run.env.Environment" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">Environment</span>
 
 
-<a href="#taps.filter.filters.Filter" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#taps.run.env.Environment" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-external" title="typing.Protocol" href="https://docs.python.org/3/library/typing.html#typing.Protocol">Protocol</a></code></p>
+            Bases: <code><a class="autorefs autorefs-external" title="typing.NamedTuple" href="https://docs.python.org/3/library/typing.html#typing.NamedTuple">NamedTuple</a></code></p>
 
   
-      <p>Filter protocol.</p>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="taps.filter.filters.Filter.__call__" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">__call__()</span>
-
-
-<a href="#taps.filter.filters.Filter.__call__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>Check if an abject passes through the filter.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>taps/filter/filters.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span>
-<span class="normal"><a href="#__codelineno-0-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an abject passes through the filter.&quot;&quot;&quot;</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="o">...</span>
-</span></code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="taps.filter.filters.AllFilter" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">AllFilter</span>
-
-
-<a href="#taps.filter.filters.AllFilter" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-  <div class="doc doc-contents ">
-
-  
-      <p>All filter that lets all objects pass through.</p>
+      <p>Named tuple representing collected environment information.</p>
+<p>To view the current environment:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>taps.run.env
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Host:<span class="w"> </span>...
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>OS:<span class="w"> </span>linux<span class="w"> </span><span class="o">(</span>...<span class="o">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>CPU:<span class="w"> </span>x86_64<span class="w"> </span><span class="o">(</span><span class="m">8</span><span class="w"> </span>cores<span class="w"> </span>/<span class="w"> </span><span class="m">16</span><span class="w"> </span>logical<span class="o">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>RAM:<span class="w"> </span><span class="m">15</span>.66<span class="w"> </span>GB
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Python<span class="w"> </span>version:<span class="w"> </span><span class="m">3</span>.11.5
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Python<span class="w"> </span>build:<span class="w"> </span>CPython<span class="w"> </span><span class="o">(</span><span class="m">64</span>-bit<span class="w"> </span>runtime<span class="o">)</span><span class="w"> </span><span class="o">[</span>GCC<span class="w"> </span><span class="m">11</span>.4.0<span class="o">]</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>TaPS<span class="w"> </span>version:<span class="w"> </span><span class="m">0</span>.2.0
+</span></code></pre></div></p>
 
 
   
@@ -3149,436 +2906,114 @@
 
 
 
-<h3 id="taps.filter.filters.AllFilter.__call__" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">__call__()</span>
+<h3 id="taps.run.env.Environment.collect" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">collect()</span>
 
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
 
-<a href="#taps.filter.filters.AllFilter.__call__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+<a href="#taps.run.env.Environment.collect" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">collect</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
   
-      <p>Check if an object passes through the filter.</p>
+      <p>Collect information on the current environment.</p>
 
       <details class="quote">
-        <summary>Source code in <code>taps/filter/filters.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-23">23</a></span>
-<span class="normal"><a href="#__codelineno-0-24">24</a></span>
-<span class="normal"><a href="#__codelineno-0-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an object passes through the filter.&quot;&quot;&quot;</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="k">return</span> <span class="kc">True</span>
-</span></code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="taps.filter.filters.NullFilter" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">NullFilter</span>
-
-
-<a href="#taps.filter.filters.NullFilter" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-  <div class="doc doc-contents ">
-
-  
-      <p>Null filter that lets no objects pass through.</p>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="taps.filter.filters.NullFilter.__call__" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">__call__()</span>
-
-
-<a href="#taps.filter.filters.NullFilter.__call__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>Check if an object passes through the filter.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>taps/filter/filters.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-31">31</a></span>
-<span class="normal"><a href="#__codelineno-0-32">32</a></span>
-<span class="normal"><a href="#__codelineno-0-33">33</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an object passes through the filter.&quot;&quot;&quot;</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="k">return</span> <span class="kc">False</span>
-</span></code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="taps.filter.filters.ObjectSizeFilter" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">ObjectSizeFilter</span>
-
-
-<a href="#taps.filter.filters.ObjectSizeFilter" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">ObjectSizeFilter</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span> <span class="n">min_bytes</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_bytes</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-
-  
-      <p>Object size filter.</p>
-<p>Checks if the size of an object (computed using
-<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/sys.html#sys.getsizeof"><code>sys.getsizeof()</code></a>) is greater than a minimum size and
-less than a maximum size.</p>
-
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/sys.html#sys.getsizeof"><code>sys.getsizeof()</code></a> does not count the size of objects
-referred to by the main object.</p>
-</details>
-
-
-  <p>Parameters:</p>
-  <ul>
-      <li class="field-body">
-        <b><code>min_bytes</code></b>
-            (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
-                <code>0</code>
-)
-        –
-        <div class="doc-md-description">
-          <p>Minimum size threshold (inclusive) to pass through the
-filter.</p>
-        </div>
-      </li>
-      <li class="field-body">
-        <b><code>max_bytes</code></b>
-            (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>, default:
-                <code><a class="autorefs autorefs-external" title="math.inf" href="https://docs.python.org/3/library/math.html#math.inf">inf</a></code>
-)
-        –
-        <div class="doc-md-description">
-          <p>Maximum size threshold (inclusive) to pass through the
-filter.</p>
-        </div>
-      </li>
-  </ul>
-
-                <details class="quote">
-                  <summary>Source code in <code>taps/filter/filters.py</code></summary>
-                  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-54">54</a></span>
+        <summary>Source code in <code>taps/run/env.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span>
+<span class="normal"><a href="#__codelineno-0-52">52</a></span>
+<span class="normal"><a href="#__codelineno-0-53">53</a></span>
+<span class="normal"><a href="#__codelineno-0-54">54</a></span>
 <span class="normal"><a href="#__codelineno-0-55">55</a></span>
 <span class="normal"><a href="#__codelineno-0-56">56</a></span>
 <span class="normal"><a href="#__codelineno-0-57">57</a></span>
 <span class="normal"><a href="#__codelineno-0-58">58</a></span>
 <span class="normal"><a href="#__codelineno-0-59">59</a></span>
 <span class="normal"><a href="#__codelineno-0-60">60</a></span>
-<span class="normal"><a href="#__codelineno-0-61">61</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a>    <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>    <span class="o">*</span><span class="p">,</span>
-</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>    <span class="n">min_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="n">max_bytes</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
-</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">min_bytes</span> <span class="o">=</span> <span class="n">min_bytes</span>
-</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">max_bytes</span> <span class="o">=</span> <span class="n">max_bytes</span>
-</span></code></pre></div></td></tr></table></div>
-                </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="taps.filter.filters.ObjectSizeFilter.__call__" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">__call__()</span>
-
-
-<a href="#taps.filter.filters.ObjectSizeFilter.__call__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>Check if an object passes through the filter.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>taps/filter/filters.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-63">63</a></span>
+<span class="normal"><a href="#__codelineno-0-61">61</a></span>
+<span class="normal"><a href="#__codelineno-0-62">62</a></span>
+<span class="normal"><a href="#__codelineno-0-63">63</a></span>
 <span class="normal"><a href="#__codelineno-0-64">64</a></span>
-<span class="normal"><a href="#__codelineno-0-65">65</a></span>
-<span class="normal"><a href="#__codelineno-0-66">66</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an object passes through the filter.&quot;&quot;&quot;</span>
-</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>    <span class="n">size</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_bytes</span> <span class="o">&lt;=</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_bytes</span>
+<span class="normal"><a href="#__codelineno-0-65">65</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="nd">@classmethod</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect information on the current environment.&quot;&quot;&quot;</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a>        <span class="n">platform</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="p">,</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a>        <span class="n">platform_ext</span><span class="o">=</span><span class="n">platform</span><span class="o">.</span><span class="n">platform</span><span class="p">(),</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a>        <span class="n">host</span><span class="o">=</span><span class="n">platform</span><span class="o">.</span><span class="n">node</span><span class="p">(),</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>        <span class="n">cpu_architecture</span><span class="o">=</span><span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">(),</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>        <span class="n">cpu_physical_cores</span><span class="o">=</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(</span><span class="n">logical</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a>        <span class="n">cpu_logical_cores</span><span class="o">=</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(</span><span class="n">logical</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="n">memory_gb</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">available</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a>        <span class="n">python_version</span><span class="o">=</span><span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>        <span class="n">python_implementation</span><span class="o">=</span><span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">(),</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="n">python_compiler</span><span class="o">=</span><span class="n">platform</span><span class="o">.</span><span class="n">python_compiler</span><span class="p">(),</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>        <span class="n">python_bit_length</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="n">taps_version</span><span class="o">=</span><span class="n">taps</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>    <span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
       </details>
   </div>
 
 </div>
 
-
-
-  </div>
-
-  </div>
-
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="taps.filter.filters.ObjectTypeFilter" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">ObjectTypeFilter</span>
-
-
-<a href="#taps.filter.filters.ObjectTypeFilter" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">ObjectTypeFilter</span><span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">)</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-
-  
-      <p>Object type filter.</p>
-<p>Checks if an object is of a certain type.</p>
-
-
-
-  <p>Parameters:</p>
-  <ul>
-      <li class="field-body">
-        <b><code>types</code></b>
-            (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></code>, default:
-                <code>()</code>
-)
-        –
-        <div class="doc-md-description">
-          <p>Types to check.</p>
-        </div>
-      </li>
-  </ul>
-
-                <details class="quote">
-                  <summary>Source code in <code>taps/filter/filters.py</code></summary>
-                  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-78">78</a></span>
-<span class="normal"><a href="#__codelineno-0-79">79</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">types</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">types</span>
-</span></code></pre></div></td></tr></table></div>
-                </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
 <div class="doc doc-object doc-function">
 
 
 
-<h3 id="taps.filter.filters.ObjectTypeFilter.__call__" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">__call__()</span>
+<h3 id="taps.run.env.Environment.format" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">format()</span>
 
 
-<a href="#taps.filter.filters.ObjectTypeFilter.__call__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+<a href="#taps.run.env.Environment.format" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">format</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
   
-      <p>Check if an object passes through the filter.</p>
+      <p>Format environment as a human-readable string.</p>
 
       <details class="quote">
-        <summary>Source code in <code>taps/filter/filters.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-81">81</a></span>
+        <summary>Source code in <code>taps/run/env.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-67">67</a></span>
+<span class="normal"><a href="#__codelineno-0-68">68</a></span>
+<span class="normal"><a href="#__codelineno-0-69">69</a></span>
+<span class="normal"><a href="#__codelineno-0-70">70</a></span>
+<span class="normal"><a href="#__codelineno-0-71">71</a></span>
+<span class="normal"><a href="#__codelineno-0-72">72</a></span>
+<span class="normal"><a href="#__codelineno-0-73">73</a></span>
+<span class="normal"><a href="#__codelineno-0-74">74</a></span>
+<span class="normal"><a href="#__codelineno-0-75">75</a></span>
+<span class="normal"><a href="#__codelineno-0-76">76</a></span>
+<span class="normal"><a href="#__codelineno-0-77">77</a></span>
+<span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span>
+<span class="normal"><a href="#__codelineno-0-80">80</a></span>
+<span class="normal"><a href="#__codelineno-0-81">81</a></span>
 <span class="normal"><a href="#__codelineno-0-82">82</a></span>
-<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an object passes through the filter.&quot;&quot;&quot;</span>
-</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="taps.filter.filters.PickleSizeFilter" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">PickleSizeFilter</span>
-
-
-<a href="#taps.filter.filters.PickleSizeFilter" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">PickleSizeFilter</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span> <span class="n">min_bytes</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_bytes</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-
-  
-      <p>Object size filter.</p>
-<p>Checks if the size of an object (computed using size of the pickled object)
-is greater than a minimum size and less than a maximum size.</p>
-
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>Pickling large objects can take significant time.</p>
-</details>
-
-
-  <p>Parameters:</p>
-  <ul>
-      <li class="field-body">
-        <b><code>min_bytes</code></b>
-            (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
-                <code>0</code>
-)
-        –
-        <div class="doc-md-description">
-          <p>Minimum size threshold (inclusive) to pass through the
-filter.</p>
-        </div>
-      </li>
-      <li class="field-body">
-        <b><code>max_bytes</code></b>
-            (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>, default:
-                <code><a class="autorefs autorefs-external" title="math.inf" href="https://docs.python.org/3/library/math.html#math.inf">inf</a></code>
-)
-        –
-        <div class="doc-md-description">
-          <p>Maximum size threshold (inclusive) to pass through the
-filter.</p>
-        </div>
-      </li>
-  </ul>
-
-                <details class="quote">
-                  <summary>Source code in <code>taps/filter/filters.py</code></summary>
-                  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-102">102</a></span>
-<span class="normal"><a href="#__codelineno-0-103">103</a></span>
-<span class="normal"><a href="#__codelineno-0-104">104</a></span>
-<span class="normal"><a href="#__codelineno-0-105">105</a></span>
-<span class="normal"><a href="#__codelineno-0-106">106</a></span>
-<span class="normal"><a href="#__codelineno-0-107">107</a></span>
-<span class="normal"><a href="#__codelineno-0-108">108</a></span>
-<span class="normal"><a href="#__codelineno-0-109">109</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-102"><a id="__codelineno-0-102" name="__codelineno-0-102"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="__span-0-103"><a id="__codelineno-0-103" name="__codelineno-0-103"></a>    <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-0-104"><a id="__codelineno-0-104" name="__codelineno-0-104"></a>    <span class="o">*</span><span class="p">,</span>
-</span><span id="__span-0-105"><a id="__codelineno-0-105" name="__codelineno-0-105"></a>    <span class="n">min_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-106"><a id="__codelineno-0-106" name="__codelineno-0-106"></a>    <span class="n">max_bytes</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
-</span><span id="__span-0-107"><a id="__codelineno-0-107" name="__codelineno-0-107"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-108"><a id="__codelineno-0-108" name="__codelineno-0-108"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">min_bytes</span> <span class="o">=</span> <span class="n">min_bytes</span>
-</span><span id="__span-0-109"><a id="__codelineno-0-109" name="__codelineno-0-109"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">max_bytes</span> <span class="o">=</span> <span class="n">max_bytes</span>
-</span></code></pre></div></td></tr></table></div>
-                </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="taps.filter.filters.PickleSizeFilter.__call__" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">__call__()</span>
-
-
-<a href="#taps.filter.filters.PickleSizeFilter.__call__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>Check if an object passes through the filter.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>taps/filter/filters.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-111">111</a></span>
-<span class="normal"><a href="#__codelineno-0-112">112</a></span>
-<span class="normal"><a href="#__codelineno-0-113">113</a></span>
-<span class="normal"><a href="#__codelineno-0-114">114</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-111"><a id="__codelineno-0-111" name="__codelineno-0-111"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="__span-0-112"><a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an object passes through the filter.&quot;&quot;&quot;</span>
-</span><span id="__span-0-113"><a id="__codelineno-0-113" name="__codelineno-0-113"></a>    <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
-</span><span id="__span-0-114"><a id="__codelineno-0-114" name="__codelineno-0-114"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_bytes</span> <span class="o">&lt;=</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_bytes</span>
+<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Format environment as a human-readable string.&quot;&quot;&quot;</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>        <span class="n">pcores</span><span class="p">,</span> <span class="n">lcores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_physical_cores</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_logical_cores</span>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="n">impl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">python_implementation</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="n">compiler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">python_compiler</span>
+</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="n">bit_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">python_bit_length</span>
+</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a>
+</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a><span class="s2">host: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span>
+</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76"></a><span class="s2">  os: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">platform_ext</span><span class="si">}</span><span class="s2">)</span>
+</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77"></a><span class="s2">  cpu: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cpu_architecture</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">pcores</span><span class="si">}</span><span class="s2"> cores / </span><span class="si">{</span><span class="n">lcores</span><span class="si">}</span><span class="s2"> logical)</span>
+</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="s2">  memory: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">memory_gb</span><span class="si">}</span><span class="s2"> GB</span>
+</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="s2">python:</span>
+</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80"></a><span class="s2">  version: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">python_version</span><span class="si">}</span>
+</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="s2">  build: </span><span class="si">{</span><span class="n">impl</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">bit_length</span><span class="si">}</span><span class="s2">-bit runtime) [</span><span class="si">{</span><span class="n">compiler</span><span class="si">}</span><span class="s2">]</span>
+</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="s2">  taps: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">taps_version</span><span class="si">}</span>
+</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 </span></code></pre></div></td></tr></table></div>
       </details>
   </div>

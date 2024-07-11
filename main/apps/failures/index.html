@@ -2377,6 +2377,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/run/env/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    env
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/run/main/" class="md-nav__link">
         
   
@@ -2802,10 +2822,9 @@ For example:</p>
 <p>Please be careful when using this application, and run the application in an isolated environment (e.g., a container or ephemeral node).</p>
 </div>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<p>This application requires some extra dependencies which can be installed automatically when installing the TaPS package.
-The base application that failures are injected into may have additional requirements.
+<p>The <code>failures</code> application requires executing a base application (the application into which failures are injected), and some base applications have additional requirements.
 For example, to use <code>failures</code> with the <code>cholesky</code> application, install TaPS using:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>cholesky,failures<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>cholesky<span class="o">]</span>
 </span></code></pre></div></p>
 <h2 id="data">Data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
 <p>Data requirements depend on the base application that failures are injected into.</p>
