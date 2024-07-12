@@ -14,7 +14,7 @@ from parsl.executors import ThreadPoolExecutor
 from parsl.providers import LocalProvider
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
+from taps.executor import ExecutorConfig
 from taps.plugins import register
 
 

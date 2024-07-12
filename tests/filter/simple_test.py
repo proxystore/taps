@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from taps.filter.simple import AllFilter
-from taps.filter.simple import AllFilterConfig
-from taps.filter.simple import NullFilter
-from taps.filter.simple import NullFilterConfig
+from taps.filter import AllFilter
+from taps.filter import AllFilterConfig
+from taps.filter import NullFilter
+from taps.filter import NullFilterConfig
 
 
 def test_all_filter() -> None:

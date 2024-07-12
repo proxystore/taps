@@ -5,8 +5,8 @@ from typing import Literal
 
 from pydantic import Field
 
-from taps.filter.protocol import Filter
-from taps.filter.protocol import FilterConfig
+from taps.filter._protocol import Filter
+from taps.filter._protocol import FilterConfig
 from taps.plugins import register
 
 

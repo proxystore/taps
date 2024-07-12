@@ -24,7 +24,7 @@ except ImportError as e:  # pragma: no cover
 
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
+from taps.executor import ExecutorConfig
 from taps.plugins import register
 
 P = ParamSpec('P')

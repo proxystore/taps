@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from taps.filter.object import ObjectSizeFilter
-from taps.filter.object import ObjectSizeFilterConfig
-from taps.filter.object import ObjectTypeFilter
-from taps.filter.object import ObjectTypeFilterConfig
-from taps.filter.object import PickleSizeFilter
-from taps.filter.object import PickleSizeFilterConfig
-from taps.filter.protocol import Filter
+from taps.filter import Filter
+from taps.filter import ObjectSizeFilter
+from taps.filter import ObjectSizeFilterConfig
+from taps.filter import ObjectTypeFilter
+from taps.filter import ObjectTypeFilterConfig
+from taps.filter import PickleSizeFilter
+from taps.filter import PickleSizeFilterConfig
 
 
 def test_object_size_filter() -> None:

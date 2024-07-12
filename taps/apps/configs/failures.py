@@ -14,8 +14,8 @@ from pydantic import Field
 from pydantic import field_validator
 from pydantic import model_validator
 
-from taps.apps.app import App
-from taps.apps.app import AppConfig
+from taps.apps import App
+from taps.apps import AppConfig
 from taps.apps.failures.types import FailureType
 from taps.plugins import register
 

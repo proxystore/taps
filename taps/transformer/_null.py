@@ -8,7 +8,7 @@ from typing import TypeVar
 from pydantic import Field
 
 from taps.plugins import register
-from taps.transformer.protocol import TransformerConfig
+from taps.transformer._protocol import TransformerConfig
 
 T = TypeVar('T')
 

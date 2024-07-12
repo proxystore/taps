@@ -8,7 +8,7 @@ from typing import Optional
 
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
+from taps.executor import ExecutorConfig
 from taps.executor.utils import FutureDependencyExecutor
 from taps.plugins import register
 

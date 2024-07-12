@@ -191,7 +191,6 @@ order-by-type = false
 required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
-"*/__init__.py" = ["F401"]
 "taps/**.py" = ["PLR0913"]
 "tests/**.py" = ["D10"]
 "testing/**.py" = ["D10"]

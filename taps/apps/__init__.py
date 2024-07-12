@@ -1,4 +1,6 @@
 from __future__ import annotations
 
-from taps.apps.app import App
-from taps.apps.app import AppConfig
+from taps.apps._protocol import App
+from taps.apps._protocol import AppConfig
+
+__all__ = ('App', 'AppConfig')

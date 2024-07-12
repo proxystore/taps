@@ -21,7 +21,7 @@ from dask.distributed import Client
 from dask.distributed import Future as DaskFuture
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
+from taps.executor import ExecutorConfig
 from taps.plugins import register
 
 P = ParamSpec('P')

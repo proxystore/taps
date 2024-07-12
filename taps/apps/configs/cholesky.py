@@ -4,8 +4,8 @@ from typing import Literal
 
 from pydantic import Field
 
-from taps.apps.app import App
-from taps.apps.app import AppConfig
+from taps.apps import App
+from taps.apps import AppConfig
 from taps.plugins import register
 
 

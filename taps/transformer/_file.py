@@ -13,7 +13,7 @@ from pydantic import Field
 from pydantic import field_validator
 
 from taps.plugins import register
-from taps.transformer.protocol import TransformerConfig
+from taps.transformer._protocol import TransformerConfig
 
 T = TypeVar('T')
 

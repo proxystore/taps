@@ -6,14 +6,14 @@ import uuid
 from concurrent.futures import Future
 from concurrent.futures import ThreadPoolExecutor
 
-from taps.engine.engine import _TaskResult
-from taps.engine.engine import _TaskWrapper
-from taps.engine.engine import as_completed
-from taps.engine.engine import Engine
-from taps.engine.engine import TaskFuture
-from taps.engine.engine import TaskInfo
-from taps.engine.engine import wait
-from taps.engine.transform import TaskTransformer
+from taps.engine import as_completed
+from taps.engine import Engine
+from taps.engine import TaskFuture
+from taps.engine import TaskInfo
+from taps.engine import TaskTransformer
+from taps.engine import wait
+from taps.engine._engine import _TaskResult
+from taps.engine._engine import _TaskWrapper
 from taps.executor import DaskDistributedExecutor
 from taps.executor import FutureDependencyExecutor
 from taps.filter import NullFilter
