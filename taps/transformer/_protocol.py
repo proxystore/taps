@@ -17,7 +17,24 @@ IdentifierT = TypeVar('IdentifierT')
 
 @runtime_checkable
 class Transformer(Protocol[IdentifierT]):
-    """Object transformer protocol."""
+    """Data transformer protocol.
+
+    A data transformer is used by the [`Engine`][taps.engine.Engine] to
+    transform task parameters and results into alternative formats that are
+    more suitable for communication.
+
+    An object can be transformed using
+    [`transform()`][taps.transformer.Transformer.transform] which returns
+    an identifier. The identifier can then be provided to
+    [`resolve()`][taps.transformer.Transformer.resolve], the inverse of
+    [`transform()`][taps.transformer.Transformer.transform], which returns
+    the original object.
+
+    Data transformer implementations can implement object identifiers in any
+    manner, provided identifiers are serializable. For example, a simple
+    identifier could be a UUID corresponding to a database entry containing
+    the serialized object.
+    """
 
     def close(self) -> None:
         """Close the transformer.
@@ -55,7 +72,7 @@ class Transformer(Protocol[IdentifierT]):
 
 
 class TransformerConfig(BaseModel, abc.ABC):
-    """Abstract transformer configuration."""
+    """Abstract [`Transformer`][taps.transformer.Transformer] plugin configuration."""  # noqa: E501
 
     name: str = Field(description='name of transformer type')
 

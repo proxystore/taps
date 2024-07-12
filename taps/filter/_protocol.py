@@ -12,15 +12,20 @@ from pydantic import Field
 
 @runtime_checkable
 class Filter(Protocol):
-    """Filter protocol."""
+    """Filter protocol.
 
-    def __call__(self, obj: Any) -> bool:
-        """Check if an abject passes through the filter."""
-        ...
+    A Filter is a callable object, e.g., a function, used by the
+    [`Engine`][taps.engine.Engine] that takes an object as input and returns
+    a boolean indicating if the object should be transformed by
+    [`Engine`][taps.engine.Engine]'s data
+    [`Transformer`][taps.transformer.Transformer].
+    """
+
+    def __call__(self, obj: Any) -> bool: ...
 
 
 class FilterConfig(BaseModel, abc.ABC):
-    """Abstract filter configuration."""
+    """Abstract [`Filter`][taps.filter.Filter] plugin configuration."""
 
     name: str = Field(description='name of filter type')
 

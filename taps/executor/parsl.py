@@ -20,7 +20,7 @@ from taps.plugins import register
 
 @register('executor')
 class ParslConfig(ExecutorConfig):
-    """Parsl configuration.
+    """`ParslPoolExecutor` plugin configuration.
 
     Attributes:
         use_threads: Use Parsl's

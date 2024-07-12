@@ -128,7 +128,7 @@ class RayExecutor(Executor):
 
 @register('executor')
 class RayConfig(ExecutorConfig):
-    """Ray configuration.
+    """[`RayExecutor`][taps.executor.ray.RayExecutor] plugin configuration.
 
     Attributes:
         address: Address of the Ray cluster to run on.

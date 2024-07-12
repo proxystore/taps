@@ -112,14 +112,14 @@ class DaskDistributedExecutor(Executor):
 
 @register('executor')
 class DaskDistributedConfig(ExecutorConfig):
-    """Dask Distributed configuration.
+    """[`DaskDistributedExecutor`][taps.executor.dask.DaskDistributedExecutor] plugin configuration.
 
     Attributes:
         scheduler: Dask scheduler address.
         use_threads: Use threads rather than processes for local clusters.
         workers: Number of Dask workers for local clusters.
         daemon_workers: Daemonize Dask workers.
-    """
+    """  # noqa: E501
 
     name: Literal['dask'] = 'dask'
     scheduler: Optional[str] = Field(  # noqa: UP007

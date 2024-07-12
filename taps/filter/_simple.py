@@ -11,16 +11,23 @@ from taps.plugins import register
 
 
 class AllFilter:
-    """All filter that lets all objects pass through."""
+    """Filter that lets all objects pass through.
+
+    ```python
+    from taps.filter import AllFilter
+
+    filter_ = AllFilter()
+    assert filter_('value')  # always true
+    ```
+    """
 
     def __call__(self, obj: Any) -> bool:
-        """Check if an object passes through the filter."""
         return True
 
 
 @register('filter')
 class AllFilterConfig(FilterConfig):
-    """All filter configuration."""
+    """[`AllFilter`][taps.filter.AllFilter] plugin configuration."""
 
     name: Literal['all'] = Field('all', description='name of filter type')
 
@@ -30,16 +37,23 @@ class AllFilterConfig(FilterConfig):
 
 
 class NullFilter:
-    """Null filter that lets no objects pass through."""
+    """Filter that lets no objects pass through.
+
+    ```python
+    from taps.filter import NullFilter
+
+    filter_ = NullFilter()
+    assert not filter_('value')  # always false
+    ```
+    """
 
     def __call__(self, obj: Any) -> bool:
-        """Check if an object passes through the filter."""
         return False
 
 
 @register('filter')
 class NullFilterConfig(FilterConfig):
-    """Null filter configuration."""
+    """[`NullFilter`][taps.filter.NullFilter] plugin configuration."""
 
     name: Literal['null'] = Field('null', description='name of filter type')
 

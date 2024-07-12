@@ -28,6 +28,15 @@ class ObjectSizeFilter:
         [`sys.getsizeof()`][sys.getsizeof] does not count the size of objects
         referred to by the main object.
 
+    Example:
+        ```python
+        from taps.filter import ObjectSizeFilter
+
+        filter_ = ObjectSizeFilter(min_bytes=100)
+        assert not filter_('small')
+        assert filter_('large' * 100)
+        ```
+
     Args:
         min_bytes: Minimum size threshold (inclusive) to pass through the
             filter.
@@ -45,14 +54,13 @@ class ObjectSizeFilter:
         self.max_bytes = max_bytes
 
     def __call__(self, obj: Any) -> bool:
-        """Check if an object passes through the filter."""
         size = sys.getsizeof(obj)
         return self.min_bytes <= size <= self.max_bytes
 
 
 @register('filter')
 class ObjectSizeFilterConfig(FilterConfig):
-    """Object size filter configuration."""
+    """[`ObjectSizeFilter`][taps.filter.ObjectSizeFilter] plugin configuration."""  # noqa: E501
 
     name: Literal['object-size'] = Field(
         'object-size',
@@ -78,6 +86,16 @@ class ObjectTypeFilter:
     Checks if an object is of a certain type using [`isinstance()`][isinstance]
     or by pattern matching against the name of the type.
 
+    Example:
+        ```python
+        from taps.filter import ObjectTypeFilter
+
+        filter_ = ObjectTypeFilter(int, str)
+        assert filter_(42)
+        assert filter_('value')
+        assert not filter_(3.14)
+        ```
+
     Args:
         types: Types to check.
         patterns: Regex compatible patterns to compare against the name of the
@@ -93,7 +111,6 @@ class ObjectTypeFilter:
         self.patterns = tuple(patterns if patterns is not None else [])
 
     def __call__(self, obj: Any) -> bool:
-        """Check if an object passes through the filter."""
         if isinstance(obj, self.types):
             return True
 
@@ -107,7 +124,7 @@ class ObjectTypeFilter:
 
 @register('filter')
 class ObjectTypeFilterConfig(FilterConfig):
-    """Object type filter configuration."""
+    """[`ObjectTypeFilter`][taps.filter.ObjectTypeFilter] plugin configuration."""  # noqa: E501
 
     name: Literal['object-type'] = Field(
         'object-type',
@@ -130,7 +147,19 @@ class PickleSizeFilter:
     is greater than a minimum size and less than a maximum size.
 
     Warning:
-        Pickling large objects can take significant time.
+        Pickling large objects can take significant time, so this filter
+        type is only recommended when the data transformation cost (e.g.,
+        communication or storage) is significantly greater than serialization
+        of the objects.
+
+    Example:
+        ```python
+        from taps.filter import PickleSizeFilter
+
+        filter_ = PickleSizeFilter(min_bytes=100)
+        assert not filter_('small')
+        assert filter_('large' * 100)
+        ```
 
     Args:
         min_bytes: Minimum size threshold (inclusive) to pass through the
@@ -149,14 +178,13 @@ class PickleSizeFilter:
         self.max_bytes = max_bytes
 
     def __call__(self, obj: Any) -> bool:
-        """Check if an object passes through the filter."""
         size = len(pickle.dumps(obj))
         return self.min_bytes <= size <= self.max_bytes
 
 
 @register('filter')
 class PickleSizeFilterConfig(FilterConfig):
-    """Pickled object size filter configuration."""
+    """[`PickleSizeFilter`][taps.filter.PickleSizeFilter] plugin configuration."""  # noqa: E501
 
     name: Literal['pickle-size'] = Field(
         'pickle-size',
