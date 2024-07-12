@@ -3,13 +3,13 @@
 Optimizing the transfer of task data and placement of tasks according to where data reside is a core feature of many task executors.
 To support further research into data management, TaPS supports a plugin system for *data transformers*.
 
-The [`Transformer`][taps.transformer.protocol.Transformer] protocol defines two methods: `transform()` which takes an object and returns an identifier, and `resolve()`, the inverse of `transform()`, which takes an identifier and returns the corresponding object.
+The [`Transformer`][taps.transformer.Transformer] protocol defines two methods: `transform()` which takes an object and returns an identifier, and `resolve()`, the inverse of `transform()`, which takes an identifier and returns the corresponding object.
 Transformer implementations can implement object identifiers in any manner, provided identifier instances are serializable.
 For example, an identifier could simply be a UUID corresponding to a database entry containing the serialized object.
 
-A [`Filter`][taps.filter.filters.Filter] is a callable object, e.g., a function, that takes an object as input and returns a boolean indicating if the object should be transformed by the data transformer.
+A [`Filter`][taps.filter.Filter] is a callable object, e.g., a function, that takes an object as input and returns a boolean indicating if the object should be transformed by the data transformer.
 
-The [`Engine`][taps.engine.engine.Engine] uses the [`Transformer`][taps.transformer.protocol.Transformer] and [`Filter`][taps.filter.filters.Filter] to transform the positional arguments, keyword arguments, and results of tasks before being sent to the [Task Executor](executor.md).
+The [`Engine`][taps.engine.Engine] uses the [`Transformer`][taps.transformer.Transformer] and [`Filter`][taps.filter.Filter] to transform the positional arguments, keyword arguments, and results of tasks before being sent to the [Task Executor](executor.md).
 For example, every argument in the tuple of positional arguments which passes the filter check is transformed into an identifier using the data transformer.
 Each task is encapsulated with a wrapper which will `resolve()` any arguments that were replaced with identifiers when the task begins executing.
 The same occurs in reverse for a task's result.
@@ -18,9 +18,9 @@ The same occurs in reverse for a task's result.
 
 As of writing, TaPS provides three transformer types.
 
-The [`NullTransformer`][taps.transformer.null.NullTransformer] is the default and does not perform any transformation.
+The [`NullTransformer`][taps.transformer.NullTransformer] is the default and does not perform any transformation.
 
-The [`PickleFileTransformer`][taps.transformer.file.PickleFileTransformer] pickles and writes objects to files in a specified directory.
+The [`PickleFileTransformer`][taps.transformer.PickleFileTransformer] pickles and writes objects to files in a specified directory.
 The object identifiers are essentially the filepath of the pickle file.
 This transformer can be configured like:
 ```toml title="Pickle File Transformer Config"
@@ -30,7 +30,7 @@ file_dir = "./object-cache"
 ```
 The `./object-cache` directory will contain any transformed objects and will be removed once a benchmark has completed.
 
-The [`ProxyTransformer`][taps.transformer.proxy.ProxyTransformer] creates *proxies* of data using [ProxyStore](https://docs.proxystore.dev/){target=_blank}.
+The [`ProxyTransformer`][taps.transformer.ProxyTransformer] creates *proxies* of data using [ProxyStore](https://docs.proxystore.dev/){target=_blank}.
 ProxyStore provides a pass-by-reference like model for distributed Python applications and supports a multitude of communication protocols including DAOS, Globus Transfer, Margo, Redis, UCX, and ZeroMQ.
 This transformer can be configured like:
 ```toml title="ProxyStore Transformer Config"
@@ -41,20 +41,20 @@ redis_addr = "localhost"
 redis_port = 6379
 ```
 The specific parameters will change change depending on specified `connector`.
-See the [`ProxyTransformerConfig`][taps.transformer.proxy.ProxyTransformerConfig] for more information.
+See the [`ProxyTransformerConfig`][taps.transformer.ProxyTransformerConfig] for more information.
 
 ## Adding Transformers
 
-Transformer plugins are created by decorating a [`TransformerConfig`][taps.transformer.config.TransformerConfig] with [`@register('transformer')`][taps.plugins.register].
+Transformer plugins are created by decorating a [`TransformerConfig`][taps.transformer.TransformerConfig] with [`@register('transformer')`][taps.plugins.register].
 
 For example, the `FooTransformerConfig` for a `FooTransformer` might look like the following.
-```python title="taps/transformer/foo.py" linenums="1"
+```python title="taps/transformer/_foo.py" linenums="1"
 from typing import Literal
 
 from pydantic import Field
 
 from taps.plugins import register
-from taps.transformer.config import TransformerConfig
+from taps.transformer import TransformerConfig
 
 @register('transformer')
 class FooTransformerConfig(TransformerConfig):
@@ -70,21 +70,21 @@ class FooTransformerConfig(TransformerConfig):
         """Create a transformer from the configuration."""
         return FooTransformer(self.bar)
 ```
-In order to ensure that the registration is performed, the `FooTransformerConfig` must be imported inside of `taps/transformer/__init__.py`.
+In order to ensure that the registration is performed, the `FooTransformerConfig` must be imported inside of `taps/transformer/__init__.py` and included in `__all__`.
 
 ## Filter Types
 
-As mentioned above, a [`Filter`][taps.filter.filters.Filter] determine what objects (i.e., task arguments and/or results) get passed to the transformer.
-The default filter, [`AllFilter`][taps.filter.filters.AllFilter], lets all objects through.
+As mentioned above, a [`Filter`][taps.filter.Filter] determine what objects (i.e., task arguments and/or results) get passed to the transformer.
+The default filter, [`AllFilter`][taps.filter.AllFilter], lets all objects through.
 
-Other [`Filter`][taps.filter.filters.Filter] types are provided to give fine-grained control over what objects get transformed.
+Other [`Filter`][taps.filter.Filter] types are provided to give fine-grained control over what objects get transformed.
 
-* [`NullFilter`][taps.filter.filters.NullFilter] (`#!toml name = "null"`): no objects are transformed.
-* [`ObjectSizeFilter`][taps.filter.filters.ObjectSizeFilter] (`#!toml name = "object-size"`): checks if the size of an object (computed using [`sys.getsizeof()`][sys.getsizeof]) is greater than a minimum size and less than a maximum size.
-* [`PickleSizeFilter`][taps.filter.filters.PickleSizeFilter] (`#!toml name = "pickle-size"`): checks if the size of an object (computed using the size of the pickled object) is greater than a minimum size and less than a maximum size.
-* [`ObjectTypeFilter`][taps.filter.filters.ObjectTypeFilter] (`#!toml name = "object-type"`): checks if the object is of a certain type.
+* [`NullFilter`][taps.filter.NullFilter] (`#!toml name = "null"`): no objects are transformed.
+* [`ObjectSizeFilter`][taps.filter.ObjectSizeFilter] (`#!toml name = "object-size"`): checks if the size of an object (computed using [`sys.getsizeof()`][sys.getsizeof]) is greater than a minimum size and less than a maximum size.
+* [`PickleSizeFilter`][taps.filter.PickleSizeFilter] (`#!toml name = "pickle-size"`): checks if the size of an object (computed using the size of the pickled object) is greater than a minimum size and less than a maximum size.
+* [`ObjectTypeFilter`][taps.filter.ObjectTypeFilter] (`#!toml name = "object-type"`): checks if the object is of a certain type.
 
-To use, for example, the [`ObjectSizeFilter`][taps.filter.filters.ObjectSizeFilter], add the following to your configuration.
+To use, for example, the [`ObjectSizeFilter`][taps.filter.ObjectSizeFilter], add the following to your configuration.
 ```toml title="Object Size Filter Config"
 [engine.filter]
 name = "object-size"
@@ -95,10 +95,10 @@ This configuration will transform objects larger than 1 kB and smaller than 1 MB
 
 ## Adding Filters
 
-Filter plugins are created by decorating a [`FilterConfig`][taps.filter.config.FilterConfig] with [`@register('filter')`][taps.plugins.register].
+Filter plugins are created by decorating a [`FilterConfig`][taps.filter.FilterConfig] with [`@register('filter')`][taps.plugins.register].
 
 For example, a `FooFilterConfig` look like the following.
-```python title="taps/filters/config.py" linenums="1"
+```python title="taps/filters/_foo.py" linenums="1"
 from typing import Literal
 
 from pydantic import Field
@@ -116,4 +116,4 @@ class FooFilterConfig(FilterConfig):
         """Create a filter from the configuration."""
         return FooFilter(self.bar)
 ```
-In order to ensure that the registration is performed, the `FooFilterConfig` must be imported inside of `taps/filter/__init__.py`.
+In order to ensure that the registration is performed, the `FooFilterConfig` must be imported inside of `taps/filter/__init__.py` and included in `__all__`.

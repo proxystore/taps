@@ -8,14 +8,14 @@ from typing import TypeVar
 from pydantic import Field
 
 from taps.plugins import register
-from taps.transformer.config import TransformerConfig
+from taps.transformer._protocol import TransformerConfig
 
 T = TypeVar('T')
 
 
 @register('transformer')
 class NullTransformerConfig(TransformerConfig):
-    """Null transformer configuration."""
+    """[`NullTransformer`][taps.transformer.NullTransformer] plugin configuration."""  # noqa: E501
 
     name: Literal['null'] = Field(
         'null',
@@ -28,7 +28,11 @@ class NullTransformerConfig(TransformerConfig):
 
 
 class NullTransformer:
-    """Null transformer that does no transformations."""
+    """No-op transformer.
+
+    Rather than transforming an object, this transformer just returns
+    the input object as its own identifier.
+    """
 
     def close(self) -> None:
         """Close the transformer."""

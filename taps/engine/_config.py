@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
-from taps.engine.engine import Engine
+from taps.engine._engine import Engine
 from taps.executor import ExecutorConfig
 from taps.executor import ProcessPoolConfig
 from taps.filter import AllFilterConfig

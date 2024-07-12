@@ -1,6 +1,6 @@
 # Task Executors
 
-The [`Engine`][taps.engine.engine.Engine], in TaPS, wraps a *task executor*.
+The [`Engine`][taps.engine.Engine], in TaPS, wraps a *task executor*.
 Task executors are responsible for managing the asynchronous execution of functions.
 Task executors implement Python's [`concurrent.futures.Executor`][concurrent.futures.Executor] model, and TaPS supports an extensible plugin system for configuring executor parameters and adding new executor types.
 
@@ -117,7 +117,7 @@ class SyncExecutor(Executor):
 ## Creating a Config
 
 Config classes are how plugins are registered within TaPS.
-For executors, every config must inherit from [`ExecutorConfig`][taps.executor.config.ExecutorConfig], an [abstract base class][abc.ABC] with an abstract method `get_executor()`.
+For executors, every config must inherit from [`ExecutorConfig`][taps.executor.ExecutorConfig], an [abstract base class][abc.ABC] with an abstract method `get_executor()`.
 
 The [`@register('executor')`][taps.plugins.register] decorator registers the config as a new executor plugin.
 Registering the plugin makes our `SyncExecutor` available as an option with the CLI and enables input validation on fields of our executor.
@@ -142,7 +142,7 @@ else:  # pragma: <3.10 cover
 
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
+from taps.executor import ExecutorConfig
 from taps.executor.utils import FutureDependencyExecutor
 from taps.plugins import register
 
@@ -248,7 +248,7 @@ The `name` field of `SyncExecutorConfig` defines the name via which this executo
 
 !!! warning
 
-    The [`Engine`][taps.engine.engine.Engine] requires that task executors support implicit data flow dependencies between tasks with futures.
+    The [`Engine`][taps.engine.Engine] requires that task executors support implicit data flow dependencies between tasks with futures.
     In other words, this means that it must be possible to pass the future from one task as a positional or keyword argument to another task.
     Many executors already support this (e.g., Dask or Parsl), but many do not (e.g., Python's [`ThreadPoolExecutor`][concurrent.futures.ThreadPoolExecutor] and [`ProcessPoolExecutor`][concurrent.futures.ProcessPoolExecutor].
 

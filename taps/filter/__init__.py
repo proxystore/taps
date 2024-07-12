@@ -1,13 +1,31 @@
+# ruff: noqa: I001
 from __future__ import annotations
 
-from taps.filter.config import AllFilterConfig
-from taps.filter.config import FilterConfig
-from taps.filter.config import NullFilterConfig
-from taps.filter.config import ObjectSizeConfig
-from taps.filter.config import PickleSizeConfig
-from taps.filter.filters import AllFilter
-from taps.filter.filters import Filter
-from taps.filter.filters import NullFilter
-from taps.filter.filters import ObjectSizeFilter
-from taps.filter.filters import ObjectTypeFilter
-from taps.filter.filters import PickleSizeFilter
+# Import order determines order in the docs page.
+from taps.filter._protocol import Filter
+from taps.filter._protocol import FilterConfig
+from taps.filter._simple import AllFilter
+from taps.filter._simple import AllFilterConfig
+from taps.filter._simple import NullFilter
+from taps.filter._simple import NullFilterConfig
+from taps.filter._object import ObjectSizeFilter
+from taps.filter._object import ObjectSizeFilterConfig
+from taps.filter._object import ObjectTypeFilter
+from taps.filter._object import ObjectTypeFilterConfig
+from taps.filter._object import PickleSizeFilter
+from taps.filter._object import PickleSizeFilterConfig
+
+__all__ = (
+    'AllFilter',
+    'AllFilterConfig',
+    'Filter',
+    'FilterConfig',
+    'NullFilter',
+    'NullFilterConfig',
+    'ObjectSizeFilter',
+    'ObjectSizeFilterConfig',
+    'ObjectTypeFilter',
+    'ObjectTypeFilterConfig',
+    'PickleSizeFilter',
+    'PickleSizeFilterConfig',
+)

@@ -5,19 +5,19 @@ from typing import Literal
 import globus_compute_sdk
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
+from taps.executor import ExecutorConfig
 from taps.executor.utils import FutureDependencyExecutor
 from taps.plugins import register
 
 
 @register('executor')
 class GlobusComputeConfig(ExecutorConfig):
-    """Globus Compute configuration.
+    """Globus Compute [`Executor`][globus_compute_sdk.Executor] plugin configuration.
 
     Attributes:
         endpoint: Globus Compute endpoint UUID.
         batch_size: Maximum number of tasks to coalesce before submitting.
-    """
+    """  # noqa: E501
 
     name: Literal['globus'] = 'globus'
     endpoint: str = Field(description='endpoint UUID')

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pathlib
 
-from taps.transformer.file import PickleFileTransformer
-from taps.transformer.file import PickleFileTransformerConfig
+from taps.transformer import PickleFileTransformer
+from taps.transformer import PickleFileTransformerConfig
 
 
 def test_config() -> None:

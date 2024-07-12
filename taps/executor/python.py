@@ -8,19 +8,19 @@ from typing import Optional
 
 from pydantic import Field
 
-from taps.executor.config import ExecutorConfig
+from taps.executor import ExecutorConfig
 from taps.executor.utils import FutureDependencyExecutor
 from taps.plugins import register
 
 
 @register('executor')
 class ProcessPoolConfig(ExecutorConfig):
-    """Process pool executor configuration.
+    """[`ProcessPoolExecutor`][concurrent.futures.ProcessPoolExecutor] plugin configuration.
 
     Attributes:
         max_processes: Maximum number of processes.
         context: Multiprocessing context type (fork, spawn, or forkserver).
-    """
+    """  # noqa: E501
 
     name: Literal['process-pool'] = 'process-pool'
     max_processes: int = Field(
@@ -46,11 +46,11 @@ class ProcessPoolConfig(ExecutorConfig):
 
 @register('executor')
 class ThreadPoolConfig(ExecutorConfig):
-    """Thread pool executor configuration.
+    """[`ThreadPoolExecutor`][concurrent.futures.ThreadPoolExecutor] plugin configuration.
 
     Attributes:
         max_threads: Maximum number of threads.
-    """
+    """  # noqa: E501
 
     name: Literal['thread-pool'] = 'thread-pool'
     max_threads: int = Field(

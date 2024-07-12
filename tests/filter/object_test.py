@@ -1,20 +1,12 @@
 from __future__ import annotations
 
-from taps.filter import AllFilter
-from taps.filter import NullFilter
+from taps.filter import Filter
 from taps.filter import ObjectSizeFilter
+from taps.filter import ObjectSizeFilterConfig
 from taps.filter import ObjectTypeFilter
+from taps.filter import ObjectTypeFilterConfig
 from taps.filter import PickleSizeFilter
-
-
-def test_all_filter() -> None:
-    filter_ = AllFilter()
-    assert filter_(object())
-
-
-def test_null_filter() -> None:
-    filter_ = NullFilter()
-    assert not filter_(object())
+from taps.filter import PickleSizeFilterConfig
 
 
 def test_object_size_filter() -> None:
@@ -23,6 +15,15 @@ def test_object_size_filter() -> None:
     assert not filter_(object())
     assert filter_('object')
     assert not filter_('x' * 100)
+
+
+def test_object_type_filter_config() -> None:
+    config = ObjectTypeFilterConfig(patterns=['bytes', 'str'])
+
+    filter_ = config.get_filter()
+    assert filter_(b'')
+    assert filter_('')
+    assert not filter_(42)
 
 
 def test_object_type_filter() -> None:
@@ -52,9 +53,29 @@ def test_object_type_filter_patterns() -> None:
     assert not filter_(Foobar())
 
 
+def test_object_size_filter_config() -> None:
+    config = ObjectSizeFilterConfig(min_size=100, max_size=1000)
+
+    filter_ = config.get_filter()
+    assert isinstance(filter_, Filter)
+    assert not filter_(b'')
+    assert filter_(b'x' * 100)
+    assert not filter_(b'x' * 1000)
+
+
 def test_pickle_size_filter() -> None:
     filter_ = PickleSizeFilter(min_bytes=64, max_bytes=128)
 
     assert not filter_(object())
     assert filter_(b'x' * 80)
     assert not filter_(b'x' * 256)
+
+
+def test_pickle_size_filter_config() -> None:
+    config = PickleSizeFilterConfig(min_size=100, max_size=1000)
+
+    filter_ = config.get_filter()
+    assert isinstance(filter_, Filter)
+    assert not filter_(b'')
+    assert filter_(b'x' * 100)
+    assert not filter_(b'x' * 1000)

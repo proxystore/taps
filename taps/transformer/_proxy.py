@@ -17,14 +17,22 @@ from pydantic import Field
 from pydantic import field_validator
 
 from taps.plugins import register
-from taps.transformer.config import TransformerConfig
+from taps.transformer._protocol import TransformerConfig
 
 T = TypeVar('T')
 
 
 @register('transformer')
 class ProxyTransformerConfig(TransformerConfig):
-    """Proxy transformer configuration."""
+    """[`ProxyTransformer`][taps.transformer.ProxyTransformer] plugin configuration.
+
+    Attributes:
+        connector: Name of ProxyStore connector to use.
+        file_dir: File connector cache directory.
+        redis_addr: Redis connector server address.
+        extract_target: See the usage in
+            [`ProxyTransformer`][taps.transformer.ProxyTransformer].
+    """  # noqa: E501
 
     name: Literal['proxy'] = Field(
         'proxy',

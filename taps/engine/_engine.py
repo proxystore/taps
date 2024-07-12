@@ -36,13 +36,13 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
-from taps.engine.transform import TaskTransformer
+from taps.engine._transform import TaskTransformer
 from taps.filter import Filter
 from taps.filter import NullFilter
 from taps.record import NullRecordLogger
 from taps.record import RecordLogger
-from taps.transformer.null import NullTransformer
-from taps.transformer.protocol import Transformer
+from taps.transformer import NullTransformer
+from taps.transformer import Transformer
 
 P = ParamSpec('P')
 T = TypeVar('T')

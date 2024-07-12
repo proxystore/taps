@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pathlib
 
-from taps.apps.app import App
-from taps.apps.app import AppConfig
+from taps.apps import App
+from taps.apps import AppConfig
 
 
 def test_parse_config_paths() -> None:

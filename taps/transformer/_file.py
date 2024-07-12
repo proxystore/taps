@@ -13,18 +13,18 @@ from pydantic import Field
 from pydantic import field_validator
 
 from taps.plugins import register
-from taps.transformer.config import TransformerConfig
+from taps.transformer._protocol import TransformerConfig
 
 T = TypeVar('T')
 
 
 @register('transformer')
 class PickleFileTransformerConfig(TransformerConfig):
-    """Pickle file transformer configuration.
+    """[`PickleFileTransformer`][taps.transformer.PickleFileTransformer] plugin configuration.
 
     Attributes:
         file_dir: Object file directory.
-    """
+    """  # noqa: E501
 
     name: Literal['file'] = Field(
         'file',
@@ -42,13 +42,13 @@ class PickleFileTransformerConfig(TransformerConfig):
         return str(pathlib.Path(path).resolve())
 
 
-class Identifier(NamedTuple):
-    """Object identifier.
+class PickleFileIdentifier(NamedTuple):
+    """Identifier type for the [`PickleFileTransformer`][taps.transformer.PickleFileTransformer].
 
     Attributes:
         cache_dir: Object directory.
         obj_id: Object ID.
-    """
+    """  # noqa: E501
 
     cache_dir: pathlib.Path
     obj_id: uuid.UUID
@@ -60,6 +60,9 @@ class Identifier(NamedTuple):
 
 class PickleFileTransformer:
     """Pickle file object transformer.
+
+    Transforms objects by pickling the object and writing the pickled object
+    to a file.
 
     Args:
         cache_dir: Directory to store pickled objects in.
@@ -77,9 +80,9 @@ class PickleFileTransformer:
 
     def is_identifier(self, obj: Any) -> bool:
         """Check if the object is an identifier instance."""
-        return isinstance(obj, Identifier)
+        return isinstance(obj, PickleFileIdentifier)
 
-    def transform(self, obj: T) -> Identifier:
+    def transform(self, obj: T) -> PickleFileIdentifier:
         """Transform the object into an identifier.
 
         Args:
@@ -88,7 +91,7 @@ class PickleFileTransformer:
         Returns:
             Identifier object that can be used to resolve `obj`.
         """
-        identifier = Identifier(self.cache_dir, uuid.uuid4())
+        identifier = PickleFileIdentifier(self.cache_dir, uuid.uuid4())
         filepath = identifier.path()
         filepath.parent.mkdir(parents=True, exist_ok=True)
 
@@ -97,7 +100,7 @@ class PickleFileTransformer:
 
         return identifier
 
-    def resolve(self, identifier: Identifier) -> Any:
+    def resolve(self, identifier: PickleFileIdentifier) -> Any:
         """Resolve an object from an identifier.
 
         Args:
