@@ -5,34 +5,16 @@ import pickle
 import re
 import sys
 from typing import Any
-from typing import Protocol
-from typing import runtime_checkable
+from typing import List
+from typing import Literal
+from typing import Optional
 from typing import Sequence
 
+from pydantic import Field
 
-@runtime_checkable
-class Filter(Protocol):
-    """Filter protocol."""
-
-    def __call__(self, obj: Any) -> bool:
-        """Check if an abject passes through the filter."""
-        ...
-
-
-class AllFilter:
-    """All filter that lets all objects pass through."""
-
-    def __call__(self, obj: Any) -> bool:
-        """Check if an object passes through the filter."""
-        return True
-
-
-class NullFilter:
-    """Null filter that lets no objects pass through."""
-
-    def __call__(self, obj: Any) -> bool:
-        """Check if an object passes through the filter."""
-        return False
+from taps.filter.protocol import Filter
+from taps.filter.protocol import FilterConfig
+from taps.plugins import register
 
 
 class ObjectSizeFilter:
@@ -68,6 +50,28 @@ class ObjectSizeFilter:
         return self.min_bytes <= size <= self.max_bytes
 
 
+@register('filter')
+class ObjectSizeFilterConfig(FilterConfig):
+    """Object size filter configuration."""
+
+    name: Literal['object-size'] = Field(
+        'object-size',
+        description='name of filter type',
+    )
+    min_size: int = Field(0, description='minimum object size in bytes')
+    max_size: float = Field(
+        math.inf,
+        description='maximum object size in bytes',
+    )
+
+    def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
+        return ObjectSizeFilter(
+            min_bytes=self.min_size,
+            max_bytes=self.max_size,
+        )
+
+
 class ObjectTypeFilter:
     """Object type filter.
 
@@ -101,6 +105,24 @@ class ObjectTypeFilter:
         return False
 
 
+@register('filter')
+class ObjectTypeFilterConfig(FilterConfig):
+    """Object type filter configuration."""
+
+    name: Literal['object-type'] = Field(
+        'object-type',
+        description='name of filter type',
+    )
+    patterns: Optional[List[str]] = Field(  # noqa: UP006,UP007
+        None,
+        description='list of patterns to match against type names',
+    )
+
+    def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
+        return ObjectTypeFilter(patterns=self.patterns)
+
+
 class PickleSizeFilter:
     """Object size filter.
 
@@ -130,3 +152,25 @@ class PickleSizeFilter:
         """Check if an object passes through the filter."""
         size = len(pickle.dumps(obj))
         return self.min_bytes <= size <= self.max_bytes
+
+
+@register('filter')
+class PickleSizeFilterConfig(FilterConfig):
+    """Pickled object size filter configuration."""
+
+    name: Literal['pickle-size'] = Field(
+        'pickle-size',
+        description='name of filter type',
+    )
+    min_size: int = Field(0, description='minimum object size in bytes')
+    max_size: float = Field(
+        math.inf,
+        description='maximum object size in bytes',
+    )
+
+    def get_filter(self) -> Filter:
+        """Create a filter from the configuration."""
+        return PickleSizeFilter(
+            min_bytes=self.min_size,
+            max_bytes=self.max_size,
+        )
