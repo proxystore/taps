@@ -12,28 +12,28 @@
         <meta name="author" content="Globus Labs">
       
       
-        <link rel="canonical" href="https://taps.proxystore.dev/latest/apps/">
+        <link rel="canonical" href="https://taps.proxystore.dev/latest/guides/parsl/">
       
       
-        <link rel="prev" href="../get-started/">
+        <link rel="prev" href="../config/">
       
       
-        <link rel="next" href="cholesky/">
+        <link rel="next" href="../data/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.4.7">
     
     
       
-        <title>Apps - TaPS</title>
+        <title>Parsl Configuration - TaPS</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -52,13 +52,13 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../css/extra.css">
+      <link rel="stylesheet" href="../../css/extra.css">
     
-      <link rel="stylesheet" href="../css/mkdocstrings.css">
+      <link rel="stylesheet" href="../../css/mkdocstrings.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#applications" class="md-skip">
+        <a href="#parsl-configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -105,7 +105,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="TaPS" class="md-header__button md-logo" aria-label="TaPS" data-md-component="logo">
+    <a href="../.." title="TaPS" class="md-header__button md-logo" aria-label="TaPS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Apps
+              Parsl Configuration
             
           </span>
         </div>
@@ -248,7 +248,7 @@
     
     
       <li class="md-tabs__item">
-        <a href=".." class="md-tabs__link">
+        <a href="../.." class="md-tabs__link">
           
   
   Home
@@ -262,11 +262,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../apps/" class="md-tabs__link">
         
   
     
@@ -281,9 +279,11 @@
         
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../guides/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../" class="md-tabs__link">
         
   
     
@@ -308,7 +308,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../api/" class="md-tabs__link">
+        <a href="../../api/" class="md-tabs__link">
           
   
   API Reference
@@ -327,7 +327,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../contributing/" class="md-tabs__link">
+      <a href="../../contributing/" class="md-tabs__link">
         
   
     
@@ -361,7 +361,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="TaPS" class="md-nav__button md-logo" aria-label="TaPS" data-md-component="logo">
+    <a href="../.." title="TaPS" class="md-nav__button md-logo" aria-label="TaPS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -429,7 +429,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -449,7 +449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../get-started/" class="md-nav__link">
+      <a href="../../get-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -514,8 +514,6 @@
       
   
   
-    
-  
   
     
     
@@ -525,17 +523,17 @@
       
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../apps/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -546,13 +544,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_2" id="__nav_2_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Apps
@@ -565,7 +563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="cholesky/" class="md-nav__link">
+      <a href="../../apps/cholesky/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -585,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docking/" class="md-nav__link">
+      <a href="../../apps/docking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -605,7 +603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="failures/" class="md-nav__link">
+      <a href="../../apps/failures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -625,7 +623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fedlearn/" class="md-nav__link">
+      <a href="../../apps/fedlearn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -645,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mapreduce/" class="md-nav__link">
+      <a href="../../apps/mapreduce/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -665,7 +663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="moldesign/" class="md-nav__link">
+      <a href="../../apps/moldesign/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -685,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="montage/" class="md-nav__link">
+      <a href="../../apps/montage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -705,7 +703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="synthetic/" class="md-nav__link">
+      <a href="../../apps/synthetic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -730,6 +728,8 @@
       
   
   
+    
+  
   
     
     
@@ -739,17 +739,17 @@
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../guides/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -766,7 +766,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Guides
@@ -779,7 +779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/apps/" class="md-nav__link">
+      <a href="../apps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -799,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/config/" class="md-nav__link">
+      <a href="../config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -817,9 +817,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../guides/parsl/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Parsl Configuration
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -828,6 +848,60 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parsl-local-config" class="md-nav__link">
+    parsl-local Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsl-htex-config" class="md-nav__link">
+    parsl-htex Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#polaris-at-alcf" class="md-nav__link">
+    Polaris at ALCF
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -839,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/data/" class="md-nav__link">
+      <a href="../data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -859,7 +933,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/executor/" class="md-nav__link">
+      <a href="../executor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -964,7 +1038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
+      <a href="../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -998,7 +1072,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/apps/" class="md-nav__link ">
+            <a href="../../api/apps/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1028,7 +1102,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/cholesky/" class="md-nav__link">
+      <a href="../../api/apps/cholesky/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1062,7 +1136,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/apps/configs/" class="md-nav__link ">
+            <a href="../../api/apps/configs/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1092,7 +1166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/cholesky/" class="md-nav__link">
+      <a href="../../api/apps/configs/cholesky/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1112,7 +1186,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/docking/" class="md-nav__link">
+      <a href="../../api/apps/configs/docking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1132,7 +1206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/failures/" class="md-nav__link">
+      <a href="../../api/apps/configs/failures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1152,7 +1226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/fedlearn/" class="md-nav__link">
+      <a href="../../api/apps/configs/fedlearn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1172,7 +1246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/mapreduce/" class="md-nav__link">
+      <a href="../../api/apps/configs/mapreduce/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1192,7 +1266,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/moldesign/" class="md-nav__link">
+      <a href="../../api/apps/configs/moldesign/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1212,7 +1286,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/montage/" class="md-nav__link">
+      <a href="../../api/apps/configs/montage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1232,7 +1306,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/configs/synthetic/" class="md-nav__link">
+      <a href="../../api/apps/configs/synthetic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1274,7 +1348,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/apps/docking/" class="md-nav__link ">
+            <a href="../../api/apps/docking/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1304,7 +1378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/docking/app/" class="md-nav__link">
+      <a href="../../api/apps/docking/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1324,7 +1398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/docking/data/" class="md-nav__link">
+      <a href="../../api/apps/docking/data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1344,7 +1418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/docking/train/" class="md-nav__link">
+      <a href="../../api/apps/docking/train/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1386,7 +1460,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/apps/failures/" class="md-nav__link ">
+            <a href="../../api/apps/failures/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1416,7 +1490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/failures/app/" class="md-nav__link">
+      <a href="../../api/apps/failures/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1436,7 +1510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/failures/types/" class="md-nav__link">
+      <a href="../../api/apps/failures/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1478,7 +1552,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/apps/fedlearn/" class="md-nav__link ">
+            <a href="../../api/apps/fedlearn/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1508,7 +1582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/fedlearn/app/" class="md-nav__link">
+      <a href="../../api/apps/fedlearn/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1528,7 +1602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/fedlearn/modules/" class="md-nav__link">
+      <a href="../../api/apps/fedlearn/modules/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1548,7 +1622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/fedlearn/tasks/" class="md-nav__link">
+      <a href="../../api/apps/fedlearn/tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1568,7 +1642,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/fedlearn/types/" class="md-nav__link">
+      <a href="../../api/apps/fedlearn/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1588,7 +1662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/fedlearn/utils/" class="md-nav__link">
+      <a href="../../api/apps/fedlearn/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1616,7 +1690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/mapreduce/" class="md-nav__link">
+      <a href="../../api/apps/mapreduce/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1650,7 +1724,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/apps/moldesign/" class="md-nav__link ">
+            <a href="../../api/apps/moldesign/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1680,7 +1754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/moldesign/app/" class="md-nav__link">
+      <a href="../../api/apps/moldesign/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1700,7 +1774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/moldesign/chemfunctions/" class="md-nav__link">
+      <a href="../../api/apps/moldesign/chemfunctions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1720,7 +1794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/moldesign/tasks/" class="md-nav__link">
+      <a href="../../api/apps/moldesign/tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1748,7 +1822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/montage/" class="md-nav__link">
+      <a href="../../api/apps/montage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1768,7 +1842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/apps/synthetic/" class="md-nav__link">
+      <a href="../../api/apps/synthetic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1796,7 +1870,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/engine/" class="md-nav__link">
+      <a href="../../api/engine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1830,7 +1904,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/executor/" class="md-nav__link ">
+            <a href="../../api/executor/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1860,7 +1934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/executor/dask/" class="md-nav__link">
+      <a href="../../api/executor/dask/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1880,7 +1954,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/executor/globus/" class="md-nav__link">
+      <a href="../../api/executor/globus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1900,7 +1974,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/executor/parsl/" class="md-nav__link">
+      <a href="../../api/executor/parsl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1920,7 +1994,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/executor/python/" class="md-nav__link">
+      <a href="../../api/executor/python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1940,7 +2014,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/executor/ray/" class="md-nav__link">
+      <a href="../../api/executor/ray/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1960,7 +2034,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/executor/utils/" class="md-nav__link">
+      <a href="../../api/executor/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1988,7 +2062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/filter/" class="md-nav__link">
+      <a href="../../api/filter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2008,7 +2082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/logging/" class="md-nav__link">
+      <a href="../../api/logging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2028,7 +2102,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/plugins/" class="md-nav__link">
+      <a href="../../api/plugins/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2048,7 +2122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/record/" class="md-nav__link">
+      <a href="../../api/record/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2082,7 +2156,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/run/" class="md-nav__link ">
+            <a href="../../api/run/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2112,7 +2186,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/run/config/" class="md-nav__link">
+      <a href="../../api/run/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2132,7 +2206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/run/env/" class="md-nav__link">
+      <a href="../../api/run/env/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2152,7 +2226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/run/main/" class="md-nav__link">
+      <a href="../../api/run/main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2172,7 +2246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/run/parse/" class="md-nav__link">
+      <a href="../../api/run/parse/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2192,7 +2266,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/run/utils/" class="md-nav__link">
+      <a href="../../api/run/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2220,7 +2294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/transformer/" class="md-nav__link">
+      <a href="../../api/transformer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2272,7 +2346,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../contributing/" class="md-nav__link ">
+            <a href="../../contributing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2302,7 +2376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/style-guide/" class="md-nav__link">
+      <a href="../../contributing/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2322,7 +2396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/issues-pull-requests/" class="md-nav__link">
+      <a href="../../contributing/issues-pull-requests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2342,7 +2416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/releases/" class="md-nav__link">
+      <a href="../../contributing/releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2383,6 +2457,48 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parsl-local-config" class="md-nav__link">
+    parsl-local Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsl-htex-config" class="md-nav__link">
+    parsl-htex Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#polaris-at-alcf" class="md-nav__link">
+    Polaris at ALCF
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2399,75 +2515,107 @@
   
 
 
-<h1 id="applications">Applications<a class="headerlink" href="#applications" title="Permanent link">&para;</a></h1>
-<p>TaPS provides a diverse set of parallel and distributed applications for benchmarking.
-These applications, summarized below, span many domains, datasets, and structures to support comprehensive performance evaluation of existing and future systems.</p>
-<p><img alt="Application Structures" src="../static/app-structures.svg" /></p>
-<blockquote>
-<p>Example task dependency diagrams of various applications provided by TaPS.
-In most applications, the exact structure depends on the application configuration.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Application</th>
-<th>Domain</th>
-<th>Task Type(s)</th>
-<th>Data Format(s)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="cholesky/">Cholesky Factorization</a></td>
-<td>Linear Algebra</td>
-<td>Python Functions</td>
-<td>In-memory</td>
-</tr>
-<tr>
-<td><a href="docking/">Docking Proteins</a></td>
-<td>Drug Discovery</td>
-<td>Executable, Python Functions</td>
-<td>File</td>
-</tr>
-<tr>
-<td><a href="failures/">Failure Injection</a></td>
-<td>N/A</td>
-<td>Any</td>
-<td>Any</td>
-</tr>
-<tr>
-<td><a href="fedlearn/">Federated Learning</a></td>
-<td>Machine Learning</td>
-<td>Python Functions</td>
-<td>In-memory</td>
-</tr>
-<tr>
-<td><a href="mapreduce/">MapReduce</a></td>
-<td>Text Analysis</td>
-<td>Python Functions</td>
-<td>File, In-memory</td>
-</tr>
-<tr>
-<td><a href="moldesign/">Molecular Design</a></td>
-<td>Molecular Design</td>
-<td>Python Functions</td>
-<td>In-memory</td>
-</tr>
-<tr>
-<td><a href="montage/">Montage</a></td>
-<td>Astronomy</td>
-<td>Executable</td>
-<td>File</td>
-</tr>
-<tr>
-<td><a href="synthetic/">Synthetic</a></td>
-<td>N/A</td>
-<td>Python Functions</td>
-<td>In-memory</td>
-</tr>
-</tbody>
-</table>
-<p>Check out the application specific guides for more information and instructions.</p>
+<h1 id="parsl-configuration">Parsl Configuration<a class="headerlink" href="#parsl-configuration" title="Permanent link">&para;</a></h1>
+<p>TaPS provides (as of writing) two different executor configuration types for using <a href="https://github.com/parsl/parsl" target="_blank">Parsl</a>: <code>parsl-local</code> and <code>parsl-htex</code>.</p>
+<h2 id="parsl-local-config"><code>parsl-local</code> Config<a class="headerlink" href="#parsl-local-config" title="Permanent link">&para;</a></h2>
+<p>The <code>parsl-local</code> executor is the easiest way to run a benchmark using Parsl as the executor.
+The <code>parsl-local</code> executor corresponds to the <a class="autorefs autorefs-internal" href="../../api/executor/parsl/#taps.executor.parsl.ParslLocalConfig"><code>ParslLocalConfig</code></a> which creates a <a class="autorefs autorefs-external" href="https://parsl.readthedocs.io/en/stable/stubs/parsl.executors.HighThroughputExecutor.html#parsl.executors.HighThroughputExecutor"><code>HighThroughputExecutor</code></a> configured on the local node.</p>
+<p>For example, configuring Parsl on the local node with eight workers is easy.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>--app<span class="w"> </span>cholesky<span class="w"> </span>--app.matrix_size<span class="w"> </span><span class="m">100</span><span class="w"> </span>--app.block_size<span class="w"> </span><span class="m">25</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--engine.executor<span class="w"> </span>parsl-local<span class="w"> </span>--engine.executor.workers<span class="w"> </span><span class="m">8</span>
+</span></code></pre></div></p>
+<h2 id="parsl-htex-config"><code>parsl-htex</code> Config<a class="headerlink" href="#parsl-htex-config" title="Permanent link">&para;</a></h2>
+<p>More advanced Parsl configurations will need to use the <code>parsl-htex</code> executor which corresponds to the <a class="autorefs autorefs-internal" href="../../api/executor/parsl/#taps.executor.parsl.ParslHTExConfig"><code>ParslHTExConfig</code></a>.
+The <code>parsl-htex</code> executor still creates a <a class="autorefs autorefs-external" href="https://parsl.readthedocs.io/en/stable/stubs/parsl.executors.HighThroughputExecutor.html#parsl.executors.HighThroughputExecutor"><code>HighThroughputExecutor</code></a>, but the full configuration options are exposed (e.g., addresses, providers, launchers, etc.).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Due to the complexity of configuring the <code>parsl-htex</code>, a <a href="../config/#toml-configuration">TOML configuration file</a> should be used.
+Not all Parsl configuration options will be available in the CLI parser arguments.</p>
+</div>
+<p>The following is a simple configuration that mostly defaults to the defaults set in Parsl's <a class="autorefs autorefs-external" href="https://parsl.readthedocs.io/en/stable/stubs/parsl.executors.HighThroughputExecutor.html#parsl.executors.HighThroughputExecutor"><code>HighThroughputExecutor</code></a>, except for <code>max_workers_per_node</code> and <code>address</code> which are specified.</p>
+<div class="language-toml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">parsl-config.toml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span>
+<span class="normal"><a href="#__codelineno-1-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">[engine.executor]</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;parsl-htex&quot;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="k">[engine.executor.htex]</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="n">max_workers_per_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="k">[engine.executor.htex.address]</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;address_by_hostname&quot;</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span>--app<span class="w"> </span>cholesky<span class="w"> </span>--app.matrix_size<span class="w"> </span><span class="m">100</span><span class="w"> </span>--app.block_size<span class="w"> </span><span class="m">25</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span>--config<span class="w"> </span>parsl-config.toml
+</span></code></pre></div>
+<p>Extra options not explicitly defined in the various sub-configs of <a class="autorefs autorefs-internal" href="../../api/executor/parsl/#taps.executor.parsl.ParslHTExConfig"><code>ParslHTExConfig</code></a> can still be provided and will be passed as keyword arguments to the corresponding Parsl classes.</p>
+<p>These configuration semantics are similar to the <a href="https://globus-compute.readthedocs.io/en/latest/endpoints/endpoint_examples.html#globuscomputeengine" target="_blank"><code>GlobusComputeEngine</code></a> which wraps Parl's <a class="autorefs autorefs-external" href="https://parsl.readthedocs.io/en/stable/stubs/parsl.executors.HighThroughputExecutor.html#parsl.executors.HighThroughputExecutor"><code>HighThroughputExecutor</code></a>.</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="polaris-at-alcf">Polaris at ALCF<a class="headerlink" href="#polaris-at-alcf" title="Permanent link">&para;</a></h3>
+<p>The following configuration is an example for the <a href="https://www.alcf.anl.gov/polaris" target="_blank">Polaris GPU cluster at ALCF</a>.
+The configuration is based on the <a href="https://globus-compute.readthedocs.io/en/latest/endpoints/endpoint_examples.html#polaris-alcf">Globus Compute endpoint</a> example.</p>
+<div class="language-toml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">parsl-config.toml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span>
+<span class="normal"><a href="#__codelineno-3-19">19</a></span>
+<span class="normal"><a href="#__codelineno-3-20">20</a></span>
+<span class="normal"><a href="#__codelineno-3-21">21</a></span>
+<span class="normal"><a href="#__codelineno-3-22">22</a></span>
+<span class="normal"><a href="#__codelineno-3-23">23</a></span>
+<span class="normal"><a href="#__codelineno-3-24">24</a></span>
+<span class="normal"><a href="#__codelineno-3-25">25</a></span>
+<span class="normal"><a href="#__codelineno-3-26">26</a></span>
+<span class="normal"><a href="#__codelineno-3-27">27</a></span>
+<span class="normal"><a href="#__codelineno-3-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">[engine.executor]</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;parsl-htex&quot;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="k">[engine.executor.htex]</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="n">max_workers_per_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="k">[engine.executor.htex.address]</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;address_by_interface&quot;</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="n">ifname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;bond0&quot;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="k">[engine.executor.htex.provider]</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;PBSProProvider&quot;</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="n">account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="err">{</span><span class="w"> </span><span class="n">ALCF_ALLOCATION</span><span class="w"> </span><span class="p">}</span><span class="err">}</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="n">cpus_per_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="n">init_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="n">max_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="n">min_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="n">nodes_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;debug-scaling&quot;</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="n">scheduler_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;#PBS -l filesystems=home:grand:eagle&quot;</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="n">select_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ngpus=4&quot;</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="n">walltime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;01:00:00&quot;</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="n">worker_init</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="err">{</span><span class="w"> </span><span class="n">COMMAND_STRING</span><span class="w"> </span><span class="p">}</span><span class="err">}</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24"></a>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25"></a><span class="k">[engine.executor.htex.provider.launcher]</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MpiExecLauncher&quot;</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27"></a><span class="n">bind_cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;--cpu-bind&quot;</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28"></a><span class="n">overrides</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;--depth=64 --ppn=1&quot;</span>
+</span></code></pre></div></td></tr></table></div>
 
 
 
@@ -2516,12 +2664,12 @@ In most applications, the exact structure depends on the application configurati
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.aecac24b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
