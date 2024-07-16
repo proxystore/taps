@@ -4,6 +4,7 @@ import pathlib
 import sys
 from datetime import datetime
 from datetime import timedelta
+from unittest import mock
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     import tomllib
@@ -98,3 +99,49 @@ def test_make_run_dir(tmp_path: pathlib.Path) -> None:
     # Check timestamp is < 5 seconds from now
     timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d-%H-%M-%S')
     assert datetime.now() - timestamp < timedelta(seconds=5)
+
+
+def test_read_parsl_htex_config(tmp_path: pathlib.Path) -> None:
+    config_toml = tmp_path / 'config.toml'
+
+    config_raw = f"""\
+[app]
+name = "mock-app"
+
+[engine.executor]
+name = "parsl-htex"
+retries = 3
+strategy = "none"
+run_dir = "{tmp_path / 'parsl'!s}"
+
+[engine.executor.htex]
+worker_ports = [0, 0]
+max_workers_per_node = 4
+cores_per_worker = 2
+
+[engine.executor.htex.provider]
+kind = "PBSProProvider"
+account = "test-account"
+cpus_per_node = 8
+queue = "debug"
+
+[engine.executor.htex.provider.launcher]
+kind = "MpiExecLauncher"
+bind_cmd = "--cpu-bind"
+overrides = "--depth=8 --ppn=4"
+
+[engine.executor.htex.address]
+kind = "address_by_interface"
+ifname = "bond0"
+"""
+
+    with open(config_toml, 'w') as f:
+        f.write(config_raw)
+
+    config = Config.from_toml(config_toml)
+
+    with mock.patch.object(
+        config.engine.executor.htex,  # type: ignore[attr-defined]
+        'get_executor',
+    ):
+        config.engine.executor.get_executor()
