@@ -53,6 +53,11 @@ c: 'baz'\
     assert prettify_mapping(data) == expected
 
 
+def test_prettify_mapping_empty() -> None:
+    assert prettify_mapping({}) == ''
+    assert prettify_mapping({'a': {}}) == 'a:'
+
+
 @pytest.mark.parametrize('pass_model', (True, False))
 def test_prettify_validation_error(pass_model: bool) -> None:
     try:

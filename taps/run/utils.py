@@ -101,7 +101,8 @@ def prettify_mapping(
 
         if isinstance(value, Mapping):
             lines.append(f'{space}{key}:')
-            lines.append(prettify_mapping(value, level + 1, indent))
+            if len(value) > 0:
+                lines.append(prettify_mapping(value, level + 1, indent))
         else:
             lines.append(f'{space}{key}: {value!r}')
 
