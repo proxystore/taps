@@ -1,17 +1,27 @@
 from __future__ import annotations
 
 import os
+import pathlib
 import uuid
 from typing import Any
 
 import pytest
 from pydantic import ValidationError
 
+from taps.run.utils import change_cwd
 from taps.run.utils import flatten_mapping
 from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
 from taps.run.utils import update_environment
 from testing.app import MockAppConfig
+
+
+def test_change_cwd(tmp_path: pathlib.Path) -> None:
+    origin = pathlib.Path.cwd()
+    with change_cwd(tmp_path) as yielded:
+        assert pathlib.Path.cwd() == tmp_path == yielded
+        assert pathlib.Path.cwd() != origin
+    assert pathlib.Path.cwd() == origin
 
 
 @pytest.mark.parametrize(

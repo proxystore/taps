@@ -3,7 +3,6 @@ from __future__ import annotations
 import contextlib
 import functools
 import logging
-import os
 import pathlib
 import sys
 import time
@@ -19,6 +18,7 @@ from taps.run.config import Config
 from taps.run.config import make_run_dir
 from taps.run.env import Environment
 from taps.run.parse import parse_args_to_config
+from taps.run.utils import change_cwd
 from taps.run.utils import prettify_mapping
 from taps.run.utils import prettify_validation_error
 from taps.run.utils import update_environment
@@ -31,12 +31,8 @@ def _cwd_run_dir(
 ) -> Callable[[Config, pathlib.Path], None]:
     @functools.wraps(func)
     def _decorator(config: Config, run_dir: pathlib.Path) -> None:
-        origin = pathlib.Path().absolute()
-        try:
-            os.chdir(run_dir)
-            func(config, run_dir)
-        finally:
-            os.chdir(origin)
+        with change_cwd(run_dir):
+            return func(config, run_dir)
 
     return _decorator
 
