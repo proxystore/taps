@@ -28,6 +28,20 @@ T = TypeVar('T')
 logger = logging.getLogger(__name__)
 
 
+class _ParentDependencyError(Exception):
+    pass
+
+
+def _dependency_failure_parent_task(
+    failure_rate: float,
+) -> Callable[[], None]:
+    def dependency_failure_parent() -> None:
+        if random.random() <= failure_rate:
+            raise _ParentDependencyError('Simulated failure in parent task.')
+
+    return dependency_failure_parent
+
+
 class _FailureInjectionEngine(Engine):
     def __init__(
         self,
@@ -39,6 +53,9 @@ class _FailureInjectionEngine(Engine):
         self.failure_rate = failure_rate
         self.failure_type = failure_type
 
+        self._dependency_failure_parent_task = _dependency_failure_parent_task(
+            self.failure_rate,
+        )
         self._failure_tasks: dict[
             tuple[FailureType, Callable[[Any], Any]],
             Callable[[Any], Any],
@@ -47,7 +64,7 @@ class _FailureInjectionEngine(Engine):
     def create_failure_task(
         self,
         task: Callable[P, T],
-    ) -> Callable[P, T]:
+    ) -> tuple[Callable[[Any], T], FailureType]:
         failure_type = self.failure_type
         if failure_type == FailureType.RANDOM:
             options = [f.value for f in FailureType]
@@ -56,20 +73,27 @@ class _FailureInjectionEngine(Engine):
 
         failure_task = self._failure_tasks.get((failure_type, task), None)
         if failure_task is not None:
-            return cast(Callable[P, T], failure_task)
+            return cast(Callable[P, T], failure_task), failure_type
 
-        failure_rate = self.failure_rate
-        failure_function = FAILURE_FUNCTIONS[failure_type]
+        if failure_type == FailureType.DEPENDENCY:
 
-        @functools.wraps(task)
-        def _wrapped(*args: P.args, **kwargs: P.kwargs) -> T:
-            if random.random() <= failure_rate:
-                failure_function()
+            @functools.wraps(task)
+            def _wrapped(parent: Any, *args: P.args, **kwargs: P.kwargs) -> T:
+                return task(*args, **kwargs)
 
-            return task(*args, **kwargs)
+        else:
+            failure_rate = self.failure_rate
+            failure_function = FAILURE_FUNCTIONS[failure_type]
+
+            @functools.wraps(task)
+            def _wrapped(*args: P.args, **kwargs: P.kwargs) -> T:
+                if random.random() <= failure_rate:
+                    failure_function()
+
+                return task(*args, **kwargs)
 
         self._failure_tasks[(failure_type, task)] = _wrapped
-        return _wrapped
+        return _wrapped, failure_type
 
     def submit(
         self,
@@ -78,18 +102,17 @@ class _FailureInjectionEngine(Engine):
         *args: Any,
         **kwargs: Any,
     ) -> TaskFuture[T]:
-        if self.failure_type == FailureType.DEPENDENCY:
+        wrapped, failure_type = self.create_failure_task(function)
+
+        if failure_type == FailureType.DEPENDENCY:
             # Submit a parent task that will raise an exception.
-            parent_task = self.engine.submit(
-                FAILURE_FUNCTIONS[FailureType.FAILURE],
-            )
+            parent = self.engine.submit(self._dependency_failure_parent_task)
             # Pass the future of the parent to the actual task. The
             # underlying executor will wait on the parent_task future, see
             # that it error, and then act appropriately.
-            return self.engine.submit(function, parent_task, *args, **kwargs)
+            return self.engine.submit(wrapped, parent, *args, **kwargs)
         else:
-            fail_function = self.create_failure_task(function)
-            return self.engine.submit(fail_function, *args, **kwargs)
+            return self.engine.submit(wrapped, *args, **kwargs)
 
     def shutdown(
         self,
