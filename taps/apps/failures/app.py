@@ -18,8 +18,8 @@ else:  # pragma: <3.10 cover
 from taps.apps import AppConfig
 from taps.apps.failures.types import FAILURE_FUNCTIONS
 from taps.apps.failures.types import FailureType
+from taps.engine import Engine
 from taps.engine import TaskFuture
-from taps.engine.engine import Engine
 from taps.logging import APP_LOG_LEVEL
 
 P = ParamSpec('P')
@@ -58,13 +58,14 @@ class _FailureInjectionEngine(Engine):
         if failure_task is not None:
             return cast(Callable[P, T], failure_task)
 
+        failure_rate = self.failure_rate
         failure_function = FAILURE_FUNCTIONS[failure_type]
 
         @functools.wraps(task)
         def _wrapped(*args: P.args, **kwargs: P.kwargs) -> T:
-            failure_function()
-            # Typically the above failure should prevent the task
-            # from actually executing.
+            if random.random() <= failure_rate:
+                failure_function()
+
             return task(*args, **kwargs)
 
         self._failure_tasks[(failure_type, task)] = _wrapped
@@ -77,9 +78,6 @@ class _FailureInjectionEngine(Engine):
         *args: Any,
         **kwargs: Any,
     ) -> TaskFuture[T]:
-        if random.random() > self.failure_rate:
-            return self.engine.submit(function, *args, **kwargs)
-
         if self.failure_type == FailureType.DEPENDENCY:
             # Submit a parent task that will raise an exception.
             parent_task = self.engine.submit(
@@ -99,7 +97,9 @@ class _FailureInjectionEngine(Engine):
         *,
         cancel_futures: bool = False,
     ) -> None:
-        self.engine.shutdown(wait=wait, cancel_futures=cancel_futures)
+        # Do not close self.engine here because that is the responsibility
+        # of the caller of FailureInjectionApp.run().
+        pass
 
 
 class FailureInjectionApp:
