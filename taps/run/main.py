@@ -54,9 +54,18 @@ def _log_config(config: Config) -> None:
 def run(config: Config, run_dir: pathlib.Path) -> None:
     """Run an application using the configuration.
 
-    This function changes the current working directory to
-    `config.run.run_dir` so that all paths are relative to the current
-    working directory.
+    This helper method (1) logs and writes the configuration to the run
+    directory, (2), configures the benchmark app, (3) creates the engine,
+    (4) runs the application, and (5) cleans up all resources afterwards.
+
+    Note:
+        This function changes the current working directory to
+        `config.run.run_dir` so that all paths are relative to the current
+        working directory.
+
+    Args:
+        config: Benchmark configuration.
+        run_dir: Run directory to use.
     """
     start = time.perf_counter()
 
