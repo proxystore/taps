@@ -190,10 +190,12 @@ class FedlearnApp:
 
         size = int(max(1, len(self.clients) * self.participation))
         assert 1 <= size <= len(self.clients)
-        selected_clients = self.rng.choice(
-            self.clients,
-            size=size,
-            replace=False,
+        selected_clients = list(
+            self.rng.choice(
+                np.asarray(self.clients),
+                size=size,
+                replace=False,
+            ),
         )
 
         for client in selected_clients:

@@ -95,7 +95,7 @@ class ParslHTExConfig(TapsExecutorConfig):
     name: Literal['parsl-htex'] = 'parsl-htex'
     htex: HTExConfig = Field()
     app_cache: Optional[bool] = Field(  # noqa: UP007
-        True,
+        None,
         description='enable app caching',
     )
     retries: int = Field(
@@ -103,11 +103,11 @@ class ParslHTExConfig(TapsExecutorConfig):
         description='number of task retries in case of task failure',
     )
     strategy: Optional[str] = Field(  # noqa: UP007
-        'simple',
+        None,
         description='block scaling strategy',
     )
     max_idletime: Optional[float] = Field(  # noqa: UP007
-        120.0,
+        None,
         description='max idle time before strategy can shutdown unused blocks',
     )
     run_dir: str = Field(
@@ -117,14 +117,12 @@ class ParslHTExConfig(TapsExecutorConfig):
 
     def get_executor(self) -> ParslPoolExecutor:
         """Create an executor instance from the config."""
+        options = self.model_dump(exclude={'name', 'htex'}, exclude_none=True)
+
         config = Config(
             executors=[self.htex.get_executor()],
-            app_cache=self.app_cache,
-            retries=self.retries,
-            strategy=self.strategy,
-            max_idletime=self.max_idletime,
-            run_dir=self.run_dir,
             initialize_logging=False,
+            **options,
         )
         return ParslPoolExecutor(config)
 

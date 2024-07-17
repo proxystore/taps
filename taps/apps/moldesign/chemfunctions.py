@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 from ase.io import read
 from ase.optimize import LBFGSLineSearch
+from numpy.typing import NDArray
 from rdkit import Chem
 from rdkit import DataStructs
 from rdkit.Chem import AllChem
@@ -133,7 +134,7 @@ def compute_morgan_fingerprints(
     smiles: str,
     fingerprint_length: int,
     fingerprint_radius: int,
-) -> np.ndarray:
+) -> NDArray[np.bool]:
     """Get Morgan Fingerprint of a specific SMILES string.
 
     Adapted from:

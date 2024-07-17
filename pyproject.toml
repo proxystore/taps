@@ -51,6 +51,7 @@ dev = [
     "pytest-cov",
     "ruff>=0.2.0",
     "tox",
+    "types-psutil",
     "types-requests",
     "virtualenv",
 ]

@@ -9,21 +9,16 @@ from typing import Optional
 from typing import Union
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
-    from typing import Self
-else:  # pragma: <3.11 cover
-    from typing_extensions import Self
-
-if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     import tomllib
 else:  # pragma: <3.11 cover
     import tomli as tomllib
 
 import tomli_w
 from pydantic import BaseModel
-from pydantic import ConfigDict
 from pydantic import create_model
 from pydantic import Field
 from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
 import taps
 from taps.apps import AppConfig
@@ -94,7 +89,7 @@ class Config(BaseSettings):
             log a warning that behavior could be different.
     """
 
-    model_config = ConfigDict(
+    model_config = SettingsConfigDict(
         extra='forbid',
         validate_default=True,
         validate_return=True,
@@ -128,7 +123,7 @@ class Config(BaseSettings):
         )
 
     @classmethod
-    def from_toml(cls, filepath: str | pathlib.Path) -> Self:
+    def from_toml(cls, filepath: str | pathlib.Path) -> Config:
         """Load a configuration from a TOML file."""
         with open(filepath, 'rb') as f:
             options = tomllib.load(f)

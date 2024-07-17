@@ -38,7 +38,7 @@ def test_create_config_manual_plugins() -> None:
 
 def test_config_forbids_extra_args() -> None:
     with pytest.raises(ValidationError, match='unknown_options'):
-        Config(app=MockAppConfig(), unknown_options=True)
+        Config(app=MockAppConfig(), unknown_options=True)  # type: ignore[call-arg]
 
 
 def test_config_equality() -> None:

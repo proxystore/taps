@@ -4,8 +4,15 @@ from __future__ import annotations
 
 import logging
 import pathlib
+import sys
+
+if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
+    from typing import TypeAlias
+else:  # pragma: <3.10 cover
+    from typing_extensions import TypeAlias
 
 import numpy as np
+from numpy.typing import NDArray
 
 from taps.engine import Engine
 from taps.engine import TaskFuture
@@ -13,28 +20,30 @@ from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
+Array: TypeAlias = NDArray[np.float64]
 
-def potrf(tile: np.ndarray) -> np.ndarray:
+
+def potrf(tile: Array) -> Array:
     """POTRF task."""
     return np.linalg.cholesky(tile)
 
 
-def trsm(lower: np.ndarray, block: np.ndarray) -> np.ndarray:
+def trsm(lower: Array, block: Array) -> Array:
     """TRSM task."""
     return np.linalg.solve(lower, block.T).T
 
 
-def syrk(tile: np.ndarray, lower: np.ndarray) -> np.ndarray:
+def syrk(tile: Array, lower: Array) -> Array:
     """SYRK task."""
     return tile - np.dot(lower, lower.T)
 
 
-def gemm(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> np.ndarray:
+def gemm(a: Array, b: Array, c: Array) -> Array:
     """GEMM task."""
     return a - np.dot(b, c)
 
 
-def create_psd_matrix(n: int) -> np.ndarray:
+def create_psd_matrix(n: int) -> Array:
     """Create a positive semi-definite matrix.
 
     Args:
@@ -97,7 +106,7 @@ class CholeskyApp:
 
         for k in range(0, n, block_size):
             end_k = min(k + block_size, n)
-            lower_tasks: dict[tuple[int, int], TaskFuture[np.ndarray]] = {}
+            lower_tasks: dict[tuple[int, int], TaskFuture[Array]] = {}
 
             lower_tasks[(k, k)] = engine.submit(
                 potrf,
@@ -113,7 +122,7 @@ class CholeskyApp:
                     matrix[i:end_i, k:end_k],
                 )
 
-            gemm_tasks: dict[tuple[int, int], TaskFuture[np.ndarray]] = {}
+            gemm_tasks: dict[tuple[int, int], TaskFuture[Array]] = {}
 
             for i in range(k + block_size, n, block_size):
                 end_i = min(i + block_size, n)

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+from numpy.typing import NDArray
 from sklearn.base import BaseEstimator
 from sklearn.base import TransformerMixin
 from sklearn.pipeline import Pipeline
@@ -16,7 +17,7 @@ def compute_morgan_fingerprints(
     smiles: str,
     fingerprint_length: int,
     fingerprint_radius: int,
-) -> tuple[int, int]:
+) -> NDArray[np.bool]:
     """Get Morgan Fingerprint of a specific SMILES string.
 
     Adapted from: https://github.com/google-research/google-research/blob/>
@@ -64,7 +65,7 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
     def fit(
         self,
         X: list[str],  # noqa: N803
-        y: np.array[int] | None = None,
+        y: NDArray[np.bool] | None = None,
     ) -> MorganFingerprintTransformer:
         """Train model.
 
@@ -80,8 +81,8 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
     def transform(
         self,
         X: list[str],  # noqa: N803
-        y: np.array[int] | None = None,
-    ) -> np.array[int]:
+        y: NDArray[np.bool] | None = None,
+    ) -> list[NDArray[np.bool]]:
         """Compute the fingerprints.
 
         Args:
