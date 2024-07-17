@@ -18,6 +18,7 @@ else:  # pragma: <3.10 cover
 from taps.apps import AppConfig
 from taps.apps.failures.types import FAILURE_FUNCTIONS
 from taps.apps.failures.types import FailureType
+from taps.apps.failures.types import ParentDependencyError
 from taps.engine import Engine
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
@@ -28,16 +29,12 @@ T = TypeVar('T')
 logger = logging.getLogger(__name__)
 
 
-class _ParentDependencyError(Exception):
-    pass
-
-
 def _dependency_failure_parent_task(
     failure_rate: float,
 ) -> Callable[[], None]:
     def dependency_failure_parent() -> None:
         if random.random() <= failure_rate:
-            raise _ParentDependencyError('Simulated failure in parent task.')
+            raise ParentDependencyError('Simulated failure in parent task.')
 
     return dependency_failure_parent
 
@@ -65,11 +62,11 @@ class _FailureInjectionEngine(Engine):
         self,
         task: Callable[P, T],
     ) -> tuple[Callable[[Any], T], FailureType]:
-        failure_type = self.failure_type
-        if failure_type == FailureType.RANDOM:
-            options = [f.value for f in FailureType]
-            options.remove(FailureType.RANDOM.value)
-            failure_type = FailureType(random.choice(options))
+        failure_type = (
+            FailureType.random()
+            if self.failure_type is FailureType.RANDOM
+            else self.failure_type
+        )
 
         failure_task = self._failure_tasks.get((failure_type, task), None)
         if failure_task is not None:
