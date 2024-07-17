@@ -19,8 +19,8 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
 else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
-import numpy as np
-import pandas as pd
+import numpy
+import pandas
 from ase.io import read
 from ase.optimize import LBFGSLineSearch
 from numpy.typing import NDArray
@@ -123,7 +123,7 @@ def compute_vertical(smiles: str) -> float:
     neutral_energy = atoms.get_potential_energy()
 
     # Compute the energy of the relaxed geometry in charged form
-    charges = np.ones((len(atoms),)) * (1 / len(atoms))
+    charges = numpy.ones((len(atoms),)) * (1 / len(atoms))
     atoms.set_initial_charges(charges)
     charged_energy = atoms.get_potential_energy()
 
@@ -134,7 +134,7 @@ def compute_morgan_fingerprints(
     smiles: str,
     fingerprint_length: int,
     fingerprint_radius: int,
-) -> NDArray[np.bool]:
+) -> NDArray[numpy.bool]:
     """Get Morgan Fingerprint of a specific SMILES string.
 
     Adapted from:
@@ -158,10 +158,10 @@ def compute_morgan_fingerprints(
         fingerprint_radius,
         fingerprint_length,
     )
-    arr = np.zeros((1,), dtype=np.bool_)
+    arr = numpy.zeros((1,), dtype=numpy.bool_)
 
     # ConvertToNumpyArray takes ~ 0.19 ms, while
-    # np.asarray takes ~ 4.69 ms
+    # numpy.asarray takes ~ 4.69 ms
     DataStructs.ConvertToNumpyArray(fingerprint, arr)
     return arr
 
@@ -194,7 +194,7 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
         )
         with ProcessPoolExecutor(max_workers=n_workers) as pool:
             fing = list(pool.map(my_func, X, chunksize=2048))
-        return np.vstack(fing)
+        return numpy.vstack(fing)
 
 
 def train_model(smiles: list[str], properties: list[float]) -> Pipeline:
@@ -225,7 +225,7 @@ def train_model(smiles: list[str], properties: list[float]) -> Pipeline:
     return model.fit(smiles, properties)
 
 
-def run_model(model: Any, smiles: list[str]) -> pd.DataFrame:
+def run_model(model: Any, smiles: list[str]) -> pandas.DataFrame:
     """Run a model on a list of smiles strings.
 
     Args:
@@ -236,4 +236,4 @@ def run_model(model: Any, smiles: list[str]) -> pd.DataFrame:
         A dataframe with the molecules and their predicted outputs.
     """
     pred_y = model.predict(smiles)
-    return pd.DataFrame({'smiles': smiles, 'ie': pred_y})
+    return pandas.DataFrame({'smiles': smiles, 'ie': pred_y})

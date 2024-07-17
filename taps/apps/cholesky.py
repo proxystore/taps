@@ -11,7 +11,7 @@ if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
 else:  # pragma: <3.10 cover
     from typing_extensions import TypeAlias
 
-import numpy as np
+import numpy
 from numpy.typing import NDArray
 
 from taps.engine import Engine
@@ -20,27 +20,27 @@ from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
-Array: TypeAlias = NDArray[np.float64]
+Array: TypeAlias = NDArray[numpy.float64]
 
 
 def potrf(tile: Array) -> Array:
     """POTRF task."""
-    return np.linalg.cholesky(tile)
+    return numpy.linalg.cholesky(tile)
 
 
 def trsm(lower: Array, block: Array) -> Array:
     """TRSM task."""
-    return np.linalg.solve(lower, block.T).T
+    return numpy.linalg.solve(lower, block.T).T
 
 
 def syrk(tile: Array, lower: Array) -> Array:
     """SYRK task."""
-    return tile - np.dot(lower, lower.T)
+    return tile - numpy.dot(lower, lower.T)
 
 
 def gemm(a: Array, b: Array, c: Array) -> Array:
     """GEMM task."""
-    return a - np.dot(b, c)
+    return a - numpy.dot(b, c)
 
 
 def create_psd_matrix(n: int) -> Array:
@@ -52,9 +52,9 @@ def create_psd_matrix(n: int) -> Array:
     Returns:
         Random matrix that is positive semi-definite.
     """
-    psd = np.random.randn(n, n)
-    psd = np.dot(psd, psd.T)
-    psd += n * np.eye(n)
+    psd = numpy.random.randn(n, n)
+    psd = numpy.dot(psd, psd.T)
+    psd += n * numpy.eye(n)
     return psd
 
 
@@ -87,7 +87,7 @@ class CholeskyApp:
         max_print_size = 8
 
         matrix = create_psd_matrix(self.matrix_size)
-        lower = np.zeros_like(matrix)
+        lower = numpy.zeros_like(matrix)
 
         n = matrix.shape[0]
         block_size = min(self.block_size, n)
