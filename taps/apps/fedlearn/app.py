@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import pathlib
 
-import numpy as np
+import numpy
 import torch
 
 from taps.apps.fedlearn.modules import create_model
@@ -75,7 +75,7 @@ class FedlearnApp:
         participation: float = 1.0,
         seed: int | None = None,
     ) -> None:
-        self.rng = np.random.default_rng(seed)
+        self.rng = numpy.random.default_rng(seed)
         if seed is not None:
             torch.manual_seed(seed)
 
@@ -190,10 +190,12 @@ class FedlearnApp:
 
         size = int(max(1, len(self.clients) * self.participation))
         assert 1 <= size <= len(self.clients)
-        selected_clients = self.rng.choice(
-            self.clients,
-            size=size,
-            replace=False,
+        selected_clients = list(
+            self.rng.choice(
+                numpy.asarray(self.clients),
+                size=size,
+                replace=False,
+            ),
         )
 
         for client in selected_clients:

@@ -4,8 +4,8 @@ import logging
 import pathlib
 import time
 
-import numpy as np
-import pandas as pd
+import numpy
+import pandas
 from matplotlib import pyplot as plt
 
 from taps.apps.moldesign.chemfunctions import compute_vertical
@@ -59,7 +59,7 @@ class MoldesignApp:
         """
         start_time = time.monotonic()
 
-        search_space = pd.read_csv(self.dataset, sep='\\s+')
+        search_space = pandas.read_csv(self.dataset, sep='\\s+')
         logger.log(
             APP_LOG_LEVEL,
             f'Loaded search space (size={len(search_space):,})',
@@ -117,7 +117,7 @@ class MoldesignApp:
         logger.log(APP_LOG_LEVEL, 'Done computing initial set')
 
         # Create the initial training set as a
-        train_data = pd.DataFrame(train_data_list)
+        train_data = pandas.DataFrame(train_data_list)
         logger.log(
             APP_LOG_LEVEL,
             f'Created initial training set (size={len(train_data)})',
@@ -131,7 +131,7 @@ class MoldesignApp:
             logger.log(APP_LOG_LEVEL, 'Submitting inference tasks')
             inference_futures = [
                 engine.submit(run_model, train_future, chunk)
-                for chunk in np.array_split(search_space['smiles'], 64)
+                for chunk in numpy.array_split(search_space['smiles'], 64)
             ]
             predictions = engine.submit(
                 combine_inferences,
@@ -174,8 +174,8 @@ class MoldesignApp:
 
             # Update the training data and repeat
             batch += 1
-            train_data = pd.concat(
-                (train_data, pd.DataFrame(new_results)),
+            train_data = pandas.concat(
+                (train_data, pandas.DataFrame(new_results)),
                 ignore_index=True,
             )
 

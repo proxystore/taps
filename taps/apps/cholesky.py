@@ -4,8 +4,15 @@ from __future__ import annotations
 
 import logging
 import pathlib
+import sys
 
-import numpy as np
+if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
+    from typing import TypeAlias
+else:  # pragma: <3.10 cover
+    from typing_extensions import TypeAlias
+
+import numpy
+from numpy.typing import NDArray
 
 from taps.engine import Engine
 from taps.engine import TaskFuture
@@ -13,28 +20,30 @@ from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
+Array: TypeAlias = NDArray[numpy.float64]
 
-def potrf(tile: np.ndarray) -> np.ndarray:
+
+def potrf(tile: Array) -> Array:
     """POTRF task."""
-    return np.linalg.cholesky(tile)
+    return numpy.linalg.cholesky(tile)
 
 
-def trsm(lower: np.ndarray, block: np.ndarray) -> np.ndarray:
+def trsm(lower: Array, block: Array) -> Array:
     """TRSM task."""
-    return np.linalg.solve(lower, block.T).T
+    return numpy.linalg.solve(lower, block.T).T
 
 
-def syrk(tile: np.ndarray, lower: np.ndarray) -> np.ndarray:
+def syrk(tile: Array, lower: Array) -> Array:
     """SYRK task."""
-    return tile - np.dot(lower, lower.T)
+    return tile - numpy.dot(lower, lower.T)
 
 
-def gemm(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> np.ndarray:
+def gemm(a: Array, b: Array, c: Array) -> Array:
     """GEMM task."""
-    return a - np.dot(b, c)
+    return a - numpy.dot(b, c)
 
 
-def create_psd_matrix(n: int) -> np.ndarray:
+def create_psd_matrix(n: int) -> Array:
     """Create a positive semi-definite matrix.
 
     Args:
@@ -43,9 +52,9 @@ def create_psd_matrix(n: int) -> np.ndarray:
     Returns:
         Random matrix that is positive semi-definite.
     """
-    psd = np.random.randn(n, n)
-    psd = np.dot(psd, psd.T)
-    psd += n * np.eye(n)
+    psd = numpy.random.randn(n, n)
+    psd = numpy.dot(psd, psd.T)
+    psd += n * numpy.eye(n)
     return psd
 
 
@@ -78,7 +87,7 @@ class CholeskyApp:
         max_print_size = 8
 
         matrix = create_psd_matrix(self.matrix_size)
-        lower = np.zeros_like(matrix)
+        lower = numpy.zeros_like(matrix)
 
         n = matrix.shape[0]
         block_size = min(self.block_size, n)
@@ -97,7 +106,7 @@ class CholeskyApp:
 
         for k in range(0, n, block_size):
             end_k = min(k + block_size, n)
-            lower_tasks: dict[tuple[int, int], TaskFuture[np.ndarray]] = {}
+            lower_tasks: dict[tuple[int, int], TaskFuture[Array]] = {}
 
             lower_tasks[(k, k)] = engine.submit(
                 potrf,
@@ -113,7 +122,7 @@ class CholeskyApp:
                     matrix[i:end_i, k:end_k],
                 )
 
-            gemm_tasks: dict[tuple[int, int], TaskFuture[np.ndarray]] = {}
+            gemm_tasks: dict[tuple[int, int], TaskFuture[Array]] = {}
 
             for i in range(k + block_size, n, block_size):
                 end_i = min(i + block_size, n)

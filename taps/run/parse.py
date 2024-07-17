@@ -174,10 +174,13 @@ This behavior applies to all plugin types.
     settings_cls = _make_config_cls(base_options)
     base_namespace = argparse.Namespace(**base_options)
 
-    cli_settings = CliSettingsSource(
+    cli_settings: CliSettingsSource[Config] = CliSettingsSource(
         settings_cls,
         cli_avoid_json=True,
-        cli_parse_args=argv,
+        # cli_parse_args is annotated as:
+        #   "bool | list[str] | tuple[str, ...] | None"
+        # which is suitable for argv with is Sequence[str].
+        cli_parse_args=argv,  # type: ignore[arg-type]
         cli_parse_none_str='none',
         cli_use_class_docs_for_groups=False,
         root_parser=parser,

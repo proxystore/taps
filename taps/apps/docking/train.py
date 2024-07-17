@@ -5,8 +5,9 @@ Module adapted from [ParslDock](https://github.com/Parsl/parsl-docking-tutorial/
 
 from __future__ import annotations
 
-import numpy as np
-import pandas as pd
+import numpy
+import pandas
+from numpy.typing import NDArray
 from sklearn.base import BaseEstimator
 from sklearn.base import TransformerMixin
 from sklearn.pipeline import Pipeline
@@ -16,7 +17,7 @@ def compute_morgan_fingerprints(
     smiles: str,
     fingerprint_length: int,
     fingerprint_radius: int,
-) -> tuple[int, int]:
+) -> NDArray[numpy.bool]:
     """Get Morgan Fingerprint of a specific SMILES string.
 
     Adapted from: https://github.com/google-research/google-research/blob/>
@@ -46,10 +47,10 @@ def compute_morgan_fingerprints(
     fingerprint = mfpgen.GetFingerprint(
         molecule,
     )
-    arr = np.zeros((1,), dtype=bool)
+    arr = numpy.zeros((1,), dtype=bool)
 
     # ConvertToNumpyArray takes ~ 0.19 ms, while
-    # np.asarray takes ~ 4.69 ms
+    # numpy.asarray takes ~ 4.69 ms
     DataStructs.ConvertToNumpyArray(fingerprint, arr)
     return arr
 
@@ -64,7 +65,7 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
     def fit(
         self,
         X: list[str],  # noqa: N803
-        y: np.array[int] | None = None,
+        y: NDArray[numpy.bool] | None = None,
     ) -> MorganFingerprintTransformer:
         """Train model.
 
@@ -80,8 +81,8 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
     def transform(
         self,
         X: list[str],  # noqa: N803
-        y: np.array[int] | None = None,
-    ) -> np.array[int]:
+        y: NDArray[numpy.bool] | None = None,
+    ) -> list[NDArray[numpy.bool]]:
         """Compute the fingerprints.
 
         Args:
@@ -99,7 +100,7 @@ class MorganFingerprintTransformer(BaseEstimator, TransformerMixin):
         return fps
 
 
-def train_model(training_data: pd.DataFrame) -> Pipeline:
+def train_model(training_data: pandas.DataFrame) -> Pipeline:
     """Train a machine learning model using Morgan Fingerprints.
 
     Args:
@@ -130,7 +131,7 @@ def train_model(training_data: pd.DataFrame) -> Pipeline:
     return model.fit(training_data['smiles'], training_data['score'])
 
 
-def run_model(model: Pipeline, smiles: list[str]) -> pd.DataFrame:
+def run_model(model: Pipeline, smiles: list[str]) -> pandas.DataFrame:
     """Run a model on a list of smiles strings.
 
     Args:
@@ -140,7 +141,7 @@ def run_model(model: Pipeline, smiles: list[str]) -> pd.DataFrame:
     Returns:
         A dataframe with the molecules and their predicted outputs
     """
-    import pandas as pd
+    import pandas
 
     pred_y = model.predict(smiles)
-    return pd.DataFrame({'smiles': smiles, 'score': pred_y})
+    return pandas.DataFrame({'smiles': smiles, 'score': pred_y})

@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextlib
 import logging
 import os
+import pathlib
 from collections.abc import Mapping
 from collections.abc import MutableMapping
 from typing import Any
@@ -12,6 +13,29 @@ from pydantic import BaseModel
 from pydantic import ValidationError
 
 logger = logging.getLogger(__name__)
+
+
+@contextlib.contextmanager
+def change_cwd(
+    dest: pathlib.Path | str,
+) -> Generator[pathlib.Path, None, None]:
+    """Context manager that changes the current working directory.
+
+    Args:
+        dest: Path to temporarily change the working directory to.
+
+    Yields:
+        Destination directory as an absolute [`Path`][pathlib.Path].
+    """
+    origin = pathlib.Path.cwd().absolute()
+    dest = pathlib.Path(dest).absolute()
+    dest.mkdir(parents=True, exist_ok=True)
+    os.chdir(dest)
+
+    try:
+        yield dest
+    finally:
+        os.chdir(origin)
 
 
 def flatten_mapping(
@@ -77,7 +101,8 @@ def prettify_mapping(
 
         if isinstance(value, Mapping):
             lines.append(f'{space}{key}:')
-            lines.append(prettify_mapping(value, level + 1, indent))
+            if len(value) > 0:
+                lines.append(prettify_mapping(value, level + 1, indent))
         else:
             lines.append(f'{space}{key}: {value!r}')
 
