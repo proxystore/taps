@@ -3,8 +3,15 @@ from __future__ import annotations
 import enum
 import logging
 import os
+import random
 import signal
+import sys
 import tempfile
+
+if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
+    from typing import Self
+else:  # pragma: <3.11 cover
+    from typing_extensions import Self
 
 import psutil
 
@@ -26,6 +33,19 @@ class FailureType(enum.Enum):
     WORKER_KILLED = 'worker-killed'
     ZERO_DIVISION = 'zero-division'
 
+    @classmethod
+    def random(cls) -> Self:
+        """Select a random failure type (excluding RANDOM)."""
+        options = [f.value for f in cls]
+        options.remove(cls.RANDOM.value)
+        return cls(random.choice(options))
+
+
+class ParentDependencyError(Exception):
+    """Exception raised in parent tasks when simulating dependency errors."""
+
+    pass
+
 
 def exception_failure() -> None:
     """Raise an exception."""
@@ -37,7 +57,7 @@ def import_failure() -> None:
     raise ImportError('Failure injection error.')
 
 
-def manager_killed_failure() -> None:
+def manager_killed_failure() -> None:  # pragma: no cover
     """Kill the parent process (i.e., the manager)."""
     current_pid = os.getpid()
     current_process = psutil.Process(current_pid)
@@ -62,14 +82,14 @@ def manager_killed_failure() -> None:
         )
 
 
-def memory_failure() -> None:
+def memory_failure() -> None:  # pragma: no cover
     """Force an out of memory error."""
     huge_memory_list = []
     while True:
         huge_memory_list.append('x' * (1024**3))
 
 
-def node_killed_failure() -> None:
+def node_killed_failure() -> None:  # pragma: no cover
     """Kill other processes in the node to simulate a node failure.
 
     Warning:
@@ -96,7 +116,7 @@ def node_killed_failure() -> None:
     psutil.wait_procs(psutil.process_iter(), timeout=3, callback=None)
 
 
-def worker_killed_failure() -> None:
+def worker_killed_failure() -> None:  # pragma: no cover
     """Kill the current process."""
     pid = os.getpid()
     try:
@@ -105,7 +125,7 @@ def worker_killed_failure() -> None:
         logger.exception(f'Failed to kill current process (pid={pid})')
 
 
-def timeout_failure() -> None:
+def timeout_failure() -> None:  # pragma: no cover
     """Sleep forever to force walltime or timeout error."""
     import time
 
@@ -113,7 +133,7 @@ def timeout_failure() -> None:
         time.sleep(60)
 
 
-def ulimit_failure() -> None:
+def ulimit_failure() -> None:  # pragma: no cover
     """Open 1M files to simulate ulimit exceeded error."""
     limit = 1_000_000
     handles = []

@@ -24,8 +24,6 @@ from taps.plugins import register
 class FailureInjectionConfig(AppConfig, use_enum_values=True):
     """Failure injection configuration."""
 
-    # model_config = ConfigDict(use_enum_values=True)  # type: ignore[misc]
-
     name: Literal['failures'] = 'failures'
     base: str = Field(description='base app to inject failures into')
     config: Dict[str, Any] = Field(  # noqa: UP006

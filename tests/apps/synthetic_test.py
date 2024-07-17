@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import pathlib
+import sys
 import time
 from unittest import mock
 
@@ -24,6 +25,13 @@ def test_generate_data(size: int) -> None:
     b = generate_data(size)
     assert isinstance(b, Data)
     assert len(b) == size
+
+
+def test_size_of_data() -> None:
+    value = b'data'
+    data = Data(value)
+    # The Data object will have some additional garbage collection overhead.
+    assert sys.getsizeof(data) >= sys.getsizeof(value)
 
 
 def test_noop_task() -> None:
@@ -64,6 +72,8 @@ def test_synthetic_app(
         ) as mocked:
             app.run(app_engine, tmp_path)
             mocked.assert_called_once()
+
+        app.close()
 
 
 def test_run_bag_of_tasks(app_engine: Engine) -> None:

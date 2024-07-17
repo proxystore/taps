@@ -43,10 +43,10 @@ class SyntheticConfig(AppConfig):
 
         try:
             WorkflowStructure(structure)
-        except KeyError:
+        except ValueError:
             options = ', '.join(d.value for d in WorkflowStructure)
             raise ValueError(
-                f'{structure} is not a supported structure. '
+                f'Specified structure {structure!r} is unknown. '
                 f'Must be one of {options}.',
             ) from None
 
@@ -59,8 +59,8 @@ class SyntheticConfig(AppConfig):
         structure = WorkflowStructure(self.structure)
         if structure == WorkflowStructure.BAG and self.bag_max_running is None:
             raise ValueError(
-                '--bag-max-running must be specified when --structure bag '
-                'is selected.',
+                "Option 'bag_max_running' must be specified when "
+                f'{WorkflowStructure.BAG.value!r} is specified.',
             )
 
         return self
