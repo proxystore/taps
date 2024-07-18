@@ -23,7 +23,7 @@ dependencies = [
     "dask[distributed]",
     "globus-compute-sdk",
     "parsl",
-    "proxystore[redis]>=0.6.5",
+    "proxystore>=0.7.0",
     "psutil",
     "pydantic>=2",
     "pydantic-settings>=2.3.0",

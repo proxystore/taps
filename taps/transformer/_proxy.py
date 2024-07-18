@@ -1,20 +1,15 @@
 from __future__ import annotations
 
-import pathlib
 from typing import Any
 from typing import Literal
-from typing import Optional
 from typing import TypeVar
 
-from proxystore.connectors.file import FileConnector
-from proxystore.connectors.protocols import Connector
-from proxystore.connectors.redis import RedisConnector
 from proxystore.proxy import extract
 from proxystore.proxy import Proxy
 from proxystore.store import get_store
 from proxystore.store import Store
+from proxystore.store.config import ConnectorConfig
 from pydantic import Field
-from pydantic import field_validator
 
 from taps.plugins import register
 from taps.transformer._protocol import TransformerConfig
@@ -28,67 +23,39 @@ class ProxyTransformerConfig(TransformerConfig):
 
     Attributes:
         connector: Name of ProxyStore connector to use.
-        file_dir: File connector cache directory.
-        redis_addr: Redis connector server address.
         extract_target: See the usage in
             [`ProxyTransformer`][taps.transformer.ProxyTransformer].
     """  # noqa: E501
 
-    name: Literal['proxy'] = Field(
-        'proxy',
+    name: Literal['proxystore'] = Field(
+        'proxystore',
         description='name of transformer type',
     )
-    connector: Literal['file', 'redis'] = Field(
-        description='connector type (file or redis)',
+    connector: ConnectorConfig = Field(
+        description='connector configuration',
     )
-    file_dir: Optional[str] = Field(  # noqa: UP007
-        None,
-        description='file connector cache directory',
-    )
-    redis_addr: Optional[str] = Field(  # noqa: UP007
-        None,
-        description='redis connector server address',
-    )
+    cache_size: int = Field(16, description='cache size')
     extract_target: bool = Field(
         False,
         description=(
             'extract the target from the proxy when resolving the identifier'
         ),
     )
-
-    @field_validator('file_dir', mode='before')
-    @classmethod
-    def _resolve_file_dir(cls, path: str) -> str:
-        return str(pathlib.Path(path).resolve())
+    populate_target: bool = Field(
+        True,
+        description='populate target objects of newly created proxies',
+    )
 
     def get_transformer(self) -> ProxyTransformer:
         """Create a transformer from the configuration."""
-        connector: Connector[Any]
-        if self.connector == 'file':
-            if self.file_dir is None:  # pragma: no cover
-                raise ValueError(
-                    'Option file_dir is required for the file connector.',
-                )
-            connector = FileConnector(self.file_dir)
-        elif self.connector == 'redis':
-            if self.redis_addr is None:
-                raise ValueError(  # pragma: no cover
-                    'Option redis_addr is required for the Redis connector.',
-                )
-            parts = self.redis_addr.split(':')
-            host, port = parts[0], int(parts[1])
-            connector = RedisConnector(host, port)
-        else:
-            raise AssertionError(
-                f'Unknown ProxyStore connector type: {self.connector}.',
-            )
-
+        connector = self.connector.get_connector()
         return ProxyTransformer(
             store=Store(
-                'transformer',
+                'proxy-transformer',
                 connector=connector,
+                cache_size=self.cache_size,
+                populate_target=self.populate_target,
                 register=True,
-                populate_target=True,
             ),
             extract_target=self.extract_target,
         )
@@ -122,7 +89,7 @@ class ProxyTransformer:
         }
 
     def __setstate__(self, state: dict[str, Any]) -> None:
-        store = get_store(state['config']['name'])
+        store = get_store(state['config'].name)
         if store is not None:
             self.store = store
         else:

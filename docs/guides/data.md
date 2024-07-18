@@ -20,6 +20,8 @@ As of writing, TaPS provides three transformer types.
 
 The [`NullTransformer`][taps.transformer.NullTransformer] is the default and does not perform any transformation.
 
+### File Transformation
+
 The [`PickleFileTransformer`][taps.transformer.PickleFileTransformer] pickles and writes objects to files in a specified directory.
 The object identifiers are essentially the filepath of the pickle file.
 This transformer can be configured like:
@@ -30,18 +32,52 @@ file_dir = "./object-cache"
 ```
 The `./object-cache` directory will contain any transformed objects and will be removed once a benchmark has completed.
 
+### ProxyStore
+
 The [`ProxyTransformer`][taps.transformer.ProxyTransformer] creates *proxies* of data using [ProxyStore](https://docs.proxystore.dev/){target=_blank}.
 ProxyStore provides a pass-by-reference like model for distributed Python applications and supports a multitude of communication protocols including DAOS, Globus Transfer, Margo, Redis, UCX, and ZeroMQ.
-This transformer can be configured like:
-```toml title="ProxyStore Transformer Config"
-[engine.transformer]
-name = "proxy"
-connector = "redis"
-redis_addr = "localhost"
-redis_port = 6379
-```
+
+Here are some example configurations.
 The specific parameters will change change depending on specified `connector`.
 See the [`ProxyTransformerConfig`][taps.transformer.ProxyTransformerConfig] for more information.
+
+!!! note
+
+    TaPS, by default, only installs the basic version of ProxyStore.
+    It may be necessary to install ProxyStore with extra options to access certain features.
+    See [ProxyStore → Installation → Extras Options](https://docs.proxystore.dev/latest/installation/#extras-options){target=_blank}.
+
+**File System**
+
+* Config file:
+  ```toml
+  [engine.transformer]
+  name = "proxystore"
+
+  [engine.transformer.connector]
+  kind = "file"
+  options = { store_dir = "./object-cache"}
+  ```
+* CLI arguments:
+  ```bash
+  --engine.transformer proxystore --engine.transformer.connector.kind file --engine.transformer.connector.options '{"store_dir": "./object-cache"}'
+  ```
+
+**Redis Server**
+
+* Config file:
+  ```toml
+  [engine.transformer]
+  name = "proxystore"
+
+  [engine.transformer.connector]
+  kind = "redis"
+  options = { hostname = "localhost", port = 6379}
+  ```
+* CLI arguments:
+  ```bash
+  --engine.transformer proxystore --engine.transformer.connector.kind redis --engine.transformer.connector.options '{"hostname": "localhost", "port": 6379}'
+  ```
 
 ## Adding Transformers
 
