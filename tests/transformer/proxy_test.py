@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+import pathlib
 import pickle
-from unittest import mock
 
 import pytest
 from proxystore.connectors.local import LocalConnector
@@ -9,31 +9,21 @@ from proxystore.proxy import Proxy
 from proxystore.store import get_store
 from proxystore.store import Store
 from proxystore.store import unregister_store
+from proxystore.store.config import ConnectorConfig
 
 from taps.transformer import ProxyTransformer
 from taps.transformer import ProxyTransformerConfig
 
 
-def test_file_config() -> None:
+def test_file_config(tmp_path: pathlib.Path) -> None:
     config = ProxyTransformerConfig(
-        connector='file',
-        file_dir='test',
-        redis_addr='localhost:0',
+        connector=ConnectorConfig(
+            kind='file',
+            options={'store_dir': str(tmp_path)},
+        ),
     )
-    with mock.patch('taps.transformer._proxy.FileConnector'):
-        transformer = config.get_transformer()
-        transformer.close()
-
-
-def test_redis_config() -> None:
-    config = ProxyTransformerConfig(
-        connector='redis',
-        file_dir='test',
-        redis_addr='localhost:0',
-    )
-    with mock.patch('taps.transformer._proxy.RedisConnector'):
-        transformer = config.get_transformer()
-        transformer.close()
+    transformer = config.get_transformer()
+    transformer.close()
 
 
 @pytest.mark.parametrize('extract', (True, False))
