@@ -70,6 +70,12 @@ class CholeskyApp:
     """
 
     def __init__(self, matrix_size: int, block_size: int) -> None:
+        if block_size > matrix_size or matrix_size % block_size != 0:
+            raise ValueError(
+                'The matrix size must be greater than or equal to the block '
+                'size and the block size must evenly divide the matrix size. '
+                f'Got matrix_size={matrix_size} and block_size={block_size}.',
+            )
         self.matrix_size = matrix_size
         self.block_size = block_size
 
