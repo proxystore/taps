@@ -84,13 +84,10 @@ concurrency = ["multiprocessing", "thread"]
 omit = [
     "taps/apps/configs/docking.py",
     "taps/apps/configs/fedlearn.py",
-    "taps/apps/configs/mapreduce.py",
     "taps/apps/configs/moldesign.py",
     "taps/apps/configs/montage.py",
-    "taps/apps/configs/synthetic.py",
     "taps/apps/docking/*",
     "taps/apps/fedlearn/*",
-    "taps/apps/mapreduce.py",
     "taps/apps/moldesign/*",
     "taps/apps/montage.py",
 ]
