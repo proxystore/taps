@@ -78,7 +78,7 @@ def generate_files(
         ValueError: if `directory` is not empty.
     """
     if directory.is_dir() and any(directory.iterdir()):
-        raise ValueError('Directory {directory} is not empty')
+        raise ValueError(f'Directory {directory} is not empty.')
 
     directory.mkdir(parents=True, exist_ok=True)
 
