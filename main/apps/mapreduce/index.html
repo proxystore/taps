@@ -2531,7 +2531,7 @@ Once the computations have finished, the top 10 most common tokens will be print
 </span></code></pre></div></p>
 <p><strong>Randomly Generated</strong></p>
 <p>Here, we will generate 16 random files for each of 16 map tasks.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>-app<span class="w"> </span>mapreduce<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>--app<span class="w"> </span>mapreduce<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span>--app.data-dir<span class="w"> </span>/tmp/generated-files<span class="w"> </span>--app.map-tasks<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span>--app.generate<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--app.generated-files<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span>--engine.executor<span class="w"> </span>process-pool
