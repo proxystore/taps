@@ -36,7 +36,7 @@ python -m taps.run --app mapreduce
 
 Here, we will generate 16 random files for each of 16 map tasks.
 ```bash
-python -m taps.run -app mapreduce \
+python -m taps.run --app mapreduce \
     --app.data-dir /tmp/generated-files --app.map-tasks 16 \
     --app.generate true --app.generated-files 16 \
     --engine.executor process-pool
