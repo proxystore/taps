@@ -43,10 +43,10 @@ fedlearn = ["numpy", "torch", "torchvision"]
 moldesign = ["ase", "matplotlib", "numpy", "pandas", "rdkit==2023.9.6", "scikit-learn", "tqdm"]
 montage = ["montage_wrapper", "pandas"]
 dev = [
+    "taps[cholesky,montage]",
     "covdefaults>=2.2",
     "coverage",
     "mypy",
-    "numpy",
     "pre-commit",
     "pytest",
     "pytest-cov",
@@ -85,11 +85,9 @@ omit = [
     "taps/apps/configs/docking.py",
     "taps/apps/configs/fedlearn.py",
     "taps/apps/configs/moldesign.py",
-    "taps/apps/configs/montage.py",
     "taps/apps/docking/*",
     "taps/apps/fedlearn/*",
     "taps/apps/moldesign/*",
-    "taps/apps/montage.py",
 ]
 parallel = true
 
