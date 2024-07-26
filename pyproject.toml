@@ -82,9 +82,6 @@ dist,
 plugins = ["covdefaults"]
 concurrency = ["multiprocessing", "thread"]
 omit = [
-    "taps/apps/configs/docking.py",
-    "taps/apps/configs/fedlearn.py",
-    "taps/apps/configs/moldesign.py",
     "taps/apps/docking/*",
     "taps/apps/fedlearn/*",
     "taps/apps/moldesign/*",

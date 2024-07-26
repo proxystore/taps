@@ -67,7 +67,7 @@ class FedlearnConfig(AppConfig):
 
         try:
             DataChoices(dataset)
-        except KeyError:
+        except KeyError:  # pragma: no cover
             options = ', '.join(d.value for d in DataChoices)
             raise ValueError(
                 f'{dataset} is not a supported dataset. '
