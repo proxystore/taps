@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pathlib
 import socket
+import sys
 from concurrent.futures import Executor
 from unittest import mock
 
@@ -55,6 +56,10 @@ def test_get_htex_executor(tmp_path: pathlib.Path) -> None:
     assert isinstance(executor, Executor)
 
 
+@pytest.mark.skipif(
+    sys.platform == 'darwin',
+    reason='address resolution is unreliable on MacOS',
+)
 def test_address_config() -> None:
     ifname = socket.if_nameindex()[0][1]
     config = AddressConfig(kind='address_by_interface', ifname=ifname)
