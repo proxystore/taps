@@ -90,8 +90,8 @@ class ParslHTExConfig(TapsExecutorConfig):
         retries: Number of retries in case of task failure.
         strategy: Block scaling strategy.
         max_idletime: Max idle time before strategy can shutdown unused blocks.
+        monitoring: Database monitoring configuration.
         run_dir: Parsl run directory.
-        monitoring: Parsl monitoring system.
     """
 
     name: Literal['parsl-htex'] = 'parsl-htex'
@@ -112,15 +112,14 @@ class ParslHTExConfig(TapsExecutorConfig):
         None,
         description='max idle time before strategy can shutdown unused blocks',
     )
+    monitoring: Optional[MonitoringConfig] = Field(  # noqa: UP007
+        None,
+        description='database monitoring configuration',
+    )
     run_dir: str = Field(
         'parsl-runinfo',
         description='parsl run directory within the app run directory',
     )
-    monitoring: Optional[MonitoringConfig] = Field(  # noqa: UP007
-        None,
-        description='parsl monitoring system',
-    )
-    # monitoring: MonitoringConfig = Field()
 
     def get_executor(self) -> ParslPoolExecutor:
         """Create an executor instance from the config."""
@@ -129,12 +128,12 @@ class ParslHTExConfig(TapsExecutorConfig):
             exclude_none=True,
         )
 
+        if self.monitoring is not None:
+            options['monitoring'] = self.monitoring.get_monitoring()
+
         config = Config(
             executors=[self.htex.get_executor()],
             initialize_logging=False,
-            monitoring=self.monitoring.get_monitoring()
-            if self.monitoring
-            else None,
             **options,
         )
         return ParslPoolExecutor(config)
@@ -403,11 +402,13 @@ class MonitoringConfig(BaseModel):
     model_config = ConfigDict(extra='allow')
 
     hub_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
-        (55050, 56000),
-        description='The port range for a ZMQ channel.',
+        None,
+        description='port range for a ZMQ channel from executor process',
     )
 
     def get_monitoring(self) -> MonitoringHub:
         """Create a MonitoringHub from the configuration."""
-        options = self.model_extra if self.model_extra is not None else {}
+        options = self.model_dump(exclude_none=True)
+        if self.model_extra is not None:  # pragma: no branch
+            options.update(self.model_extra)
         return MonitoringHub(**options)

@@ -4,6 +4,7 @@ import pathlib
 import socket
 import sys
 from concurrent.futures import Executor
+from typing import Generator
 from unittest import mock
 
 import pytest
@@ -16,9 +17,19 @@ from pydantic import ValidationError
 from taps.executor.parsl import AddressConfig
 from taps.executor.parsl import HTExConfig
 from taps.executor.parsl import LauncherConfig
+from taps.executor.parsl import MonitoringConfig
 from taps.executor.parsl import ParslHTExConfig
 from taps.executor.parsl import ParslLocalConfig
 from taps.executor.parsl import ProviderConfig
+
+
+@pytest.fixture()
+def mock_monitoring() -> Generator[mock.MagicMock, None, None]:
+    with mock.patch(
+        'taps.executor.parsl.MonitoringHub',
+        autospec=True,
+    ) as mocked:
+        yield mocked
 
 
 def test_get_local_executor(tmp_path: pathlib.Path) -> None:
@@ -28,7 +39,7 @@ def test_get_local_executor(tmp_path: pathlib.Path) -> None:
     assert isinstance(executor, Executor)
 
 
-def test_get_htex_executor(tmp_path: pathlib.Path) -> None:
+def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
     htex_config = HTExConfig(
         provider=ProviderConfig(
             kind='PBSProProvider',
@@ -49,10 +60,22 @@ def test_get_htex_executor(tmp_path: pathlib.Path) -> None:
         retries=1,
         run_dir=str(tmp_path / 'parsl'),
         max_workers_per_node=4,
+        monitoring=MonitoringConfig(
+            hub_address='localhost',
+            logging_endpoint=f'sqlite:///{tmp_path}/monitoring.db',
+            resource_monitoring_interval=1,
+            hub_port=55055,
+        ),
     )
 
-    with mock.patch.object(htex_config, 'get_executor'):
+    with mock.patch(
+        'taps.executor.parsl.ParslPoolExecutor',
+        autospec=True,
+    ) as mock_executor:
         executor = config.get_executor()
+        mock_executor.assert_called_once()
+
+    mock_monitoring.assert_called_once()
     assert isinstance(executor, Executor)
 
 
@@ -104,6 +127,18 @@ def test_provider_config_default() -> None:
 def test_provider_config_unknown_kind() -> None:
     with pytest.raises(ValidationError, match='FakeProvider'):
         ProviderConfig(kind='FakeProvider')
+
+
+def test_monitoring_config(tmp_path: pathlib.Path, mock_monitoring) -> None:
+    config = MonitoringConfig(
+        hub_address='localhost',
+        logging_endpoint=f'sqlite:///{tmp_path}/monitoring.db',
+        resource_monitoring_interval=1,
+        hub_port=55055,
+    )
+
+    config.get_monitoring()
+    mock_monitoring.assert_called_once()
 
 
 def test_htex_config() -> None:
