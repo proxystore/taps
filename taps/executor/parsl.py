@@ -13,6 +13,7 @@ from parsl.concurrent import ParslPoolExecutor
 from parsl.config import Config
 from parsl.executors import HighThroughputExecutor
 from parsl.launchers.base import Launcher
+from parsl.monitoring.monitoring import MonitoringHub
 from parsl.providers import LocalProvider
 from parsl.providers.base import ExecutionProvider
 from pydantic import BaseModel
@@ -89,6 +90,7 @@ class ParslHTExConfig(TapsExecutorConfig):
         retries: Number of retries in case of task failure.
         strategy: Block scaling strategy.
         max_idletime: Max idle time before strategy can shutdown unused blocks.
+        monitoring: Database monitoring configuration.
         run_dir: Parsl run directory.
     """
 
@@ -110,6 +112,10 @@ class ParslHTExConfig(TapsExecutorConfig):
         None,
         description='max idle time before strategy can shutdown unused blocks',
     )
+    monitoring: Optional[MonitoringConfig] = Field(  # noqa: UP007
+        None,
+        description='database monitoring configuration',
+    )
     run_dir: str = Field(
         'parsl-runinfo',
         description='parsl run directory within the app run directory',
@@ -117,7 +123,13 @@ class ParslHTExConfig(TapsExecutorConfig):
 
     def get_executor(self) -> ParslPoolExecutor:
         """Create an executor instance from the config."""
-        options = self.model_dump(exclude={'name', 'htex'}, exclude_none=True)
+        options = self.model_dump(
+            exclude={'name', 'htex', 'monitoring'},
+            exclude_none=True,
+        )
+
+        if self.monitoring is not None:
+            options['monitoring'] = self.monitoring.get_monitoring()
 
         config = Config(
             executors=[self.htex.get_executor()],
@@ -355,3 +367,48 @@ class LauncherConfig(BaseModel):
         launcher_cls = getattr(parsl.launchers, self.kind)
         options = self.model_extra if self.model_extra is not None else {}
         return launcher_cls(**options)
+
+
+class MonitoringConfig(BaseModel):
+    """Parsl monitoring system configuration.
+
+    Example:
+        Create a monitoring configuration and call
+        [`get_monitoring()`][taps.executor.parsl.MonitoringConfig.get_monitoring].
+        ```python
+        from taps.executor.config import MonitoringConfig
+
+        config = MonitoringConfig(
+            hub_address='localhost',
+            logging_endpoint='sqlite:///parsl-runinfo/monitoring.db',
+            resource_monitoring_interval=1,
+            hub_port=55055,
+        )
+        config.get_monitoring()
+        ```
+        The resulting MonitoringHub is equivalent to creating it manually.
+        ```python
+        from parsl.monitoring.monitoring import MonitoringHub
+
+        MonitoringHub(
+            hub_address='localhost',
+            logging_endpoint='sqlite:///parsl-runinfo/monitoring.db',
+            resource_monitoring_interval=1,
+            hub_port=55055,
+        )
+        ```
+    """
+
+    model_config = ConfigDict(extra='allow')
+
+    hub_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
+        None,
+        description='port range for a ZMQ channel from executor process',
+    )
+
+    def get_monitoring(self) -> MonitoringHub:
+        """Create a MonitoringHub from the configuration."""
+        options = self.model_dump(exclude_none=True)
+        if self.model_extra is not None:  # pragma: no branch
+            options.update(self.model_extra)
+        return MonitoringHub(**options)
