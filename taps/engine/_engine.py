@@ -6,6 +6,7 @@ import socket
 import sys
 import time
 import uuid
+from collections import namedtuple
 from concurrent.futures import as_completed as as_completed_python
 from concurrent.futures import Executor
 from concurrent.futures import Future
@@ -36,6 +37,7 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
+from taps.engine._protocols import FutureProtocol
 from taps.engine._transform import TaskTransformer
 from taps.filter import Filter
 from taps.filter import NullFilter
@@ -170,7 +172,7 @@ class TaskFuture(Generic[T]):
 
     def __init__(
         self,
-        future: Future[_TaskResult[T]],
+        future: FutureProtocol[_TaskResult[T]],
         info: TaskInfo,
         data_transformer: TaskTransformer[Any],
     ) -> None:
@@ -267,7 +269,7 @@ class Engine:
         ] = {}
 
         # Internal bookkeeping
-        self._running_tasks: dict[Future[Any], TaskFuture[Any]] = {}
+        self._running_tasks: dict[FutureProtocol[Any], TaskFuture[Any]] = {}
         self._total_tasks = 0
 
     def __enter__(self) -> Self:
@@ -286,7 +288,7 @@ class Engine:
         """Total number of tasks submitted for execution."""
         return self._total_tasks
 
-    def _task_done_callback(self, future: Future[Any]) -> None:
+    def _task_done_callback(self, future: FutureProtocol[Any]) -> None:
         task_future = self._running_tasks.pop(future)
         try:
             execution_info = future.result().info
@@ -465,9 +467,14 @@ def as_completed(
         Iterator which yields futures as they complete (finished or cancelled \
         futures).
     """
-    futures = {task._future: task for task in tasks}
+    if len(tasks) == 0:
+        return
 
+    futures = {task._future: task for task in tasks}
     kwargs = {'timeout': timeout}
+
+    # as_completed is tricky to type here.
+    _as_completed: Any
     if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
         _as_completed = as_completed_python
     elif isinstance(tasks[0]._future, DaskFuture):
@@ -498,6 +505,11 @@ def wait(
         Tuple containing the set of completed tasks and the set of not \
         completed tasks.
     """
+    result = namedtuple('result', ['done', 'not_done'])
+
+    if len(tasks) == 0:
+        return result(set(), set())
+
     futures = {task._future: task for task in tasks}
 
     if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
@@ -507,8 +519,8 @@ def wait(
     else:  # pragma: no cover
         raise ValueError(f'Unsupported future type {type(tasks[0])}.')
 
-    completed_futures, not_completed_futures = _wait(
-        list(futures.keys()),
+    completed_futures, not_completed_futures = _wait(  # type: ignore[var-annotated]
+        list(futures.keys()),  # type: ignore[arg-type]
         timeout=timeout,
         return_when=return_when,
     )
@@ -516,4 +528,4 @@ def wait(
     completed_tasks = {futures[f] for f in completed_futures}
     not_completed_tasks = {futures[f] for f in not_completed_futures}
 
-    return (completed_tasks, not_completed_tasks)
+    return result(completed_tasks, not_completed_tasks)
