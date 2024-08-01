@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from concurrent.futures import Future
 from typing import Any
 from typing import Generic
 from typing import Iterable
 from typing import Mapping
 from typing import TypeVar
 
+from taps.engine._protocols import FutureProtocol
 from taps.filter import Filter
 from taps.transformer import Transformer
 
@@ -47,7 +47,7 @@ class TaskTransformer(Generic[IdentifierT]):
         Transforms `obj` into an identifier if it passes the filter check.
         The identifier can later be used to resolve the object.
         """
-        if self.filter_(obj) and not isinstance(obj, Future):
+        if self.filter_(obj) and not isinstance(obj, FutureProtocol):
             return self.transformer.transform(obj)
         else:
             return obj

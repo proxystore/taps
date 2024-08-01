@@ -144,6 +144,10 @@ def test_as_completed_dask(dask_executor: DaskDistributedExecutor) -> None:
         assert completed_results == set(range(1, 6))
 
 
+def test_as_completed_empty() -> None:
+    assert len(list(as_completed([]))) == 0
+
+
 def test_task_future_exception() -> None:
     future: Future[_TaskResult[int]] = Future()
 
@@ -192,3 +196,9 @@ def test_wait_dask(dask_executor: DaskDistributedExecutor) -> None:
         assert len(not_completed) == 0
         results = {task.result() for task in completed}
         assert results == set(range(1, 6))
+
+
+def test_wait_empty() -> None:
+    done, not_done = wait([])  # type: ignore[var-annotated]
+    assert len(done) == 0
+    assert len(not_done) == 0

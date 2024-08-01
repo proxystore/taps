@@ -8,6 +8,7 @@ from taps.engine._engine import ExecutionInfo
 from taps.engine._engine import TaskFuture
 from taps.engine._engine import TaskInfo
 from taps.engine._engine import wait
+from taps.engine._protocols import FutureProtocol
 from taps.engine._transform import TaskTransformer
 
 __all__ = (
@@ -15,6 +16,7 @@ __all__ = (
     'EngineConfig',
     'ExceptionInfo',
     'ExecutionInfo',
+    'FutureProtocol',
     'TaskFuture',
     'TaskInfo',
     'TaskTransformer',
