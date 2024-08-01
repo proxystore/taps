@@ -212,4 +212,4 @@ def make_run_dir(config: Config) -> pathlib.Path:
         ),
     )
     run_dir.mkdir(parents=True, exist_ok=True)
-    return run_dir
+    return run_dir.resolve()
