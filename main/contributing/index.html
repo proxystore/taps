@@ -469,6 +469,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="https://github.com/proxystore/taps/issues" class="md-nav__link">
         
   
@@ -2561,21 +2581,17 @@
   <h1>Contributing</h1>
 
 <h2 id="getting-started-for-local-development">Getting Started for Local Development<a class="headerlink" href="#getting-started-for-local-development" title="Permanent link">&para;</a></h2>
-<p>We recommend using <a href="https://tox.wiki/en/latest/index.html" target="_blank">Tox</a>
-to setup the development environment. This will create a new virtual
-environment with all of the required packages installed
-and TaPS installed in editable mode with the necessary extras options.</p>
+<p>We recommend using <a href="https://tox.wiki/en/latest/index.html" target="_blank">Tox</a> to setup the development environment.
+This will create a new virtual environment with all of the required packages installed and TaPS installed in editable mode with the necessary extras options.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/proxystore/taps
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>foobar
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>taps
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>$<span class="w"> </span>tox<span class="w"> </span>--devenv<span class="w"> </span>venv<span class="w"> </span>-e<span class="w"> </span>py311
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>$<span class="w"> </span>.<span class="w"> </span>venv/bin/activate
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Running Tox in a Conda environment is possible but it may conflict with
-Tox's ability to find the correct Python versions. E.g., if your
-Conda environment is Python 3.11, running <code class="language-bash highlight">$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>p310</code> may still use
-Python 3.11.</p>
+<p>Running Tox in a Conda environment is possible but it may conflict with Tox's ability to find the correct Python versions.
+E.g., if your Conda environment is Python 3.11, running <code class="language-bash highlight">$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>p310</code> may still use Python 3.11.</p>
 </div>
 <p>To install manually:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/proxystore/taps
@@ -2585,9 +2601,7 @@ Python 3.11.</p>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev,docs<span class="o">]</span>
 </span></code></pre></div></p>
 <h2 id="continuous-integration">Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permanent link">&para;</a></h2>
-<p>FooBar uses <a href="https://pre-commit.com/" target="_blank">pre-commit</a> and
-<a href="https://tox.wiki/en/latest/index.html" target="_blank">Tox</a> for continuous integration
-(test, linting, etc.).</p>
+<p>TaPS uses <a href="https://pre-commit.com/" target="_blank">pre-commit</a> and <a href="https://tox.wiki/en/latest/index.html" target="_blank">Tox</a> for continuous integration (test, linting, etc.).</p>
 <h3 id="linting-and-type-checking-pre-commit">Linting and Type Checking (pre-commit)<a class="headerlink" href="#linting-and-type-checking-pre-commit" title="Permanent link">&para;</a></h3>
 <p>To use pre-commit, install the hook and then run against files.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>pre-commit<span class="w"> </span>install
@@ -2596,24 +2610,17 @@ Python 3.11.</p>
 <h3 id="tests-tox">Tests (tox)<a class="headerlink" href="#tests-tox" title="Permanent link">&para;</a></h3>
 <p>The entire CI workflow can be run with <code class="language-bash highlight">$<span class="w"> </span>tox</code>.
 This will test against multiple versions of Python and can be slow.</p>
-<p>Module-level unit-test are located in the <code>tests/</code> directory and its
-structure is intended to match that of <code>foobar/</code>.
-E.g. the tests for <code>taps/x/y.py</code> are located in
-<code>tests/x/y_test.py</code>; however, additional test files can be added
-as needed. Tests should be narrowly focused and target a single aspect of the
-code's functionality, tests should not test internal implementation details of
-the code, and tests should not be dependent on the order in which they are run.</p>
-<p>Code that is useful for building tests but is not a test itself belongs in the
-<code>testing/</code> directory.</p>
+<p>Module-level unit-test are located in the <code>tests/</code> directory and its structure is intended to match that of <code>taps/</code>.
+E.g. the tests for <code>taps/x/y.py</code> are located in <code>tests/x/y_test.py</code>; however, additional test files can be added as needed.
+Tests should be narrowly focused and target a single aspect of the code's functionality, tests should not test internal implementation details of the code, and tests should not be dependent on the order in which they are run.</p>
+<p>Code that is useful for building tests but is not a test itself belongs in the <code>testing/</code> directory.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Run all tests in tests/</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>py39
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>py311
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Run a specific test</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>py39<span class="w"> </span>--<span class="w"> </span>tests/x/y_test.py::test_z
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>py311<span class="w"> </span>--<span class="w"> </span>tests/x/y_test.py::test_z
 </span></code></pre></div>
 <h2 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h2>
-<p>If code changes require an update to the documentation (e.g., for function
-signature changes, new modules, etc.), the documentation can be built using
-MKDocs.</p>
+<p>If code changes require an update to the documentation (e.g., for function signature changes, new modules, etc.), the documentation can be built using MKDocs.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Manually</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>docs<span class="o">]</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>$<span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w">  </span><span class="c1"># Build only to site/index.html</span>
@@ -2622,8 +2629,7 @@ MKDocs.</p>
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># With tox (will only build, does not serve)</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>docs
 </span></code></pre></div>
-<p>Docstrings are automatically generated, but it is recommended to check the
-generated docstrings to make sure details/links/etc. are correct.</p>
+<p>Docstrings are automatically generated, but it is recommended to check the generated docstrings to make sure details/links/etc. are correct.</p>
 
 
 
@@ -2651,7 +2657,7 @@ generated docstrings to make sure details/links/etc. are correct.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024-Present Globus Labs
+      Copyright &copy; 2024—Present Globus Labs
     </div>
   
   

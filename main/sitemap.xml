@@ -6,6 +6,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://taps.proxystore.dev/latest/faq/</loc>
+         <lastmod>2024-08-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://taps.proxystore.dev/latest/get-started/</loc>
          <lastmod>2024-08-02</lastmod>
          <changefreq>daily</changefreq>
