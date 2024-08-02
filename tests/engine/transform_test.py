@@ -4,7 +4,7 @@ import uuid
 from typing import Any
 from typing import TypeVar
 
-from taps.engine import TaskTransformer
+from taps.engine.transform import TaskTransformer
 from taps.filter import AllFilter
 from taps.filter import ObjectTypeFilter
 

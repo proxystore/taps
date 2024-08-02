@@ -8,11 +8,10 @@ from concurrent.futures import ThreadPoolExecutor
 from taps.engine import as_completed
 from taps.engine import Engine
 from taps.engine import TaskFuture
-from taps.engine import TaskInfo
-from taps.engine import TaskTransformer
 from taps.engine import wait
-from taps.engine._engine import _TaskResult
-from taps.engine._engine import _TaskWrapper
+from taps.engine.task import TaskInfo
+from taps.engine.task import TaskResult
+from taps.engine.transform import TaskTransformer
 from taps.executor import DaskDistributedExecutor
 from taps.executor import FutureDependencyExecutor
 from taps.filter import NullFilter
@@ -21,18 +20,21 @@ from taps.transformer import PickleFileTransformer
 from testing.record import SimpleRecordLogger
 
 
-def test_task_wrapper_call() -> None:
-    def sum_(values: list[int], *, start: int = 0):
-        return sum(values, start=start)
+def test_task_future_exception() -> None:
+    future: Future[TaskResult[int]] = Future()
 
-    task = _TaskWrapper(
-        sum_,
-        transformer=TaskTransformer(NullTransformer(), NullFilter()),
+    task = TaskFuture(
+        future,
+        TaskInfo('test', 'test', [], 0),
+        TaskTransformer(NullTransformer(), NullFilter()),
     )
-    assert task([1, 2, 3], start=-6).result == 0
+
+    exception = RuntimeError()
+    future.set_exception(exception)
+    assert task.exception() == exception
 
 
-def test_app_engine_submit(app_engine: Engine) -> None:
+def test_engine_submit(app_engine: Engine) -> None:
     task = app_engine.submit(sum, [1, 2, 3], start=-6)
     assert isinstance(task, TaskFuture)
     assert task.result() == 0
@@ -40,13 +42,13 @@ def test_app_engine_submit(app_engine: Engine) -> None:
     assert app_engine.tasks_executed == 1
 
 
-def test_app_engine_map(app_engine: Engine) -> None:
+def test_engine_map(app_engine: Engine) -> None:
     x = [1, -1]
     assert list(app_engine.map(abs, x)) == [abs(v) for v in x]
     assert app_engine.tasks_executed == len(x)
 
 
-def test_app_engine_dask(
+def test_engine_dask(
     dask_executor: DaskDistributedExecutor,
 ) -> None:
     with Engine(dask_executor) as executor:
@@ -56,13 +58,13 @@ def test_app_engine_dask(
         assert list(executor.map(abs, [1, -1])) == [1, 1]
 
 
-def test_app_engine_map_timeout(
+def test_engine_map_timeout(
     app_engine: Engine,
 ) -> None:
     assert list(app_engine.map(abs, [1, -1], timeout=1)) == [1, 1]
 
 
-def test_app_engine_data_transformer(
+def test_engine_data_transformer(
     thread_executor: ThreadPoolExecutor,
     tmp_path: pathlib.Path,
 ) -> None:
@@ -74,7 +76,7 @@ def test_app_engine_data_transformer(
         assert task.result() == 0
 
 
-def test_app_engine_record_logging(
+def test_engine_record_logging(
     thread_executor: ThreadPoolExecutor,
     tmp_path: pathlib.Path,
 ) -> None:
@@ -104,7 +106,7 @@ def test_app_engine_record_logging(
             )
 
 
-def test_app_engine_record_logging_exception(
+def test_engine_record_logging_exception(
     thread_executor: ThreadPoolExecutor,
     tmp_path: pathlib.Path,
 ) -> None:
@@ -146,24 +148,10 @@ def test_as_completed_empty() -> None:
     assert len(list(as_completed([]))) == 0
 
 
-def test_task_future_exception() -> None:
-    future: Future[_TaskResult[int]] = Future()
-
-    task = TaskFuture(
-        future,
-        TaskInfo('test', 'test', [], 0),
-        TaskTransformer(NullTransformer(), NullFilter()),
-    )
-
-    exception = RuntimeError()
-    future.set_exception(exception)
-    assert task.exception() == exception
-
-
 def test_wait() -> None:
-    fast_future: Future[_TaskResult[int]] = Future()
-    fast_future.set_result(_TaskResult(0, None))  # type: ignore[arg-type]
-    slow_future: Future[_TaskResult[int]] = Future()
+    fast_future: Future[TaskResult[int]] = Future()
+    fast_future.set_result(TaskResult(0, None))  # type: ignore[arg-type]
+    slow_future: Future[TaskResult[int]] = Future()
 
     fast_task = TaskFuture(
         fast_future,
