@@ -12,11 +12,11 @@ from taps.engine import Engine
 def test_cholesky_app(
     matrix_size: int,
     block_size: int,
-    app_engine: Engine,
+    engine: Engine,
     tmp_path: pathlib.Path,
 ) -> None:
     app = CholeskyApp(matrix_size, block_size)
-    app.run(app_engine, tmp_path)
+    app.run(engine, tmp_path)
     app.close()
 
 

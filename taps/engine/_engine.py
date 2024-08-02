@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import dataclasses
-import functools
-import socket
 import sys
 import time
 import uuid
@@ -37,8 +35,12 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
-from taps.engine._protocols import FutureProtocol
-from taps.engine._transform import TaskTransformer
+from taps.engine.future import FutureProtocol
+from taps.engine.task import ExceptionInfo
+from taps.engine.task import Task
+from taps.engine.task import TaskInfo
+from taps.engine.task import TaskResult
+from taps.engine.transform import TaskTransformer
 from taps.filter import Filter
 from taps.filter import NullFilter
 from taps.record import NullRecordLogger
@@ -48,172 +50,6 @@ from taps.transformer import Transformer
 
 P = ParamSpec('P')
 T = TypeVar('T')
-
-
-@dataclasses.dataclass
-class ExceptionInfo:
-    """Task exception information."""
-
-    type: str
-    message: str
-    traceback: str
-
-
-@dataclasses.dataclass
-class ExecutionInfo:
-    """Task execution information."""
-
-    hostname: str
-    execution_start_time: float
-    execution_end_time: float
-    task_start_time: float
-    task_end_time: float
-    input_transform_start_time: float
-    input_transform_end_time: float
-    result_transform_start_time: float
-    result_transform_end_time: float
-
-
-@dataclasses.dataclass
-class TaskInfo:
-    """Task information."""
-
-    task_id: str
-    function_name: str
-    parent_task_ids: list[str]
-    submit_time: float
-    received_time: float | None = None
-    success: bool | None = None
-    exception: ExceptionInfo | None = None
-    execution: ExecutionInfo | None = None
-
-
-@dataclasses.dataclass
-class _TaskResult(Generic[T]):
-    result: T
-    info: ExecutionInfo
-
-
-class _TaskWrapper(Generic[P, T]):
-    """Task wrapper.
-
-    Args:
-        function: Function that represents the work associated with the task.
-        task_id: Unique UUID of the task.
-    """
-
-    def __init__(
-        self,
-        function: Callable[P, T],
-        *,
-        task_id: uuid.UUID,
-        data_transformer: TaskTransformer[Any],
-    ) -> None:
-        self.function = function
-        self.task_id = uuid.uuid4() if task_id is None else task_id
-        self.data_transformer = data_transformer
-        #  Make this class instance "look" like `function`.
-        functools.update_wrapper(self, function)
-
-    def __call__(self, *args: Any, **kwargs: Any) -> _TaskResult[T]:
-        """Call the function associated with the task."""
-        execution_start_time = time.time()
-        args = tuple(
-            arg.result if isinstance(arg, _TaskResult) else arg for arg in args
-        )
-        kwargs = {
-            k: v.result if isinstance(v, _TaskResult) else v
-            for k, v in kwargs.items()
-        }
-
-        input_transform_start_time = time.time()
-        args = self.data_transformer.resolve_iterable(args)
-        kwargs = self.data_transformer.resolve_mapping(kwargs)
-        input_transform_end_time = time.time()
-
-        task_start_time = time.time()
-        result = self.function(*args, **kwargs)
-        task_end_time = time.time()
-
-        result_transform_start_time = time.time()
-        result = self.data_transformer.transform(result)
-        result_transform_end_time = time.time()
-
-        execution_end_time = time.time()
-
-        info = ExecutionInfo(
-            hostname=socket.gethostname(),
-            execution_start_time=execution_start_time,
-            execution_end_time=execution_end_time,
-            task_start_time=task_start_time,
-            task_end_time=task_end_time,
-            input_transform_start_time=input_transform_start_time,
-            input_transform_end_time=input_transform_end_time,
-            result_transform_start_time=result_transform_start_time,
-            result_transform_end_time=result_transform_end_time,
-        )
-        return _TaskResult(result, info)
-
-
-class TaskFuture(Generic[T]):
-    """Task future.
-
-    Note:
-        This class should not be instantiated by clients.
-
-    Attributes:
-        info: Task information and metadata.
-
-    Args:
-        future: Underlying future returned by the compute executor.
-        info: Task information and metadata.
-        data_transformer: Data transformer used to resolve the task result.
-    """
-
-    def __init__(
-        self,
-        future: FutureProtocol[_TaskResult[T]],
-        info: TaskInfo,
-        data_transformer: TaskTransformer[Any],
-    ) -> None:
-        self.info = info
-        self._future = future
-        self._data_transformer = data_transformer
-
-    def cancel(self) -> bool:
-        """Attempt to cancel the task.
-
-        If the call is currently being executed or finished running and
-        cannot be cancelled then the method will return `False`, otherwise
-        the call will be cancelled and the method will return `True`.
-        """
-        return self._future.cancel()
-
-    def done(self) -> bool:
-        """Return `True` is the call was successfully cancelled or finished."""
-        return self._future.done()
-
-    def exception(self) -> BaseException | None:
-        """Get the exception raised by the task or `None` if successful."""
-        return self._future.exception()
-
-    def result(self, timeout: float | None = None) -> T:
-        """Get the result of the task.
-
-        Args:
-            timeout: If the task has not finished, wait up to `timeout`
-                seconds.
-
-        Returns:
-            Task result if the task completed successfully.
-
-        Raises:
-            TimeoutError: If `timeout` is specified and the task does not
-                complete within `timeout` seconds.
-        """
-        task_result = self._future.result(timeout=timeout)
-        result = self._data_transformer.resolve(task_result.result)
-        return result
 
 
 def _result_or_cancel(
@@ -232,13 +68,71 @@ def _result_or_cancel(
         del future
 
 
+class TaskFuture(Generic[T]):
+    """Task future.
+
+    Note:
+        This class should not be instantiated by clients.
+
+    Args:
+        future: Underlying future returned by the compute executor.
+        info: Task information and metadata.
+        transformer: Transformer used to resolve the task result.
+    """
+
+    def __init__(
+        self,
+        future: FutureProtocol[TaskResult[T]],
+        info: TaskInfo,
+        transformer: TaskTransformer[Any],
+    ) -> None:
+        self.info = info
+        self.future = future
+        self.transformer = transformer
+
+    def cancel(self) -> bool:
+        """Attempt to cancel the task.
+
+        If the call is currently being executed or finished running and
+        cannot be cancelled then the method will return `False`, otherwise
+        the call will be cancelled and the method will return `True`.
+        """
+        return self.future.cancel()
+
+    def done(self) -> bool:
+        """Return `True` is the call was successfully cancelled or finished."""
+        return self.future.done()
+
+    def exception(self) -> BaseException | None:
+        """Get the exception raised by the task or `None` if successful."""
+        return self.future.exception()
+
+    def result(self, timeout: float | None = None) -> T:
+        """Get the result of the task.
+
+        Args:
+            timeout: If the task has not finished, wait up to `timeout`
+                seconds.
+
+        Returns:
+            Task result if the task completed successfully.
+
+        Raises:
+            TimeoutError: If `timeout` is specified and the task does not
+                complete within `timeout` seconds.
+        """
+        task_result = self.future.result(timeout=timeout)
+        result = self.transformer.resolve(task_result.result)
+        return result
+
+
 class Engine:
     """Application execution engine.
 
     Args:
         executor: Task compute executor.
-        data_filter: Data filter.
-        data_transformer: Data transformer.
+        filter_: Data filter.
+        transformer: Data transformer.
         record_logger: Task record logger.
     """
 
@@ -246,16 +140,14 @@ class Engine:
         self,
         executor: Executor,
         *,
-        data_filter: Filter | None = None,
-        data_transformer: Transformer[Any] | None = None,
+        filter_: Filter | None = None,
+        transformer: Transformer[Any] | None = None,
         record_logger: RecordLogger | None = None,
     ) -> None:
         self.executor = executor
-        self.data_transformer: TaskTransformer[Any] = TaskTransformer(
-            NullTransformer()
-            if data_transformer is None
-            else data_transformer,
-            NullFilter() if data_filter is None else data_filter,
+        self.transformer: TaskTransformer[Any] = TaskTransformer(
+            NullTransformer() if transformer is None else transformer,
+            NullFilter() if filter_ is None else filter_,
         )
         self.record_logger = (
             record_logger if record_logger is not None else NullRecordLogger()
@@ -263,10 +155,7 @@ class Engine:
 
         # Maps user provided functions to the wrapped function.
         # This is tricky to type, so we just use Any.
-        self._registered_tasks: dict[
-            Callable[[Any], Any],
-            _TaskWrapper[Any, Any],
-        ] = {}
+        self._registered_tasks: dict[Callable[[Any], Any], Task[Any, Any]] = {}
 
         # Internal bookkeeping
         self._running_tasks: dict[FutureProtocol[Any], TaskFuture[Any]] = {}
@@ -336,14 +225,13 @@ class Engine:
         task_id = uuid.uuid4()
 
         if function not in self._registered_tasks:
-            self._registered_tasks[function] = _TaskWrapper(
+            self._registered_tasks[function] = Task(
                 function,
-                task_id=task_id,
-                data_transformer=self.data_transformer,
+                transformer=self.transformer,
             )
 
         task = cast(
-            Callable[P, _TaskResult[T]],
+            Callable[P, TaskResult[T]],
             self._registered_tasks[function],
         )
 
@@ -361,20 +249,20 @@ class Engine:
 
         # Extract executor futures from inside TaskFuture objects
         args = tuple(
-            arg._future if isinstance(arg, TaskFuture) else arg for arg in args
+            arg.future if isinstance(arg, TaskFuture) else arg for arg in args
         )
         kwargs = {
-            k: v._future if isinstance(v, TaskFuture) else v
+            k: v.future if isinstance(v, TaskFuture) else v
             for k, v in kwargs.items()
         }
 
-        args = self.data_transformer.transform_iterable(args)
-        kwargs = self.data_transformer.transform_mapping(kwargs)
+        args = self.transformer.transform_iterable(args)
+        kwargs = self.transformer.transform_mapping(kwargs)
 
         future = self.executor.submit(task, *args, **kwargs)
         self._total_tasks += 1
 
-        task_future = TaskFuture(future, info, self.data_transformer)
+        task_future = TaskFuture(future, info, self.transformer)
         self._running_tasks[future] = task_future
         future.add_done_callback(self._task_done_callback)
 
@@ -447,7 +335,7 @@ class Engine:
             )
         else:  # pragma: <3.9 cover
             self.executor.shutdown(wait=wait)
-        self.data_transformer.close()
+        self.transformer.close()
         self.record_logger.close()
 
 
@@ -470,14 +358,14 @@ def as_completed(
     if len(tasks) == 0:
         return
 
-    futures = {task._future: task for task in tasks}
+    futures = {task.future: task for task in tasks}
     kwargs = {'timeout': timeout}
 
     # as_completed is tricky to type here.
     _as_completed: Any
-    if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
+    if len(tasks) == 0 or isinstance(tasks[0].future, Future):
         _as_completed = as_completed_python
-    elif isinstance(tasks[0]._future, DaskFuture):
+    elif isinstance(tasks[0].future, DaskFuture):
         _as_completed = as_completed_dask
         if sys.version_info < (3, 9):  # pragma: <3.9 cover
             kwargs = {}
@@ -510,11 +398,11 @@ def wait(
     if len(tasks) == 0:
         return result(set(), set())
 
-    futures = {task._future: task for task in tasks}
+    futures = {task.future: task for task in tasks}
 
-    if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
+    if len(tasks) == 0 or isinstance(tasks[0].future, Future):
         _wait = wait_python
-    elif isinstance(tasks[0]._future, DaskFuture):
+    elif isinstance(tasks[0].future, DaskFuture):
         _wait = wait_dask
     else:  # pragma: no cover
         raise ValueError(f'Unsupported future type {type(tasks[0])}.')

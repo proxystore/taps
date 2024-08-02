@@ -1,3 +1,5 @@
+"""Utilities for type checking third-party future types."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -6,16 +8,16 @@ from typing import Protocol
 from typing import runtime_checkable
 from typing import TypeVar
 
-R = TypeVar('R')
+ResultT = TypeVar('ResultT')
 
 
 @runtime_checkable
-class FutureProtocol(Protocol[R]):
+class FutureProtocol(Protocol[ResultT]):
     """Future protocol.
 
     This [`Protocol`][typing.Protocol] is useful for type checking future
     types that do not inherit from [`Future`][concurrent.futures.Future]
-    (such as Dask's [`Future`][distributed.Future].
+    (such as Dask's [`Future`][distributed.Future]).
 
     This protocol does not require `running()` because Dask does not provide
     that method.
@@ -23,7 +25,7 @@ class FutureProtocol(Protocol[R]):
 
     def add_done_callback(
         self,
-        callback: Callable[[FutureProtocol[R]], Any],
+        callback: Callable[[FutureProtocol[ResultT]], Any],
     ) -> None:
         """Add a done callback to the future."""
         ...
@@ -44,6 +46,11 @@ class FutureProtocol(Protocol[R]):
         """Get the exception raised by the task."""
         ...
 
-    def result(self, timeout: float | None = None) -> R:
+    def result(self, timeout: float | None = None) -> ResultT:
         """Get the result of the task."""
         ...
+
+
+def is_future(obj: Any) -> bool:
+    """Check if an object is future-like."""
+    return isinstance(obj, FutureProtocol)

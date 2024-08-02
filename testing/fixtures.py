@@ -58,7 +58,7 @@ def thread_executor() -> Generator[ThreadPoolExecutor, None, None]:
 
 
 @pytest.fixture()
-def app_engine(
+def engine(
     thread_executor: ThreadPoolExecutor,
 ) -> Generator[Engine, None, None]:
     dag_executor = FutureDependencyExecutor(thread_executor)

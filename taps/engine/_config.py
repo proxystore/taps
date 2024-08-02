@@ -65,7 +65,7 @@ class EngineConfig(BaseModel):
 
         return Engine(
             executor=self.executor.get_executor(),
-            data_filter=self.filter.get_filter(),
-            data_transformer=self.transformer.get_transformer(),
+            filter_=self.filter.get_filter(),
+            transformer=self.transformer.get_transformer(),
             record_logger=record_logger,
         )
