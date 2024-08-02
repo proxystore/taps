@@ -47,7 +47,7 @@ def test_noop_task() -> None:
 
 
 def test_synthetic_app(
-    app_engine: Engine,
+    engine: Engine,
     tmp_path: pathlib.Path,
 ) -> None:
     kinds = {
@@ -70,18 +70,18 @@ def test_synthetic_app(
         with mock.patch(
             f'taps.apps.synthetic.{function.__name__}',
         ) as mocked:
-            app.run(app_engine, tmp_path)
+            app.run(engine, tmp_path)
             mocked.assert_called_once()
 
         app.close()
 
 
-def test_run_bag_of_tasks(app_engine: Engine) -> None:
+def test_run_bag_of_tasks(engine: Engine) -> None:
     task_count, task_sleep, max_running_tasks = 6, 0.001, 3
 
     start = time.perf_counter()
     run_bag_of_tasks(
-        app_engine,
+        engine,
         task_count,
         0,
         task_sleep,
@@ -93,33 +93,33 @@ def test_run_bag_of_tasks(app_engine: Engine) -> None:
     assert min_time <= runtime
 
 
-def test_run_diamond(app_engine: Engine) -> None:
+def test_run_diamond(engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_diamond(app_engine, task_count, 0, task_sleep)
+    run_diamond(engine, task_count, 0, task_sleep)
     runtime = time.perf_counter() - start
 
     layers = 3
     assert layers * task_sleep <= runtime
 
 
-def test_run_reduce(app_engine: Engine) -> None:
+def test_run_reduce(engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_reduce(app_engine, task_count, 0, task_sleep)
+    run_reduce(engine, task_count, 0, task_sleep)
     runtime = time.perf_counter() - start
 
     layers = 2
     assert layers * task_sleep <= runtime
 
 
-def test_run_sequential(app_engine: Engine) -> None:
+def test_run_sequential(engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_sequential(app_engine, task_count, 0, task_sleep)
+    run_sequential(engine, task_count, 0, task_sleep)
     runtime = time.perf_counter() - start
 
     assert task_count * task_sleep <= runtime

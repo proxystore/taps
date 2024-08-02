@@ -84,7 +84,7 @@ def test_generate_files_nonempty_dir(tmp_path: pathlib.Path) -> None:
 
 
 def test_mapreduce_app_generate(
-    app_engine: Engine,
+    engine: Engine,
     tmp_path: pathlib.Path,
 ) -> None:
     data_dir = tmp_path / 'data'
@@ -96,12 +96,12 @@ def test_mapreduce_app_generate(
         generated_files=3,
         generated_words=12,
     )
-    app.run(app_engine, run_dir)
+    app.run(engine, run_dir)
     app.close()
 
 
 def test_mapreduce_app_existing_files(
-    app_engine: Engine,
+    engine: Engine,
     tmp_path: pathlib.Path,
 ) -> None:
     data_dir = tmp_path / 'data'
@@ -110,5 +110,5 @@ def test_mapreduce_app_existing_files(
     generate_files(data_dir, file_count=3, words_per_file=12)
 
     app = MapreduceApp(data_dir=data_dir, generate=False)
-    app.run(app_engine, run_dir)
+    app.run(engine, run_dir)
     app.close()

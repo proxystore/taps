@@ -34,18 +34,18 @@ def test_task_future_exception() -> None:
     assert task.exception() == exception
 
 
-def test_engine_submit(app_engine: Engine) -> None:
-    task = app_engine.submit(sum, [1, 2, 3], start=-6)
+def test_engine_submit(engine: Engine) -> None:
+    task = engine.submit(sum, [1, 2, 3], start=-6)
     assert isinstance(task, TaskFuture)
     assert task.result() == 0
     assert not task.cancel()
-    assert app_engine.tasks_executed == 1
+    assert engine.tasks_executed == 1
 
 
-def test_engine_map(app_engine: Engine) -> None:
+def test_engine_map(engine: Engine) -> None:
     x = [1, -1]
-    assert list(app_engine.map(abs, x)) == [abs(v) for v in x]
-    assert app_engine.tasks_executed == len(x)
+    assert list(engine.map(abs, x)) == [abs(v) for v in x]
+    assert engine.tasks_executed == len(x)
 
 
 def test_engine_dask(
@@ -59,9 +59,9 @@ def test_engine_dask(
 
 
 def test_engine_map_timeout(
-    app_engine: Engine,
+    engine: Engine,
 ) -> None:
-    assert list(app_engine.map(abs, [1, -1], timeout=1)) == [1, 1]
+    assert list(engine.map(abs, [1, -1], timeout=1)) == [1, 1]
 
 
 def test_engine_data_transformer(
@@ -131,8 +131,8 @@ def test_engine_record_logging_exception(
         assert len(task_info['exception']['traceback']) > 0
 
 
-def test_as_completed(app_engine: Engine) -> None:
-    tasks = [app_engine.submit(sum, [x, 1]) for x in range(5)]
+def test_as_completed(engine: Engine) -> None:
+    tasks = [engine.submit(sum, [x, 1]) for x in range(5)]
     completed = as_completed(tasks)
     assert set(tasks) == set(completed)
 

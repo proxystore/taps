@@ -105,7 +105,7 @@ def test_madd_spec(tmp_path: pathlib.Path) -> None:
     )
 
 
-def test_montage_app(app_engine: Engine, tmp_path: pathlib.Path) -> None:
+def test_montage_app(engine: Engine, tmp_path: pathlib.Path) -> None:
     img_folder = tmp_path / 'images'
     img_folder.mkdir()
     for i in range(3):
@@ -150,6 +150,6 @@ image.fits
         autospec=True,
         return_value=img_tbl,
     ):
-        app.run(app_engine, tmp_path)
+        app.run(engine, tmp_path)
 
     app.close()

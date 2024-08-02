@@ -18,7 +18,7 @@ from testing.app import MockAppConfig
 )
 def test_no_failures(
     failure_type: FailureType,
-    app_engine: Engine,
+    engine: Engine,
     tmp_path: pathlib.Path,
 ) -> None:
     app = FailureInjectionApp(
@@ -28,7 +28,7 @@ def test_no_failures(
     )
 
     with contextlib.closing(app):
-        app.run(app_engine, tmp_path)
+        app.run(engine, tmp_path)
 
 
 @pytest.mark.parametrize(
@@ -46,7 +46,7 @@ def test_failures(
     failure_type: FailureType,
     exc_type: type[Exception],
     exc_msg: str,
-    app_engine: Engine,
+    engine: Engine,
     tmp_path: pathlib.Path,
 ) -> None:
     app = FailureInjectionApp(
@@ -57,4 +57,4 @@ def test_failures(
 
     with contextlib.closing(app):
         with pytest.raises(exc_type, match=exc_msg):
-            app.run(app_engine, tmp_path)
+            app.run(engine, tmp_path)
