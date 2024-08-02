@@ -27,10 +27,6 @@ changelog:
     - title: Improvements
       labels:
         - internal
-      exclude:
-        labels:
-          - documentation
-          - package
     # All PRs tagged as documentation
     - title: Documentation
       labels:
