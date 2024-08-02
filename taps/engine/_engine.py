@@ -37,8 +37,8 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
-from taps.engine._protocols import FutureProtocol
 from taps.engine._transform import TaskTransformer
+from taps.engine.future import FutureProtocol
 from taps.filter import Filter
 from taps.filter import NullFilter
 from taps.record import NullRecordLogger
