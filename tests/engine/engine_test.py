@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pathlib
 import time
-import uuid
 from concurrent.futures import Future
 from concurrent.futures import ThreadPoolExecutor
 
@@ -28,8 +27,7 @@ def test_task_wrapper_call() -> None:
 
     task = _TaskWrapper(
         sum_,
-        task_id=uuid.uuid4(),
-        data_transformer=TaskTransformer(NullTransformer(), NullFilter()),
+        transformer=TaskTransformer(NullTransformer(), NullFilter()),
     )
     assert task([1, 2, 3], start=-6).result == 0
 

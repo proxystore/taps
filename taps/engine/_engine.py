@@ -99,19 +99,18 @@ class _TaskWrapper(Generic[P, T]):
 
     Args:
         function: Function that represents the work associated with the task.
-        task_id: Unique UUID of the task.
+        transformer: Transformer to use when resolving task arguments and
+            transforming task results.
     """
 
     def __init__(
         self,
         function: Callable[P, T],
         *,
-        task_id: uuid.UUID,
-        data_transformer: TaskTransformer[Any],
+        transformer: TaskTransformer[Any],
     ) -> None:
         self.function = function
-        self.task_id = uuid.uuid4() if task_id is None else task_id
-        self.data_transformer = data_transformer
+        self.transformer = transformer
         #  Make this class instance "look" like `function`.
         functools.update_wrapper(self, function)
 
@@ -127,8 +126,8 @@ class _TaskWrapper(Generic[P, T]):
         }
 
         input_transform_start_time = time.time()
-        args = self.data_transformer.resolve_iterable(args)
-        kwargs = self.data_transformer.resolve_mapping(kwargs)
+        args = self.transformer.resolve_iterable(args)
+        kwargs = self.transformer.resolve_mapping(kwargs)
         input_transform_end_time = time.time()
 
         task_start_time = time.time()
@@ -136,7 +135,7 @@ class _TaskWrapper(Generic[P, T]):
         task_end_time = time.time()
 
         result_transform_start_time = time.time()
-        result = self.data_transformer.transform(result)
+        result = self.transformer.transform(result)
         result_transform_end_time = time.time()
 
         execution_end_time = time.time()
@@ -338,8 +337,7 @@ class Engine:
         if function not in self._registered_tasks:
             self._registered_tasks[function] = _TaskWrapper(
                 function,
-                task_id=task_id,
-                data_transformer=self.data_transformer,
+                transformer=self.data_transformer,
             )
 
         task = cast(
