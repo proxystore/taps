@@ -12,6 +12,7 @@ from parsl.channels import LocalChannel
 from parsl.concurrent import ParslPoolExecutor
 from parsl.config import Config
 from parsl.executors import HighThroughputExecutor
+from parsl.executors.high_throughput.manager_selector import ManagerSelector
 from parsl.launchers.base import Launcher
 from parsl.monitoring.monitoring import MonitoringHub
 from parsl.providers import LocalProvider
@@ -181,6 +182,10 @@ class HTExConfig(BaseModel):
         None,
         description='ports used by parsl to connect to interchange',
     )
+    manager_selector: Optional[ManagerSelectorConfig] = Field(  # noqa: UP007
+        None,
+        description='choose ManagerSelector() strategy for htex',
+    )
 
     def get_executor(self) -> HighThroughputExecutor:
         """Create an executor instance from the config."""
@@ -190,6 +195,10 @@ class HTExConfig(BaseModel):
 
         if self.provider is not None:
             options['provider'] = self.provider.get_provider()
+        if self.manager_selector is not None:
+            options['manager_selector'] = (
+                self.manager_selector.get_manager_selector()
+            )
         if self.address is not None and isinstance(
             self.address,
             AddressConfig,
@@ -401,6 +410,11 @@ class MonitoringConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
+    hub_address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007
+        None,
+        description='address to connect to the monitoring hub',
+    )
+
     hub_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
         None,
         description='port range for a ZMQ channel from executor process',
@@ -411,4 +425,59 @@ class MonitoringConfig(BaseModel):
         options = self.model_dump(exclude_none=True)
         if self.model_extra is not None:  # pragma: no branch
             options.update(self.model_extra)
+        if self.hub_address is not None and isinstance(
+            self.hub_address,
+            AddressConfig,
+        ):
+            options['hub_address'] = self.hub_address.get_address()
+
         return MonitoringHub(**options)
+
+
+class ManagerSelectorConfig(BaseModel):
+    """Parsl HTEX ManagerSelector config option.
+
+    Example:
+        ```python
+        from parsl.executors.high_throughput.manager_selector import (
+            ManagerSelector,
+            RandomManagerSelector,
+        )
+        from taps.executor.config import ManagerSelectorConfig
+
+        config = ManagerSelectorConfig(kind='RandomManagerSelector)
+        assert config.manager_selector() == RandomManagerSelector()
+        ```
+    """
+
+    model_config = ConfigDict(extra='allow')
+
+    kind: str = Field(description='name of execution provider')
+
+    @field_validator('kind')
+    @classmethod
+    def _validate_manager_selector_name(cls, kind: str) -> str:
+        # Parse the class name if the full path is passed. For example,
+        # parsl.executors.high_throughput.manager_selector.
+        # RandomManagerSelector
+        # and RandomManagerSelector should both be valid.
+        cls_name = kind.split('.')[-1]
+        try:
+            getattr(parsl.executors.high_throughput.manager_selector, cls_name)
+        except AttributeError as e:
+            raise ValueError(
+                'The module parsl.executors.high_throughput.manager_selector '
+                'does not contain a provider '
+                f'named {cls_name}.',
+            ) from e
+
+        return cls_name
+
+    def get_manager_selector(self) -> ManagerSelector:
+        """Create a launcher from the configuration."""
+        manager_cls = getattr(
+            parsl.executors.high_throughput.manager_selector,
+            self.kind,
+        )
+        options = self.model_extra if self.model_extra is not None else {}
+        return manager_cls(**options)
