@@ -6,7 +6,7 @@ site_description: Task Performance Suite
 repo_name: proxystore/taps
 repo_url: https://github.com/proxystore/taps
 
-copyright: Copyright &copy; 2024-Present Globus Labs
+copyright: Copyright &copy; 2024—Present Globus Labs
 
 theme:
   name: material
@@ -113,6 +113,7 @@ nav:
   - Home:
       - Overview: index.md
       - Get Started: get-started.md
+      - FAQ: faq.md
       - Issues (GitHub): https://github.com/proxystore/taps/issues
       - Changelog (GitHub): https://github.com/proxystore/taps/releases
   - Apps:
