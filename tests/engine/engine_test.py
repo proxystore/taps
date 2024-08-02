@@ -70,7 +70,7 @@ def test_engine_data_transformer(
 ) -> None:
     with Engine(
         thread_executor,
-        data_transformer=PickleFileTransformer(tmp_path),
+        transformer=PickleFileTransformer(tmp_path),
     ) as executor:
         task = executor.submit(sum, [1, 2, 3], start=-6)
         assert task.result() == 0

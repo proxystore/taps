@@ -131,8 +131,8 @@ class Engine:
 
     Args:
         executor: Task compute executor.
-        data_filter: Data filter.
-        data_transformer: Data transformer.
+        filter_: Data filter.
+        transformer: Data transformer.
         record_logger: Task record logger.
     """
 
@@ -140,16 +140,14 @@ class Engine:
         self,
         executor: Executor,
         *,
-        data_filter: Filter | None = None,
-        data_transformer: Transformer[Any] | None = None,
+        filter_: Filter | None = None,
+        transformer: Transformer[Any] | None = None,
         record_logger: RecordLogger | None = None,
     ) -> None:
         self.executor = executor
-        self.data_transformer: TaskTransformer[Any] = TaskTransformer(
-            NullTransformer()
-            if data_transformer is None
-            else data_transformer,
-            NullFilter() if data_filter is None else data_filter,
+        self.transformer: TaskTransformer[Any] = TaskTransformer(
+            NullTransformer() if transformer is None else transformer,
+            NullFilter() if filter_ is None else filter_,
         )
         self.record_logger = (
             record_logger if record_logger is not None else NullRecordLogger()
@@ -229,7 +227,7 @@ class Engine:
         if function not in self._registered_tasks:
             self._registered_tasks[function] = Task(
                 function,
-                transformer=self.data_transformer,
+                transformer=self.transformer,
             )
 
         task = cast(
@@ -258,13 +256,13 @@ class Engine:
             for k, v in kwargs.items()
         }
 
-        args = self.data_transformer.transform_iterable(args)
-        kwargs = self.data_transformer.transform_mapping(kwargs)
+        args = self.transformer.transform_iterable(args)
+        kwargs = self.transformer.transform_mapping(kwargs)
 
         future = self.executor.submit(task, *args, **kwargs)
         self._total_tasks += 1
 
-        task_future = TaskFuture(future, info, self.data_transformer)
+        task_future = TaskFuture(future, info, self.transformer)
         self._running_tasks[future] = task_future
         future.add_done_callback(self._task_done_callback)
 
@@ -337,7 +335,7 @@ class Engine:
             )
         else:  # pragma: <3.9 cover
             self.executor.shutdown(wait=wait)
-        self.data_transformer.close()
+        self.transformer.close()
         self.record_logger.close()
 
 
