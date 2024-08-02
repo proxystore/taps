@@ -12,28 +12,28 @@
         <meta name="author" content="Globus Labs">
       
       
-        <link rel="canonical" href="https://taps.proxystore.dev/latest/api/apps/configs/fedlearn/">
+        <link rel="canonical" href="https://taps.proxystore.dev/latest/api/engine/transform/">
       
       
-        <link rel="prev" href="../failures/">
+        <link rel="prev" href="../task/">
       
       
-        <link rel="next" href="../mapreduce/">
+        <link rel="next" href="../../executor/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.4.7">
     
     
       
-        <title>fedlearn - TaPS</title>
+        <title>transform - TaPS</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -52,13 +52,13 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../css/extra.css">
+      <link rel="stylesheet" href="../../../css/extra.css">
     
-      <link rel="stylesheet" href="../../../../css/mkdocstrings.css">
+      <link rel="stylesheet" href="../../../css/mkdocstrings.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tapsappsconfigsfedlearn" class="md-skip">
+        <a href="#tapsenginetransform" class="md-skip">
           Skip to content
         </a>
       
@@ -105,7 +105,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="TaPS" class="md-header__button md-logo" aria-label="TaPS" data-md-component="logo">
+    <a href="../../.." title="TaPS" class="md-header__button md-logo" aria-label="TaPS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              fedlearn
+              transform
             
           </span>
         </div>
@@ -248,7 +248,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../.." class="md-tabs__link">
+        <a href="../../.." class="md-tabs__link">
           
   
   Home
@@ -264,7 +264,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../apps/" class="md-tabs__link">
+      <a href="../../../apps/" class="md-tabs__link">
         
   
     
@@ -281,7 +281,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../guides/" class="md-tabs__link">
+      <a href="../../../guides/" class="md-tabs__link">
         
   
     
@@ -310,7 +310,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../../" class="md-tabs__link">
+        <a href="../../" class="md-tabs__link">
           
   
   API Reference
@@ -329,7 +329,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../../contributing/" class="md-tabs__link">
+      <a href="../../../contributing/" class="md-tabs__link">
         
   
     
@@ -363,7 +363,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="TaPS" class="md-nav__button md-logo" aria-label="TaPS" data-md-component="logo">
+    <a href="../../.." title="TaPS" class="md-nav__button md-logo" aria-label="TaPS" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -431,7 +431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -451,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../get-started/" class="md-nav__link">
+      <a href="../../../get-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -535,7 +535,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../apps/" class="md-nav__link ">
+            <a href="../../../apps/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -565,7 +565,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/cholesky/" class="md-nav__link">
+      <a href="../../../apps/cholesky/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -585,7 +585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/docking/" class="md-nav__link">
+      <a href="../../../apps/docking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -605,7 +605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/failures/" class="md-nav__link">
+      <a href="../../../apps/failures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -625,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/fedlearn/" class="md-nav__link">
+      <a href="../../../apps/fedlearn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -645,7 +645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/mapreduce/" class="md-nav__link">
+      <a href="../../../apps/mapreduce/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -665,7 +665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/moldesign/" class="md-nav__link">
+      <a href="../../../apps/moldesign/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -685,7 +685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/montage/" class="md-nav__link">
+      <a href="../../../apps/montage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -705,7 +705,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../apps/synthetic/" class="md-nav__link">
+      <a href="../../../apps/synthetic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -749,7 +749,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../guides/" class="md-nav__link ">
+            <a href="../../../guides/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -779,7 +779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../guides/apps/" class="md-nav__link">
+      <a href="../../../guides/apps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -799,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../guides/config/" class="md-nav__link">
+      <a href="../../../guides/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -819,7 +819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../guides/scripts/" class="md-nav__link">
+      <a href="../../../guides/scripts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -839,7 +839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../guides/parsl/" class="md-nav__link">
+      <a href="../../../guides/parsl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -859,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../guides/data/" class="md-nav__link">
+      <a href="../../../guides/data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -879,7 +879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../guides/executor/" class="md-nav__link">
+      <a href="../../../guides/executor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -988,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1006,25 +1006,23 @@
                 
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../apps/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1041,7 +1039,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1_2">
             <span class="md-nav__icon md-icon"></span>
             taps.apps
@@ -1054,7 +1052,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cholesky/" class="md-nav__link">
+      <a href="../../apps/cholesky/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1072,25 +1070,23 @@
                 
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../apps/configs/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1107,7 +1103,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1_2_2">
             <span class="md-nav__icon md-icon"></span>
             configs
@@ -1120,7 +1116,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cholesky/" class="md-nav__link">
+      <a href="../../apps/configs/cholesky/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1140,7 +1136,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../docking/" class="md-nav__link">
+      <a href="../../apps/configs/docking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1160,7 +1156,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../failures/" class="md-nav__link">
+      <a href="../../apps/configs/failures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1178,29 +1174,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    fedlearn
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../apps/configs/fedlearn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1209,53 +1185,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#taps.apps.configs.fedlearn" class="md-nav__link">
-    taps.apps.configs.fedlearn
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taps.apps.configs.fedlearn.FedlearnConfig" class="md-nav__link">
-    FedlearnConfig
-  </a>
-  
-    <nav class="md-nav" aria-label="FedlearnConfig">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#taps.apps.configs.fedlearn.FedlearnConfig.get_app" class="md-nav__link">
-    get_app()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1267,7 +1196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mapreduce/" class="md-nav__link">
+      <a href="../../apps/configs/mapreduce/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1287,7 +1216,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../moldesign/" class="md-nav__link">
+      <a href="../../apps/configs/moldesign/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1307,7 +1236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../montage/" class="md-nav__link">
+      <a href="../../apps/configs/montage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1327,7 +1256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../synthetic/" class="md-nav__link">
+      <a href="../../apps/configs/synthetic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1369,7 +1298,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../docking/" class="md-nav__link ">
+            <a href="../../apps/docking/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1399,7 +1328,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docking/app/" class="md-nav__link">
+      <a href="../../apps/docking/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1419,7 +1348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docking/data/" class="md-nav__link">
+      <a href="../../apps/docking/data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1439,7 +1368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docking/train/" class="md-nav__link">
+      <a href="../../apps/docking/train/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1481,7 +1410,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../failures/" class="md-nav__link ">
+            <a href="../../apps/failures/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1511,7 +1440,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../failures/app/" class="md-nav__link">
+      <a href="../../apps/failures/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1531,7 +1460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../failures/types/" class="md-nav__link">
+      <a href="../../apps/failures/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1573,7 +1502,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../fedlearn/" class="md-nav__link ">
+            <a href="../../apps/fedlearn/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1603,7 +1532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fedlearn/app/" class="md-nav__link">
+      <a href="../../apps/fedlearn/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1623,7 +1552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fedlearn/modules/" class="md-nav__link">
+      <a href="../../apps/fedlearn/modules/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1643,7 +1572,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fedlearn/tasks/" class="md-nav__link">
+      <a href="../../apps/fedlearn/tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1663,7 +1592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fedlearn/types/" class="md-nav__link">
+      <a href="../../apps/fedlearn/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1683,7 +1612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fedlearn/utils/" class="md-nav__link">
+      <a href="../../apps/fedlearn/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1711,7 +1640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mapreduce/" class="md-nav__link">
+      <a href="../../apps/mapreduce/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1745,7 +1674,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../moldesign/" class="md-nav__link ">
+            <a href="../../apps/moldesign/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1775,7 +1704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../moldesign/app/" class="md-nav__link">
+      <a href="../../apps/moldesign/app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1795,7 +1724,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../moldesign/chemfunctions/" class="md-nav__link">
+      <a href="../../apps/moldesign/chemfunctions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1815,7 +1744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../moldesign/tasks/" class="md-nav__link">
+      <a href="../../apps/moldesign/tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1843,7 +1772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../montage/" class="md-nav__link">
+      <a href="../../apps/montage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1863,7 +1792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../synthetic/" class="md-nav__link">
+      <a href="../../apps/synthetic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1889,23 +1818,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../engine/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1922,7 +1853,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_1_3">
             <span class="md-nav__icon md-icon"></span>
             taps.engine
@@ -1935,7 +1866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../engine/future/" class="md-nav__link">
+      <a href="../future/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1955,7 +1886,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../engine/task/" class="md-nav__link">
+      <a href="../task/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1973,9 +1904,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../../engine/transform/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    transform
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1984,6 +1935,95 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#taps.engine.transform" class="md-nav__link">
+    taps.engine.transform
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer" class="md-nav__link">
+    TaskTransformer
+  </a>
+  
+    <nav class="md-nav" aria-label="TaskTransformer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.close" class="md-nav__link">
+    close()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.transform" class="md-nav__link">
+    transform()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.transform_iterable" class="md-nav__link">
+    transform_iterable()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.transform_mapping" class="md-nav__link">
+    transform_mapping()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.resolve" class="md-nav__link">
+    resolve()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.resolve_iterable" class="md-nav__link">
+    resolve_iterable()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.resolve_mapping" class="md-nav__link">
+    resolve_mapping()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2017,7 +2057,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../executor/" class="md-nav__link ">
+            <a href="../../executor/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2047,7 +2087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../executor/dask/" class="md-nav__link">
+      <a href="../../executor/dask/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2067,7 +2107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../executor/globus/" class="md-nav__link">
+      <a href="../../executor/globus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2087,7 +2127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../executor/parsl/" class="md-nav__link">
+      <a href="../../executor/parsl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2107,7 +2147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../executor/python/" class="md-nav__link">
+      <a href="../../executor/python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2127,7 +2167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../executor/ray/" class="md-nav__link">
+      <a href="../../executor/ray/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2147,7 +2187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../executor/utils/" class="md-nav__link">
+      <a href="../../executor/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2175,7 +2215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../filter/" class="md-nav__link">
+      <a href="../../filter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2195,7 +2235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../logging/" class="md-nav__link">
+      <a href="../../logging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2215,7 +2255,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../plugins/" class="md-nav__link">
+      <a href="../../plugins/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2235,7 +2275,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../record/" class="md-nav__link">
+      <a href="../../record/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2269,7 +2309,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../run/" class="md-nav__link ">
+            <a href="../../run/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2299,7 +2339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../run/config/" class="md-nav__link">
+      <a href="../../run/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2319,7 +2359,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../run/env/" class="md-nav__link">
+      <a href="../../run/env/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2339,7 +2379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../run/main/" class="md-nav__link">
+      <a href="../../run/main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2359,7 +2399,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../run/parse/" class="md-nav__link">
+      <a href="../../run/parse/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2379,7 +2419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../run/utils/" class="md-nav__link">
+      <a href="../../run/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2407,7 +2447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transformer/" class="md-nav__link">
+      <a href="../../transformer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2459,7 +2499,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../contributing/" class="md-nav__link ">
+            <a href="../../../contributing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2489,7 +2529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../contributing/style-guide/" class="md-nav__link">
+      <a href="../../../contributing/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2509,7 +2549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../contributing/issues-pull-requests/" class="md-nav__link">
+      <a href="../../../contributing/issues-pull-requests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2529,7 +2569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../contributing/releases/" class="md-nav__link">
+      <a href="../../../contributing/releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2577,23 +2617,65 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#taps.apps.configs.fedlearn" class="md-nav__link">
-    taps.apps.configs.fedlearn
+  <a href="#taps.engine.transform" class="md-nav__link">
+    taps.engine.transform
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#taps.apps.configs.fedlearn.FedlearnConfig" class="md-nav__link">
-    FedlearnConfig
+  <a href="#taps.engine.transform.TaskTransformer" class="md-nav__link">
+    TaskTransformer
   </a>
   
-    <nav class="md-nav" aria-label="FedlearnConfig">
+    <nav class="md-nav" aria-label="TaskTransformer">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#taps.apps.configs.fedlearn.FedlearnConfig.get_app" class="md-nav__link">
-    get_app()
+  <a href="#taps.engine.transform.TaskTransformer.close" class="md-nav__link">
+    close()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.transform" class="md-nav__link">
+    transform()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.transform_iterable" class="md-nav__link">
+    transform_iterable()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.transform_mapping" class="md-nav__link">
+    transform_mapping()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.resolve" class="md-nav__link">
+    resolve()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.resolve_iterable" class="md-nav__link">
+    resolve_iterable()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taps.engine.transform.TaskTransformer.resolve_mapping" class="md-nav__link">
+    resolve_mapping()
   </a>
   
 </li>
@@ -2621,15 +2703,15 @@
   
 
 
-<h1 id="tapsappsconfigsfedlearn">taps.apps.configs.fedlearn<a class="headerlink" href="#tapsappsconfigsfedlearn" title="Permanent link">&para;</a></h1>
+<h1 id="tapsenginetransform">taps.engine.transform<a class="headerlink" href="#tapsenginetransform" title="Permanent link">&para;</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
-<a id="taps.apps.configs.fedlearn"></a>
+<a id="taps.engine.transform"></a>
   <div class="doc doc-contents">
-      <a target="_blank" href="https://github.com/proxystore/taps/blob/main/taps/apps/configs/fedlearn.py"><code>taps/apps/configs/fedlearn.py</code></a>
+      <a target="_blank" href="https://github.com/proxystore/taps/blob/main/taps/engine/transform.py"><code>taps/engine/transform.py</code></a>
   </div>
 
   <div class="doc doc-contents first">
@@ -2649,20 +2731,67 @@
 
 
 
-<h2 id="taps.apps.configs.fedlearn.FedlearnConfig" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">FedlearnConfig</span>
+<h2 id="taps.engine.transform.TaskTransformer" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">TaskTransformer</span>
 
 
-<a href="#taps.apps.configs.fedlearn.FedlearnConfig" class="headerlink" title="Permanent link">&para;</a></h2>
-
+<a href="#taps.engine.transform.TaskTransformer" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">TaskTransformer</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">transformer</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.transformer.Transformer" href="../../transformer/#taps.transformer.Transformer">Transformer</a></span><span class="p">[</span><span class="n"><span title="taps.engine.transform.IdentifierT">IdentifierT</span></span><span class="p">],</span> <span class="n">filter_</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.filter.Filter" href="../../filter/#taps.filter.Filter">Filter</a></span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
+</span></code></pre></div>
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="taps.apps.AppConfig" href="../../#taps.apps.AppConfig">AppConfig</a></code></p>
+            Bases: <code><a class="autorefs autorefs-external" title="typing.Generic" href="https://docs.python.org/3/library/typing.html#typing.Generic">Generic</a>[<span title="taps.engine.transform.IdentifierT">IdentifierT</span>]</code></p>
 
   
-      <p>Federated learning application configuration.</p>
+      <p>Task data transformer.</p>
+<p>This class combines a simple object
+<a class="autorefs autorefs-internal" href="../../transformer/#taps.transformer.Transformer"><code>Transformer</code></a> and a
+<a class="autorefs autorefs-internal" href="../../filter/#taps.filter.Filter"><code>Filter</code></a> into useful methods for transforming
+the positional arguments, keyword arguments, and results of tasks.</p>
 
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>transformer</code></b>
+            (<code><a class="autorefs autorefs-internal" title="taps.transformer.Transformer" href="../../transformer/#taps.transformer.Transformer">Transformer</a>[<span title="taps.engine.transform.IdentifierT">IdentifierT</span>]</code>)
+        –
+        <div class="doc-md-description">
+          <p>Object transformer.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>filter_</code></b>
+            (<code><a class="autorefs autorefs-internal" title="taps.filter.Filter" href="../../filter/#taps.filter.Filter">Filter</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>A filter which when called on an object returns <code>True</code> if
+the object should be transformed.</p>
+        </div>
+      </li>
+  </ul>
+
+                <details class="quote">
+                  <summary>Source code in <code>taps/engine/transform.py</code></summary>
+                  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="n">transformer</span><span class="p">:</span> <span class="n">Transformer</span><span class="p">[</span><span class="n">IdentifierT</span><span class="p">],</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="n">filter_</span><span class="p">:</span> <span class="n">Filter</span><span class="p">,</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">transformer</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">filter_</span> <span class="o">=</span> <span class="n">filter_</span>
+</span></code></pre></div></td></tr></table></div>
+                </details>
 
   
 
@@ -2680,57 +2809,243 @@
 
 
 
-<h3 id="taps.apps.configs.fedlearn.FedlearnConfig.get_app" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">get_app()</span>
+<h3 id="taps.engine.transform.TaskTransformer.close" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">close()</span>
 
 
-<a href="#taps.apps.configs.fedlearn.FedlearnConfig.get_app" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_app</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.apps.App" href="../../#taps.apps.App">App</a></span>
+<a href="#taps.engine.transform.TaskTransformer.close" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
   
-      <p>Create an application instance from the config.</p>
+      <p>Close the transformer.</p>
 
       <details class="quote">
-        <summary>Source code in <code>taps/apps/configs/fedlearn.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-79">79</a></span>
-<span class="normal"><a href="#__codelineno-0-80">80</a></span>
-<span class="normal"><a href="#__codelineno-0-81">81</a></span>
+        <summary>Source code in <code>taps/engine/transform.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-40">40</a></span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span>
+<span class="normal"><a href="#__codelineno-0-42">42</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Close the transformer.&quot;&quot;&quot;</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="taps.engine.transform.TaskTransformer.transform" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">transform()</span>
+
+
+<a href="#taps.engine.transform.TaskTransformer.transform" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">transform</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><span title="taps.engine.transform.T">T</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="taps.engine.transform.T">T</span></span> <span class="o">|</span> <span class="n"><span title="taps.engine.transform.IdentifierT">IdentifierT</span></span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Transform an object.</p>
+<p>Transforms <code>obj</code> into an identifier if it passes the filter check.
+The identifier can later be used to resolve the object.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>taps/engine/transform.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-44">44</a></span>
+<span class="normal"><a href="#__codelineno-0-45">45</a></span>
+<span class="normal"><a href="#__codelineno-0-46">46</a></span>
+<span class="normal"><a href="#__codelineno-0-47">47</a></span>
+<span class="normal"><a href="#__codelineno-0-48">48</a></span>
+<span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span>
+<span class="normal"><a href="#__codelineno-0-52">52</a></span>
+<span class="normal"><a href="#__codelineno-0-53">53</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span> <span class="o">|</span> <span class="n">IdentifierT</span><span class="p">:</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform an object.</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">    Transforms `obj` into an identifier if it passes the filter check.</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">    The identifier can later be used to resolve the object.</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_future</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a>        <span class="k">return</span> <span class="n">obj</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="taps.engine.transform.TaskTransformer.transform_iterable" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">transform_iterable()</span>
+
+
+<a href="#taps.engine.transform.TaskTransformer.transform_iterable" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">transform_iterable</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">iterable</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterable" href="https://docs.python.org/3/library/typing.html#typing.Iterable">Iterable</a></span><span class="p">[</span><span class="n"><span title="taps.engine.transform.T">T</span></span><span class="p">],</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a></span><span class="p">[</span><span class="n"><span title="taps.engine.transform.T">T</span></span> <span class="o">|</span> <span class="n"><span title="taps.engine.transform.IdentifierT">IdentifierT</span></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Transform each object in an iterable.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>taps/engine/transform.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-55">55</a></span>
+<span class="normal"><a href="#__codelineno-0-56">56</a></span>
+<span class="normal"><a href="#__codelineno-0-57">57</a></span>
+<span class="normal"><a href="#__codelineno-0-58">58</a></span>
+<span class="normal"><a href="#__codelineno-0-59">59</a></span>
+<span class="normal"><a href="#__codelineno-0-60">60</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="k">def</span> <span class="nf">transform_iterable</span><span class="p">(</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>    <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">T</span> <span class="o">|</span> <span class="n">IdentifierT</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform each object in an iterable.&quot;&quot;&quot;</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a>    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="taps.engine.transform.TaskTransformer.transform_mapping" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">transform_mapping()</span>
+
+
+<a href="#taps.engine.transform.TaskTransformer.transform_mapping" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">transform_mapping</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">mapping</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span><span class="p">[</span><span class="n"><span title="taps.engine.transform.K">K</span></span><span class="p">,</span> <span class="n"><span title="taps.engine.transform.T">T</span></span><span class="p">]</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><span title="taps.engine.transform.K">K</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Transform each value in a mapping.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>taps/engine/transform.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-62">62</a></span>
+<span class="normal"><a href="#__codelineno-0-63">63</a></span>
+<span class="normal"><a href="#__codelineno-0-64">64</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="k">def</span> <span class="nf">transform_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">K</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">K</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform each value in a mapping.&quot;&quot;&quot;</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="taps.engine.transform.TaskTransformer.resolve" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">resolve()</span>
+
+
+<a href="#taps.engine.transform.TaskTransformer.resolve" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">resolve</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Resolve an object.</p>
+<p>Resolves the object if it is an identifier, otherwise returns the
+passed object.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>taps/engine/transform.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-66">66</a></span>
+<span class="normal"><a href="#__codelineno-0-67">67</a></span>
+<span class="normal"><a href="#__codelineno-0-68">68</a></span>
+<span class="normal"><a href="#__codelineno-0-69">69</a></span>
+<span class="normal"><a href="#__codelineno-0-70">70</a></span>
+<span class="normal"><a href="#__codelineno-0-71">71</a></span>
+<span class="normal"><a href="#__codelineno-0-72">72</a></span>
+<span class="normal"><a href="#__codelineno-0-73">73</a></span>
+<span class="normal"><a href="#__codelineno-0-74">74</a></span>
+<span class="normal"><a href="#__codelineno-0-75">75</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve an object.</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a><span class="sd">    Resolves the object if it is an identifier, otherwise returns the</span>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a><span class="sd">    passed object.</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">is_identifier</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="k">return</span> <span class="n">obj</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="taps.engine.transform.TaskTransformer.resolve_iterable" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">resolve_iterable()</span>
+
+
+<a href="#taps.engine.transform.TaskTransformer.resolve_iterable" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">resolve_iterable</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">iterable</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterable" href="https://docs.python.org/3/library/typing.html#typing.Iterable">Iterable</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">],</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Resolve each object in an iterable.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>taps/engine/transform.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-77">77</a></span>
+<span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77"></a><span class="k">def</span> <span class="nf">resolve_iterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve each object in an iterable.&quot;&quot;&quot;</span>
+</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a>    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="taps.engine.transform.TaskTransformer.resolve_mapping" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">resolve_mapping()</span>
+
+
+<a href="#taps.engine.transform.TaskTransformer.resolve_mapping" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">resolve_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span><span class="p">[</span><span class="n"><span title="taps.engine.transform.K">K</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><span title="taps.engine.transform.K">K</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Resolve each value in a mapping.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>taps/engine/transform.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-81">81</a></span>
 <span class="normal"><a href="#__codelineno-0-82">82</a></span>
-<span class="normal"><a href="#__codelineno-0-83">83</a></span>
-<span class="normal"><a href="#__codelineno-0-84">84</a></span>
-<span class="normal"><a href="#__codelineno-0-85">85</a></span>
-<span class="normal"><a href="#__codelineno-0-86">86</a></span>
-<span class="normal"><a href="#__codelineno-0-87">87</a></span>
-<span class="normal"><a href="#__codelineno-0-88">88</a></span>
-<span class="normal"><a href="#__codelineno-0-89">89</a></span>
-<span class="normal"><a href="#__codelineno-0-90">90</a></span>
-<span class="normal"><a href="#__codelineno-0-91">91</a></span>
-<span class="normal"><a href="#__codelineno-0-92">92</a></span>
-<span class="normal"><a href="#__codelineno-0-93">93</a></span>
-<span class="normal"><a href="#__codelineno-0-94">94</a></span>
-<span class="normal"><a href="#__codelineno-0-95">95</a></span>
-<span class="normal"><a href="#__codelineno-0-96">96</a></span>
-<span class="normal"><a href="#__codelineno-0-97">97</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="k">def</span> <span class="nf">get_app</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">App</span><span class="p">:</span>
-</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an application instance from the config.&quot;&quot;&quot;</span>
-</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a>    <span class="kn">from</span> <span class="nn">taps.apps.fedlearn.app</span> <span class="kn">import</span> <span class="n">FedlearnApp</span>
-</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a>    <span class="kn">from</span> <span class="nn">taps.apps.fedlearn.types</span> <span class="kn">import</span> <span class="n">DataChoices</span>
-</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>
-</span><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84"></a>    <span class="k">return</span> <span class="n">FedlearnApp</span><span class="p">(</span>
-</span><span id="__span-0-85"><a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="n">clients</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">,</span>
-</span><span id="__span-0-86"><a id="__codelineno-0-86" name="__codelineno-0-86"></a>        <span class="n">rounds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rounds</span><span class="p">,</span>
-</span><span id="__span-0-87"><a id="__codelineno-0-87" name="__codelineno-0-87"></a>        <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
-</span><span id="__span-0-88"><a id="__codelineno-0-88" name="__codelineno-0-88"></a>        <span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-</span><span id="__span-0-89"><a id="__codelineno-0-89" name="__codelineno-0-89"></a>        <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-</span><span id="__span-0-90"><a id="__codelineno-0-90" name="__codelineno-0-90"></a>        <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span>
-</span><span id="__span-0-91"><a id="__codelineno-0-91" name="__codelineno-0-91"></a>        <span class="n">dataset</span><span class="o">=</span><span class="n">DataChoices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">),</span>
-</span><span id="__span-0-92"><a id="__codelineno-0-92" name="__codelineno-0-92"></a>        <span class="n">data_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>
-</span><span id="__span-0-93"><a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="n">train</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">,</span>
-</span><span id="__span-0-94"><a id="__codelineno-0-94" name="__codelineno-0-94"></a>        <span class="n">test</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">,</span>
-</span><span id="__span-0-95"><a id="__codelineno-0-95" name="__codelineno-0-95"></a>        <span class="n">participation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">participation</span><span class="p">,</span>
-</span><span id="__span-0-96"><a id="__codelineno-0-96" name="__codelineno-0-96"></a>        <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
-</span><span id="__span-0-97"><a id="__codelineno-0-97" name="__codelineno-0-97"></a>    <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="k">def</span> <span class="nf">resolve_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">K</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">K</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve each value in a mapping.&quot;&quot;&quot;</span>
+</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 </span></code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -2802,12 +3117,12 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.code.select", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.aecac24b.min.js"></script>
       
-        <script src="../../../../javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
