@@ -1,0 +1,55 @@
+name: Bug Report
+description: Report errors or unexpected results.
+labels: ["bug"]
+assignees:
+  - gpauloski
+body:
+  - type: textarea
+    id: freeform
+    attributes:
+      label: Describe the problem.
+      description: >
+        Please describe the issue encountered, what you expected to happen,
+        and steps to reproduce the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: install
+    attributes:
+      label: How did you install TaPS?
+      description: >
+        Include the steps taken to configure your environment
+        **Note:** this will be rendered as console text automatically.
+      placeholder: |
+        $ git clone ...
+        $ pip install ...
+      render: console
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: TaPS Version
+      description: >
+        Include the git tag or commit ID of TaPS.
+      placeholder: "v0.2.1 or 6e337b43a2b7b0683d8187756a8bef23ad30db29"
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      placeholder: "3.10"
+    validations:
+      required: true
+
+  - type: input
+    id: platform
+    attributes:
+      label: OS and Platform
+      placeholder: "x86 Linux, ARM MacOS, etc."
+    validations:
+      required: true
