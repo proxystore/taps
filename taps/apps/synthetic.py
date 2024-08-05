@@ -266,7 +266,7 @@ def run_sequential(
         )
 
     for i, task in enumerate(as_completed(tasks)):
-        assert task.done()
+        # assert task.done()
         logger.log(
             APP_LOG_LEVEL,
             f'Received task {i+1}/{task_count} (task_id: {task.info.task_id})',

@@ -65,3 +65,28 @@ class ParslConfig(ExecutorConfig):
     def get_executor(self) -> globus_compute_sdk.Executor:
         """Create an executor instance from the config."""
         return ParslPoolExecutor(self.get_executor_config())
+
+
+@register(name='parsl-taskvine')
+class ParslTaskVineConfig(ExecutorConfig):
+    """Parsl configuration.
+
+    Attributes:
+        endpoint: Globus Compute endpoint UUID.
+    """
+
+    def get_executor(self) -> globus_compute_sdk.Executor:
+        """Create an executor instance from the config."""
+        from parsl.executors.taskvine import TaskVineExecutor
+        from parsl.executors.taskvine import TaskVineManagerConfig
+
+        config = Config(
+            executors=[
+                TaskVineExecutor(
+                    label='parsl-vine-example',
+                    manager_config=TaskVineManagerConfig(),
+                ),
+            ],
+            run_dir='parsl-runinfo',
+        )
+        return ParslPoolExecutor(config)

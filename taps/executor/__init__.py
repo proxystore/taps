@@ -7,3 +7,4 @@ import taps.executor.globus
 import taps.executor.parsl
 import taps.executor.python
 import taps.executor.ray
+import taps.executor.taskvine

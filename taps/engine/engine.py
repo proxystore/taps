@@ -34,6 +34,9 @@ else:  # pragma: <3.11 cover
 from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
+from ndcctools.taskvine.futures import as_completed as as_completed_taskvine
+from ndcctools.taskvine.futures import VineFuture
+from ndcctools.taskvine.futures import wait as wait_taskvine
 
 from taps.data.filter import Filter
 from taps.data.filter import NullFilter
@@ -451,7 +454,9 @@ def as_completed(
     futures = {task._future: task for task in tasks}
 
     kwargs = {'timeout': timeout}
-    if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
+    if isinstance(tasks[0]._future, VineFuture):
+        _as_completed = as_completed_taskvine
+    elif len(tasks) == 0 or isinstance(tasks[0]._future, Future):
         _as_completed = as_completed_python
     elif isinstance(tasks[0]._future, DaskFuture):
         _as_completed = as_completed_dask
@@ -483,18 +488,26 @@ def wait(
     """
     futures = {task._future: task for task in tasks}
 
-    if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
-        _wait = wait_python
-    elif isinstance(tasks[0]._future, DaskFuture):
-        _wait = wait_dask
-    else:  # pragma: no cover
-        raise ValueError(f'Unsupported future type {type(tasks[0])}.')
+    if isinstance(tasks[0]._future, VineFuture):
+        result = wait_taskvine(
+            list(futures.keys()),
+            timeout=timeout,
+            return_when=return_when,
+        )
+        completed_futures, not_completed_futures = result.done, result.not_done
+    else:
+        if len(tasks) == 0 or isinstance(tasks[0]._future, Future):
+            _wait = wait_python
+        elif isinstance(tasks[0]._future, DaskFuture):
+            _wait = wait_dask
+        else:  # pragma: no cover
+            raise ValueError(f'Unsupported future type {type(tasks[0])}.')
 
-    completed_futures, not_completed_futures = _wait(
-        list(futures.keys()),
-        timeout=timeout,
-        return_when=return_when,
-    )
+        completed_futures, not_completed_futures = _wait(
+            list(futures.keys()),
+            timeout=timeout,
+            return_when=return_when,
+        )
 
     completed_tasks = {futures[f] for f in completed_futures}
     not_completed_tasks = {futures[f] for f in not_completed_futures}
