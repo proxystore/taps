@@ -8,6 +8,7 @@ from typing import Generator
 from unittest import mock
 
 import pytest
+from parsl.addresses import address_by_hostname
 from parsl.addresses import address_by_interface
 from parsl.executors import HighThroughputExecutor
 from parsl.launchers.base import Launcher
@@ -95,11 +96,16 @@ def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
     assert isinstance(executor, Executor)
 
 
+def test_address_config() -> None:
+    config = AddressConfig(kind='address_by_hostname')
+    assert config.get_address() == address_by_hostname()
+
+
 @pytest.mark.skipif(
     sys.platform == 'darwin',
     reason='address resolution is unreliable on MacOS',
 )
-def test_address_config() -> None:
+def test_address_config_with_options() -> None:  # pragma: no cover
     ifname = socket.if_nameindex()[0][1]
     config = AddressConfig(kind='address_by_interface', ifname=ifname)
     assert config.get_address() == address_by_interface(ifname=ifname)
