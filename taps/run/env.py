@@ -56,7 +56,7 @@ class Environment(NamedTuple):
             cpu_architecture=platform.machine(),
             cpu_physical_cores=psutil.cpu_count(logical=False),
             cpu_logical_cores=psutil.cpu_count(logical=True),
-            memory_gb=round(psutil.virtual_memory().available / 1e9, 2),
+            memory_gb=round(psutil.virtual_memory().total / 1e9, 2),
             python_version=platform.python_version(),
             python_implementation=platform.python_implementation(),
             python_compiler=platform.python_compiler(),
