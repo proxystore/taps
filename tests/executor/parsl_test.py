@@ -8,15 +8,26 @@ from typing import Generator
 from unittest import mock
 
 import pytest
+from parsl.addresses import address_by_hostname
 from parsl.addresses import address_by_interface
 from parsl.executors import HighThroughputExecutor
 from parsl.launchers.base import Launcher
 from parsl.providers.base import ExecutionProvider
 from pydantic import ValidationError
 
+try:
+    from parsl.executors.high_throughput.manager_selector import (
+        ManagerSelector,
+    )
+
+    manager_selector_available = True
+except ImportError:  # pragma: no cover
+    manager_selector_available = False
+
 from taps.executor.parsl import AddressConfig
 from taps.executor.parsl import HTExConfig
 from taps.executor.parsl import LauncherConfig
+from taps.executor.parsl import ManagerSelectorConfig
 from taps.executor.parsl import MonitoringConfig
 from taps.executor.parsl import ParslHTExConfig
 from taps.executor.parsl import ParslLocalConfig
@@ -40,6 +51,11 @@ def test_get_local_executor(tmp_path: pathlib.Path) -> None:
 
 
 def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
+    if manager_selector_available:
+        manager_selector = ManagerSelectorConfig(kind='RandomManagerSelector')
+    else:  # pragma: no cover
+        manager_selector = None
+
     htex_config = HTExConfig(
         provider=ProviderConfig(
             kind='PBSProProvider',
@@ -49,6 +65,7 @@ def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
             queue='debug',
         ),
         address=AddressConfig(kind='address_by_hostname'),
+        manager_selector=manager_selector,
         worker_ports=[0, 0],
         worker_port_range=[0, 0],
         interchange_port_range=[0, 0],
@@ -79,11 +96,16 @@ def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
     assert isinstance(executor, Executor)
 
 
+def test_address_config() -> None:
+    config = AddressConfig(kind='address_by_hostname')
+    assert config.get_address() == address_by_hostname()
+
+
 @pytest.mark.skipif(
     sys.platform == 'darwin',
     reason='address resolution is unreliable on MacOS',
 )
-def test_address_config() -> None:
+def test_address_config_with_options() -> None:  # pragma: no cover
     ifname = socket.if_nameindex()[0][1]
     config = AddressConfig(kind='address_by_interface', ifname=ifname)
     assert config.get_address() == address_by_interface(ifname=ifname)
@@ -129,9 +151,29 @@ def test_provider_config_unknown_kind() -> None:
         ProviderConfig(kind='FakeProvider')
 
 
+@pytest.mark.skipif(
+    not manager_selector_available,
+    reason='Parsl version does not support manager selector',
+)
+def test_manager_selector_config() -> None:
+    config = ManagerSelectorConfig(
+        kind='RandomManagerSelector',
+    )
+    assert isinstance(config.get_manager_selector(), ManagerSelector)
+
+
+@pytest.mark.skipif(
+    not manager_selector_available,
+    reason='Parsl version does not support manager selector',
+)
+def test_manager_selector_config_unknown_kind() -> None:
+    with pytest.raises(ValidationError, match='FakeManagerSelector'):
+        ManagerSelectorConfig(kind='FakeManagerSelector')
+
+
 def test_monitoring_config(tmp_path: pathlib.Path, mock_monitoring) -> None:
     config = MonitoringConfig(
-        hub_address='localhost',
+        hub_address=AddressConfig(kind='address_by_hostname'),
         logging_endpoint=f'sqlite:///{tmp_path}/monitoring.db',
         resource_monitoring_interval=1,
         hub_port=55055,
