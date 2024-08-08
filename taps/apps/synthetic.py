@@ -330,7 +330,19 @@ class SyntheticApp:
         """
         if self.warmup_task:
             logger.log(APP_LOG_LEVEL, 'Submitting warmup task')
-            engine.submit(warmup_task).result()
+            tasks = (
+                self.bag_max_running if self.bag_max_running is not None else 1
+            )
+            futures = [
+                engine.submit(
+                    noop_task,
+                    generate_data(0),
+                    output_size=0,
+                    sleep=0,
+                )
+                for _ in range(tasks)
+            ]
+            wait(futures)
             logger.log(APP_LOG_LEVEL, 'Warmup task completed')
 
         logger.log(APP_LOG_LEVEL, f'Starting {self.structure.value} workflow')
