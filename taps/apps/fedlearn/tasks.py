@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime
+
 import torch
 from torch import nn
 from torch.nn import functional as F  # noqa: N812
@@ -47,7 +49,7 @@ def local_train(
     Returns:
         List of results that record the training history.
     """
-    from datetime import datetime
+    torch.set_num_threads(1)
 
     results: list[Result] = []
     client.model.to(device)

@@ -33,7 +33,7 @@ class DockingConfig(AppConfig):
         8,
         description='number of simulations per iteration',
     )
-    seed: int = Field(0, description='random seed for sampling')
+    seed: int | None = Field(0, description='random seed for sampling')
 
     @field_validator(
         'smi_file_name_ligand',
@@ -44,6 +44,14 @@ class DockingConfig(AppConfig):
     @classmethod
     def _resolve_filepaths(cls, path: str) -> str:
         return str(pathlib.Path(path).resolve())
+
+    @field_validator('seed', mode='before')
+    @classmethod
+    def _resolve_seed(cls, seed: str) -> int | None:
+        if seed.lower() == 'none':
+            return None
+        else:
+            return int(seed)
 
     def create_app(self) -> App:
         """Create an application instance from the config."""

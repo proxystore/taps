@@ -320,12 +320,11 @@ class MontageApp:
         )
         diffs_tbl_fut = engine.submit(
             moverlaps,
-            img_tbl=img_tbl_fut,
-            diffs_tbl=output_dir / 'diffs.tbl',
+            img_tbl_fut,
+            output_dir / 'diffs.tbl',
         )
         diffs_dir = output_dir / 'diffs'
         diffs_dir.mkdir(parents=True, exist_ok=True)
-
         diffs_tbl = diffs_tbl_fut.result()
         df = pd.read_csv(diffs_tbl, comment='#', sep='\\s+').drop(0)
         images1 = list(df['|.1'])
@@ -337,10 +336,10 @@ class MontageApp:
         for image1, image2, output in zip(images1, images2, outputs):
             future = engine.submit(
                 mdiff,
-                image_1=projections_dir / image1,
-                image_2=projections_dir / image2,
-                template=img_hdr,
-                output_path=diffs_dir / output,
+                projections_dir / image1,
+                projections_dir / image2,
+                img_hdr,
+                diffs_dir / output,
             )
             mdiff_futures.append(future)
 
@@ -349,10 +348,10 @@ class MontageApp:
 
         corrections_fut = engine.submit(
             bgexec_prep,
-            img_table=img_tbl_fut,
-            diffs_table=diffs_tbl,
-            diff_dir=diffs_dir,
-            output_dir=output_dir,
+            img_tbl_fut,
+            diffs_tbl,
+            diffs_dir,
+            output_dir,
         )
 
         corrections_dir = output_dir / 'corrections'
@@ -379,11 +378,11 @@ class MontageApp:
 
             future = engine.submit(
                 mbackground,
-                in_image=input_path,
-                out_image=output_path,
-                a=correction_values[1],
-                b=correction_values[2],
-                c=correction_values[3],
+                input_path,
+                output_path,
+                correction_values[1],
+                correction_values[2],
+                correction_values[3],
             )
 
             bgexec_futures.append(future)

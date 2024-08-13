@@ -20,6 +20,7 @@ from taps.logging import APP_LOG_LEVEL
 logger = logging.getLogger(__name__)
 
 MGLTOOLS_HOME_ENV = 'MGLTOOLS_HOME'
+os.environ[MGLTOOLS_HOME_ENV] = os.environ['CONDA_PREFIX']
 
 
 def smi_to_pdb(smiles: str, pdb_file: pathlib.Path) -> pathlib.Path:

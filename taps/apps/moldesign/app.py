@@ -92,7 +92,18 @@ class MoldesignApp:
             already_ran.add(smiles)
 
             # Check if the run completed successfully
-            if future.exception() is not None:
+            try:
+                # If it succeeded, store the result
+                train_data_list.append(
+                    {
+                        'smiles': smiles,
+                        'ie': future.result(),
+                        'batch': 0,
+                        'time': time.monotonic() - start_time,
+                    },
+                )
+            except Exception:
+                logger.exception('Task failed, submitting new task')
                 # If it failed, pick a new SMILES string at random and submit
                 smiles = search_space.sample(
                     1,
@@ -103,16 +114,6 @@ class MoldesignApp:
                     smiles,
                 )
                 sim_futures[new_future] = smiles
-            else:
-                # If it succeeded, store the result
-                train_data_list.append(
-                    {
-                        'smiles': smiles,
-                        'ie': future.result(),
-                        'batch': 0,
-                        'time': time.monotonic() - start_time,
-                    },
-                )
 
         logger.log(APP_LOG_LEVEL, 'Done computing initial set')
 
@@ -162,15 +163,18 @@ class MoldesignApp:
             # successful results.
             new_results = []
             for future in as_completed(list(sim_futures.keys())):
-                if future.exception() is None:
+                try:
+                    ie = future.result()
                     new_results.append(
                         {
                             'smiles': sim_futures[future],
-                            'ie': future.result(),
+                            'ie': ie,
                             'batch': batch,
                             'time': time.monotonic() - start_time,
                         },
                     )
+                except:
+                    pass
 
             # Update the training data and repeat
             batch += 1

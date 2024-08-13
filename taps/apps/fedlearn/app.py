@@ -22,6 +22,8 @@ from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
+# os.environ['OMP_NUM_THREADS'] = "1"
+
 
 class FedlearnApp:
     """Federated learning application.
