@@ -142,7 +142,7 @@ def test_provider_config() -> None:
 
 
 def test_provider_config_default() -> None:
-    config = ProviderConfig(kind='AdHocProvider')
+    config = ProviderConfig(kind='LocalProvider')
     assert isinstance(config.get_provider(), ExecutionProvider)
 
 
