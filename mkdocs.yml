@@ -141,6 +141,8 @@ nav:
       - Style Guide: contributing/style-guide.md
       - Issues and Pull Requests: contributing/issues-pull-requests.md
       - Releases: contributing/releases.md
+  - Publications:
+      - publications/index.md
 
 plugins:
   - mike:
