@@ -35,10 +35,10 @@ def init_logging(
         ```
 
     Args:
-        logfile (str): option filepath to write log to.
-        level (int, str): minimum logging level.
-        logfile_level (int, str): minimum logging level for the logfile.
-        force (bool): remove any existing handlers attached to the root
+        logfile: Optional filepath to write log to.
+        level: Minimum logging level.
+        logfile_level: Minimum logging level for the logfile.
+        force: Remove any existing handlers attached to the root
             handler. This option is useful to silencing the third-party
             package logging. Note: should not be set when running inside
             pytest.

@@ -64,12 +64,12 @@ class ObjectSizeFilterConfig(FilterConfig):
 
     name: Literal['object-size'] = Field(
         'object-size',
-        description='name of filter type',
+        description='Filter name.',
     )
-    min_size: int = Field(0, description='minimum object size in bytes')
+    min_size: int = Field(0, description='Minimum object size in bytes.')
     max_size: float = Field(
         math.inf,
-        description='maximum object size in bytes',
+        description='Maximum object size in bytes.',
     )
 
     def get_filter(self) -> Filter:
@@ -128,11 +128,11 @@ class ObjectTypeFilterConfig(FilterConfig):
 
     name: Literal['object-type'] = Field(
         'object-type',
-        description='name of filter type',
+        description='Filter name.',
     )
     patterns: Optional[List[str]] = Field(  # noqa: UP006,UP007
         None,
-        description='list of patterns to match against type names',
+        description='List of patterns to match against type names.',
     )
 
     def get_filter(self) -> Filter:
@@ -188,12 +188,12 @@ class PickleSizeFilterConfig(FilterConfig):
 
     name: Literal['pickle-size'] = Field(
         'pickle-size',
-        description='name of filter type',
+        description='Filter name.',
     )
-    min_size: int = Field(0, description='minimum object size in bytes')
+    min_size: int = Field(0, description='Minimum object size in bytes.')
     max_size: float = Field(
         math.inf,
-        description='maximum object size in bytes',
+        description='Maximum object size in bytes.',
     )
 
     def get_filter(self) -> Filter:

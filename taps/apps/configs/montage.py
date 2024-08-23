@@ -14,25 +14,30 @@ from taps.plugins import register
 class MontageConfig(AppConfig):
     """Montage application configuration."""
 
-    name: Literal['montage'] = 'montage'
-    img_folder: pathlib.Path = Field(description='input images folder path')
+    name: Literal['montage'] = Field(
+        'montage',
+        description='Application name.',
+    )
+    img_folder: pathlib.Path = Field(
+        description='Input images directory path.',
+    )
     # Note: the following are annotated as str rather than pathlib.Path
     # because we don't want the AppConfig model_validator to convert
     # them to absolute paths. They are relative to whatever the run
     # directory is.
     img_tbl: str = Field(
         'Kimages.tbl',
-        description='input image table filename',
+        description='Input image table filename.',
     )
     img_hdr: str = Field(
         'Kimages.hdr',
-        description='header filename for input images',
+        description='Header filename for input images.',
     )
     output_dir: str = Field(
         'data',
         description=(
-            'output folder path for intermediate and final data '
-            '(relative to run directory)'
+            'Output folder path for intermediate and final data '
+            '(relative to run directory).'
         ),
     )
 

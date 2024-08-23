@@ -14,27 +14,30 @@ from taps.plugins import register
 class DockingConfig(AppConfig):
     """Docking application configuration."""
 
-    name: Literal['docking'] = 'docking'
+    name: Literal['docking'] = Field(
+        'docking',
+        description='Application name.',
+    )
     smi_file_name_ligand: pathlib.Path = Field(
-        description='absolute path to ligand SMILES string',
+        description='Ligand SMILES string filepath.',
     )
     receptor: pathlib.Path = Field(
-        description='absolute path to target receptor pdbqt file',
+        description='Target receptor pdbqt filepath.',
     )
-    tcl_path: pathlib.Path = Field(description='absolute path to TCL script')
+    tcl_path: pathlib.Path = Field(description='TCL script path.')
     initial_simulations: int = Field(
         8,
-        description='initial number of simulations to perform',
+        description='Number of initial simulations.',
     )
     num_iterations: int = Field(
         3,
-        description='number of infer-simulate-train loops to perform',
+        description='Number of infer-simulate-train loops.',
     )
     batch_size: int = Field(
         8,
-        description='number of simulations per iteration',
+        description='Number of simulations per iteration.',
     )
-    seed: int = Field(0, description='random seed for sampling')
+    seed: int = Field(0, description='Random seed for sampling.')
 
     def get_app(self) -> App:
         """Create an application instance from the config."""

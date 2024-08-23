@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import dataclasses
 import sys
 import time
 import uuid
@@ -194,7 +193,7 @@ class Engine:
             task_future.info.success = True
             task_future.info.execution = execution_info
         task_future.info.received_time = time.time()
-        self.record_logger.log(dataclasses.asdict(task_future.info))
+        self.record_logger.log(task_future.info.model_dump())
 
     # Note: args/kwargs are typed as Any rather than P.args/P.kwargs
     # because the inputs may be TaskFuture types which will get translated

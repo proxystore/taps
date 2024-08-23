@@ -15,24 +15,22 @@ from taps.plugins import register
 
 @register('executor')
 class ProcessPoolConfig(ExecutorConfig):
-    """[`ProcessPoolExecutor`][concurrent.futures.ProcessPoolExecutor] plugin configuration.
+    """[`ProcessPoolExecutor`][concurrent.futures.ProcessPoolExecutor] plugin configuration."""  # noqa: E501
 
-    Attributes:
-        max_processes: Maximum number of processes.
-        context: Multiprocessing context type (fork, spawn, or forkserver).
-    """  # noqa: E501
-
-    name: Literal['process-pool'] = 'process-pool'
+    name: Literal['process-pool'] = Field(
+        'process-pool',
+        description='Executor name.',
+    )
     max_processes: int = Field(
         multiprocessing.cpu_count(),
-        description='maximum number of processes',
+        description='Maximum number of processes.',
     )
     context: Optional[  # noqa: UP007
         Literal['fork', 'spawn', 'forkserver']
     ] = Field(
         None,
         description=(
-            'multiprocessing start method (one of fork, spawn, or forkserver)'
+            'Multiprocessing start method (one of fork, spawn, or forkserver).'
         ),
     )
 
@@ -46,16 +44,15 @@ class ProcessPoolConfig(ExecutorConfig):
 
 @register('executor')
 class ThreadPoolConfig(ExecutorConfig):
-    """[`ThreadPoolExecutor`][concurrent.futures.ThreadPoolExecutor] plugin configuration.
+    """[`ThreadPoolExecutor`][concurrent.futures.ThreadPoolExecutor] plugin configuration."""  # noqa: E501
 
-    Attributes:
-        max_threads: Maximum number of threads.
-    """  # noqa: E501
-
-    name: Literal['thread-pool'] = 'thread-pool'
+    name: Literal['thread-pool'] = Field(
+        'thread-pool',
+        description='Executor name.',
+    )
     max_threads: int = Field(
         multiprocessing.cpu_count(),
-        description='maximum number of threads',
+        description='Maximum number of threads.',
     )
 
     def get_executor(self) -> FutureDependencyExecutor:

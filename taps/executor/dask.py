@@ -116,31 +116,24 @@ class DaskDistributedExecutor(Executor):
 
 @register('executor')
 class DaskDistributedConfig(ExecutorConfig):
-    """[`DaskDistributedExecutor`][taps.executor.dask.DaskDistributedExecutor] plugin configuration.
+    """[`DaskDistributedExecutor`][taps.executor.dask.DaskDistributedExecutor] plugin configuration."""  # noqa: E501
 
-    Attributes:
-        scheduler: Dask scheduler address.
-        use_threads: Use threads rather than processes for local clusters.
-        workers: Number of Dask workers for local clusters.
-        daemon_workers: Daemonize Dask workers.
-    """  # noqa: E501
-
-    name: Literal['dask'] = 'dask'
+    name: Literal['dask'] = Field('dask', description='Executor name.')
     scheduler: Optional[str] = Field(  # noqa: UP007
         None,
-        description='dask scheduler address',
+        description='Dask scheduler address.',
     )
     use_threads: bool = Field(
         False,
-        description='use threads instead of processes for dask workers',
+        description='Use threads instead of processes for dask workers.',
     )
     workers: Optional[int] = Field(  # noqa: UP007
         None,
-        description='maximum number of dask workers',
+        description='Maximum number of dask workers.',
     )
     daemon_workers: bool = Field(
         True,
-        description='configure if workers are daemon',
+        description='Configure if workers are daemon.',
     )
 
     def get_executor(self) -> DaskDistributedExecutor:

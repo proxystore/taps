@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import enum
 import logging
 import os
 import pathlib
@@ -9,6 +8,7 @@ import sys
 import time
 import uuid
 
+from taps.apps.configs.synthetic import WorkflowStructure
 from taps.engine import as_completed
 from taps.engine import Engine
 from taps.engine import TaskFuture
@@ -277,15 +277,6 @@ def run_sequential(
 
     rate = task_count / (time.monotonic() - start)
     logger.log(APP_LOG_LEVEL, f'Task completion rate: {rate:.3f} tasks/s')
-
-
-class WorkflowStructure(enum.Enum):
-    """Workflow structure types."""
-
-    BAG = 'bag'
-    DIAMOND = 'diamond'
-    REDUCE = 'reduce'
-    SEQUENTIAL = 'sequential'
 
 
 class SyntheticApp:

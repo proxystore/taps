@@ -31,63 +31,40 @@ from taps.run.utils import flatten_mapping
 
 
 class LoggingConfig(BaseModel):
-    """Logging configuration.
-
-    Attributes:
-        level: Logging level for `stdout`.
-        file_level: Logging level for the log file.
-        file_name: Logging file name. If `None`, only logging to `stdout`
-            is used.
-    """
+    """Logging configuration."""
 
     level: Union[int, str] = Field(  # noqa: UP007
         'INFO',
-        description='minimum logging level',
+        description='Minimum logging level for stdout.',
     )
     file_level: Union[int, str] = Field(  # noqa: UP007
         'INFO',
-        description='minimum logging level for the log file',
+        description='Minimum logging level for the log file.',
     )
     file_name: Optional[str] = Field(  # noqa: UP007
         'log.txt',
-        description='log file name',
+        description='Logging file name.',
     )
 
 
 class RunConfig(BaseModel):
-    """Run configuration.
-
-    Attributes:
-        dir_format: Run directory format.
-        env_vars: Dictionary mapping environment variables to values.
-            The environment variables will be set once the benchmark starts.
-    """
+    """Run configuration."""
 
     dir_format: str = Field(
         'runs/{name}_{executor}_{timestamp}',
         description=(
-            'run directory format (supports "{name}", "{timestamp}", and '
-            '"{executor}" for formatting)'
+            'Run directory format (supports "{name}", "{timestamp}", and '
+            '"{executor}" for formatting).'
         ),
     )
     env_vars: Dict[str, str] = Field(  # noqa: UP006
         default_factory=dict,
-        description='environment variables to set during benchmarking',
+        description='Environment variables to set during benchmarking.',
     )
 
 
 class Config(BaseSettings):
-    """Application benchmark configuration.
-
-    Attributes:
-        app: Application configuration.
-        engine: Engine configuration.
-        logging: Logging configuration.
-        run: Run configuration.
-        version: TaPS version used to create the config. Loading a config
-            with a version that does not match the current version will
-            log a warning that behavior could be different.
-    """
+    """Application benchmark configuration."""
 
     model_config = SettingsConfigDict(
         extra='forbid',
@@ -95,10 +72,19 @@ class Config(BaseSettings):
         validate_return=True,
     )
 
-    app: AppConfig = Field(description='application configuration')
-    engine: EngineConfig = Field(default_factory=EngineConfig)
-    logging: LoggingConfig = Field(default_factory=LoggingConfig)
-    run: RunConfig = Field(default_factory=RunConfig)
+    app: AppConfig = Field(description='Application configuration.')
+    engine: EngineConfig = Field(
+        default_factory=EngineConfig,
+        description='Engine configuration.',
+    )
+    logging: LoggingConfig = Field(
+        default_factory=LoggingConfig,
+        description='Logging configuration.',
+    )
+    run: RunConfig = Field(
+        default_factory=RunConfig,
+        description='Run configuration.',
+    )
     version: str = Field(
         taps.__version__,
         description='TaPS version (do not alter)',

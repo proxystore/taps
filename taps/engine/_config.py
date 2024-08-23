@@ -18,22 +18,24 @@ from taps.transformer import TransformerConfig
 
 
 class EngineConfig(BaseModel):
-    """App engine configuration.
+    """App engine configuration."""
 
-    Attributes:
-        executor: Executor configuration.
-        filter: Filter configuration.
-        transformer: Transformer configuration.
-        task_record_file_name: Name of line-delimited JSON file that task
-            records are logged to.
-    """
-
-    executor: ExecutorConfig = Field(default_factory=ProcessPoolConfig)
-    filter: FilterConfig = Field(default_factory=AllFilterConfig)
+    executor: ExecutorConfig = Field(
+        default_factory=ProcessPoolConfig,
+        description='Executor configuration.',
+    )
+    filter: FilterConfig = Field(
+        default_factory=AllFilterConfig,
+        description='Filter configuration.',
+    )
     transformer: TransformerConfig = Field(
         default_factory=NullTransformerConfig,
+        description='Transformer configuration',
     )
-    task_record_file_name: Optional[str] = Field('tasks.jsonl')  # noqa: UP007
+    task_record_file_name: Optional[str] = Field(  # noqa: UP007
+        'tasks.jsonl',
+        description='Name of line-delimted JSON file to log task records to.',
+    )
 
     model_config: ConfigDict = ConfigDict(  # type: ignore[misc]
         extra='forbid',

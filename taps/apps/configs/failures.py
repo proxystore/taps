@@ -24,16 +24,19 @@ from taps.plugins import register
 class FailureInjectionConfig(AppConfig, use_enum_values=True):
     """Failure injection configuration."""
 
-    name: Literal['failures'] = 'failures'
-    base: str = Field(description='base app to inject failures into')
+    name: Literal['failures'] = Field(
+        'failures',
+        description='Application name.',
+    )
+    base: str = Field(description='Base app to inject failures into.')
     config: Dict[str, Any] = Field(  # noqa: UP006
         default_factory=dict,
-        description='base app configuration',
+        description='Base app configuration.',
     )
-    failure_rate: float = Field(1, description='task failure rate')
+    failure_rate: float = Field(1, description='Task failure rate.')
     failure_type: FailureType = Field(
         FailureType.DEPENDENCY,
-        description='task failure type',
+        description='Task failure type.',
     )
 
     @field_validator('base', mode='before')

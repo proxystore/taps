@@ -15,29 +15,32 @@ from taps.plugins import register
 class MapreduceConfig(AppConfig):
     """Mapreduce application configuration."""
 
-    name: Literal['mapreduce'] = 'mapreduce'
-    data_dir: pathlib.Path = Field(description='text file directory')
+    name: Literal['mapreduce'] = Field(
+        'mapreduce',
+        description='Application name.',
+    )
+    data_dir: pathlib.Path = Field(description='Text file directory.')
     map_tasks: Optional[int] = Field(  # noqa: UP007
         32,
         description=(
-            'maximum number of map tasks (none, the default, uses one '
-            'map task per input file)'
+            'Maximum number of map tasks (`None` uses one '
+            'map task per input file).'
         ),
     )
     generate: bool = Field(
         False,
         description=(
-            'generate random text files in --data-dir rather than '
-            'reading existing files'
+            'Generate random text files in data-dir rather than '
+            'reading existing files.'
         ),
     )
     generated_files: int = Field(
         10,
-        description='number of text files to generate',
+        description='Number of text files to generate.',
     )
     generated_words: int = Field(
         10000,
-        description='number of words to generate per file',
+        description='Number of words to generate per file.',
     )
 
     def get_app(self) -> App:

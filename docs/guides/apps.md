@@ -124,9 +124,9 @@ from taps.plugins import register
 class FoobarConfig(AppConfig):
     """Foobar application configuration."""
 
-    name: Literal['foobar'] = 'foobar'
-    message: str = Field(description='message to print')
-    repeat: int = Field(1, description='number of times to repeat message')
+    name: Literal['foobar'] = Field('foobar', description='Application name.')
+    message: str = Field(description='Message to print.')
+    repeat: int = Field(1, description='Number of times to repeat message.')
 
     def get_app(self) -> App:
         """Create an application instance from the config."""

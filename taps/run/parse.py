@@ -100,8 +100,8 @@ This behavior applies to all plugin types.
         default=argparse.SUPPRESS,
         nargs='+',
         help=(
-            'base toml configuration files to load '
-            '(file are parsed in order)'
+            'Base toml configuration files to load '
+            '(file are parsed in order).'
         ),
     )
 
@@ -111,7 +111,7 @@ This behavior applies to all plugin types.
         choices=list(get_app_configs().keys()),
         dest='app.name',
         metavar='APP',
-        help='app choice {%(choices)s}',
+        help='App choice {%(choices)s}.',
     )
 
     engine_group = parser.add_argument_group('engine options')
@@ -122,7 +122,7 @@ This behavior applies to all plugin types.
         default=argparse.SUPPRESS,
         dest='engine.executor.name',
         metavar='EXECUTOR',
-        help='executor choice {%(choices)s} (default: process-pool)',
+        help='Executor choice {%(choices)s}. (default: process-pool)',
     )
     engine_group.add_argument(
         '--engine.filter',
@@ -131,7 +131,7 @@ This behavior applies to all plugin types.
         default=argparse.SUPPRESS,
         dest='engine.filter.name',
         metavar='FILTER',
-        help='filter choice {%(choices)s} (default: all)',
+        help='Filter choice {%(choices)s}. (default: all)',
     )
     engine_group.add_argument(
         '--engine.transformer',
@@ -140,7 +140,7 @@ This behavior applies to all plugin types.
         default=argparse.SUPPRESS,
         dest='engine.transformer.name',
         metavar='TRANSFORMER',
-        help='transformer choice {%(choices)s} (default: null)',
+        help='Transformer choice {%(choices)s}. (default: null)',
     )
 
     if len(argv) == 0 or argv[0] in ['-h', '--help']:

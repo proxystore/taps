@@ -226,16 +226,12 @@ class SyncExecutor(Executor):
 
 @register('executor')
 class SyncExecutorConfig(ExecutorConfig):
-    """Synchronous executor configuration.
+    """Synchronous executor configuration."""
 
-    Attributes:
-        sleep: Time to sleep before executing tasks.
-    """
-
-    name: Literal['sync'] = 'sync'
+    name: Literal['sync'] = Field('sync', description='Executor name.')
     sleep: float = Field(
         0,
-        description='time to sleep before executing tasks',
+        description='Time to sleep before executing tasks.',
     )
 
     def get_executor(self) -> FutureDependencyExecutor:

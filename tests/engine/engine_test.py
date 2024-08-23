@@ -25,7 +25,12 @@ def test_task_future_exception() -> None:
 
     task = TaskFuture(
         future,
-        TaskInfo('test', 'test', [], 0),
+        TaskInfo(
+            task_id='test',
+            function_name='test',
+            parent_task_ids=[],
+            submit_time=0,
+        ),
         TaskTransformer(NullTransformer(), NullFilter()),
     )
 
@@ -155,12 +160,22 @@ def test_wait() -> None:
 
     fast_task = TaskFuture(
         fast_future,
-        TaskInfo('fast-id', 'fast', [], 0),
+        TaskInfo(
+            task_id='fast-id',
+            function_name='fast',
+            parent_task_ids=[],
+            submit_time=0,
+        ),
         TaskTransformer(NullTransformer(), NullFilter()),
     )
     slow_task = TaskFuture(
         slow_future,
-        TaskInfo('slow-id', 'slow', [], 0),
+        TaskInfo(
+            task_id='slow-id',
+            function_name='slow',
+            parent_task_ids=[],
+            submit_time=0,
+        ),
         TaskTransformer(NullTransformer(), NullFilter()),
     )
 

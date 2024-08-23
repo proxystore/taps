@@ -38,20 +38,19 @@ class ParslLocalConfig(TapsExecutorConfig):
     Simple Parsl configuration that uses the
     [`HighThroughputExecutor`][parsl.executors.HighThroughputExecutor]
     on the local node.
-
-    Attributes:
-        workers: Maximum number of Parsl workers.
-        run_dir: Parsl run directory.
     """
 
-    name: Literal['parsl-local'] = 'parsl-local'
+    name: Literal['parsl-local'] = Field(
+        'parsl-local',
+        description='Executor name.',
+    )
     workers: Optional[int] = Field(  # noqa: UP007
         None,
-        description='max parsl workers',
+        description='Maximum number of parsl workers.',
     )
     run_dir: str = Field(
         'parsl-runinfo',
-        description='parsl run directory within the app run directory',
+        description='Parsl run directory within the app run directory.',
     )
 
     def get_executor(self) -> ParslPoolExecutor:
@@ -89,42 +88,36 @@ class ParslHTExConfig(TapsExecutorConfig):
 
     For simple, single-node HTEx deployments, prefer
     [`ParslLocalConfig`][taps.executor.parsl.ParslLocalConfig].
-
-    Attributes:
-        htex: HTEx configuration.
-        app_cache: Enable app caching.
-        retries: Number of retries in case of task failure.
-        strategy: Block scaling strategy.
-        max_idletime: Max idle time before strategy can shutdown unused blocks.
-        monitoring: Database monitoring configuration.
-        run_dir: Parsl run directory.
     """
 
-    name: Literal['parsl-htex'] = 'parsl-htex'
-    htex: HTExConfig = Field()
+    name: Literal['parsl-htex'] = Field(
+        'parsl-htex',
+        description='Executor name.',
+    )
+    htex: HTExConfig = Field(description='HTEx configuration.')
     app_cache: Optional[bool] = Field(  # noqa: UP007
         None,
-        description='enable app caching',
+        description='Enable app caching.',
     )
     retries: int = Field(
         0,
-        description='number of task retries in case of task failure',
+        description='Number of task retries in case of task failure.',
     )
     strategy: Optional[str] = Field(  # noqa: UP007
         None,
-        description='block scaling strategy',
+        description='Block scaling strategy.',
     )
     max_idletime: Optional[float] = Field(  # noqa: UP007
         None,
-        description='max idle time before strategy can shutdown unused blocks',
+        description='Idle time before strategy can shutdown unused blocks.',
     )
     monitoring: Optional[MonitoringConfig] = Field(  # noqa: UP007
         None,
-        description='database monitoring configuration',
+        description='Database monitoring configuration.',
     )
     run_dir: str = Field(
         'parsl-runinfo',
-        description='parsl run directory within the app run directory',
+        description='Parsl run directory within the app run directory.',
     )
 
     def get_executor(self) -> ParslPoolExecutor:
@@ -155,43 +148,36 @@ class HTExConfig(BaseModel):
         Extra options passed to this model will be provided as keyword
         arguments to
         [`parsl.executors.HighThroughputExecutor`][parsl.executors.HighThroughputExecutor].
-
-    Attributes:
-        provider: Configuration for the compute resource provider.
-        address: Address to connect to the main Parsl process.
-        manager_selector: Configuration for the manager selector (available
-            in Parsl v2024.8.5 and later).
-        worker_ports: Ports used by workers to connect to Parsl.
-        worker_port_range: Range of ports to choose worker ports from.
-        interchange_port_range: Ports used by Parsl to connect to the
-            interchange.
     """  # noqa: E501
 
     model_config = ConfigDict(extra='allow')
 
     provider: Optional[ProviderConfig] = Field(  # noqa: UP007
         None,
-        description='configuration for the compute resource provider',
+        description='Configuration for the compute resource provider.',
     )
     address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007
         None,
-        description='address to connect to the main parsl process',
+        description='Address to connect to the main Parsl process.',
     )
     manager_selector: Optional[ManagerSelectorConfig] = Field(  # noqa: UP007
         None,
-        description='configuration for the manager selector',
+        description=(
+            'Configuration for the manager selector (available in '
+            'Parsl v2024.8.5 and later).'
+        ),
     )
     worker_ports: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
         None,
-        description='ports used by workers to connect to parsl',
+        description='Ports used by workers to connect to Parsl',
     )
     worker_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
         None,
-        description='range of ports to choose worker ports from',
+        description='Range of ports to choose worker ports from.',
     )
     interchange_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
         None,
-        description='ports used by parsl to connect to interchange',
+        description='Ports used by Parsl to connect to interchange.',
     )
 
     def get_executor(self) -> HighThroughputExecutor:
@@ -230,7 +216,7 @@ class AddressConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
-    kind: str = Field(description='address function')
+    kind: str = Field(description='Function to invoke to get address.')
 
     @field_validator('kind')
     @classmethod
@@ -301,10 +287,10 @@ class ProviderConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
-    kind: str = Field(description='name of execution provider')
+    kind: str = Field(description='Execution provider class name')
     launcher: Optional[LauncherConfig] = Field(  # noqa: UP007
         None,
-        description='provider launcher',
+        description='Launcher configuration.',
     )
 
     @field_validator('kind')
@@ -360,7 +346,7 @@ class LauncherConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
-    kind: str = Field(description='name of provider launcher')
+    kind: str = Field(description='Launcher class name.')
 
     @field_validator('kind')
     @classmethod
@@ -407,7 +393,7 @@ class ManagerSelectorConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
-    kind: str = Field(description='name of manager selector type')
+    kind: str = Field(description='Manager selector class name.')
 
     @field_validator('kind')
     @classmethod
@@ -479,11 +465,11 @@ class MonitoringConfig(BaseModel):
 
     hub_address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007
         None,
-        description='address to connect to the monitoring hub',
+        description='Address to connect to the monitoring hub.',
     )
     hub_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
         None,
-        description='port range for a ZMQ channel from executor process',
+        description='Port range for a ZMQ channel from executor process.',
     )
 
     def get_monitoring(self) -> MonitoringHub:
