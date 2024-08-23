@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import enum
 import sys
+from typing import Any
 from typing import Literal
 from typing import Optional
 
@@ -51,8 +52,10 @@ class SyntheticConfig(AppConfig, use_enum_values=True):
 
     @field_validator('structure', mode='before')
     @classmethod
-    def _validate_structure(cls, value: str) -> str:
-        return value.lower()
+    def _validate_structure(cls, value: Any) -> Any:
+        if isinstance(value, str):
+            return value.lower()
+        return value
 
     @model_validator(mode='after')
     def _validate_options(self) -> Self:

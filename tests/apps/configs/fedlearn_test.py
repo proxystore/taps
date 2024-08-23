@@ -11,6 +11,7 @@ def test_create_app() -> None:
         sys.modules,
         {'taps.apps.fedlearn.types': mock.MagicMock()},
     ):
+        FedlearnConfig(dataset='MNIST')
         config = FedlearnConfig()
 
         with mock.patch.dict(

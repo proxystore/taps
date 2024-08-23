@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pathlib
+from typing import Any
 from typing import Literal
 from typing import Optional
 
@@ -67,8 +68,10 @@ class FedlearnConfig(AppConfig, use_enum_values=True):
 
     @field_validator('dataset', mode='before')
     @classmethod
-    def _validate_dataset(cls, value: str) -> str:
-        return value.lower()
+    def _validate_dataset(cls, value: Any) -> Any:
+        if isinstance(value, str):
+            return value.lower()
+        return value
 
     def get_app(self) -> App:
         """Create an application instance from the config."""

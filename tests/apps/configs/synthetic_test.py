@@ -4,10 +4,14 @@ import pytest
 from pydantic import ValidationError
 
 from taps.apps.configs.synthetic import SyntheticConfig
+from taps.apps.configs.synthetic import WorkflowStructure
 
 
 def test_create_app() -> None:
-    config = SyntheticConfig(structure='sequential', task_count=3)
+    config = SyntheticConfig(
+        structure=WorkflowStructure.SEQUENTIAL,
+        task_count=3,
+    )
     assert config.get_app()
 
 
