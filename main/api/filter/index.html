@@ -3241,6 +3241,19 @@ a boolean indicating if the object should be transformed by
       <p>Abstract <a class="autorefs autorefs-internal" href="#taps.filter.Filter"><code>Filter</code></a> plugin configuration.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Filter name.</p>
+          </div>
+        </li>
+    </ul>
+
+
 
 
   <div class="doc doc-children">
@@ -3356,6 +3369,21 @@ a boolean indicating if the object should be transformed by
       <p><a class="autorefs autorefs-internal" href="#taps.filter.AllFilter"><code>AllFilter</code></a> plugin configuration.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>&#39;all&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Filter name.</p>
+          </div>
+        </li>
+    </ul>
+
+
 
 
   <div class="doc doc-children">
@@ -3463,6 +3491,21 @@ a boolean indicating if the object should be transformed by
 
 
       <p><a class="autorefs autorefs-internal" href="#taps.filter.NullFilter"><code>NullFilter</code></a> plugin configuration.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>&#39;null&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Filter name.</p>
+          </div>
+        </li>
+    </ul>
 
 
 
@@ -3637,6 +3680,41 @@ filter.</p>
       <p><a class="autorefs autorefs-internal" href="#taps.filter.ObjectSizeFilter"><code>ObjectSizeFilter</code></a> plugin configuration.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>&#39;object-size&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Filter name.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>min_size</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
+                  <code>0</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Minimum object size in bytes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>max_size</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>, default:
+                  <code>inf</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Maximum object size in bytes.</p>
+          </div>
+        </li>
+    </ul>
+
+
 
 
   <div class="doc doc-children">
@@ -3804,6 +3882,31 @@ object's type.</p>
 
 
       <p><a class="autorefs autorefs-internal" href="#taps.filter.ObjectTypeFilter"><code>ObjectTypeFilter</code></a> plugin configuration.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>&#39;object-type&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Filter name.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>patterns</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>List of patterns to match against type names.</p>
+          </div>
+        </li>
+    </ul>
 
 
 
@@ -3977,6 +4080,41 @@ filter.</p>
 
 
       <p><a class="autorefs autorefs-internal" href="#taps.filter.PickleSizeFilter"><code>PickleSizeFilter</code></a> plugin configuration.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>&#39;pickle-size&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Filter name.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>min_size</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
+                  <code>0</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Minimum object size in bytes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>max_size</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>, default:
+                  <code>inf</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Maximum object size in bytes.</p>
+          </div>
+        </li>
+    </ul>
 
 
 

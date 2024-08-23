@@ -2841,32 +2841,32 @@ and <code>APP</code> is using within the applications.</p>
     <ul>
         <li class="doc-section-item field-body">
           <b><code>logfile</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
+              (<code><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a> | None</code>, default:
                   <code>None</code>
 )
           –
           <div class="doc-md-description">
-            <p>option filepath to write log to.</p>
+            <p>Optional filepath to write log to.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
           <b><code>level</code></b>
-              (<code>(<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>)</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
                   <code><a class="autorefs autorefs-external" title="logging.INFO" href="https://docs.python.org/3/library/logging.html#logging.INFO">INFO</a></code>
 )
           –
           <div class="doc-md-description">
-            <p>minimum logging level.</p>
+            <p>Minimum logging level.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
           <b><code>logfile_level</code></b>
-              (<code>(<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>)</code>, default:
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
                   <code><a class="autorefs autorefs-external" title="logging.INFO" href="https://docs.python.org/3/library/logging.html#logging.INFO">INFO</a></code>
 )
           –
           <div class="doc-md-description">
-            <p>minimum logging level for the logfile.</p>
+            <p>Minimum logging level for the logfile.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -2876,7 +2876,7 @@ and <code>APP</code> is using within the applications.</p>
 )
           –
           <div class="doc-md-description">
-            <p>remove any existing handlers attached to the root
+            <p>Remove any existing handlers attached to the root
 handler. This option is useful to silencing the third-party
 package logging. Note: should not be set when running inside
 pytest.</p>
@@ -2968,10 +2968,10 @@ pytest.</p>
 </span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="sd">        ```</span>
 </span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>
 </span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">        logfile (str): option filepath to write log to.</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">        level (int, str): minimum logging level.</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">        logfile_level (int, str): minimum logging level for the logfile.</span>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">        force (bool): remove any existing handlers attached to the root</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">        logfile: Optional filepath to write log to.</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">        level: Minimum logging level.</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">        logfile_level: Minimum logging level for the logfile.</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">        force: Remove any existing handlers attached to the root</span>
 </span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">            handler. This option is useful to silencing the third-party</span>
 </span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="sd">            package logging. Note: should not be set when running inside</span>
 </span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">            pytest.</span>
