@@ -12,18 +12,13 @@ from taps.plugins import register
 
 @register('executor')
 class GlobusComputeConfig(ExecutorConfig):
-    """Globus Compute [`Executor`][globus_compute_sdk.Executor] plugin configuration.
+    """Globus Compute [`Executor`][globus_compute_sdk.Executor] plugin configuration."""  # noqa: E501
 
-    Attributes:
-        endpoint: Globus Compute endpoint UUID.
-        batch_size: Maximum number of tasks to coalesce before submitting.
-    """  # noqa: E501
-
-    name: Literal['globus'] = 'globus'
-    endpoint: str = Field(description='endpoint UUID')
+    name: Literal['globus'] = Field('globus', description='Executor name.')
+    endpoint: str = Field(description='Globus Compute Endpoint UUID.')
     batch_size: int = Field(
         128,
-        description='maximum number of tasks to coalesce before submitting',
+        description='Maximum number of tasks to coalesce before submitting.',
     )
 
     def get_executor(self) -> FutureDependencyExecutor:

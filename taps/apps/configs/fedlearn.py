@@ -9,72 +9,66 @@ from pydantic import field_validator
 
 from taps.apps import App
 from taps.apps import AppConfig
+from taps.apps.fedlearn.types import DataChoices
 from taps.plugins import register
 
 
 @register('app')
-class FedlearnConfig(AppConfig):
+class FedlearnConfig(AppConfig, use_enum_values=True):
     """Federated learning application configuration."""
 
-    name: Literal['fedlearn'] = 'fedlearn'
+    name: Literal['fedlearn'] = Field(
+        'fedlearn',
+        description='Application name.',
+    )
     alpha: float = Field(
         1e5,
-        description='alpha parameter for number of samples across clients',
+        description='Alpha parameter for number of samples across clients.',
     )
-    dataset: str = Field(
-        'mnist',
-        description=(
-            'training and testing dataset (cifar10, cifar100, fmnist, mnist)'
-        ),
+    dataset: DataChoices = Field(
+        DataChoices.MNIST,
+        description='Training and testing dataset.',
     )
     data_dir: pathlib.Path = Field(
         pathlib.Path('data/fedlearn'),
-        description='download directory for data',
+        description='Dataset download directory.',
     )
-    device: str = Field('cpu', description='device to use (e.g., cpu or cuda)')
+    device: str = Field(
+        'cpu',
+        description='Device to use (e.g., cpu or cuda).',
+    )
     clients: int = Field(
         8,
-        description='number of simulated clients',
+        description='Number of simulated clients.',
     )
-    rounds: int = Field(3, description='number of aggregation rounds')
+    rounds: int = Field(3, description='Number of aggregation rounds.')
     participation: float = Field(
-        0.1,
-        description='fraction of participating clients in each round',
+        1.0,
+        description='Fraction of participating clients in each round.',
     )
-    epochs: int = Field(3, description='number of epochs for local training')
+    epochs: int = Field(3, description='Number of epochs for local training.')
     lr: float = Field(
         1e-3,
-        description='learning rate for local training',
+        description='Learning rate for local training.',
     )
-    batch_size: int = Field(3, description='batch size for local training')
+    batch_size: int = Field(3, description='Batch size for local training.')
     train: bool = Field(
         True,
         description=(
-            'flag for performing training '
-            '(false will use no-op training tasks)'
+            'Flag for performing training '
+            '(false will use no-op training tasks).'
         ),
     )
     test: bool = Field(
         True,
-        description='evaluate the global model on test data after each round',
+        description='Evaluate the global model on test data after each round.',
     )
-    seed: Optional[int] = Field(None, description='random seed')  # noqa: UP007
+    seed: Optional[int] = Field(None, description='Random seed.')  # noqa: UP007
 
-    @field_validator('dataset', mode='after')
+    @field_validator('dataset', mode='before')
     @classmethod
-    def _validate_dataset(cls, dataset: str) -> str:
-        from taps.apps.fedlearn.types import DataChoices
-
-        try:
-            DataChoices(dataset)
-        except KeyError:  # pragma: no cover
-            options = ', '.join(d.value for d in DataChoices)
-            raise ValueError(
-                f'{dataset} is not a supported dataset. '
-                f'Must be one of {options}.',
-            ) from None
-
-        return dataset
+    def _validate_dataset(cls, value: str) -> str:
+        return value.lower()
 
     def get_app(self) -> App:
         """Create an application instance from the config."""

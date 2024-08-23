@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 
 
-class ExecutorConfig(BaseModel, abc.ABC):
+class ExecutorConfig(abc.ABC, BaseModel):
     """Abstract [`Executor`][concurrent.futures.Executor] plugin configuration."""  # noqa: E501
 
     name: str

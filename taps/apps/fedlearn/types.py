@@ -5,6 +5,7 @@ import sys
 from typing import Any
 from typing import Dict
 from typing import Optional
+from typing import TYPE_CHECKING
 
 if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
     from typing import TypeAlias
@@ -14,8 +15,10 @@ else:  # pragma: <3.10 cover
 from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
-from torch import nn
-from torch.utils.data import Subset
+
+if TYPE_CHECKING:
+    from torch import nn
+    from torch.utils.data import Subset
 
 ClientID: TypeAlias = int
 """Integer IDs for `Client` instances."""

@@ -20,17 +20,13 @@ T = TypeVar('T')
 
 @register('transformer')
 class PickleFileTransformerConfig(TransformerConfig):
-    """[`PickleFileTransformer`][taps.transformer.PickleFileTransformer] plugin configuration.
-
-    Attributes:
-        file_dir: Object file directory.
-    """  # noqa: E501
+    """[`PickleFileTransformer`][taps.transformer.PickleFileTransformer] plugin configuration."""  # noqa: E501
 
     name: Literal['file'] = Field(
         'file',
-        description='name of transformer type',
+        description='Transformer name.',
     )
-    file_dir: str = Field(description='object file directory')
+    file_dir: str = Field(description='Object file directory.')
 
     def get_transformer(self) -> PickleFileTransformer:
         """Create a transformer from the configuration."""

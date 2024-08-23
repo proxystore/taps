@@ -29,7 +29,7 @@ class AllFilter:
 class AllFilterConfig(FilterConfig):
     """[`AllFilter`][taps.filter.AllFilter] plugin configuration."""
 
-    name: Literal['all'] = Field('all', description='name of filter type')
+    name: Literal['all'] = Field('all', description='Filter name.')
 
     def get_filter(self) -> Filter:
         """Create a filter from the configuration."""
@@ -55,7 +55,7 @@ class NullFilter:
 class NullFilterConfig(FilterConfig):
     """[`NullFilter`][taps.filter.NullFilter] plugin configuration."""
 
-    name: Literal['null'] = Field('null', description='name of filter type')
+    name: Literal['null'] = Field('null', description='Filter name.')
 
     def get_filter(self) -> Filter:
         """Create a filter from the configuration."""

@@ -27,7 +27,7 @@ class Filter(Protocol):
 class FilterConfig(BaseModel, abc.ABC):
     """Abstract [`Filter`][taps.filter.Filter] plugin configuration."""
 
-    name: str = Field(description='name of filter type')
+    name: str = Field(description='Filter name.')
 
     model_config: ConfigDict = ConfigDict(  # type: ignore[misc]
         extra='ignore',

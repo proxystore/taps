@@ -11,14 +11,6 @@ def test_create_app() -> None:
     assert config.get_app()
 
 
-def test_validate_base_app() -> None:
-    with pytest.raises(
-        ValidationError,
-        match="Specified structure 'fake' is unknown.",
-    ):
-        SyntheticConfig(structure='fake', task_count=3)
-
-
 def test_validate_rate() -> None:
     with pytest.raises(
         ValidationError,

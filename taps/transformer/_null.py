@@ -19,7 +19,7 @@ class NullTransformerConfig(TransformerConfig):
 
     name: Literal['null'] = Field(
         'null',
-        description='name of transformer type',
+        description='Transformer name.',
     )
 
     def get_transformer(self) -> NullTransformer:

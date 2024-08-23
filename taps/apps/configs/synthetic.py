@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import enum
 import sys
 from typing import Literal
 from typing import Optional
@@ -18,39 +19,40 @@ from taps.apps import AppConfig
 from taps.plugins import register
 
 
+class WorkflowStructure(enum.Enum):
+    """Workflow structure types."""
+
+    BAG = 'bag'
+    DIAMOND = 'diamond'
+    REDUCE = 'reduce'
+    SEQUENTIAL = 'sequential'
+
+
 @register('app')
-class SyntheticConfig(AppConfig):
+class SyntheticConfig(AppConfig, use_enum_values=True):
     """Synthetic application configuration."""
 
-    name: Literal['synthetic'] = 'synthetic'
-    structure: str = Field(description='workflow structure')
-    task_count: int = Field(description='number of tasks in the workflow')
-    task_data_bytes: int = Field(0, description='intermediate task data size')
-    task_sleep: float = Field(0, description='minimum duration of each task')
+    name: Literal['synthetic'] = Field(
+        'synthetic',
+        description='Application name.',
+    )
+    structure: WorkflowStructure = Field(description='Workflow structure.')
+    task_count: int = Field(description='Number of tasks in the workflow.')
+    task_data_bytes: int = Field(0, description='Intermediate task data size.')
+    task_sleep: float = Field(0, description='minimum duration of each task.')
     bag_max_running: Optional[int] = Field(  # noqa: UP007
         None,
-        description='max running tasks in bag workflow',
+        description='Max running tasks in bag workflow.',
     )
     warmup_task: bool = Field(
         True,
-        description='submit a warmup task before running the workflow',
+        description='Submit a warmup task before running the workflow.',
     )
 
-    @field_validator('structure', mode='after')
+    @field_validator('structure', mode='before')
     @classmethod
-    def _validate_structure(cls, structure: str) -> str:
-        from taps.apps.synthetic import WorkflowStructure
-
-        try:
-            WorkflowStructure(structure)
-        except ValueError:
-            options = ', '.join(d.value for d in WorkflowStructure)
-            raise ValueError(
-                f'Specified structure {structure!r} is unknown. '
-                f'Must be one of {options}.',
-            ) from None
-
-        return structure
+    def _validate_structure(cls, value: str) -> str:
+        return value.lower()
 
     @model_validator(mode='after')
     def _validate_options(self) -> Self:

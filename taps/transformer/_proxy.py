@@ -19,31 +19,25 @@ T = TypeVar('T')
 
 @register('transformer')
 class ProxyTransformerConfig(TransformerConfig):
-    """[`ProxyTransformer`][taps.transformer.ProxyTransformer] plugin configuration.
-
-    Attributes:
-        connector: Name of ProxyStore connector to use.
-        extract_target: See the usage in
-            [`ProxyTransformer`][taps.transformer.ProxyTransformer].
-    """  # noqa: E501
+    """[`ProxyTransformer`][taps.transformer.ProxyTransformer] plugin configuration."""  # noqa: E501
 
     name: Literal['proxystore'] = Field(
         'proxystore',
-        description='name of transformer type',
+        description='Transformer name.',
     )
     connector: ConnectorConfig = Field(
-        description='connector configuration',
+        description='Connector configuration.',
     )
     cache_size: int = Field(16, description='cache size')
     extract_target: bool = Field(
         False,
         description=(
-            'extract the target from the proxy when resolving the identifier'
+            'Extract the target from the proxy when resolving the identifier.'
         ),
     )
     populate_target: bool = Field(
         True,
-        description='populate target objects of newly created proxies',
+        description='Populate target objects of newly created proxies.',
     )
 
     def get_transformer(self) -> ProxyTransformer:

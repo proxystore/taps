@@ -74,7 +74,7 @@ class Transformer(Protocol[IdentifierT]):
 class TransformerConfig(BaseModel, abc.ABC):
     """Abstract [`Transformer`][taps.transformer.Transformer] plugin configuration."""  # noqa: E501
 
-    name: str = Field(description='name of transformer type')
+    name: str = Field(description='Transformer name.')
 
     model_config: ConfigDict = ConfigDict(  # type: ignore[misc]
         extra='ignore',

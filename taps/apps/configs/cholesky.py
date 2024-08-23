@@ -20,9 +20,12 @@ from taps.plugins import register
 class CholeskyConfig(AppConfig):
     """Cholesky application configuration."""
 
-    name: Literal['cholesky'] = 'cholesky'
-    matrix_size: int = Field(description='size of the square matrix')
-    block_size: int = Field(description='block size')
+    name: Literal['cholesky'] = Field(
+        'cholesky',
+        description='Application name.',
+    )
+    matrix_size: int = Field(description='Size of initial square matrix.')
+    block_size: int = Field(description='Block size for tiled decomposition.')
 
     @model_validator(mode='after')
     def _validate_sizes(self) -> Self:

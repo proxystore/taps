@@ -14,20 +14,26 @@ from taps.plugins import register
 class MoldesignConfig(AppConfig):
     """Moldesign application configuration."""
 
-    name: Literal['moldesign'] = 'moldesign'
-    dataset: pathlib.Path = Field(description='molecule search space dataset')
-    initial_count: int = Field(8, description='number of initial calculations')
+    name: Literal['moldesign'] = Field(
+        'moldesign',
+        description='Application name.',
+    )
+    dataset: pathlib.Path = Field(description='Molecule search space dataset.')
+    initial_count: int = Field(
+        8,
+        description='Number of initial calculations.',
+    )
     search_count: int = Field(
         64,
-        description='number of molecules to evaluate in total',
+        description='Number of molecules to evaluate in total.',
     )
     batch_size: int = Field(
         4,
         description=(
-            'number of molecules to evaluate in each batch of simulations'
+            'Number of molecules to evaluate in each batch of simulations.'
         ),
     )
-    seed: int = Field(0, description='random seed')
+    seed: int = Field(0, description='Random seed.')
 
     def get_app(self) -> App:
         """Create an application instance from the config."""

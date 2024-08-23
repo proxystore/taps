@@ -128,23 +128,16 @@ class RayExecutor(Executor):
 
 @register('executor')
 class RayConfig(ExecutorConfig):
-    """[`RayExecutor`][taps.executor.ray.RayExecutor] plugin configuration.
+    """[`RayExecutor`][taps.executor.ray.RayExecutor] plugin configuration."""
 
-    Attributes:
-        address: Address of the Ray cluster to run on.
-        num_cpus: Number of actor processes to start in the pool. Defaults to
-            the number of cores in the Ray cluster, or the number of cores
-            on this machine.
-    """
-
-    name: Literal['ray'] = 'ray'
+    name: Literal['ray'] = Field('ray', description='Executor name.')
     address: Optional[str] = Field(  # noqa: UP007
         'local',
-        description='ray scheduler address (default spawns local cluster)',
+        description='Ray scheduler address (default spawns local cluster).',
     )
     num_cpus: Optional[int] = Field(  # noqa: UP007,
         None,
-        description='maximum number of CPUs that ray will use',
+        description='Maximum number of CPUs that ray will use.',
     )
 
     def get_executor(self) -> RayExecutor:
