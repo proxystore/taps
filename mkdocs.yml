@@ -6,7 +6,7 @@ site_description: Task Performance Suite
 repo_name: proxystore/taps
 repo_url: https://github.com/proxystore/taps
 
-copyright: Copyright &copy; 2024—Present Globus Labs
+copyright: Copyright &copy; 2021—Present by <a target="_blank" href="https://gregpauloski.com">Greg Pauloski</a> and <a target="_blank" href="https://labs.globus.org">Globus Labs</a>
 
 theme:
   name: material
@@ -29,34 +29,24 @@ theme:
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
-      scheme: default
-      primary: globus-blue
-      accent: globus-blue
       toggle:
         icon: material/brightness-auto
         name: Switch to light mode
-
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: globus-light
-      accent: globus-light
+      primary: proxystore-light
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
+      primary: proxystore-dark
       scheme: slate
-      primary: globus-dark
-      accent: globus-dark
       toggle:
         icon: material/brightness-4
         name: Switch to system preference
-  overrides: docs/_overrides
-  # favicon: static/favicon.png
-  # icon:
-  #   logo: logo
+  favicon: static/favicon.png
+  logo: static/icon-white.svg
 
 watch:
   - mkdocs.yml
