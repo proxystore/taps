@@ -37,6 +37,7 @@ from dask.distributed import wait as wait_dask
 from taps.engine.future import FutureProtocol
 from taps.engine.task import ExceptionInfo
 from taps.engine.task import Task
+from taps.engine.task import task
 from taps.engine.task import TaskInfo
 from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
@@ -202,7 +203,7 @@ class Engine:
             return function
 
         if function not in self._registered_tasks:
-            self._registered_tasks[function] = Task(function)
+            self._registered_tasks[function] = task(function)
 
         return cast(Task[P, R], self._registered_tasks[function])
 
@@ -243,7 +244,7 @@ class Engine:
         ]
         info = TaskInfo(
             task_id=str(task_id),
-            function_name=task.__name__,
+            function_name=task.name,
             parent_task_ids=parents,
             submit_time=time.time(),
         )

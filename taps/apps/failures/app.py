@@ -68,7 +68,7 @@ class _FailureInjectionEngine(Engine):
             # the wrapped function, decorate that with failure wrapper, and
             # then submit the wrapped function to the engine where it will
             # be converted into a Task again.
-            function = function.wrapped
+            function = function.__wrapped__
 
         failure_type = (
             FailureType.random()

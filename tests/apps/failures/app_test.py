@@ -11,7 +11,7 @@ from taps.apps.failures.app import FailureInjectionApp
 from taps.apps.failures.types import FailureType
 from taps.apps.failures.types import ParentDependencyError
 from taps.engine import Engine
-from taps.engine.task import Task
+from taps.engine.task import task
 from testing.app import MockAppConfig
 
 
@@ -75,7 +75,7 @@ def test_failure_injection_engine(as_task: bool, engine: Engine) -> None:
         return abs(x)
 
     function: Callable[[int], int] = (
-        Task(my_abs) if as_task else my_abs  # type: ignore[assignment]
+        task(my_abs) if as_task else my_abs  # type: ignore[assignment]
     )
     future = failure_engine.submit(function, -1)
     assert future.result() == 1
