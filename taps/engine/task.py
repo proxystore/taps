@@ -9,6 +9,7 @@ from typing import Callable
 from typing import Generic
 from typing import List
 from typing import Optional
+from typing import overload
 from typing import TypeVar
 
 if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
@@ -22,7 +23,7 @@ from pydantic import Field
 from taps.engine.transform import TaskTransformer
 
 P = ParamSpec('P')
-T = TypeVar('T')
+R = TypeVar('R')
 
 
 class ExceptionInfo(BaseModel):
@@ -151,65 +152,130 @@ class TaskInfo(BaseModel):
     )
 
 
-class TaskResult(Generic[T]):
+class TaskResult(Generic[R]):
     """Task result structure.
 
     Args:
-        result: The result of the task's function.
+        value: The result of the task's function.
         info: Task execution information.
     """
 
-    def __init__(self, result: T, info: ExecutionInfo) -> None:
-        self.result = result
+    def __init__(self, value: R, info: ExecutionInfo) -> None:
+        self.value = value
         self.info = info
 
 
-class Task(Generic[P, T]):
+class Task(Generic[P, R]):
     """Task wrapper.
 
-    The task wrapper is what is actually invoked on a worker. The wrapper is
-    a callable object that will perform metric recording and data transformatin
-    before and after invoking the task function.
+    A task represents a wrapped, callable object (e.g., a function) that is
+    executed on a worker by the [`Engine`][taps.engine.Engine]. This wrapper
+    will perform additional task management, such as recording metrics and
+    transforming task parameters and return values.
+
+    Note:
+        A [`Task`][taps.engine.task.Task] is commonly created through the
+        [`@task`][taps.engine.task.task] decorator. However, the decorated
+        function can still be invoked directly, such as within unit tests
+        or when *not* submitted to the [`Engine`][taps.engine.Engine].
+        In this case, none of the additional task management is performed.
 
     Args:
-        function: Function that represents the work associated with the task.
-        transformer: Transformer to use when resolving task arguments and
-            transforming task results.
+        wrapped: Function representing the work associated with the task type.
     """
 
-    def __init__(
-        self,
-        function: Callable[P, T],
-        *,
-        transformer: TaskTransformer[Any],
-    ) -> None:
-        self.function = function
-        self.transformer = transformer
-        #  Make this class instance "look" like `function`.
-        functools.update_wrapper(self, function)
+    # Set by functools.update_wrapper in __init__
+    __module__: str
+    __name__: str
 
-    def __call__(self, *args: Any, **kwargs: Any) -> TaskResult[T]:
-        """Call the function associated with the task."""
+    def __init__(self, wrapped: Callable[P, R]) -> None:
+        self.wrapped = wrapped
+        #  Make this class instance "look" like `wrapped`.
+        functools.update_wrapper(self, wrapped)
+
+    @overload
+    def __call__(
+        self,
+        *args: P.args,
+        _transformer: None = None,
+        **kwargs: P.kwargs,
+    ) -> R: ...
+
+    @overload
+    def __call__(
+        self,
+        *args: Any,
+        _transformer: TaskTransformer[Any],
+        **kwargs: Any,
+    ) -> TaskResult[R]: ...
+
+    def __call__(
+        self,
+        *args: P.args | Any,
+        _transformer: TaskTransformer[Any] | None = None,
+        **kwargs: P.kwargs | Any,
+    ) -> TaskResult[R] | R:
+        """Execute the task.
+
+        This method has different behavior based on if it is being called
+        directly or as a task executed by the [`Engine`][taps.engine.Engine].
+        When called directly, the value of `_transformer` is `None`, so the
+        task function (i.e., `self.wrapped`) is invoked and the result directly
+        returned. Here, the return type is `R`.
+
+        When executed by the [`Engine`][taps.engine.Engine], `_transformer`
+        is not `None`, so the wrapped function will be executed with the
+        additional task management. Here, the return type is
+        [`TaskResult[R]`][taps.engine.task.TaskResult].
+
+        Args:
+            args: Positional arguments to pass to the wrapped function.
+            _transformer: Transformer to use when resolving task arguments and
+                transforming task results. This should never be provided
+                by user code; this is only used when submitted as a task
+                by the [`Engine`][taps.engine.Engine].
+            kwargs: Keyword arguments to pass to the wrapped function.
+
+        Returns:
+            The result of type `R` from the wrapped function, possible wrapped
+            in a [`TaskResult[R]`][taps.engine.task.TaskResult] if invoked
+            by the [`Engine`][taps.engine.Engine].
+        """
+        if _transformer is None:
+            return self.wrapped(*args, **kwargs)
+        else:
+            return self._call_as_task(
+                *args,
+                **kwargs,
+                _transformer=_transformer,
+            )
+
+    def _call_as_task(
+        self,
+        *args: Any,
+        _transformer: TaskTransformer[Any],
+        **kwargs: Any,
+    ) -> TaskResult[R]:
         execution_start_time = time.time()
         args = tuple(
-            arg.result if isinstance(arg, TaskResult) else arg for arg in args
+            arg.value if isinstance(arg, TaskResult) else arg for arg in args
         )
         kwargs = {
-            k: v.result if isinstance(v, TaskResult) else v
+            k: v.value if isinstance(v, TaskResult) else v
             for k, v in kwargs.items()
         }
 
         input_transform_start_time = time.time()
-        args = self.transformer.resolve_iterable(args)
-        kwargs = self.transformer.resolve_mapping(kwargs)
+        args = _transformer.resolve_iterable(args)
+        kwargs = _transformer.resolve_mapping(kwargs)
         input_transform_end_time = time.time()
 
         task_start_time = time.time()
-        result = self.function(*args, **kwargs)
+        result = self.wrapped(*args, **kwargs)
         task_end_time = time.time()
 
         result_transform_start_time = time.time()
-        result = self.transformer.transform(result)
+        result = _transformer.transform(result)
         result_transform_end_time = time.time()
 
         execution_end_time = time.time()
@@ -225,4 +291,57 @@ class Task(Generic[P, T]):
             result_transform_start_time=result_transform_start_time,
             result_transform_end_time=result_transform_end_time,
         )
-        return TaskResult(result=result, info=info)
+        return TaskResult(value=result, info=info)
+
+
+@overload
+def task(function: Callable[P, R], /) -> Task[P, R]: ...
+
+
+@overload
+def task(
+    function: None = None,
+    /,
+) -> Callable[[Callable[P, R]], Task[P, R]]: ...
+
+
+def task(
+    function: Callable[P, R] | None = None,
+    /,
+) -> Task[P, R] | Callable[[Callable[P, R]], Task[P, R]]:
+    """Decorator that converts a function into [`Task`][taps.engine.task.Task].
+
+    Tip:
+        Decorating top-level functions that will be submitted to the
+        [`Engine`][taps.engine.Engine] by an application with the `@task`
+        decorator is generally recommended.
+
+    Example:
+        This decorator can be used directly:
+        ```python
+        from taps.engine import task
+
+        @task
+        def foo(*args, **kwargs) -> ...:
+            ...
+        ```
+        Or by being called first:
+        ```python
+        from taps.engine import task
+
+        @task()
+        def foo(*args, **kwargs) -> ...:
+            ...
+        ```
+
+    Args:
+        function: Function to turn into a [`Task`][taps.engine.task.Task].
+    """
+
+    def decorator(function: Callable[P, R]) -> Task[P, R]:
+        return Task(function)
+
+    if function is None:
+        return decorator
+    else:
+        return decorator(function)
