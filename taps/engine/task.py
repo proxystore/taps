@@ -311,6 +311,10 @@ def task(
 ) -> Task[P, R] | Callable[[Callable[P, R]], Task[P, R]]:
     """Decorator that converts a function into [`Task`][taps.engine.task.Task].
 
+    Note:
+        For convenience, this decorator is re-exported in
+        [`taps.engine`][taps.engine].
+
     Tip:
         Decorating top-level functions that will be submitted to the
         [`Engine`][taps.engine.Engine] by an application with the `@task`

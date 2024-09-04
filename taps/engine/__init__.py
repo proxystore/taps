@@ -5,6 +5,7 @@ from taps.engine._engine import as_completed
 from taps.engine._engine import Engine
 from taps.engine._engine import TaskFuture
 from taps.engine._engine import wait
+from taps.engine.task import task
 
 __all__ = (
     'Engine',
@@ -12,4 +13,5 @@ __all__ = (
     'TaskFuture',
     'as_completed',
     'wait',
+    'task',
 )
