@@ -21,10 +21,11 @@ from taps.apps.failures.types import FailureType
 from taps.apps.failures.types import ParentDependencyError
 from taps.engine import Engine
 from taps.engine import TaskFuture
+from taps.engine.task import Task
 from taps.logging import APP_LOG_LEVEL
 
 P = ParamSpec('P')
-T = TypeVar('T')
+R = TypeVar('R')
 
 logger = logging.getLogger(__name__)
 
@@ -60,45 +61,52 @@ class _FailureInjectionEngine(Engine):
 
     def create_failure_task(
         self,
-        task: Callable[P, T],
-    ) -> tuple[Callable[[Any], T], FailureType]:
+        function: Callable[P, R],
+    ) -> tuple[Callable[[Any], R], FailureType]:
+        if isinstance(function, Task):
+            # We can't modify already decorated tasks so we'll have to extract
+            # the wrapped function, decorate that with failure wrapper, and
+            # then submit the wrapped function to the engine where it will
+            # be converted into a Task again.
+            function = function.wrapped
+
         failure_type = (
             FailureType.random()
             if self.failure_type is FailureType.RANDOM
             else self.failure_type
         )
 
-        failure_task = self._failure_tasks.get((failure_type, task), None)
+        failure_task = self._failure_tasks.get((failure_type, function), None)
         if failure_task is not None:
-            return cast(Callable[P, T], failure_task), failure_type
+            return cast(Callable[P, R], failure_task), failure_type
 
         if failure_type == FailureType.DEPENDENCY:
 
-            @functools.wraps(task)
-            def _wrapped(parent: Any, *args: P.args, **kwargs: P.kwargs) -> T:
-                return task(*args, **kwargs)
+            @functools.wraps(function)
+            def _wrapped(parent: Any, *args: P.args, **kwargs: P.kwargs) -> R:
+                return function(*args, **kwargs)
 
         else:
             failure_rate = self.failure_rate
             failure_function = FAILURE_FUNCTIONS[failure_type]
 
-            @functools.wraps(task)
-            def _wrapped(*args: P.args, **kwargs: P.kwargs) -> T:
+            @functools.wraps(function)
+            def _wrapped(*args: P.args, **kwargs: P.kwargs) -> R:
                 if random.random() <= failure_rate:
                     failure_function()
 
-                return task(*args, **kwargs)
+                return function(*args, **kwargs)
 
-        self._failure_tasks[(failure_type, task)] = _wrapped
+        self._failure_tasks[(failure_type, function)] = _wrapped
         return _wrapped, failure_type
 
     def submit(
         self,
-        function: Callable[P, T],
+        function: Callable[P, R],
         /,
         *args: Any,
         **kwargs: Any,
-    ) -> TaskFuture[T]:
+    ) -> TaskFuture[R]:
         wrapped, failure_type = self.create_failure_task(function)
 
         if failure_type == FailureType.DEPENDENCY:
@@ -124,6 +132,13 @@ class _FailureInjectionEngine(Engine):
 
 class FailureInjectionApp:
     """Failure injection application.
+
+    Warning:
+        This app will intercept the tasks submitted by the base application
+        and modify the wrapped functions with the injected errors. Thus,
+        failure injection may cause incompatibilities with executors that
+        cannot serialize tasks by value (i.e., those that only serialize
+        submitted functions by reference).
 
     Args:
         base_config: Configuration for the base application to inject failures
