@@ -145,7 +145,10 @@ def run_bag_of_tasks(
         running_tasks.extend(new_tasks)
         submitted_tasks += len(new_tasks)
 
-        if completed_tasks % max_running_tasks == 0:
+        # Depending on how many tasks wait() returns, this may
+        # not run. We could log *every* time wait() returns (i.e., every
+        # loop), but this can result in a lot of log statements.
+        if completed_tasks % max_running_tasks == 0:  # pragma: no cover
             rate = completed_tasks / (time.monotonic() - start)
             logger.log(
                 APP_LOG_LEVEL,
