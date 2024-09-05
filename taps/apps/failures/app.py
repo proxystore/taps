@@ -20,6 +20,7 @@ from taps.apps.failures.types import FAILURE_FUNCTIONS
 from taps.apps.failures.types import FailureType
 from taps.apps.failures.types import ParentDependencyError
 from taps.engine import Engine
+from taps.engine import task
 from taps.engine import TaskFuture
 from taps.engine.task import Task
 from taps.logging import APP_LOG_LEVEL
@@ -30,6 +31,7 @@ R = TypeVar('R')
 logger = logging.getLogger(__name__)
 
 
+@task(name='injected_parent_task')
 def _dependency_failure_parent_task(
     failure_rate: float,
 ) -> Callable[[], None]:

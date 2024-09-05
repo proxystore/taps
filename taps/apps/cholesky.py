@@ -15,6 +15,7 @@ import numpy
 from numpy.typing import NDArray
 
 from taps.engine import Engine
+from taps.engine import task
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
 
@@ -23,21 +24,25 @@ logger = logging.getLogger(__name__)
 Array: TypeAlias = NDArray[numpy.float64]
 
 
+@task()
 def potrf(tile: Array) -> Array:
     """POTRF task."""
     return numpy.linalg.cholesky(tile)
 
 
+@task()
 def trsm(lower: Array, block: Array) -> Array:
     """TRSM task."""
     return numpy.linalg.solve(lower, block.T).T
 
 
+@task()
 def syrk(tile: Array, lower: Array) -> Array:
     """SYRK task."""
     return tile - numpy.dot(lower, lower.T)
 
 
+@task()
 def gemm(a: Array, b: Array, c: Array) -> Array:
     """GEMM task."""
     return a - numpy.dot(b, c)

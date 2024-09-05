@@ -8,8 +8,8 @@ import numpy
 import pandas
 from matplotlib import pyplot as plt
 
-from taps.apps.moldesign.chemfunctions import compute_vertical
 from taps.apps.moldesign.tasks import combine_inferences
+from taps.apps.moldesign.tasks import compute_vertical
 from taps.apps.moldesign.tasks import run_model
 from taps.apps.moldesign.tasks import train_model
 from taps.engine import as_completed

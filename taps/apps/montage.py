@@ -6,6 +6,7 @@ import pathlib
 import pandas as pd
 
 from taps.engine import Engine
+from taps.engine import task
 from taps.engine import wait
 from taps.logging import APP_LOG_LEVEL
 
@@ -36,6 +37,7 @@ def configure_montage(
     logger.debug(f'mMakeHdr:\n{mkhdr_log}')
 
 
+@task()
 def mproject(
     input_path: pathlib.Path,
     template_path: pathlib.Path,
@@ -66,6 +68,7 @@ def mproject(
     return output_path
 
 
+@task()
 def mimgtbl(
     img_dir: pathlib.Path,
     tbl_path: pathlib.Path,
@@ -90,6 +93,7 @@ def mimgtbl(
     return tbl_path
 
 
+@task()
 def moverlaps(
     img_tbl: pathlib.Path,
     diffs_tbl: pathlib.Path,
@@ -113,6 +117,7 @@ def moverlaps(
     return diffs_tbl
 
 
+@task()
 def mdiff(
     image_1: pathlib.Path,
     image_2: pathlib.Path,
@@ -146,6 +151,7 @@ def mdiff(
     return output_path
 
 
+@task()
 def bgexec_prep(
     img_table: pathlib.Path,
     diffs_table: pathlib.Path,
@@ -188,6 +194,7 @@ def bgexec_prep(
     return corrections_tbl
 
 
+@task()
 def mbackground(
     in_image: pathlib.Path,
     out_image: pathlib.Path,
@@ -217,6 +224,7 @@ def mbackground(
     return out_image
 
 
+@task()
 def madd(
     images_table: pathlib.Path,
     template_header: pathlib.Path,

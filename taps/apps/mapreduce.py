@@ -11,6 +11,7 @@ from typing import Generator
 from typing import TypeVar
 
 from taps.engine import Engine
+from taps.engine import task
 from taps.logging import APP_LOG_LEVEL
 
 T = TypeVar('T')
@@ -18,6 +19,7 @@ T = TypeVar('T')
 logger = logging.getLogger(__name__)
 
 
+@task()
 def map_task(*files: pathlib.Path) -> Counter[str]:
     """Count words in files."""
     counts: Counter[str] = Counter()
@@ -28,6 +30,7 @@ def map_task(*files: pathlib.Path) -> Counter[str]:
     return counts
 
 
+@task()
 def reduce_task(*counts: Counter[str]) -> Counter[str]:
     """Combine word counts."""
     total: Counter[str] = Counter()
