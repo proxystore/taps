@@ -1938,27 +1938,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/apps/moldesign/chemfunctions/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    chemfunctions
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../api/apps/moldesign/tasks/" class="md-nav__link">
         
   
@@ -2867,7 +2846,7 @@
 <h1 id="benchmarking-apps">Benchmarking Apps<a class="headerlink" href="#benchmarking-apps" title="Permanent link">&para;</a></h1>
 <p>Benchmarking applications are real or synthetic workloads that can be used to evaluate task execution and data management frameworks.
 TaPS provides a framework for the creation and execution of these applications.</p>
-<p>In TaPS, an application is composed of tasks which are the remote execution of function which takes in some data and produces data.
+<p>In TaPS, an application is composed of tasks that are the remote execution of a function which takes in some data and produces data.
 Tasks can have implicit dependencies when the result of one task is consumed by one or more other tasks.</p>
 <p>TaPS provides many benchmarking apps out-of-the-box, representing a wide variety of domains, patterns, and charatersitics.
 Check out the <a href="../../apps/">Applications</a> to learn more.</p>
@@ -2932,51 +2911,55 @@ More complex applications can create a subdirectory containing many submodules.<
 <span class="normal"><a href="#__codelineno-1-39">39</a></span>
 <span class="normal"><a href="#__codelineno-1-40">40</a></span>
 <span class="normal"><a href="#__codelineno-1-41">41</a></span>
-<span class="normal"><a href="#__codelineno-1-42">42</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="normal"><a href="#__codelineno-1-42">42</a></span>
+<span class="normal"><a href="#__codelineno-1-43">43</a></span>
+<span class="normal"><a href="#__codelineno-1-44">44</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="kn">import</span> <span class="nn">logging</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="kn">import</span> <span class="nn">pathlib</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="kn">from</span> <span class="nn">taps.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="kn">from</span> <span class="nn">taps.logging</span> <span class="kn">import</span> <span class="n">APP_LOG_LEVEL</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="kn">from</span> <span class="nn">taps.engine</span> <span class="kn">import</span> <span class="n">task</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="kn">from</span> <span class="nn">taps.logging</span> <span class="kn">import</span> <span class="n">APP_LOG_LEVEL</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="k">def</span> <span class="nf">print_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Print a message.&quot;&quot;&quot;</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">APP_LOG_LEVEL</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="k">class</span> <span class="nc">FoobarApp</span><span class="p">:</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Foobar application.</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="sd">    Args:</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="sd">        message: Message to print.</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="sd">        repeat: Number of times to repeat the message.</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">repeat</span> <span class="o">=</span> <span class="n">repeat</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the application.&quot;&quot;&quot;</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a>        <span class="k">pass</span>
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">run_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the application.</span>
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a>
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="sd">        Args:</span>
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="sd">            engine: Application execution engine.</span>
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="sd">            run_dir: Run directory.</span>
-</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repeat</span><span class="p">):</span>
-</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a>            <span class="n">task</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">print_message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
-</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a>            <span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Wait on task to finish</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="nd">@task</span><span class="p">()</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="k">def</span> <span class="nf">print_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Print a message.&quot;&quot;&quot;</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">APP_LOG_LEVEL</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="k">class</span> <span class="nc">FoobarApp</span><span class="p">:</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Foobar application.</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="sd">    Args:</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="sd">        message: Message to print.</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="sd">        repeat: Number of times to repeat the message.</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">repeat</span> <span class="o">=</span> <span class="n">repeat</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the application.&quot;&quot;&quot;</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a>        <span class="k">pass</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">run_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the application.</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="sd">        Args:</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="sd">            engine: Application execution engine.</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="sd">            run_dir: Run directory.</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">repeat</span><span class="p">):</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43"></a>            <span class="n">task</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">print_message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44"></a>            <span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Wait on task to finish</span>
 </span></code></pre></div></td></tr></table></div>
 <ol>
-<li>Applications in TaPS are composed on tasks which are just Python functions.
+<li>Applications in TaPS are composed of tasks which are just Python functions decorated with <a class="autorefs autorefs-internal" href="../../api/engine/task/#taps.engine.task.task"><code>@task()</code></a>.
    Here, our task is the <code>print_message</code> function.</li>
 <li>The <code>FoobarApp</code> implements the <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.App"><code>App</code></a> protocol.</li>
 <li>The <code>close()</code> method can be used to close any stateful connection objects created in <code>__init__</code> or perform any clean up if needed.</li>
@@ -2986,11 +2969,17 @@ More complex applications can create a subdirectory containing many submodules.<
 </ol>
 <p>The <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.Engine"><code>Engine</code></a> is the key abstraction of the TaPS framework.
 The CLI arguments provided by the user for the compute engine, data management, and task logging logic are used to create an <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.Engine"><code>Engine</code></a> instance which is then provided to the application.
-<a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.Engine.submit"><code>Engine.submit()</code></a> is the primary method that application will use to execute tasks asynchronously.
-This method returns a <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.TaskFuture"><code>TaskFuture</code></a> object with a <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.TaskFuture.result"><code>result()</code></a> which will wait on the task to finish and return the result.
+<a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.Engine.submit"><code>Engine.submit()</code></a> is the primary method through which an application can execute tasks asynchronously.
+This method returns a <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.TaskFuture"><code>TaskFuture</code></a> object which, when <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.TaskFuture.result"><code>TaskFuture.result()</code></a> is called, will wait on the task to finish and return the result.
 Alternatively, <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.Engine.map"><code>Engine.map()</code></a> can be used to map a task onto a sequence of inputs, compute the tasks in parallel, and gather the results.
 Importantly, a <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.TaskFuture"><code>TaskFuture</code></a> can also be passed as input to another tasks.
 Doing so indicates to the <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.Engine"><code>Engine</code></a> that there is a dependency between those two tasks.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <a class="autorefs autorefs-internal" href="../../api/engine/task/#taps.engine.task.task"><code>@task()</code></a> decorator is not strictly necessary.
+The <a class="autorefs autorefs-internal" href="../../api/engine/#taps.engine.Engine"><code>Engine</code></a> will accept any Python function for execution and will wrap it with <a class="autorefs autorefs-internal" href="../../api/engine/task/#taps.engine.task.task"><code>@task()</code></a> if needed.
+However, it is highly recommended to use <a class="autorefs autorefs-internal" href="../../api/engine/task/#taps.engine.task.task"><code>@task()</code></a> for better compatibility with certain executors.</p>
+</div>
 <h3 id="the-appconfig">The <code>AppConfig</code><a class="headerlink" href="#the-appconfig" title="Permanent link">&para;</a></h3>
 <p>An <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.AppConfig"><code>AppConfig</code></a> is registered with the TaPS CLI and defines (1) what arguments should be available in the CLI and (2) how to construct and <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.AppConfig"><code>App</code></a> from the configuration.
 Each <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.App"><code>App</code></a> definition has a corresponding <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.AppConfig"><code>AppConfig</code></a> defined in <code>taps/apps/configs/</code>.
@@ -3085,6 +3074,11 @@ This requires having installed TaPS with the <code>docs</code> option (e.g., <co
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict
 </span></code></pre></div>
 You will be able to inspect that your page is visible in the "Apps" section of the docs and is formatted correctly.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>If you plan to open a pull request to officially add your application to TaPS and the application is based on existing code, ensure you are following the license of the original work.
+This may require including the original license in a couple places, such as in the code files or in the repository.</p>
+</div>
 <h2 id="running-the-application">Running the Application<a class="headerlink" href="#running-the-application" title="Permanent link">&para;</a></h2>
 <p>Once an application is created and registered within TaPS, the application is available within the CLI.
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>-m<span class="w"> </span>taps.run<span class="w"> </span>--app<span class="w"> </span>foobar<span class="w"> </span>--help
