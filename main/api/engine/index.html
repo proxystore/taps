@@ -18,7 +18,7 @@
         <link rel="prev" href="../apps/synthetic/">
       
       
-        <link rel="next" href="future/">
+        <link rel="next" href="task/">
       
       
       <link rel="icon" href="../../static/favicon.png">
@@ -1965,27 +1965,6 @@
   
   
     <li class="md-nav__item">
-      <a href="future/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    future
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="task/" class="md-nav__link">
         
   
@@ -2239,6 +2218,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../future/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    taps.future
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../logging/" class="md-nav__link">
         
   
@@ -2314,7 +2314,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_10" >
         
           
           
@@ -2330,14 +2330,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_1_9" id="__nav_4_1_9_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_1_10" id="__nav_4_1_10_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1_9">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_10">
             <span class="md-nav__icon md-icon"></span>
             taps.run
           </label>
@@ -3641,7 +3641,7 @@ has not started running. Only used in Python 3.9 and later.</p>
 
 <a href="#taps.engine.TaskFuture" class="headerlink" title="Permanent link">&para;</a></h2>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">TaskFuture</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">future</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.engine.future.FutureProtocol" href="future/#taps.engine.future.FutureProtocol">FutureProtocol</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="taps.engine.task.TaskResult" href="task/#taps.engine.task.TaskResult">TaskResult</a></span><span class="p">[</span><span class="n"><span title="taps.engine._engine.R">R</span></span><span class="p">]],</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">future</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.future.FutureProtocol" href="../future/#taps.future.FutureProtocol">FutureProtocol</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="taps.engine.task.TaskResult" href="task/#taps.engine.task.TaskResult">TaskResult</a></span><span class="p">[</span><span class="n"><span title="taps.engine._engine.R">R</span></span><span class="p">]],</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">info</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.engine.task.TaskInfo" href="task/#taps.engine.task.TaskInfo">TaskInfo</a></span><span class="p">,</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">transformer</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="taps.engine.transform.TaskTransformer" href="transform/#taps.engine.transform.TaskTransformer">TaskTransformer</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">],</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
@@ -3664,7 +3664,7 @@ has not started running. Only used in Python 3.9 and later.</p>
     <ul>
         <li class="doc-section-item field-body">
           <b><code>future</code></b>
-              (<code><a class="autorefs autorefs-internal" title="taps.engine.future.FutureProtocol" href="future/#taps.engine.future.FutureProtocol">FutureProtocol</a>[<a class="autorefs autorefs-internal" title="taps.engine.task.TaskResult" href="task/#taps.engine.task.TaskResult">TaskResult</a>[<span title="taps.engine._engine.R">R</span>]]</code>)
+              (<code><a class="autorefs autorefs-internal" title="taps.future.FutureProtocol" href="../future/#taps.future.FutureProtocol">FutureProtocol</a>[<a class="autorefs autorefs-internal" title="taps.engine.task.TaskResult" href="task/#taps.engine.task.TaskResult">TaskResult</a>[<span title="taps.engine._engine.R">R</span>]]</code>)
           –
           <div class="doc-md-description">
             <p>Underlying future returned by the compute executor.</p>

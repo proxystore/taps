@@ -21,6 +21,10 @@
          <lastmod>2024-09-05</lastmod>
     </url>
     <url>
+         <loc>https://taps.proxystore.dev/latest/api/future/</loc>
+         <lastmod>2024-09-05</lastmod>
+    </url>
+    <url>
          <loc>https://taps.proxystore.dev/latest/api/logging/</loc>
          <lastmod>2024-09-05</lastmod>
     </url>
@@ -154,10 +158,6 @@
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/engine/</loc>
-         <lastmod>2024-09-05</lastmod>
-    </url>
-    <url>
-         <loc>https://taps.proxystore.dev/latest/api/engine/future/</loc>
          <lastmod>2024-09-05</lastmod>
     </url>
     <url>
