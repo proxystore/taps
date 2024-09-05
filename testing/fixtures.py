@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import multiprocessing
 import pathlib
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
@@ -47,7 +48,14 @@ def dask_process_executor() -> Generator[DaskDistributedExecutor, None, None]:
 
 @pytest.fixture()
 def process_executor() -> Generator[ProcessPoolExecutor, None, None]:
-    with ProcessPoolExecutor(4) as executor:
+    with ProcessPoolExecutor(
+        max_workers=4,
+        # Spawn is already the default on Windows and MacOS. Fork is
+        # the default on POSIX platforms but will change in 3.14 because
+        # forking a multithreaded process is not safe (and the test suite
+        # is multithreaded because the ThreadPoolExecutor).
+        mp_context=multiprocessing.get_context('spawn'),
+    ) as executor:
         yield executor
 
 
