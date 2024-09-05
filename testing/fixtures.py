@@ -27,8 +27,11 @@ def dask_executor() -> Generator[DaskDistributedExecutor, None, None]:
     client = Client(
         n_workers=4,
         processes=False,
-        dashboard_address=None,
-        worker_dashboard_address=None,
+        # Ideally we would disable the dashboard, but disabling is bugged
+        # so set a random port to prevent issues.
+        # See: https://github.com/dask/distributed/issues/8136
+        dashboard_address=':0',
+        worker_dashboard_address=':0',
     )
     with DaskDistributedExecutor(client) as executor:
         yield executor
@@ -39,8 +42,11 @@ def dask_process_executor() -> Generator[DaskDistributedExecutor, None, None]:
     client = Client(
         n_workers=4,
         processes=True,
-        dashboard_address=None,
-        worker_dashboard_address=None,
+        # Ideally we would disable the dashboard, but disabling is bugged
+        # so set a random port to prevent issues.
+        # See: https://github.com/dask/distributed/issues/8136
+        dashboard_address=':0',
+        worker_dashboard_address=':0',
     )
     with DaskDistributedExecutor(client) as executor:
         yield executor
