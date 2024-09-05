@@ -6,8 +6,8 @@ from typing import Iterable
 from typing import Mapping
 from typing import TypeVar
 
-from taps.engine.future import is_future
 from taps.filter import Filter
+from taps.future import is_future
 from taps.transformer import Transformer
 
 K = TypeVar('K')

@@ -4,7 +4,7 @@ import uuid
 from concurrent.futures import Future
 from unittest import mock
 
-from taps.engine.future import is_future
+from taps.future import is_future
 
 
 def test_is_future() -> None:
