@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import sys
 from concurrent.futures import Executor
 from concurrent.futures import Future
@@ -24,6 +25,8 @@ from pydantic import Field
 from taps.executor import ExecutorConfig
 from taps.plugins import register
 
+logger = logging.getLogger(__name__)
+
 P = ParamSpec('P')
 T = TypeVar('T')
 
@@ -33,10 +36,33 @@ class DaskDistributedExecutor(Executor):
 
     Args:
         client: Dask distributed client.
+        wait_for_workers: Wait for `n` workers to connect to the scheduler
+            before. Useful when connecting to a remote scheduler; a local
+            cluster created by the client already ensures workers are
+            connected.
+        wait_for_workers_timeout: Maximum seconds to wait for workers to
+            connect to the scheduler.
     """
 
-    def __init__(self, client: Client) -> None:
+    def __init__(
+        self,
+        client: Client,
+        *,
+        wait_for_workers: int | None = None,
+        wait_for_workers_timeout: float | None = None,
+    ) -> None:
         self.client = client
+
+        if wait_for_workers is not None:
+            logger.debug(
+                f'Waiting for {wait_for_workers} Dask worker(s) to connect '
+                f'to the client (timeout: {wait_for_workers_timeout})',
+            )
+            self.client.wait_for_workers(
+                wait_for_workers,
+                timeout=wait_for_workers_timeout,
+            )
+            logger.debug('Dask workers connected')
 
     def submit(
         self,
@@ -135,6 +161,17 @@ class DaskDistributedConfig(ExecutorConfig):
         True,
         description='Configure if workers are daemon.',
     )
+    wait_for_workers: Optional[int] = Field(  # noqa: UP007
+        None,
+        description=(
+            'Wait for N workers to connect before starting. '
+            'Useful when connecting to a remote scheduler.'
+        ),
+    )
+    wait_for_workers_timeout: Optional[float] = Field(  # noqa: UP007
+        None,
+        description='Timeout (seconds) for waiting for workers to connect.',
+    )
 
     def get_executor(self) -> DaskDistributedExecutor:
         """Create an executor instance from the config."""
@@ -149,4 +186,9 @@ class DaskDistributedConfig(ExecutorConfig):
                 processes=not self.use_threads,
                 dashboard_address=None,
             )
-        return DaskDistributedExecutor(client)
+
+        return DaskDistributedExecutor(
+            client,
+            wait_for_workers=self.wait_for_workers,
+            wait_for_workers_timeout=self.wait_for_workers_timeout,
+        )

@@ -43,7 +43,7 @@ def test_map_function(local_client: Client) -> None:
     'config',
     (
         DaskDistributedConfig(scheduler='localhost'),
-        DaskDistributedConfig(workers=1, use_threads=True),
+        DaskDistributedConfig(workers=1, use_threads=True, wait_for_workers=1),
     ),
 )
 def test_config_get_executor(config: DaskDistributedConfig) -> None:
