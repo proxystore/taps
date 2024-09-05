@@ -14,6 +14,7 @@ from taps.apps.docking.train import run_model
 from taps.apps.docking.train import train_model
 from taps.engine import as_completed
 from taps.engine import Engine
+from taps.engine import task
 from taps.engine import TaskFuture
 from taps.logging import APP_LOG_LEVEL
 
@@ -22,6 +23,7 @@ logger = logging.getLogger(__name__)
 MGLTOOLS_HOME_ENV = 'MGLTOOLS_HOME'
 
 
+@task()
 def smi_to_pdb(smiles: str, pdb_file: pathlib.Path) -> pathlib.Path:
     """Convert SMILES string to PDB representation.
 
@@ -54,6 +56,7 @@ def smi_to_pdb(smiles: str, pdb_file: pathlib.Path) -> pathlib.Path:
     return pdb_file
 
 
+@task()
 def set_element(
     input_pdb: pathlib.Path,
     output_pdb: pathlib.Path,
@@ -75,6 +78,7 @@ def set_element(
     return output_pdb
 
 
+@task()
 def pdb_to_pdbqt(
     pdb_file: pathlib.Path,
     pdbqt_file: pathlib.Path,
@@ -124,6 +128,7 @@ def pdb_to_pdbqt(
     return pdbqt_file
 
 
+@task()
 def make_autodock_config(
     input_receptor_pdbqt_file: pathlib.Path,
     input_ligand_pdbqt_file: pathlib.Path,
@@ -178,6 +183,7 @@ def make_autodock_config(
     return output_conf_file
 
 
+@task()
 def autodock_vina(
     config_file: pathlib.Path,
     smiles: str,

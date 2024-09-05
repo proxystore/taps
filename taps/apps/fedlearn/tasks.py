@@ -8,8 +8,10 @@ from torch.utils.data import Dataset
 
 from taps.apps.fedlearn.types import Client
 from taps.apps.fedlearn.types import Result
+from taps.engine import task
 
 
+@task()
 def no_local_train(
     client: Client,
     round_idx: int,
@@ -26,6 +28,7 @@ def no_local_train(
     return []
 
 
+@task()
 def local_train(
     client: Client,
     round_idx: int,
@@ -89,6 +92,7 @@ def local_train(
     return results
 
 
+@task()
 def test_model(
     model: nn.Module,
     data: Dataset,

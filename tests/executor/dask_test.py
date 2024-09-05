@@ -14,7 +14,11 @@ def local_client() -> Client:
     client = Client(
         n_workers=1,
         processes=False,
-        dashboard_address=None,
+        # Ideally we would disable the dashboard, but disabling is bugged
+        # so set a random port to prevent issues.
+        # See: https://github.com/dask/distributed/issues/8136
+        dashboard_address=':0',
+        worker_dashboard_address=':0',
     )
     return client
 

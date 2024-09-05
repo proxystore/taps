@@ -37,6 +37,7 @@ from dask.distributed import wait as wait_dask
 from taps.engine.future import FutureProtocol
 from taps.engine.task import ExceptionInfo
 from taps.engine.task import Task
+from taps.engine.task import task
 from taps.engine.task import TaskInfo
 from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
@@ -48,13 +49,13 @@ from taps.transformer import NullTransformer
 from taps.transformer import Transformer
 
 P = ParamSpec('P')
-T = TypeVar('T')
+R = TypeVar('R')
 
 
 def _result_or_cancel(
-    future: TaskFuture[T],
+    future: TaskFuture[R],
     timeout: float | None = None,
-) -> T:
+) -> R:
     try:
         # Note: this used to be inside a try/finally block with the
         # finally arm calling future.cancel(). This was removed because
@@ -67,7 +68,7 @@ def _result_or_cancel(
         del future
 
 
-class TaskFuture(Generic[T]):
+class TaskFuture(Generic[R]):
     """Task future.
 
     Note:
@@ -81,7 +82,7 @@ class TaskFuture(Generic[T]):
 
     def __init__(
         self,
-        future: FutureProtocol[TaskResult[T]],
+        future: FutureProtocol[TaskResult[R]],
         info: TaskInfo,
         transformer: TaskTransformer[Any],
     ) -> None:
@@ -106,7 +107,7 @@ class TaskFuture(Generic[T]):
         """Get the exception raised by the task or `None` if successful."""
         return self.future.exception()
 
-    def result(self, timeout: float | None = None) -> T:
+    def result(self, timeout: float | None = None) -> R:
         """Get the result of the task.
 
         Args:
@@ -121,7 +122,7 @@ class TaskFuture(Generic[T]):
                 complete within `timeout` seconds.
         """
         task_result = self.future.result(timeout=timeout)
-        result = self.transformer.resolve(task_result.result)
+        result = self.transformer.resolve(task_result.value)
         return result
 
 
@@ -152,8 +153,10 @@ class Engine:
             record_logger if record_logger is not None else NullRecordLogger()
         )
 
-        # Maps user provided functions to the wrapped function.
-        # This is tricky to type, so we just use Any.
+        # Maps user provided functions to the Task object so they are only
+        # wrapped once. This is only used for user provided functions that
+        # were not already decorated with @task. This is tricky to type,
+        # so we just use Any.
         self._registered_tasks: dict[Callable[[Any], Any], Task[Any, Any]] = {}
 
         # Internal bookkeeping
@@ -195,16 +198,25 @@ class Engine:
         task_future.info.received_time = time.time()
         self.record_logger.log(task_future.info.model_dump())
 
+    def _get_task(self, function: Callable[P, R]) -> Task[P, R]:
+        if isinstance(function, Task):
+            return function
+
+        if function not in self._registered_tasks:
+            self._registered_tasks[function] = task(function)
+
+        return cast(Task[P, R], self._registered_tasks[function])
+
     # Note: args/kwargs are typed as Any rather than P.args/P.kwargs
     # because the inputs may be TaskFuture types which will get translated
     # into the correct types before invoking the function.
     def submit(
         self,
-        function: Callable[P, T],
+        function: Callable[P, R],
         /,
         *args: Any,
         **kwargs: Any,
-    ) -> TaskFuture[T]:
+    ) -> TaskFuture[R]:
         """Schedule the callable to be executed.
 
         This function can also accept
@@ -212,9 +224,10 @@ class Engine:
         to denote dependencies between a parent and this child task.
 
         Args:
-            function: Callable to execute.
-            args: Positional arguments.
-            kwargs: Keyword arguments.
+            function: [`Task`][taps.engine.task.Task] to execute or a function
+                to turn into a [`Task`][taps.engine.task.Task].
+            args: Positional arguments for the task.
+            kwargs: Keyword arguments for the task.
 
         Returns:
             [`TaskFuture`][taps.engine.TaskFuture] object representing the \
@@ -222,17 +235,7 @@ class Engine:
             [`TaskFuture.result()`][taps.engine.TaskFuture.result].
         """
         task_id = uuid.uuid4()
-
-        if function not in self._registered_tasks:
-            self._registered_tasks[function] = Task(
-                function,
-                transformer=self.transformer,
-            )
-
-        task = cast(
-            Callable[P, TaskResult[T]],
-            self._registered_tasks[function],
-        )
+        task = self._get_task(function)
 
         parents = [
             str(arg.info.task_id)
@@ -241,7 +244,7 @@ class Engine:
         ]
         info = TaskInfo(
             task_id=str(task_id),
-            function_name=function.__name__,
+            function_name=task.name,
             parent_task_ids=parents,
             submit_time=time.time(),
         )
@@ -258,7 +261,13 @@ class Engine:
         args = self.transformer.transform_iterable(args)
         kwargs = self.transformer.transform_mapping(kwargs)
 
-        future = self.executor.submit(task, *args, **kwargs)
+        future = self.executor.submit(
+            task,
+            *args,
+            **kwargs,
+            _transformer=self.transformer,
+        )
+
         self._total_tasks += 1
 
         task_future = TaskFuture(future, info, self.transformer)
@@ -269,11 +278,11 @@ class Engine:
 
     def map(
         self,
-        function: Callable[P, T],
+        function: Callable[P, R],
         *iterables: Iterable[P.args],
         timeout: float | None = None,
         chunksize: int = 1,
-    ) -> Iterator[T]:
+    ) -> Iterator[R]:
         """Map a function onto iterables of arguments.
 
         Args:
@@ -299,7 +308,7 @@ class Engine:
 
         # Yield must be hidden in closure so that the futures are submitted
         # before the first iterator value is required.
-        def _result_iterator() -> Generator[T, None, None]:
+        def _result_iterator() -> Generator[R, None, None]:
             # reverse to keep finishing order
             tasks.reverse()
             while tasks:
@@ -339,9 +348,9 @@ class Engine:
 
 
 def as_completed(
-    tasks: Sequence[TaskFuture[T]],
+    tasks: Sequence[TaskFuture[R]],
     timeout: float | None = None,
-) -> Generator[TaskFuture[T], None, None]:
+) -> Generator[TaskFuture[R], None, None]:
     """Return an iterator which yields tasks as they complete.
 
     Args:
@@ -376,10 +385,10 @@ def as_completed(
 
 
 def wait(
-    tasks: Sequence[TaskFuture[T]],
+    tasks: Sequence[TaskFuture[R]],
     timeout: float | None = None,
     return_when: str = 'ALL_COMPLETED',
-) -> tuple[set[TaskFuture[T]], set[TaskFuture[T]]]:
+) -> tuple[set[TaskFuture[R]], set[TaskFuture[R]]]:
     """Wait for tasks to finish.
 
     Args:

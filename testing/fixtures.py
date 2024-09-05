@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import multiprocessing
 import pathlib
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
@@ -26,8 +27,11 @@ def dask_executor() -> Generator[DaskDistributedExecutor, None, None]:
     client = Client(
         n_workers=4,
         processes=False,
-        dashboard_address=None,
-        worker_dashboard_address=None,
+        # Ideally we would disable the dashboard, but disabling is bugged
+        # so set a random port to prevent issues.
+        # See: https://github.com/dask/distributed/issues/8136
+        dashboard_address=':0',
+        worker_dashboard_address=':0',
     )
     with DaskDistributedExecutor(client) as executor:
         yield executor
@@ -38,8 +42,11 @@ def dask_process_executor() -> Generator[DaskDistributedExecutor, None, None]:
     client = Client(
         n_workers=4,
         processes=True,
-        dashboard_address=None,
-        worker_dashboard_address=None,
+        # Ideally we would disable the dashboard, but disabling is bugged
+        # so set a random port to prevent issues.
+        # See: https://github.com/dask/distributed/issues/8136
+        dashboard_address=':0',
+        worker_dashboard_address=':0',
     )
     with DaskDistributedExecutor(client) as executor:
         yield executor
@@ -47,7 +54,14 @@ def dask_process_executor() -> Generator[DaskDistributedExecutor, None, None]:
 
 @pytest.fixture()
 def process_executor() -> Generator[ProcessPoolExecutor, None, None]:
-    with ProcessPoolExecutor(4) as executor:
+    with ProcessPoolExecutor(
+        max_workers=4,
+        # Spawn is already the default on Windows and MacOS. Fork is
+        # the default on POSIX platforms but will change in 3.14 because
+        # forking a multithreaded process is not safe (and the test suite
+        # is multithreaded because the ThreadPoolExecutor).
+        mp_context=multiprocessing.get_context('spawn'),
+    ) as executor:
         yield executor
 
 

@@ -11,6 +11,7 @@ import uuid
 from taps.apps.configs.synthetic import WorkflowStructure
 from taps.engine import as_completed
 from taps.engine import Engine
+from taps.engine import task
 from taps.engine import TaskFuture
 from taps.engine import wait
 from taps.logging import APP_LOG_LEVEL
@@ -58,6 +59,7 @@ def generate_data(size: int) -> Data:
     return Data(raw)
 
 
+@task(name='noop')
 def noop_task(
     *data: Data,
     output_size: int,
@@ -88,6 +90,7 @@ def noop_task(
     return result
 
 
+@task(name='warmup')
 def warmup_task() -> None:
     """No-op warmup task."""
     pass
@@ -124,9 +127,9 @@ def run_bag_of_tasks(
 
     while submitted_tasks < task_count:
         finished_tasks, _ = wait(running_tasks, return_when='FIRST_COMPLETED')
-        for task in finished_tasks:
-            assert task.exception() is None
-            running_tasks.remove(task)
+        for finished_task in finished_tasks:
+            assert finished_task.exception() is None
+            running_tasks.remove(finished_task)
             completed_tasks += 1
 
         new_tasks = [
@@ -142,7 +145,10 @@ def run_bag_of_tasks(
         running_tasks.extend(new_tasks)
         submitted_tasks += len(new_tasks)
 
-        if completed_tasks % max_running_tasks == 0:
+        # Depending on how many tasks wait() returns, this may
+        # not run. We could log *every* time wait() returns (i.e., every
+        # loop), but this can result in a lot of log statements.
+        if completed_tasks % max_running_tasks == 0:  # pragma: no cover
             rate = completed_tasks / (time.monotonic() - start)
             logger.log(
                 APP_LOG_LEVEL,

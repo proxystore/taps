@@ -9,6 +9,7 @@ from taps.engine import as_completed
 from taps.engine import Engine
 from taps.engine import TaskFuture
 from taps.engine import wait
+from taps.engine.task import task
 from taps.engine.task import TaskInfo
 from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
@@ -18,6 +19,10 @@ from taps.filter import NullFilter
 from taps.transformer import NullTransformer
 from taps.transformer import PickleFileTransformer
 from testing.record import SimpleRecordLogger
+
+
+def my_sum(values: list[int], *, start: int = 0) -> int:
+    return sum(values, start=start)
 
 
 def test_task_future_exception() -> None:
@@ -39,11 +44,22 @@ def test_task_future_exception() -> None:
     assert task.exception() == exception
 
 
-def test_engine_submit(engine: Engine) -> None:
-    task = engine.submit(sum, [1, 2, 3], start=-6)
-    assert isinstance(task, TaskFuture)
-    assert task.result() == 0
-    assert not task.cancel()
+def test_engine_submit_function(engine: Engine) -> None:
+    future = engine.submit(my_sum, [1, 2, 3], start=-6)
+    assert len(engine._registered_tasks) == 1
+    assert isinstance(future, TaskFuture)
+    assert future.result() == 0
+    assert not future.cancel()
+    assert engine.tasks_executed == 1
+
+
+def test_engine_submit_task(engine: Engine) -> None:
+    my_task = task(my_sum)
+    future = engine.submit(my_task, [1, 2, 3], start=-6)
+    assert len(engine._registered_tasks) == 0
+    assert isinstance(future, TaskFuture)
+    assert future.result() == 0
+    assert not future.cancel()
     assert engine.tasks_executed == 1
 
 
