@@ -14,6 +14,8 @@ from typing import Iterable
 from typing import Iterator
 from typing import TypeVar
 
+from taps.future import FutureProtocol
+
 if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
     from typing import ParamSpec
 else:  # pragma: <3.10 cover
@@ -61,18 +63,22 @@ class _Task(Generic[P, T]):
         self.args = args
         self.kwargs = kwargs
         self.client_future = client_future
-        self.task_future: Future[T] | None = None
-        self.pending_futures: set[Future[Any]] = set()
+        self.task_future: FutureProtocol[T] | None = None
+        self.pending_futures: set[FutureProtocol[Any]] = set()
 
         for arg in [*args, *kwargs.values()]:
-            if isinstance(arg, Future) and not arg.done():
-                arg.add_done_callback(self._pending_future_callback)
+            if isinstance(arg, FutureProtocol):
                 self.pending_futures.add(arg)
 
-        if len(self.pending_futures) == 0:
+        # The callbacks added here mutate self.pending_futures so
+        # we can't iterate on it directly.
+        for future in tuple(self.pending_futures):
+            future.add_done_callback(self._pending_future_callback)
+
+        if len(self.pending_futures) == 0 and self.task_future is None:
             self._submit()
 
-    def _pending_future_callback(self, future: Future[Any]) -> None:
+    def _pending_future_callback(self, future: FutureProtocol[Any]) -> None:
         assert future.done()
         assert len(self.pending_futures) > 0
         if future in self.pending_futures:
@@ -87,7 +93,7 @@ class _Task(Generic[P, T]):
         elif len(self.pending_futures) == 0:
             self._submit()
 
-    def _task_future_callback(self, future: Future[T]) -> None:
+    def _task_future_callback(self, future: FutureProtocol[T]) -> None:
         assert future.done()
         if future.cancelled():
             self.client_future.cancel()
@@ -97,18 +103,20 @@ class _Task(Generic[P, T]):
             self.client_future.set_result(future.result())
 
     def _submit(self) -> None:
+        # _submit should only ever be called once. If this assertion
+        # fails, it was called more than once.
         assert self.task_future is None
 
-        if not self.client_future.set_running_or_notify_cancel():
+        if self.client_future.cancelled():
             # client_future was cancelled so don't submit the task.
             return
 
         args = tuple(
-            arg.result() if isinstance(arg, Future) else arg
+            arg.result() if isinstance(arg, FutureProtocol) else arg
             for arg in self.args
         )
         kwargs = {
-            key: value.result() if isinstance(value, Future) else value
+            key: value.result() if isinstance(value, FutureProtocol) else value
             for key, value in self.kwargs.items()
         }
 

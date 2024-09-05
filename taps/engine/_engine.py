@@ -34,7 +34,6 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
-from taps.engine.future import FutureProtocol
 from taps.engine.task import ExceptionInfo
 from taps.engine.task import Task
 from taps.engine.task import task
@@ -43,6 +42,7 @@ from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
 from taps.filter import Filter
 from taps.filter import NullFilter
+from taps.future import FutureProtocol
 from taps.record import NullRecordLogger
 from taps.record import RecordLogger
 from taps.transformer import NullTransformer
