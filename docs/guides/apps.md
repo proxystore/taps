@@ -3,7 +3,7 @@
 Benchmarking applications are real or synthetic workloads that can be used to evaluate task execution and data management frameworks.
 TaPS provides a framework for the creation and execution of these applications.
 
-In TaPS, an application is composed of tasks which are the remote execution of function which takes in some data and produces data.
+In TaPS, an application is composed of tasks that are the remote execution of a function which takes in some data and produces data.
 Tasks can have implicit dependencies when the result of one task is consumed by one or more other tasks.
 
 TaPS provides many benchmarking apps out-of-the-box, representing a wide variety of domains, patterns, and charatersitics.
@@ -47,11 +47,13 @@ import logging
 import pathlib
 
 from taps.engine import Engine
+from taps.engine import task
 from taps.logging import APP_LOG_LEVEL
 
 logger = logging.getLogger(__name__)
 
 
+@task()
 def print_message(message: str) -> None:
     """Print a message."""
     logger.log(APP_LOG_LEVEL, message)
@@ -85,7 +87,7 @@ class FoobarApp:
             task.result()  # Wait on task to finish
 ```
 
-1. Applications in TaPS are composed on tasks which are just Python functions.
+1. Applications in TaPS are composed of tasks which are just Python functions decorated with [`@task()`][taps.engine.task.task].
    Here, our task is the `print_message` function.
 2. The `FoobarApp` implements the [`App`][taps.apps.App] protocol.
 3. The `close()` method can be used to close any stateful connection objects created in `__init__` or perform any clean up if needed.
@@ -95,11 +97,17 @@ class FoobarApp:
 
 The [`Engine`][taps.engine.Engine] is the key abstraction of the TaPS framework.
 The CLI arguments provided by the user for the compute engine, data management, and task logging logic are used to create an [`Engine`][taps.engine.Engine] instance which is then provided to the application.
-[`Engine.submit()`][taps.engine.Engine.submit] is the primary method that application will use to execute tasks asynchronously.
-This method returns a [`TaskFuture`][taps.engine.TaskFuture] object with a [`result()`][taps.engine.TaskFuture.result] which will wait on the task to finish and return the result.
+[`Engine.submit()`][taps.engine.Engine.submit] is the primary method through which an application can execute tasks asynchronously.
+This method returns a [`TaskFuture`][taps.engine.TaskFuture] object which, when [`TaskFuture.result()`][taps.engine.TaskFuture.result] is called, will wait on the task to finish and return the result.
 Alternatively, [`Engine.map()`][taps.engine.Engine.map] can be used to map a task onto a sequence of inputs, compute the tasks in parallel, and gather the results.
 Importantly, a [`TaskFuture`][taps.engine.TaskFuture] can also be passed as input to another tasks.
 Doing so indicates to the [`Engine`][taps.engine.Engine] that there is a dependency between those two tasks.
+
+!!! warning
+
+    The [`@task()`][taps.engine.task.task] decorator is not strictly necessary.
+    The [`Engine`][taps.engine.Engine] will accept any Python function for execution and will wrap it with [`@task()`][taps.engine.task.task] if needed.
+    However, it is highly recommended to use [`@task()`][taps.engine.task.task] for better compatibility with certain executors.
 
 ### The `AppConfig`
 
@@ -183,6 +191,12 @@ This requires having installed TaPS with the `docs` option (e.g., `pip install .
 mkdocs build --strict
 ```
 You will be able to inspect that your page is visible in the "Apps" section of the docs and is formatted correctly.
+
+!!! danger
+
+    If you plan to open a pull request to officially add your application to TaPS and the application is based on existing code, ensure you are following the license of the original work.
+    This may require including the original license in a couple places, such as in the code files or in the repository.
+
 
 ## Running the Application
 
