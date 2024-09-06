@@ -73,3 +73,7 @@ def init_logging(
         handlers=handlers,
         **kwargs,
     )
+
+    # This needs to be after the configuration of the root logger because
+    # warnings get logged to a 'py.warnings' logger.
+    logging.captureWarnings(True)
