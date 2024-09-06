@@ -80,7 +80,8 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
     config.write_toml(CONFIG_FILENAME)
     logger.debug(f'Wrote config to {CONFIG_FILENAME}')
 
-    with update_environment(config.run.env_vars):
+    env_vars = config.run.env_vars if config.run.env_vars is not None else {}
+    with update_environment(env_vars):
         with Timer() as app_init_timer:
             app = config.app.get_app()
         logger.log(

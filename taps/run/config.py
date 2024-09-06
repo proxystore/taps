@@ -59,8 +59,8 @@ class RunConfig(BaseModel):
             '"{executor}" for formatting).'
         ),
     )
-    env_vars: Dict[str, str] = Field(  # noqa: UP006
-        default_factory=dict,
+    env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP007
+        None,
         description='Environment variables to set during benchmarking.',
     )
 

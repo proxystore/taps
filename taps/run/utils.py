@@ -187,8 +187,8 @@ def update_environment(
     os.environ.update(variables)
     if len(variables) > 0:
         logger.debug(
-            f'Updated {len(variables)} environment variable(s) '
-            f'({", ".join(variables.keys())})',
+            f'Updated {len(variables)} environment variable(s): '
+            f'{", ".join(variables.keys())}',
         )
 
     try:
@@ -200,6 +200,6 @@ def update_environment(
         os.environ.update(previous)
         if len(previous) > 0:
             logger.debug(
-                f'Restored {len(previous)} environment variable(s) '
-                f'({",".join(previous.keys())})',
+                f'Restored {len(previous)} environment variable(s): '
+                f'{",".join(previous.keys())}',
             )
