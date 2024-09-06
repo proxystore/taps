@@ -51,6 +51,7 @@ def test_engine_submit_function(engine: Engine) -> None:
     assert len(engine._registered_tasks) == 1
     assert isinstance(future, TaskFuture)
     assert future.result() == 0
+    assert future.done()
     assert not future.cancel()
     assert engine.tasks_executed == 1
 
@@ -61,6 +62,7 @@ def test_engine_submit_task(engine: Engine) -> None:
     assert len(engine._registered_tasks) == 0
     assert isinstance(future, TaskFuture)
     assert future.result() == 0
+    assert future.done()
     assert not future.cancel()
     assert engine.tasks_executed == 1
 
