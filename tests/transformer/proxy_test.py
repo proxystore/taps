@@ -10,6 +10,7 @@ from proxystore.store import get_store
 from proxystore.store import Store
 from proxystore.store import unregister_store
 from proxystore.store.config import ConnectorConfig
+from pydantic import ValidationError
 
 from taps.transformer import ProxyTransformer
 from taps.transformer import ProxyTransformerConfig
@@ -26,14 +27,40 @@ def test_file_config(tmp_path: pathlib.Path) -> None:
     transformer.close()
 
 
-@pytest.mark.parametrize('extract', (True, False))
-def test_proxy_transformer(extract: bool) -> None:
+def test_config_validation_error(tmp_path: pathlib.Path) -> None:
+    with pytest.raises(
+        ValidationError,
+        match='Options async_resolve and extract_target cannot be enabled',
+    ):
+        ProxyTransformerConfig(
+            connector=ConnectorConfig(
+                kind='file',
+                options={'store_dir': str(tmp_path)},
+            ),
+            async_resolve=True,
+            extract_target=True,
+        )
+
+
+@pytest.mark.parametrize(
+    ('extract', 'async_'),
+    (
+        (False, False),
+        (True, False),
+        (False, True),
+    ),
+)
+def test_proxy_transformer(extract: bool, async_: bool) -> None:
     with Store(
         'test-proxy-transformer',
         LocalConnector(),
         register=True,
     ) as store:
-        transformer = ProxyTransformer(store, extract_target=extract)
+        transformer = ProxyTransformer(
+            store,
+            async_resolve=async_,
+            extract_target=extract,
+        )
         assert isinstance(repr(transformer), str)
 
         obj = [1, 2, 3]
@@ -44,6 +71,23 @@ def test_proxy_transformer(extract: bool) -> None:
         assert resolved == obj
 
         transformer.close()
+
+
+def test_proxy_transformer_value_error() -> None:
+    with Store(
+        'test-proxy-transformer-value-error',
+        LocalConnector(),
+        register=True,
+    ) as store:
+        with pytest.raises(
+            ValueError,
+            match='Options async_resolve and extract_target cannot be enabled',
+        ):
+            ProxyTransformer(
+                store,
+                async_resolve=True,
+                extract_target=True,
+            )
 
 
 def test_proxy_transformer_pickling() -> None:
