@@ -45,9 +45,9 @@ class SyntheticConfig(AppConfig, use_enum_values=True):
         None,
         description='Max running tasks in bag workflow.',
     )
-    warmup_task: bool = Field(
-        True,
-        description='Submit a warmup task before running the workflow.',
+    warmup_tasks: int = Field(
+        0,
+        description='Number of warmup tasks before running the workflow.',
     )
 
     @field_validator('structure', mode='before')
@@ -81,5 +81,5 @@ class SyntheticConfig(AppConfig, use_enum_values=True):
             task_data_bytes=self.task_data_bytes,
             task_sleep=self.task_sleep,
             bag_max_running=self.bag_max_running,
-            warmup_task=self.warmup_task,
+            warmup_tasks=self.warmup_tasks,
         )

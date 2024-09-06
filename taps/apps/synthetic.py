@@ -296,6 +296,8 @@ class SyntheticApp:
         task_sleep: Seconds to sleep for in each task.
         bag_max_running: Maximum concurrently executing tasks in the "bag"
             workflow.
+        warmup_tasks: Number of warmup tasks to submit before running the
+            workflow.
     """
 
     def __init__(
@@ -306,14 +308,14 @@ class SyntheticApp:
         task_sleep: float,
         bag_max_running: int | None,
         *,
-        warmup_task: bool = True,
+        warmup_tasks: int = 0,
     ) -> None:
         self.structure = structure
         self.task_count = task_count
         self.task_data_bytes = task_data_bytes
         self.task_sleep = task_sleep
         self.bag_max_running = bag_max_running
-        self.warmup_task = warmup_task
+        self.warmup_tasks = warmup_tasks
 
     def close(self) -> None:
         """Close the application."""
@@ -326,10 +328,19 @@ class SyntheticApp:
             engine: Application execution engine.
             run_dir: Run directory.
         """
-        if self.warmup_task:
-            logger.log(APP_LOG_LEVEL, 'Submitting warmup task')
-            engine.submit(warmup_task).result()
-            logger.log(APP_LOG_LEVEL, 'Warmup task completed')
+        if self.warmup_tasks > 0:
+            logger.log(
+                APP_LOG_LEVEL,
+                f'Submitting {self.warmup_tasks} warmup task(s)',
+            )
+            tasks = [
+                engine.submit(warmup_task) for _ in range(self.warmup_tasks)
+            ]
+            for task in as_completed(tasks):
+                task.result()
+            logger.log(APP_LOG_LEVEL, 'Warmup task(s) completed')
+        else:
+            logger.log(APP_LOG_LEVEL, 'Skipping warmup tasks')
 
         logger.log(APP_LOG_LEVEL, f'Starting {self.structure.value} workflow')
         if self.structure == WorkflowStructure.BAG:
