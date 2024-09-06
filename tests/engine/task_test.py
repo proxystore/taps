@@ -21,8 +21,6 @@ from taps.engine.task import Task
 from taps.engine.task import task
 from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
-from taps.filter import NullFilter
-from taps.transformer import NullTransformer
 
 P = ParamSpec('P')
 R = TypeVar('R')
@@ -36,8 +34,7 @@ def test_call_task() -> None:
     my_task = task(my_sum)
     assert isinstance(my_task, Task)
 
-    transformer = TaskTransformer(NullTransformer(), NullFilter())
-    result = my_task([1, 2, 3], start=-6, _transformer=transformer)
+    result = my_task([1, 2, 3], start=-6, _transformer=TaskTransformer())
 
     assert isinstance(result, TaskResult)
     assert result.value == 0
@@ -92,8 +89,7 @@ def test_task_return_type_overloading() -> None:
     assert_type(direct_result, int)
     assert isinstance(direct_result, int)
 
-    transformer = TaskTransformer(NullTransformer(), NullFilter())
-    task_result = my_task([1, 2, 3], start=-6, _transformer=transformer)
+    task_result = my_task([1, 2, 3], start=-6, _transformer=TaskTransformer())
     assert_type(task_result, TaskResult[int])
     assert isinstance(task_result, TaskResult)
 

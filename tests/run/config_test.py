@@ -77,8 +77,8 @@ def test_write_toml_config_includes_defaults(tmp_path: pathlib.Path) -> None:
     # should be included in the written config file.
     engine_dict = config_dict['engine']
     assert 'executor' in engine_dict
-    assert 'filter' in engine_dict
-    assert 'transformer' in engine_dict
+    assert 'filter' not in engine_dict
+    assert 'transformer' not in engine_dict
 
 
 def test_make_run_dir(tmp_path: pathlib.Path) -> None:

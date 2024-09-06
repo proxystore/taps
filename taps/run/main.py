@@ -5,10 +5,10 @@ import functools
 import logging
 import pathlib
 import sys
-import time
 from typing import Callable
 from typing import Sequence
 
+from proxystore.utils.timer import Timer
 from pydantic import ValidationError
 
 import taps
@@ -25,6 +25,8 @@ from taps.run.utils import update_environment
 
 logger = logging.getLogger('taps.run')
 
+CONFIG_FILENAME = 'config.toml'
+
 
 def _cwd_run_dir(
     func: Callable[[Config, pathlib.Path], None],
@@ -32,6 +34,7 @@ def _cwd_run_dir(
     @functools.wraps(func)
     def _decorator(config: Config, run_dir: pathlib.Path) -> None:
         with change_cwd(run_dir):
+            logger.debug(f'Changed working directory to {run_dir}')
             return func(config, run_dir)
 
     return _decorator
@@ -67,26 +70,48 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
         config: Benchmark configuration.
         run_dir: Run directory to use.
     """
-    start = time.perf_counter()
+    timer = Timer()
+    timer.start()
 
-    logger.log(RUN_LOG_LEVEL, f'Starting app (name={config.app.name})')
+    logger.log(RUN_LOG_LEVEL, 'Starting benchmark...')
     _log_config(config)
     logger.log(RUN_LOG_LEVEL, f'Runtime directory: {run_dir}')
 
-    config.write_toml('config.toml')
+    config.write_toml(CONFIG_FILENAME)
+    logger.debug(f'Wrote config to {CONFIG_FILENAME}')
 
     with update_environment(config.run.env_vars):
-        app = config.app.get_app()
-        engine = config.engine.get_engine()
+        with Timer() as app_init_timer:
+            app = config.app.get_app()
+        logger.log(
+            RUN_LOG_LEVEL,
+            f'Initialized app (name={config.app.name}, '
+            f'type={type(app).__name__}, '
+            f'elapsed={app_init_timer.elapsed_s:.3f}s)',
+        )
+
+        with Timer() as engine_init_timer:
+            engine = config.engine.get_engine()
+        logger.log(
+            RUN_LOG_LEVEL,
+            f'Initialized engine (elapsed={engine_init_timer.elapsed_s:.3f}s)',
+        )
+        logger.debug(repr(engine))
 
         with contextlib.closing(app), engine:
-            app.run(engine=engine, run_dir=run_dir)
+            logger.log(RUN_LOG_LEVEL, 'Running app...')
+            with Timer() as app_timer:
+                app.run(engine=engine, run_dir=run_dir)
+            logger.log(
+                RUN_LOG_LEVEL,
+                f'Finished app (elapsed={app_timer.elapsed_s:.3f}s)',
+            )
 
-    runtime = time.perf_counter() - start
+    timer.stop()
     logger.log(
         RUN_LOG_LEVEL,
-        f'Finished app (name={config.app.name}, '
-        f'runtime={runtime:.2f}s, tasks={engine.tasks_executed})',
+        f'Finished benchmark (app={config.app.name}, '
+        f'elapsed={timer.elapsed_s:.3f}s, tasks={engine.tasks_executed})',
     )
 
 

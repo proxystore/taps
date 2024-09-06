@@ -185,10 +185,12 @@ def update_environment(
         name: value for name, value in os.environ.items() if name in variables
     }
     os.environ.update(variables)
-    logger.debug(
-        f'Updated {len(variables)} environment variable(s) '
-        f'({", ".join(variables.keys())})',
-    )
+    if len(variables) > 0:
+        logger.debug(
+            f'Updated {len(variables)} environment variable(s) '
+            f'({", ".join(variables.keys())})',
+        )
+
     try:
         yield
     finally:

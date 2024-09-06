@@ -13,6 +13,7 @@ def test_config() -> None:
 
 def test_pickle_file_transformer(tmp_path: pathlib.Path) -> None:
     transformer = PickleFileTransformer(tmp_path)
+    assert isinstance(repr(transformer), str)
 
     obj = [1, 2, 3]
     identifier = transformer.transform(obj)

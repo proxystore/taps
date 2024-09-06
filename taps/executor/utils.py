@@ -15,6 +15,7 @@ from typing import Iterator
 from typing import TypeVar
 
 from taps.future import FutureProtocol
+from taps.logging import get_repr
 
 if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
     from typing import ParamSpec
@@ -152,6 +153,9 @@ class FutureDependencyExecutor(Executor):
         exc_traceback: TracebackType | None,
     ) -> bool | None:
         return self.executor.__exit__(exc_type, exc_value, exc_traceback)
+
+    def __repr__(self) -> str:
+        return f'{type(self).__name__}(executor={get_repr(self.executor)})'
 
     def _task_future_callback(self, future: Future[Any]) -> None:
         self._tasks.pop(future)

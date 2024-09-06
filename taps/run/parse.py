@@ -68,6 +68,14 @@ def _add_argument_group(
     return parser.add_argument_group(**kwargs)
 
 
+def _parse_args(
+    parser: argparse.ArgumentParser,
+    args: Sequence[str],
+    namespace: argparse.Namespace,
+) -> argparse.Namespace:
+    return parser.parse_args(args, namespace)
+
+
 def parse_args_to_config(argv: Sequence[str]) -> Config:
     """Construct an argument parser and parse string arguments to a config.
 
@@ -109,16 +117,20 @@ This behavior applies to all plugin types.
     app_group.add_argument(
         '--app',
         choices=list(get_app_configs().keys()),
+        default=argparse.SUPPRESS,
         dest='app.name',
         metavar='APP',
-        help='App choice {%(choices)s}.',
+        help='App choice {%(choices)s}. (required)',
     )
 
-    engine_group = parser.add_argument_group('engine options')
+    engine_group = parser.add_argument_group(
+        'engine options',
+        description='Engine configuration.',
+    )
     engine_group.add_argument(
         '--engine.executor',
         '--executor',
-        choices=list(get_executor_configs().keys()),
+        choices=sorted(get_executor_configs().keys()),
         default=argparse.SUPPRESS,
         dest='engine.executor.name',
         metavar='EXECUTOR',
@@ -127,26 +139,28 @@ This behavior applies to all plugin types.
     engine_group.add_argument(
         '--engine.filter',
         '--filter',
-        choices=list(get_filter_configs().keys()),
+        choices=sorted([*get_filter_configs().keys(), 'none']),
         default=argparse.SUPPRESS,
         dest='engine.filter.name',
         metavar='FILTER',
-        help='Filter choice {%(choices)s}. (default: all)',
+        help='Filter choice {%(choices)s}. (default: none)',
     )
     engine_group.add_argument(
         '--engine.transformer',
         '--transformer',
-        choices=list(get_transformer_configs().keys()),
+        choices=sorted([*get_transformer_configs().keys(), 'none']),
         default=argparse.SUPPRESS,
         dest='engine.transformer.name',
         metavar='TRANSFORMER',
-        help='Transformer choice {%(choices)s}. (default: null)',
+        help='Transformer choice {%(choices)s}. (default: none)',
     )
 
     if len(argv) == 0 or argv[0] in ['-h', '--help']:
         # Shortcut to print help output if no args or just -h/--help
         # are provided.
         parser.parse_args(['--help'])  # pragma: no cover
+
+    argv = list(argv)
 
     # Strip --help from argv so we can quickly parse the base options
     # to figure out which config types we will need to use. --help
@@ -169,7 +183,9 @@ This behavior applies to all plugin types.
             'file with --config {PATH}.',
         )
 
-    app_group.description = f'selected app: {base_options["app.name"]}'
+    app_group.description = (
+        f'App configuration (selected: {base_options["app.name"]}).'
+    )
 
     settings_cls = _make_config_cls(base_options)
     base_namespace = argparse.Namespace(**base_options)
@@ -180,14 +196,14 @@ This behavior applies to all plugin types.
         # cli_parse_args is annotated as:
         #   "bool | list[str] | tuple[str, ...] | None"
         # which is suitable for argv with is Sequence[str].
-        cli_parse_args=argv,  # type: ignore[arg-type]
+        cli_parse_args=argv,
         cli_parse_none_str='none',
         cli_use_class_docs_for_groups=False,
         root_parser=parser,
         add_argument_method=_add_argument,
         add_argument_group_method=_add_argument_group,
         parse_args_method=functools.partial(
-            argparse.ArgumentParser.parse_args,
+            _parse_args,
             namespace=base_namespace,
         ),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

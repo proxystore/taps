@@ -16,9 +16,8 @@ The same occurs in reverse for a task's result.
 
 ## Transformer Types
 
-As of writing, TaPS provides three transformer types.
-
-The [`NullTransformer`][taps.transformer.NullTransformer] is the default and does not perform any transformation.
+As of writing, TaPS provides two transformer types.
+By default, no transformer is configured.
 
 ### File Transformation
 
@@ -110,12 +109,13 @@ In order to ensure that the registration is performed, the `FooTransformerConfig
 
 ## Filter Types
 
-As mentioned above, a [`Filter`][taps.filter.Filter] determine what objects (i.e., task arguments and/or results) get passed to the transformer.
-The default filter, [`AllFilter`][taps.filter.AllFilter], lets all objects through.
+As mentioned above, a [`Filter`][taps.filter.Filter] determines what objects (i.e., task arguments and/or results) get passed to the transformer.
+TaPS, by default, does not configure a [`Filter`][taps.filter.Filter].
+This means that **all objects will be transformed** when a transformer is provided.
 
 Other [`Filter`][taps.filter.Filter] types are provided to give fine-grained control over what objects get transformed.
 
-* [`NullFilter`][taps.filter.NullFilter] (`#!toml name = "null"`): no objects are transformed.
+* [`NeverFilter`][taps.filter.NeverFilter] (`#!toml name = "never"`): never transform objects even if a transformer is specified.
 * [`ObjectSizeFilter`][taps.filter.ObjectSizeFilter] (`#!toml name = "object-size"`): checks if the size of an object (computed using [`sys.getsizeof()`][sys.getsizeof]) is greater than a minimum size and less than a maximum size.
 * [`PickleSizeFilter`][taps.filter.PickleSizeFilter] (`#!toml name = "pickle-size"`): checks if the size of an object (computed using the size of the pickled object) is greater than a minimum size and less than a maximum size.
 * [`ObjectTypeFilter`][taps.filter.ObjectTypeFilter] (`#!toml name = "object-type"`): checks if the object is of a certain type.

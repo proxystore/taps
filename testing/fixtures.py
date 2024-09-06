@@ -14,11 +14,9 @@ from taps.engine import EngineConfig
 from taps.executor import DaskDistributedExecutor
 from taps.executor import FutureDependencyExecutor
 from taps.executor import ThreadPoolConfig
-from taps.filter import NullFilterConfig
 from taps.run.config import Config
 from taps.run.config import LoggingConfig
 from taps.run.config import RunConfig
-from taps.transformer import NullTransformerConfig
 from testing.app import MockAppConfig
 
 
@@ -86,8 +84,6 @@ def test_benchmark_config(tmp_path: pathlib.Path) -> Config:
         app=MockAppConfig(tasks=3),
         engine=EngineConfig(
             executor=ThreadPoolConfig(max_threads=4),
-            filter=NullFilterConfig(),
-            transformer=NullTransformerConfig(),
             task_record_file_name=None,
         ),
         logging=LoggingConfig(file_name=None),

@@ -80,9 +80,19 @@ class RayExecutor(Executor):
         if RAY_IMPORT_ERROR is not None:  # pragma: no cover
             raise RAY_IMPORT_ERROR
 
+        self._address = address
+        self._num_cpus = num_cpus
+
         ray.init(address=address, configure_logging=False, num_cpus=num_cpus)
         # Mapping of Python callables to Ray RemoteFunction types
         self._remote: dict[Any, Any] = {}
+
+    def __repr__(self) -> str:
+        address = f"'{self._address}'" if self._address is not None else None
+        return (
+            f'{type(self).__name__}'
+            f'(address={address}, num_cpus={self._num_cpus})'
+        )
 
     def submit(
         self,

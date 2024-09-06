@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import sys
 import time
 import uuid
@@ -41,12 +42,14 @@ from taps.engine.task import TaskInfo
 from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
 from taps.filter import Filter
-from taps.filter import NullFilter
 from taps.future import FutureProtocol
+from taps.logging import get_repr
+from taps.logging import TRACE_LOG_LEVEL
 from taps.record import NullRecordLogger
 from taps.record import RecordLogger
-from taps.transformer import NullTransformer
 from taps.transformer import Transformer
+
+logger = logging.getLogger('taps.engine')
 
 P = ParamSpec('P')
 R = TypeVar('R')
@@ -146,8 +149,8 @@ class Engine:
     ) -> None:
         self.executor = executor
         self.transformer: TaskTransformer[Any] = TaskTransformer(
-            NullTransformer() if transformer is None else transformer,
-            NullFilter() if filter_ is None else filter_,
+            transformer,
+            filter_,
         )
         self.record_logger = (
             record_logger if record_logger is not None else NullRecordLogger()
@@ -173,6 +176,15 @@ class Engine:
         exc_traceback: TracebackType | None,
     ) -> None:
         self.shutdown()
+
+    def __repr__(self) -> str:
+        return (
+            f'Engine(executor={get_repr(self.executor)}, '
+            f'transformer={get_repr(self.transformer)}, '
+            f'record_logger={get_repr(self.record_logger)}, '
+            f'running_tasks={len(self._running_tasks)}, '
+            f'tasks_executed={self.tasks_executed})'
+        )
 
     @property
     def tasks_executed(self) -> int:
@@ -244,7 +256,7 @@ class Engine:
         ]
         info = TaskInfo(
             task_id=str(task_id),
-            function_name=task.name,
+            name=task.name,
             parent_task_ids=parents,
             submit_time=time.time(),
         )
@@ -266,6 +278,11 @@ class Engine:
             *args,
             **kwargs,
             _transformer=self.transformer,
+        )
+        logger.log(
+            TRACE_LOG_LEVEL,
+            f'Submitted task to executor (id={task_id}, name={info.name}, '
+            f'parents=[{", ".join(info.parent_task_ids)}])',
         )
 
         self._total_tasks += 1
@@ -345,6 +362,7 @@ class Engine:
             self.executor.shutdown(wait=wait)
         self.transformer.close()
         self.record_logger.close()
+        logger.debug('Engine shutdown')
 
 
 def as_completed(

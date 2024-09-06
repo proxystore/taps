@@ -68,6 +68,9 @@ class JSONRecordLogger:
     ) -> None:
         self.close()
 
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(filepath='{self._filepath.name}')"
+
     def log(self, record: Record) -> None:
         """Log a record."""
         self._handle.write(json.dumps(record) + '\n')
@@ -90,6 +93,9 @@ class NullRecordLogger:
         exc_traceback: TracebackType | None,
     ) -> None:
         self.close()
+
+    def __repr__(self) -> str:
+        return type(self).__name__
 
     def log(self, record: Record) -> None:
         """Log a record."""

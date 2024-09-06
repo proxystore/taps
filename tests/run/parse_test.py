@@ -5,7 +5,9 @@ import pathlib
 import pytest
 
 from taps.executor.python import ThreadPoolConfig
+from taps.filter import NeverFilterConfig
 from taps.run.parse import parse_args_to_config
+from taps.transformer import PickleFileTransformerConfig
 from testing.app import MockAppConfig
 
 
@@ -48,6 +50,27 @@ def test_parse_cli_args_only() -> None:
 
     assert isinstance(config.app, MockAppConfig)
     assert isinstance(config.engine.executor, ThreadPoolConfig)
+    assert config.engine.filter is None
+    assert config.engine.transformer is None
+
+    argv = [
+        '--app',
+        'mock-app',
+        '--engine.executor',
+        'thread-pool',
+        '--engine.filter',
+        'never',
+        '--engine.transformer',
+        'file',
+        '--engine.transformer.file-dir',
+        '/tmp/taps-test-parse-cli-args-only',
+    ]
+    config = parse_args_to_config(argv)
+
+    assert isinstance(config.app, MockAppConfig)
+    assert isinstance(config.engine.executor, ThreadPoolConfig)
+    assert isinstance(config.engine.filter, NeverFilterConfig)
+    assert isinstance(config.engine.transformer, PickleFileTransformerConfig)
 
 
 def test_parse_config_file_only(tmp_path: pathlib.Path) -> None:

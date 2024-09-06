@@ -10,10 +10,8 @@ from pydantic import Field
 from taps.engine._engine import Engine
 from taps.executor import ExecutorConfig
 from taps.executor import ProcessPoolConfig
-from taps.filter import AllFilterConfig
 from taps.filter import FilterConfig
 from taps.record import JSONRecordLogger
-from taps.transformer import NullTransformerConfig
 from taps.transformer import TransformerConfig
 
 
@@ -24,13 +22,13 @@ class EngineConfig(BaseModel):
         default_factory=ProcessPoolConfig,
         description='Executor configuration.',
     )
-    filter: FilterConfig = Field(
-        default_factory=AllFilterConfig,
+    filter: Optional[FilterConfig] = Field(  # noqa: UP007
+        default=None,
         description='Filter configuration.',
     )
-    transformer: TransformerConfig = Field(
-        default_factory=NullTransformerConfig,
-        description='Transformer configuration',
+    transformer: Optional[TransformerConfig] = Field(  # noqa: UP007
+        default=None,
+        description='Transformer configuration.',
     )
     task_record_file_name: Optional[str] = Field(  # noqa: UP007
         'tasks.jsonl',
@@ -67,7 +65,13 @@ class EngineConfig(BaseModel):
 
         return Engine(
             executor=self.executor.get_executor(),
-            filter_=self.filter.get_filter(),
-            transformer=self.transformer.get_transformer(),
+            filter_=(
+                self.filter.get_filter() if self.filter is not None else None
+            ),
+            transformer=(
+                self.transformer.get_transformer()
+                if self.transformer is not None
+                else None
+            ),
             record_logger=record_logger,
         )

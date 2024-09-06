@@ -14,6 +14,7 @@ from taps.executor.ray import RayConfig
 def test_ray_executor() -> None:
     config = RayConfig(address='local', num_cpus=2)
     executor = config.get_executor()
+    assert isinstance(repr(executor), str)
 
     with executor:
         future = executor.submit(sum, [1, 2], start=-3)

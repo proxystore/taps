@@ -70,6 +70,9 @@ class PickleFileTransformer:
     ) -> None:
         self.cache_dir = pathlib.Path(cache_dir).resolve()
 
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(cache_dir='{self.cache_dir}')"
+
     def close(self) -> None:
         """Close the transformer."""
         shutil.rmtree(self.cache_dir, ignore_errors=True)

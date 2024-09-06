@@ -35,11 +35,9 @@ engine:
     scheduler: None
     use_threads: False
     workers: 4
-  filter:
-    name: 'null'
+  filter: None
   task_record_file_name: 'tasks.jsonl'
-  transformer:
-    name: 'null'
+  transformer: None
 logging:
   file_level: 'INFO'
   file_name: 'log.txt'

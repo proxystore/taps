@@ -25,6 +25,8 @@ def local_client() -> Client:
 
 def test_submit_function(local_client: Client) -> None:
     with DaskDistributedExecutor(local_client) as executor:
+        assert isinstance(repr(executor), str)
+
         future = executor.submit(round, 1.75, ndigits=1)
         expected = 1.8
         assert future.result() == expected
@@ -35,6 +37,8 @@ def test_map_function(local_client: Client) -> None:
         return x + y
 
     with DaskDistributedExecutor(local_client) as executor:
+        assert isinstance(repr(executor), str)
+
         results = executor.map(_sum, (1, 2, 3), (4, 5, 6))
         assert tuple(results) == (5, 7, 9)
 

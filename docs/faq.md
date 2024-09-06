@@ -23,3 +23,13 @@ This can cause relative paths configured in the application to break.
 The [`AppConfig`][taps.apps.AppConfig] class will resolve all [`pathlib.Path`][pathlib.Path] types to absolute paths before changing working directories to avoid incorrect filepaths, and applications should be careful to create all filepaths relative to the `run_dir` value provided to [`App.run()`][taps.apps.App.run].
 
 If you encounter a similar issue in an existing TaPS application, please [open a GitHub issue](https://github.com/proxystore/taps/issues){target=_bank}.
+
+## Debugging
+
+### How to enable debug logging?
+
+The TaPS CLI defaults to logging `INFO` messages and above to `stdout` and log files.
+These can be controlled independently with `--logging.level <LEVEL>` and `--logging.file-level <LEVEL>` (the log file level defaults to the `stdout` level if unspecified).
+Setting the logging level to `DEBUG` or `TRACE` can be helpful for debugging.
+Note that this will also set the logging level for third-party libraries which can result in *a lot* of log messages.
+Within TaPS, `TRACE` will enable per-task logging so it may be helpful to set `--logging.level INFO --logging.file-level TRACE` to avoid clobbering the terminal output.
