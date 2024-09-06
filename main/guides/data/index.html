@@ -2837,8 +2837,8 @@ For example, every argument in the tuple of positional arguments which passes th
 Each task is encapsulated with a wrapper which will <code>resolve()</code> any arguments that were replaced with identifiers when the task begins executing.
 The same occurs in reverse for a task's result.</p>
 <h2 id="transformer-types">Transformer Types<a class="headerlink" href="#transformer-types" title="Permanent link">&para;</a></h2>
-<p>As of writing, TaPS provides three transformer types.</p>
-<p>The <a class="autorefs autorefs-internal" href="../../api/transformer/#taps.transformer.NullTransformer"><code>NullTransformer</code></a> is the default and does not perform any transformation.</p>
+<p>As of writing, TaPS provides two transformer types.
+By default, no transformer is configured.</p>
 <h3 id="file-transformation">File Transformation<a class="headerlink" href="#file-transformation" title="Permanent link">&para;</a></h3>
 <p>The <a class="autorefs autorefs-internal" href="../../api/transformer/#taps.transformer.PickleFileTransformer"><code>PickleFileTransformer</code></a> pickles and writes objects to files in a specified directory.
 The object identifiers are essentially the filepath of the pickle file.
@@ -2933,11 +2933,12 @@ See <a href="https://docs.proxystore.dev/latest/installation/#extras-options" ta
 </span></code></pre></div></td></tr></table></div>
 In order to ensure that the registration is performed, the <code>FooTransformerConfig</code> must be imported inside of <code>taps/transformer/__init__.py</code> and included in <code>__all__</code>.</p>
 <h2 id="filter-types">Filter Types<a class="headerlink" href="#filter-types" title="Permanent link">&para;</a></h2>
-<p>As mentioned above, a <a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.Filter"><code>Filter</code></a> determine what objects (i.e., task arguments and/or results) get passed to the transformer.
-The default filter, <a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.AllFilter"><code>AllFilter</code></a>, lets all objects through.</p>
+<p>As mentioned above, a <a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.Filter"><code>Filter</code></a> determines what objects (i.e., task arguments and/or results) get passed to the transformer.
+TaPS, by default, does not configure a <a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.Filter"><code>Filter</code></a>.
+This means that <strong>all objects will be transformed</strong> when a transformer is provided.</p>
 <p>Other <a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.Filter"><code>Filter</code></a> types are provided to give fine-grained control over what objects get transformed.</p>
 <ul>
-<li><a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.NullFilter"><code>NullFilter</code></a> (<code class="language-toml highlight"><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;null&quot;</span></code>): no objects are transformed.</li>
+<li><a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.NeverFilter"><code>NeverFilter</code></a> (<code class="language-toml highlight"><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;never&quot;</span></code>): never transform objects even if a transformer is specified.</li>
 <li><a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.ObjectSizeFilter"><code>ObjectSizeFilter</code></a> (<code class="language-toml highlight"><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;object-size&quot;</span></code>): checks if the size of an object (computed using <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/sys.html#sys.getsizeof"><code>sys.getsizeof()</code></a>) is greater than a minimum size and less than a maximum size.</li>
 <li><a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.PickleSizeFilter"><code>PickleSizeFilter</code></a> (<code class="language-toml highlight"><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pickle-size&quot;</span></code>): checks if the size of an object (computed using the size of the pickled object) is greater than a minimum size and less than a maximum size.</li>
 <li><a class="autorefs autorefs-internal" href="../../api/filter/#taps.filter.ObjectTypeFilter"><code>ObjectTypeFilter</code></a> (<code class="language-toml highlight"><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;object-type&quot;</span></code>): checks if the object is of a certain type.</li>

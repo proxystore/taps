@@ -571,6 +571,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-enable-debug-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to enable debug logging?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2753,6 +2777,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-enable-debug-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to enable debug logging?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2787,6 +2835,13 @@ Before starting the application, TaPS will change the current working directory 
 This can cause relative paths configured in the application to break.</p>
 <p>The <a class="autorefs autorefs-internal" href="../api/apps/#taps.apps.AppConfig"><code>AppConfig</code></a> class will resolve all <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path"><code>pathlib.Path</code></a> types to absolute paths before changing working directories to avoid incorrect filepaths, and applications should be careful to create all filepaths relative to the <code>run_dir</code> value provided to <a class="autorefs autorefs-internal" href="../api/apps/#taps.apps.App.run"><code>App.run()</code></a>.</p>
 <p>If you encounter a similar issue in an existing TaPS application, please <a href="https://github.com/proxystore/taps/issues" target="_bank">open a GitHub issue</a>.</p>
+<h2 id="debugging">Debugging<a class="headerlink" href="#debugging" title="Permanent link">&para;</a></h2>
+<h3 id="how-to-enable-debug-logging">How to enable debug logging?<a class="headerlink" href="#how-to-enable-debug-logging" title="Permanent link">&para;</a></h3>
+<p>The TaPS CLI defaults to logging <code>INFO</code> messages and above to <code>stdout</code> and log files.
+These can be controlled independently with <code>--logging.level &lt;LEVEL&gt;</code> and <code>--logging.file-level &lt;LEVEL&gt;</code> (the log file level defaults to the <code>stdout</code> level if unspecified).
+Setting the logging level to <code>DEBUG</code> or <code>TRACE</code> can be helpful for debugging.
+Note that this will also set the logging level for third-party libraries which can result in <em>a lot</em> of log messages.
+Within TaPS, <code>TRACE</code> will enable per-task logging so it may be helpful to set <code>--logging.level INFO --logging.file-level TRACE</code> to avoid clobbering the terminal output.</p>
 
 
 
