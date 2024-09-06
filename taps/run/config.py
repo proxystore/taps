@@ -87,7 +87,7 @@ class Config(BaseSettings):
     )
     version: str = Field(
         taps.__version__,
-        description='TaPS version (do not alter)',
+        description='TaPS version (do not alter).',
     )
 
     def __eq__(self, other: Any) -> bool:
