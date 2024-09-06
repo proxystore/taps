@@ -128,7 +128,9 @@ def run_bag_of_tasks(
     while submitted_tasks < task_count:
         finished_tasks, _ = wait(running_tasks, return_when='FIRST_COMPLETED')
         for finished_task in finished_tasks:
-            assert finished_task.exception() is None
+            exception = finished_task.exception()
+            if isinstance(exception, Exception):  # pragma: no cover
+                raise exception
             running_tasks.remove(finished_task)
             completed_tasks += 1
 
@@ -272,7 +274,6 @@ def run_sequential(
         )
 
     for i, task in enumerate(as_completed(tasks)):
-        assert task.done()
         logger.log(
             APP_LOG_LEVEL,
             f'Received task {i+1}/{task_count} (task_id: {task.info.task_id})',
