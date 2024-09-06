@@ -77,7 +77,7 @@ class TransformerConfig(BaseModel, abc.ABC):
     name: str = Field(description='Transformer name.')
 
     model_config: ConfigDict = ConfigDict(  # type: ignore[misc]
-        extra='ignore',
+        extra='forbid',
         validate_default=True,
         validate_return=True,
     )
