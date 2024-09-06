@@ -37,9 +37,9 @@ class LoggingConfig(BaseModel):
         'INFO',
         description='Minimum logging level for stdout.',
     )
-    file_level: Union[int, str] = Field(  # noqa: UP007
-        'INFO',
-        description='Minimum logging level for the log file.',
+    file_level: Optional[Union[int, str]] = Field(  # noqa: UP007
+        None,
+        description='Override logging level for the log file.',
     )
     file_name: Optional[str] = Field(  # noqa: UP007
         'log.txt',

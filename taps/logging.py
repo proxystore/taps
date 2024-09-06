@@ -14,7 +14,7 @@ APP_LOG_LEVEL = 21
 def init_logging(
     logfile: pathlib.Path | None = None,
     level: int | str = logging.INFO,
-    logfile_level: int | str = logging.INFO,
+    logfile_level: int | str | None = None,
     force: bool = False,
 ) -> None:
     """Initialize logging with custom formats.
@@ -37,7 +37,8 @@ def init_logging(
     Args:
         logfile: Optional filepath to write log to.
         level: Minimum logging level.
-        logfile_level: Minimum logging level for the logfile.
+        logfile_level: Minimum logging level for the logfile. If `None`,
+            defaults to the value of `level`.
         force: Remove any existing handlers attached to the root
             handler. This option is useful to silencing the third-party
             package logging. Note: should not be set when running inside
@@ -48,6 +49,8 @@ def init_logging(
 
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setLevel(level)
+
+    logfile_level = logfile_level if logfile_level is not None else level
 
     handlers: list[logging.Handler] = [stdout_handler]
     if logfile is not None:
