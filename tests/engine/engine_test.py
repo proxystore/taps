@@ -15,8 +15,6 @@ from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
 from taps.executor import DaskDistributedExecutor
 from taps.executor import FutureDependencyExecutor
-from taps.filter import NullFilter
-from taps.transformer import NullTransformer
 from taps.transformer import PickleFileTransformer
 from testing.record import SimpleRecordLogger
 
@@ -36,7 +34,7 @@ def test_task_future_exception() -> None:
             parent_task_ids=[],
             submit_time=0,
         ),
-        TaskTransformer(NullTransformer(), NullFilter()),
+        TaskTransformer(),
     )
 
     exception = RuntimeError()
@@ -186,7 +184,7 @@ def test_wait() -> None:
             parent_task_ids=[],
             submit_time=0,
         ),
-        TaskTransformer(NullTransformer(), NullFilter()),
+        TaskTransformer(),
     )
     slow_task = TaskFuture(
         slow_future,
@@ -196,7 +194,7 @@ def test_wait() -> None:
             parent_task_ids=[],
             submit_time=0,
         ),
-        TaskTransformer(NullTransformer(), NullFilter()),
+        TaskTransformer(),
     )
 
     timeout = 0.001

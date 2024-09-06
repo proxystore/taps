@@ -10,39 +10,13 @@ from taps.filter._protocol import FilterConfig
 from taps.plugins import register
 
 
-class AllFilter:
-    """Filter that lets all objects pass through.
+class NeverFilter:
+    """Filter that never lets objects pass through.
 
     ```python
-    from taps.filter import AllFilter
+    from taps.filter import NeverFilter
 
-    filter_ = AllFilter()
-    assert filter_('value')  # always true
-    ```
-    """
-
-    def __call__(self, obj: Any) -> bool:
-        return True
-
-
-@register('filter')
-class AllFilterConfig(FilterConfig):
-    """[`AllFilter`][taps.filter.AllFilter] plugin configuration."""
-
-    name: Literal['all'] = Field('all', description='Filter name.')
-
-    def get_filter(self) -> Filter:
-        """Create a filter from the configuration."""
-        return AllFilter()
-
-
-class NullFilter:
-    """Filter that lets no objects pass through.
-
-    ```python
-    from taps.filter import NullFilter
-
-    filter_ = NullFilter()
+    filter_ = NeverFilter()
     assert not filter_('value')  # always false
     ```
     """
@@ -52,11 +26,11 @@ class NullFilter:
 
 
 @register('filter')
-class NullFilterConfig(FilterConfig):
-    """[`NullFilter`][taps.filter.NullFilter] plugin configuration."""
+class NeverFilterConfig(FilterConfig):
+    """[`NeverFilter`][taps.filter.NeverFilter] plugin configuration."""
 
-    name: Literal['null'] = Field('null', description='Filter name.')
+    name: Literal['never'] = Field('never', description='Filter name.')
 
     def get_filter(self) -> Filter:
         """Create a filter from the configuration."""
-        return NullFilter()
+        return NeverFilter()

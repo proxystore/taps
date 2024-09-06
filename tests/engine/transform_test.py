@@ -5,7 +5,6 @@ from typing import Any
 from typing import TypeVar
 
 from taps.engine.transform import TaskTransformer
-from taps.filter import AllFilter
 from taps.filter import ObjectTypeFilter
 
 T = TypeVar('T')
@@ -31,73 +30,75 @@ class DictTransformer:
 
 
 def test_task_data_transfomer() -> None:
-    transformer = TaskTransformer(DictTransformer(), AllFilter())
-    assert isinstance(repr(transformer), str)
+    with TaskTransformer(DictTransformer()) as transformer:
+        assert isinstance(repr(transformer), str)
 
-    obj = object()
-    identifier = transformer.transform(obj)
-    assert obj != identifier
-    assert transformer.resolve(identifier) == obj
+        obj = object()
+        identifier = transformer.transform(obj)
+        assert obj != identifier
+        assert transformer.resolve(identifier) == obj
 
-    transformer.close()
+
+def test_task_data_transfomer_defaults() -> None:
+    with TaskTransformer() as transformer:
+        assert isinstance(repr(transformer), str)
+
+        obj = object()
+        identifier = transformer.transform(obj)
+        assert obj is identifier
+        assert transformer.resolve(identifier) is obj
 
 
 def test_task_data_transfomer_iterable() -> None:
-    transformer = TaskTransformer(DictTransformer(), AllFilter())
-
-    objs = (object(), object())
-    identifiers = transformer.transform_iterable(objs)
-    assert objs != identifiers
-    assert transformer.resolve_iterable(identifiers) == objs
-
-    transformer.close()
+    with TaskTransformer(DictTransformer()) as transformer:
+        objs = (object(), object())
+        identifiers = transformer.transform_iterable(objs)
+        assert objs != identifiers
+        assert transformer.resolve_iterable(identifiers) == objs
 
 
 def test_task_data_transfomer_mapping() -> None:
-    transformer = TaskTransformer(DictTransformer(), AllFilter())
-
-    objs = {'a': object(), 'b': object()}
-    identifiers = transformer.transform_mapping(objs)
-    assert objs != identifiers
-    assert objs.keys() == identifiers.keys()
-    assert transformer.resolve_mapping(identifiers) == objs
-
-    transformer.close()
+    with TaskTransformer(DictTransformer()) as transformer:
+        objs = {'a': object(), 'b': object()}
+        identifiers = transformer.transform_mapping(objs)
+        assert objs != identifiers
+        assert objs.keys() == identifiers.keys()
+        assert transformer.resolve_mapping(identifiers) == objs
 
 
 def test_task_data_transfomer_filter() -> None:
-    transformer = TaskTransformer(DictTransformer(), ObjectTypeFilter(str))
+    with TaskTransformer(
+        DictTransformer(),
+        ObjectTypeFilter(str),
+    ) as transformer:
+        obj = object()
+        identifier = transformer.transform(obj)
+        assert identifier is obj
 
-    obj = object()
-    identifier = transformer.transform(obj)
-    assert identifier is obj
-
-    obj = 'object'
-    identifier = transformer.transform(obj)
-    assert identifier is not obj
-    assert transformer.resolve(identifier) == obj
-
-    transformer.close()
+        obj = 'object'
+        identifier = transformer.transform(obj)
+        assert identifier is not obj
+        assert transformer.resolve(identifier) == obj
 
 
 def test_task_data_transfomer_iterable_filter() -> None:
-    transformer = TaskTransformer(DictTransformer(), ObjectTypeFilter(str))
-
-    objs = (object(), 'object')
-    identifiers = transformer.transform_iterable(objs)
-    assert objs != identifiers
-    assert transformer.resolve_iterable(identifiers) == objs
-
-    transformer.close()
+    with TaskTransformer(
+        DictTransformer(),
+        ObjectTypeFilter(str),
+    ) as transformer:
+        objs = (object(), 'object')
+        identifiers = transformer.transform_iterable(objs)
+        assert objs != identifiers
+        assert transformer.resolve_iterable(identifiers) == objs
 
 
 def test_task_data_transfomer_mapping_filter() -> None:
-    transformer = TaskTransformer(DictTransformer(), ObjectTypeFilter(str))
-
-    objs = {'a': object(), 'b': 'object'}
-    identifiers = transformer.transform_mapping(objs)
-    assert objs != identifiers
-    assert objs.keys() == identifiers.keys()
-    assert transformer.resolve_mapping(identifiers) == objs
-
-    transformer.close()
+    with TaskTransformer(
+        DictTransformer(),
+        ObjectTypeFilter(str),
+    ) as transformer:
+        objs = {'a': object(), 'b': 'object'}
+        identifiers = transformer.transform_mapping(objs)
+        assert objs != identifiers
+        assert objs.keys() == identifiers.keys()
+        assert transformer.resolve_mapping(identifiers) == objs

@@ -61,12 +61,6 @@ task_record_file_name = "tasks.jsonl"
 name = "process-pool"
 max_processes = 10
 
-[engine.filter]
-name = "null"
-
-[engine.transformer]
-name = "null"
-
 [run]
 dir_format = "runs/{name}_{executor}_{timestamp}"
 

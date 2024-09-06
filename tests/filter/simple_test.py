@@ -1,26 +1,14 @@
 from __future__ import annotations
 
-from taps.filter import AllFilter
-from taps.filter import AllFilterConfig
-from taps.filter import NullFilter
-from taps.filter import NullFilterConfig
+from taps.filter import NeverFilter
+from taps.filter import NeverFilterConfig
 
 
-def test_all_filter() -> None:
-    filter_ = AllFilter()
-    assert filter_(object())
-
-
-def test_all_filter_config() -> None:
-    config = AllFilterConfig()
-    assert isinstance(config.get_filter(), AllFilter)
-
-
-def test_null_filter() -> None:
-    filter_ = NullFilter()
+def test_never_filter() -> None:
+    filter_ = NeverFilter()
     assert not filter_(object())
 
 
-def test_null_filter_config() -> None:
-    config = NullFilterConfig()
-    assert isinstance(config.get_filter(), NullFilter)
+def test_never_filter_config() -> None:
+    config = NeverFilterConfig()
+    assert isinstance(config.get_filter(), NeverFilter)

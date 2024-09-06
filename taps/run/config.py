@@ -23,11 +23,13 @@ from pydantic_settings import SettingsConfigDict
 import taps
 from taps.apps import AppConfig
 from taps.engine import EngineConfig
+from taps.filter import FilterConfig
 from taps.plugins import get_app_configs
 from taps.plugins import get_executor_configs
 from taps.plugins import get_filter_configs
 from taps.plugins import get_transformer_configs
 from taps.run.utils import flatten_mapping
+from taps.transformer import TransformerConfig
 
 
 class LoggingConfig(BaseModel):
@@ -142,28 +144,44 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
     app_name = options.get('app.name')
     assert isinstance(app_name, str)
     app_cls = get_app_configs()[app_name]
-    app_field = Field(description=f'selected app: {app_name}')
+    app_field = Field(description=f'App configuration (selected: {app_name}).')
 
     executor_name = options.get('engine.executor.name', 'process-pool')
     executor_cls = get_executor_configs()[executor_name]
     executor_field = Field(
         default_factory=executor_cls,
-        description=f'selected executor: {executor_name}',
+        description=f'Executor configuration (selected: {executor_name}).',
     )
 
-    filter_name = options.get('engine.filter.name', 'all')
-    filter_cls = get_filter_configs()[filter_name]
-    filter_field = Field(
-        default_factory=filter_cls,
-        description=f'selected filter: {filter_name}',
-    )
+    filter_name = options.get('engine.filter.name')
+    if filter_name is not None:
+        filter_cls = get_filter_configs()[filter_name]
+        filter_field = Field(
+            default_factory=filter_cls,
+            description=f'Filter configuration (selected: {filter_name}).',
+        )
+    else:
+        filter_cls = Optional[FilterConfig]  # type: ignore[assignment]
+        filter_field = Field(
+            None,
+            description='Filter configuration (selected: none).',
+        )
 
-    transformer_name = options.get('engine.transformer.name', 'null')
-    transformer_cls = get_transformer_configs()[transformer_name]
-    transformer_field = Field(
-        default_factory=transformer_cls,
-        description=f'selected transformer: {transformer_name}',
-    )
+    transformer_name = options.get('engine.transformer.name')
+    if transformer_name is not None:
+        transformer_cls = get_transformer_configs()[transformer_name]
+        transformer_field = Field(
+            default_factory=transformer_cls,
+            description=(
+                f'Transformer configuration (selected: {transformer_name}).'
+            ),
+        )
+    else:
+        transformer_cls = Optional[TransformerConfig]  # type: ignore[assignment]
+        transformer_field = Field(
+            None,
+            description='Transformer configuration (selected: none).',
+        )
 
     engine_cls = create_model(
         'EngineConfig',

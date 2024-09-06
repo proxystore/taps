@@ -1,11 +1,22 @@
 from __future__ import annotations
 
 import logging
+import sys
+from types import TracebackType
 from typing import Any
 from typing import Generic
 from typing import Iterable
 from typing import Mapping
-from typing import TypeVar
+
+if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
+    from typing import Self
+else:  # pragma: <3.11 cover
+    from typing_extensions import Self
+
+if sys.version_info >= (3, 13):  # pragma: >=3.13 cover
+    from typing import TypeVar
+else:  # pragma: <3.11 cover
+    from typing_extensions import TypeVar
 
 from taps.filter import Filter
 from taps.future import is_future
@@ -17,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 K = TypeVar('K')
 T = TypeVar('T')
-IdentifierT = TypeVar('IdentifierT')
+IdentifierT = TypeVar('IdentifierT', default=None)
 
 
 class TaskTransformer(Generic[IdentifierT]):
@@ -29,18 +40,31 @@ class TaskTransformer(Generic[IdentifierT]):
     the positional arguments, keyword arguments, and results of tasks.
 
     Args:
-        transformer: Object transformer.
+        transformer: Object transformer. If `None`, no objects will be
+            transformed.
         filter_: A filter which when called on an object returns `True` if
-            the object should be transformed.
+            the object should be transformed. If `None`, all objects will
+            be transformed.
     """
 
     def __init__(
         self,
-        transformer: Transformer[IdentifierT],
-        filter_: Filter,
+        transformer: Transformer[IdentifierT] | None = None,
+        filter_: Filter | None = None,
     ) -> None:
         self.transformer = transformer
         self.filter_ = filter_
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        exc_traceback: TracebackType | None,
+    ) -> None:
+        self.close()
 
     def __repr__(self) -> str:
         return (
@@ -50,7 +74,8 @@ class TaskTransformer(Generic[IdentifierT]):
 
     def close(self) -> None:
         """Close the transformer."""
-        self.transformer.close()
+        if self.transformer is not None:
+            self.transformer.close()
 
     def transform(self, obj: T) -> T | IdentifierT:
         """Transform an object.
@@ -58,7 +83,8 @@ class TaskTransformer(Generic[IdentifierT]):
         Transforms `obj` into an identifier if it passes the filter check.
         The identifier can later be used to resolve the object.
         """
-        if self.filter_(obj) and not is_future(obj):
+        filtered = self.filter_ is None or self.filter_(obj)
+        if filtered and self.transformer is not None and not is_future(obj):
             identifier = self.transformer.transform(obj)
             logger.log(
                 TRACE_LOG_LEVEL,
@@ -86,7 +112,9 @@ class TaskTransformer(Generic[IdentifierT]):
         Resolves the object if it is an identifier, otherwise returns the
         passed object.
         """
-        if self.transformer.is_identifier(obj):
+        if self.transformer is not None and self.transformer.is_identifier(
+            obj,
+        ):
             result = self.transformer.resolve(obj)
             logger.log(
                 TRACE_LOG_LEVEL,

@@ -42,13 +42,11 @@ from taps.engine.task import TaskInfo
 from taps.engine.task import TaskResult
 from taps.engine.transform import TaskTransformer
 from taps.filter import Filter
-from taps.filter import NullFilter
 from taps.future import FutureProtocol
 from taps.logging import get_repr
 from taps.logging import TRACE_LOG_LEVEL
 from taps.record import NullRecordLogger
 from taps.record import RecordLogger
-from taps.transformer import NullTransformer
 from taps.transformer import Transformer
 
 logger = logging.getLogger('taps.engine')
@@ -151,8 +149,8 @@ class Engine:
     ) -> None:
         self.executor = executor
         self.transformer: TaskTransformer[Any] = TaskTransformer(
-            NullTransformer() if transformer is None else transformer,
-            NullFilter() if filter_ is None else filter_,
+            transformer,
+            filter_,
         )
         self.record_logger = (
             record_logger if record_logger is not None else NullRecordLogger()
