@@ -34,6 +34,7 @@ def test_proxy_transformer(extract: bool) -> None:
         register=True,
     ) as store:
         transformer = ProxyTransformer(store, extract_target=extract)
+        assert isinstance(repr(transformer), str)
 
         obj = [1, 2, 3]
         identifier = transformer.transform(obj)

@@ -23,6 +23,7 @@ from dask.distributed import Future as DaskFuture
 from pydantic import Field
 
 from taps.executor import ExecutorConfig
+from taps.logging import get_repr
 from taps.plugins import register
 
 logger = logging.getLogger(__name__)
@@ -63,6 +64,9 @@ class DaskDistributedExecutor(Executor):
                 timeout=wait_for_workers_timeout,
             )
             logger.debug('Dask workers connected')
+
+    def __repr__(self) -> str:
+        return f'{type(self).__name__}(client={get_repr(self.client)})'
 
     def submit(
         self,

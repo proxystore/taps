@@ -116,7 +116,12 @@ class TaskInfo(BaseModel):
     task_id: str = Field(
         description='Unique UUID of the task as determined by the engine.',
     )
-    function_name: str = Field(description='Name of the task function.')
+    name: str = Field(
+        description=(
+            'Name of the task. Typically defaults to the name of the '
+            'function unless overridden.'
+        ),
+    )
     parent_task_ids: List[str] = Field(  # noqa: UP006
         description=(
             'UUIDs of parent tasks. A task is a child task if its arguments '

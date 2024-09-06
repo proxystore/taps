@@ -32,7 +32,7 @@ def test_task_future_exception() -> None:
         future,
         TaskInfo(
             task_id='test',
-            function_name='test',
+            name='test',
             parent_task_ids=[],
             submit_time=0,
         ),
@@ -42,6 +42,10 @@ def test_task_future_exception() -> None:
     exception = RuntimeError()
     future.set_exception(exception)
     assert task.exception() == exception
+
+
+def test_engine_repr(engine: Engine) -> None:
+    assert isinstance(repr(engine), str)
 
 
 def test_engine_submit_function(engine: Engine) -> None:
@@ -178,7 +182,7 @@ def test_wait() -> None:
         fast_future,
         TaskInfo(
             task_id='fast-id',
-            function_name='fast',
+            name='fast',
             parent_task_ids=[],
             submit_time=0,
         ),
@@ -188,7 +192,7 @@ def test_wait() -> None:
         slow_future,
         TaskInfo(
             task_id='slow-id',
-            function_name='slow',
+            name='slow',
             parent_task_ids=[],
             submit_time=0,
         ),

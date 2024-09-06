@@ -76,6 +76,12 @@ class ProxyTransformer:
         self.store = store
         self.extract_target = extract_target
 
+    def __repr__(self) -> str:
+        ctype = type(self).__name__
+        store = f'store={self.store}'
+        extract = f'extract_target={self.extract_target}'
+        return f'{ctype}({store}, {extract})'
+
     def __getstate__(self) -> dict[str, Any]:
         return {
             'config': self.store.config(),

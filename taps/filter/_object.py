@@ -57,6 +57,12 @@ class ObjectSizeFilter:
         size = sys.getsizeof(obj)
         return self.min_bytes <= size <= self.max_bytes
 
+    def __repr__(self) -> str:
+        ctype = type(self).__name__
+        min_bytes = f'min_bytes={self.min_bytes}'
+        max_bytes = f'max_bytes={self.max_bytes}'
+        return f'{ctype}({min_bytes}, {max_bytes})'
+
 
 @register('filter')
 class ObjectSizeFilterConfig(FilterConfig):
@@ -121,6 +127,20 @@ class ObjectTypeFilter:
 
         return False
 
+    def __repr__(self) -> str:
+        ctype = type(self).__name__
+        types = (
+            None
+            if len(self.types) == 0
+            else f'[{", ".join(t.__name__ for t in self.types)}]'
+        )
+        patterns = (
+            None
+            if self.patterns is None or len(self.patterns) == 0
+            else f'[{", ".join(self.patterns)}]'
+        )
+        return f'{ctype}(types={types}, patterns={patterns})'
+
 
 @register('filter')
 class ObjectTypeFilterConfig(FilterConfig):
@@ -180,6 +200,12 @@ class PickleSizeFilter:
     def __call__(self, obj: Any) -> bool:
         size = len(pickle.dumps(obj))
         return self.min_bytes <= size <= self.max_bytes
+
+    def __repr__(self) -> str:
+        ctype = type(self).__name__
+        min_bytes = f'min_bytes={self.min_bytes}'
+        max_bytes = f'max_bytes={self.max_bytes}'
+        return f'{ctype}({min_bytes}, {max_bytes})'
 
 
 @register('filter')

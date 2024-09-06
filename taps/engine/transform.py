@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import Any
 from typing import Generic
 from typing import Iterable
@@ -8,7 +9,11 @@ from typing import TypeVar
 
 from taps.filter import Filter
 from taps.future import is_future
+from taps.logging import get_repr
+from taps.logging import TRACE_LOG_LEVEL
 from taps.transformer import Transformer
+
+logger = logging.getLogger(__name__)
 
 K = TypeVar('K')
 T = TypeVar('T')
@@ -37,6 +42,12 @@ class TaskTransformer(Generic[IdentifierT]):
         self.transformer = transformer
         self.filter_ = filter_
 
+    def __repr__(self) -> str:
+        return (
+            f'TaskTransformer(transformer={get_repr(self.transformer)}, '
+            f'filter={get_repr(self.filter_)})'
+        )
+
     def close(self) -> None:
         """Close the transformer."""
         self.transformer.close()
@@ -48,7 +59,13 @@ class TaskTransformer(Generic[IdentifierT]):
         The identifier can later be used to resolve the object.
         """
         if self.filter_(obj) and not is_future(obj):
-            return self.transformer.transform(obj)
+            identifier = self.transformer.transform(obj)
+            logger.log(
+                TRACE_LOG_LEVEL,
+                f'Transformed object (type={type(obj).__name__}) into '
+                f'identifier (type={type(identifier).__name__})',
+            )
+            return identifier
         else:
             return obj
 
@@ -70,7 +87,13 @@ class TaskTransformer(Generic[IdentifierT]):
         passed object.
         """
         if self.transformer.is_identifier(obj):
-            return self.transformer.resolve(obj)
+            result = self.transformer.resolve(obj)
+            logger.log(
+                TRACE_LOG_LEVEL,
+                f'Resolved identifier (type={type(obj).__name__}) into '
+                f'object (type={type(result).__name__})',
+            )
+            return result
         else:
             return obj
 

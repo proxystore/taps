@@ -32,6 +32,7 @@ class DictTransformer:
 
 def test_task_data_transfomer() -> None:
     transformer = TaskTransformer(DictTransformer(), AllFilter())
+    assert isinstance(repr(transformer), str)
 
     obj = object()
     identifier = transformer.transform(obj)

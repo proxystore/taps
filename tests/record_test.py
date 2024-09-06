@@ -13,6 +13,8 @@ def test_json_record_logger(tmp_path: pathlib.Path) -> None:
 
     logfile = tmp_path / 'log.json'
     with JSONRecordLogger(logfile) as logger:
+        assert isinstance(repr(logger), str)
+
         logger.log(dict_a)
         logger.log(dict_b)
 

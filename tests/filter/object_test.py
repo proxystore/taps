@@ -11,6 +11,7 @@ from taps.filter import PickleSizeFilterConfig
 
 def test_object_size_filter() -> None:
     filter_ = ObjectSizeFilter(min_bytes=32, max_bytes=100)
+    assert isinstance(repr(filter_), str)
 
     assert not filter_(object())
     assert filter_('object')
@@ -28,6 +29,7 @@ def test_object_type_filter_config() -> None:
 
 def test_object_type_filter() -> None:
     filter_ = ObjectTypeFilter(str, tuple)
+    assert isinstance(repr(filter_), str)
 
     assert filter_('object')
     assert filter_(())
@@ -65,6 +67,7 @@ def test_object_size_filter_config() -> None:
 
 def test_pickle_size_filter() -> None:
     filter_ = PickleSizeFilter(min_bytes=64, max_bytes=128)
+    assert isinstance(repr(filter_), str)
 
     assert not filter_(object())
     assert filter_(b'x' * 80)
