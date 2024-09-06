@@ -64,7 +64,7 @@ def test_synthetic_app(
             task_data_bytes=100,
             task_sleep=0.001,
             bag_max_running=3,
-            warmup_task=i % 2 == 0,
+            warmup_tasks=i,
         )
 
         with mock.patch(
