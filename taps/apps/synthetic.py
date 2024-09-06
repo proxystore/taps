@@ -134,6 +134,7 @@ def run_bag_of_tasks(
             running_tasks.remove(finished_task)
             completed_tasks += 1
 
+        new_task_count = min(len(finished_tasks), task_count - submitted_tasks)
         new_tasks = [
             engine.submit(
                 noop_task,
@@ -142,7 +143,7 @@ def run_bag_of_tasks(
                 sleep=task_sleep,
                 task_id=uuid.uuid4(),
             )
-            for _ in finished_tasks
+            for _ in range(new_task_count)
         ]
         running_tasks.extend(new_tasks)
         submitted_tasks += len(new_tasks)
