@@ -76,7 +76,6 @@ def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
         app_cache=False,
         retries=1,
         run_dir=str(tmp_path / 'parsl'),
-        max_workers_per_node=4,
         monitoring=MonitoringConfig(
             hub_address='localhost',
             logging_endpoint=f'sqlite:///{tmp_path}/monitoring.db',

@@ -13,7 +13,7 @@ class ExecutorConfig(abc.ABC, BaseModel):
     name: str
 
     model_config: ConfigDict = ConfigDict(  # type: ignore[misc]
-        extra='ignore',
+        extra='forbid',
         validate_default=True,
         validate_return=True,
     )

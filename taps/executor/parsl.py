@@ -90,6 +90,8 @@ class ParslHTExConfig(TapsExecutorConfig):
     [`ParslLocalConfig`][taps.executor.parsl.ParslLocalConfig].
     """
 
+    model_config = ConfigDict(extra='allow')  # type: ignore[misc]
+
     name: Literal['parsl-htex'] = Field(
         'parsl-htex',
         description='Executor name.',
