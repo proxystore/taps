@@ -129,6 +129,10 @@
          <lastmod>2024-09-09</lastmod>
     </url>
     <url>
+         <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/client/</loc>
+         <lastmod>2024-09-09</lastmod>
+    </url>
+    <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/modules/</loc>
          <lastmod>2024-09-09</lastmod>
     </url>
@@ -138,10 +142,6 @@
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/types/</loc>
-         <lastmod>2024-09-09</lastmod>
-    </url>
-    <url>
-         <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/utils/</loc>
          <lastmod>2024-09-09</lastmod>
     </url>
     <url>
