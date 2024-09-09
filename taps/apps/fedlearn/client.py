@@ -1,16 +1,30 @@
 from __future__ import annotations
 
 from collections import OrderedDict
+from typing import Optional
 
 import torch
 from numpy.random import Generator
+from pydantic import BaseModel
+from pydantic import ConfigDict
+from pydantic import Field
 from torch.utils.data import Dataset
 from torch.utils.data import Subset
 
 from taps.apps.fedlearn.modules import create_model
-from taps.apps.fedlearn.types import Client
-from taps.apps.fedlearn.types import ClientID
 from taps.apps.fedlearn.types import DataChoices
+
+
+class Client(BaseModel):
+    """Client class."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    idx: int = Field(description='Client ID.')
+    model: torch.nn.Module = Field(description='Client local model.')
+    data: Optional[Subset] = Field(  # noqa: UP007
+        description='Subset of data this client will train on.',
+    )
 
 
 def create_clients(
@@ -48,12 +62,8 @@ def create_clients(
         client_popularity = rng.dirichlet(alpha)
 
         for data_idx, _ in enumerate(train_data):
-            selected_client: ClientID = rng.choice(
-                client_ids,
-                size=1,
-                p=client_popularity,
-            )[0]
-            client_indices[selected_client].append(data_idx)
+            client_id = rng.choice(client_ids, size=1, p=client_popularity)[0]
+            client_indices[client_id].append(data_idx)
 
         client_subsets = {
             idx: Subset(train_data, client_indices[idx]) for idx in client_ids

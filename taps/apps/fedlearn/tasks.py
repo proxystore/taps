@@ -6,7 +6,7 @@ from torch.nn import functional as F  # noqa: N812
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 
-from taps.apps.fedlearn.types import Client
+from taps.apps.fedlearn.client import Client
 from taps.apps.fedlearn.types import Result
 from taps.engine import task
 

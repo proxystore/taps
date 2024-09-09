@@ -6,6 +6,8 @@ import pathlib
 import numpy
 import torch
 
+from taps.apps.fedlearn.client import create_clients
+from taps.apps.fedlearn.client import unweighted_module_avg
 from taps.apps.fedlearn.modules import create_model
 from taps.apps.fedlearn.modules import load_data
 from taps.apps.fedlearn.tasks import local_train
@@ -13,8 +15,6 @@ from taps.apps.fedlearn.tasks import no_local_train
 from taps.apps.fedlearn.tasks import test_model
 from taps.apps.fedlearn.types import DataChoices
 from taps.apps.fedlearn.types import Result
-from taps.apps.fedlearn.utils import create_clients
-from taps.apps.fedlearn.utils import unweighted_module_avg
 from taps.engine import as_completed
 from taps.engine import Engine
 from taps.engine import TaskFuture
