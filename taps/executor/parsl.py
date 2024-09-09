@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import multiprocessing
+from typing import Dict
 from typing import Literal
 from typing import Optional
 from typing import Tuple
@@ -96,7 +97,9 @@ class ParslHTExConfig(TapsExecutorConfig):
         'parsl-htex',
         description='Executor name.',
     )
-    htex: HTExConfig = Field(description='HTEx configuration.')
+    htex: Union[HTExConfig, Dict[str, HTExConfig]] = Field(  # noqa: UP006,UP007
+        description='HTEx configuration.',
+    )
     app_cache: Optional[bool] = Field(  # noqa: UP007
         None,
         description='Enable app caching.',
@@ -132,8 +135,13 @@ class ParslHTExConfig(TapsExecutorConfig):
         if self.monitoring is not None:
             options['monitoring'] = self.monitoring.get_monitoring()
 
+        executor_configs = (
+            list(self.htex.values())
+            if isinstance(self.htex, dict)
+            else [self.htex]
+        )
         config = Config(
-            executors=[self.htex.get_executor()],
+            executors=[config.get_executor() for config in executor_configs],
             initialize_logging=False,
             **options,
         )
@@ -147,6 +155,10 @@ class HTExConfig(BaseModel):
         Optional attributes will default to Parsl's default values.
 
     Note:
+        When using multiple HTExs at the same time, the `label` attribute
+        must be changed to be unique for each executor.
+
+    Note:
         Extra options passed to this model will be provided as keyword
         arguments to
         [`parsl.executors.HighThroughputExecutor`][parsl.executors.HighThroughputExecutor].
@@ -154,6 +166,7 @@ class HTExConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
+    label: str = Field('taps-htex', description='Executor label.')
     provider: Optional[ProviderConfig] = Field(  # noqa: UP007
         None,
         description='Configuration for the compute resource provider.',
@@ -200,7 +213,7 @@ class HTExConfig(BaseModel):
         ):
             options['address'] = self.address.get_address()
 
-        return HighThroughputExecutor(label='taps-htex', **options)
+        return HighThroughputExecutor(**options)
 
 
 class AddressConfig(BaseModel):
