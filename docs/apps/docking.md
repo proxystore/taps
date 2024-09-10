@@ -66,7 +66,10 @@ For example, the `--app.batch-size` and `--app.num-iterations` parameters contro
     ```
     ImportError: /home/cc/miniconda3/envs/taps-docking/lib/python3.11/lib-dynload/_sqlite3.cpython-311-x86_64-linux-gnu.so: undefined symbol: sqlite3_trace_v2
     ```
-    You may need to install `libsqlite`.
+    This is because Python is linking against an incompatible version of `libsqlite`.
+    You may need to install `libsqlite` yourself and/or set `LD_LIBRARY_PATH` to prefer the right version.
+    If you are following the installation instructions here, we found the following to work.
     ```bash
-    conda install libsqlite
+    conda install libsqlite<3.46.0
     ```
+    See [Issue #151](https://github.com/proxystore/taps/issues/151){target=_blank} for further discussion and debugging tips.
