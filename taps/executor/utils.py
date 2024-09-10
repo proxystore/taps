@@ -3,6 +3,7 @@ from __future__ import annotations
 import functools
 import itertools
 import sys
+import threading
 from concurrent.futures import Executor
 from concurrent.futures import Future
 from types import TracebackType
@@ -65,37 +66,39 @@ class _Task(Generic[P, T]):
         self.kwargs = kwargs
         self.client_future = client_future
         self.task_future: FutureProtocol[T] | None = None
-        self.pending_futures: set[FutureProtocol[Any]] = set()
+        self._pending_futures: set[FutureProtocol[Any]] = set()
+        self._submit_lock = threading.RLock()
 
         for arg in [*args, *kwargs.values()]:
             if isinstance(arg, FutureProtocol):
-                self.pending_futures.add(arg)
+                self._pending_futures.add(arg)
 
         # The callbacks added here mutate self.pending_futures so
         # we can't iterate on it directly.
-        for future in tuple(self.pending_futures):
+        for future in tuple(self._pending_futures):
             future.add_done_callback(self._pending_future_callback)
 
-        if len(self.pending_futures) == 0 and self.task_future is None:
+        if len(self._pending_futures) == 0 and self.task_future is None:
             self._submit()
 
     def _pending_future_callback(self, future: FutureProtocol[Any]) -> None:
-        assert future.done()
-        assert len(self.pending_futures) > 0
-        if future in self.pending_futures:
-            self.pending_futures.remove(future)
+        if future in self._pending_futures:
+            self._pending_futures.remove(future)
         else:  # pragma: no cover
+            # This callback for this future has already been invoked so
+            # do nothing. This shouldn't happen, but we can't assume
+            # every executor will uphold the "callbacks are invoked once"
+            # promise.
             return
 
         if future.cancelled():
             self.client_future.cancel()
         elif future.exception() is not None:
             self.client_future.set_exception(future.exception())
-        elif len(self.pending_futures) == 0:
+        elif len(self._pending_futures) == 0:
             self._submit()
 
     def _task_future_callback(self, future: FutureProtocol[T]) -> None:
-        assert future.done()
         if future.cancelled():
             self.client_future.cancel()
         elif future.exception() is not None:
@@ -104,25 +107,32 @@ class _Task(Generic[P, T]):
             self.client_future.set_result(future.result())
 
     def _submit(self) -> None:
-        # _submit should only ever be called once. If this assertion
-        # fails, it was called more than once.
-        assert self.task_future is None
+        with self._submit_lock:
+            if self.task_future is not None:  # pragma: no cover
+                # Another thread already called _submit().
+                return
 
-        if self.client_future.cancelled():
-            # client_future was cancelled so don't submit the task.
-            return
+            if self.client_future.cancelled():
+                # client_future was cancelled so don't submit the task.
+                return
 
-        args = tuple(
-            arg.result() if isinstance(arg, FutureProtocol) else arg
-            for arg in self.args
-        )
-        kwargs = {
-            key: value.result() if isinstance(value, FutureProtocol) else value
-            for key, value in self.kwargs.items()
-        }
+            args = tuple(
+                arg.result() if isinstance(arg, FutureProtocol) else arg
+                for arg in self.args
+            )
+            kwargs = {
+                key: value.result()
+                if isinstance(value, FutureProtocol)
+                else value
+                for key, value in self.kwargs.items()
+            }
 
-        self.task_future = self.executor.submit(self.function, *args, **kwargs)
-        self.task_future.add_done_callback(self._task_future_callback)
+            self.task_future = self.executor.submit(
+                self.function,
+                *args,
+                **kwargs,
+            )
+            self.task_future.add_done_callback(self._task_future_callback)
 
 
 class FutureDependencyExecutor(Executor):
