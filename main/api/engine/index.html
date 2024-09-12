@@ -3444,7 +3444,7 @@ list will be sent one at a time.</p>
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="taps.engine._engine.R">R</span></code>
+              <code><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<span title="taps.engine._engine.R">R</span>]</code>
           –
           <div class="doc-md-description">
             <p>An iterator equivalent to: <code>map(func, *iterables)</code> but the calls             may be evaluated out-of-order.</p>
@@ -3996,7 +3996,7 @@ there is no limit to the wait time.</p>
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" title="typing.Generator" href="https://docs.python.org/3/library/typing.html#typing.Generator">Generator</a>[<a class="autorefs autorefs-internal" title="taps.engine._engine.TaskFuture" href="#taps.engine.TaskFuture">TaskFuture</a>[<span title="taps.engine._engine.R">R</span>], None, None]</code>
+              <code>None</code>
           –
           <div class="doc-md-description">
             <p>Iterator which yields futures as they complete (finished or cancelled         futures).</p>
@@ -4138,7 +4138,7 @@ wait indefinitely.</p>
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-internal" title="taps.engine._engine.TaskFuture" href="#taps.engine.TaskFuture">TaskFuture</a>[<span title="taps.engine._engine.R">R</span>]]</code>
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-internal" title="taps.engine._engine.TaskFuture" href="#taps.engine.TaskFuture">TaskFuture</a>[<span title="taps.engine._engine.R">R</span>]], <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#set">set</a>[<a class="autorefs autorefs-internal" title="taps.engine._engine.TaskFuture" href="#taps.engine.TaskFuture">TaskFuture</a>[<span title="taps.engine._engine.R">R</span>]]]</code>
           –
           <div class="doc-md-description">
             <p>Tuple containing the set of completed tasks and the set of not         completed tasks.</p>
