@@ -70,6 +70,6 @@ For example, the `--app.batch-size` and `--app.num-iterations` parameters contro
     You may need to install `libsqlite` yourself and/or set `LD_LIBRARY_PATH` to prefer the right version.
     If you are following the installation instructions here, we found the following to work.
     ```bash
-    conda install libsqlite<3.46.0
+    conda install "libsqlite<3.46.0"
     ```
     See [Issue #151](https://github.com/proxystore/taps/issues/151){target=_blank} for further discussion and debugging tips.

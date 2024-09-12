@@ -24,6 +24,16 @@ For example, to use `failures` with the `cholesky` application, install TaPS usi
 pip install -e .[cholesky]
 ```
 
+!!! warning
+
+    The `failures` app is not compatible with `dill==0.3.6` which, as of writing, is the pinned version installed by `globus-compute-sdk`.
+    To use the `failures` app, manually upgrade `dill`:
+    ```bash
+    pip install --upgrade dill==0.3.8
+    ```
+    It is still possible to use Globus Compute with newer `dill` versions but you must ensure the same version of `dill` is installed on all endpoints.
+    See [Issue #155](https://github.com/proxystore/taps/issues/155){target=_blank} for more information.
+
 ## Data
 
 Data requirements depend on the base application that failures are injected into.

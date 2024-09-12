@@ -4,6 +4,7 @@ import pathlib
 from typing import Literal
 
 from pydantic import Field
+from pydantic import field_validator
 
 from taps.apps import App
 from taps.apps import AppConfig
@@ -27,7 +28,7 @@ class DockingConfig(AppConfig):
     tcl_path: pathlib.Path = Field(description='TCL script path.')
     initial_simulations: int = Field(
         8,
-        description='Number of initial simulations.',
+        description='Number of initial simulations (must be at least 4).',
     )
     num_iterations: int = Field(
         3,
@@ -38,6 +39,17 @@ class DockingConfig(AppConfig):
         description='Number of simulations per iteration.',
     )
     seed: int = Field(0, description='Random seed for sampling.')
+
+    @field_validator('initial_simulations')
+    @classmethod
+    def _validate_initial_simulations(cls, value: int) -> int:
+        if value < 4:  # noqa: PLR2004
+            # This is becauser the KNeighborsRegressor used by the app is
+            # configured to use n_neighbors=4 and n_samples >= n_neighbors.
+            raise ValueError(
+                'Number of initial simulations must be at least four.',
+            )
+        return value
 
     def get_app(self) -> App:
         """Create an application instance from the config."""
