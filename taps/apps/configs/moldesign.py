@@ -4,6 +4,7 @@ import pathlib
 from typing import Literal
 
 from pydantic import Field
+from pydantic import field_validator
 
 from taps.apps import App
 from taps.apps import AppConfig
@@ -34,6 +35,17 @@ class MoldesignConfig(AppConfig):
         ),
     )
     seed: int = Field(0, description='Random seed.')
+
+    @field_validator('initial_count')
+    @classmethod
+    def _validate_initial_count(cls, value: int) -> int:
+        if value < 4:  # noqa: PLR2004
+            # This is becauser the KNeighborsRegressor used by the app is
+            # configured to use n_neighbors=4 and n_samples >= n_neighbors.
+            raise ValueError(
+                'Number of initial calculations must be at least four.',
+            )
+        return value
 
     def get_app(self) -> App:
         """Create an application instance from the config."""
