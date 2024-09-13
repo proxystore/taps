@@ -208,14 +208,18 @@ class Engine:
             task_future.info.success = True
             task_future.info.execution = execution_info
         task_future.info.received_time = time.time()
-        self.record_logger.log(task_future.info.model_dump())
+        self.record_logger.log(task_future.info.asdict())
 
     def _get_task(self, function: Callable[P, R]) -> Task[P, R]:
         if isinstance(function, Task):
             return function
 
         if function not in self._registered_tasks:
-            self._registered_tasks[function] = task(function)
+            function_as_task = task(function)
+            logger.debug(
+                f'Created task from function (name={function_as_task.name})',
+            )
+            self._registered_tasks[function] = function_as_task
 
         return cast(Task[P, R], self._registered_tasks[function])
 
