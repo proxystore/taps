@@ -2782,12 +2782,12 @@ For example, to use <code>failures</code> with the <code>cholesky</code> applica
 </span></code></pre></div></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The <code>failures</code> app is not compatible with <code>dill==0.3.6</code> which, as of writing, is the pinned version installed by <code>globus-compute-sdk</code>.
-To use the <code>failures</code> app, manually upgrade <code>dill</code>:
+<p>In older versions of TaPS, the <code>failures</code> app was not compatible with <code>dill==0.3.6</code> which, as of writing, is the pinned version installed by <code>globus-compute-sdk</code>.
+If you encounter serialization issues with Globus Compute/Parsl when using the <code>failures</code> app, manually upgrade <code>dill</code>:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span><span class="nv">dill</span><span class="o">==</span><span class="m">0</span>.3.8
 </span></code></pre></div>
 It is still possible to use Globus Compute with newer <code>dill</code> versions but you must ensure the same version of <code>dill</code> is installed on all endpoints.
-See <a href="https://github.com/proxystore/taps/issues/155" target="_blank">Issue #155</a> for more information.</p>
+See <a href="https://github.com/proxystore/taps/issues/155" target="_blank">Issue #155</a> for more information and <a href="https://github.com/proxystore/taps/pull/163" target="_blank">PR #163</a> which addresses this issue.</p>
 </div>
 <h2 id="data">Data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
 <p>Data requirements depend on the base application that failures are injected into.</p>
