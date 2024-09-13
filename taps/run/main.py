@@ -26,6 +26,7 @@ from taps.run.utils import update_environment
 logger = logging.getLogger('taps.run')
 
 CONFIG_FILENAME = 'config.toml'
+ENV_FILENAME = 'environment.json'
 
 
 def _cwd_run_dir(
@@ -40,7 +41,12 @@ def _cwd_run_dir(
     return _decorator
 
 
-def _log_config(config: Config) -> None:
+def _log_config_and_env(config: Config) -> None:
+    env_info = Environment.collect()
+    logger.log(RUN_LOG_LEVEL, f'Environment:\n{env_info.format()}')
+    env_info.write_json(ENV_FILENAME)
+    logger.debug(f'Wrote environment to {ENV_FILENAME}')
+
     logger.log(
         RUN_LOG_LEVEL,
         f'Configuration:\n{prettify_mapping(config.model_dump())}',
@@ -51,6 +57,9 @@ def _log_config(config: Config) -> None:
             f'the current version of TaPS is {taps.__version__}. '
             'Application behavior can differ across versions',
         )
+
+    config.write_toml(CONFIG_FILENAME)
+    logger.debug(f'Wrote config to {CONFIG_FILENAME}')
 
 
 @_cwd_run_dir
@@ -73,12 +82,9 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
     timer = Timer()
     timer.start()
 
-    logger.log(RUN_LOG_LEVEL, 'Starting benchmark...')
-    _log_config(config)
     logger.log(RUN_LOG_LEVEL, f'Runtime directory: {run_dir}')
-
-    config.write_toml(CONFIG_FILENAME)
-    logger.debug(f'Wrote config to {CONFIG_FILENAME}')
+    _log_config_and_env(config)
+    logger.log(RUN_LOG_LEVEL, 'Starting benchmark...')
 
     env_vars = config.run.env_vars if config.run.env_vars is not None else {}
     with update_environment(env_vars):
@@ -107,6 +113,8 @@ def run(config: Config, run_dir: pathlib.Path) -> None:
                 RUN_LOG_LEVEL,
                 f'Finished app (elapsed={app_timer.elapsed_s:.3f}s)',
             )
+
+    logger.log(RUN_LOG_LEVEL, f'Results saved to {run_dir}')
 
     timer.stop()
     logger.log(
@@ -138,10 +146,6 @@ def main(argv: Sequence[str] | None = None) -> int:  # noqa: D103
     )
 
     logger.log(RUN_LOG_LEVEL, f'CLI Arguments: {" ".join(argv)}')
-    logger.log(
-        RUN_LOG_LEVEL,
-        f'Environment:\n{Environment.collect().format()}',
-    )
 
     try:
         run(config, run_dir)
