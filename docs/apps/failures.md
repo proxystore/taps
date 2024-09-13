@@ -26,13 +26,13 @@ pip install -e .[cholesky]
 
 !!! warning
 
-    The `failures` app is not compatible with `dill==0.3.6` which, as of writing, is the pinned version installed by `globus-compute-sdk`.
-    To use the `failures` app, manually upgrade `dill`:
+    In older versions of TaPS, the `failures` app was not compatible with `dill==0.3.6` which, as of writing, is the pinned version installed by `globus-compute-sdk`.
+    If you encounter serialization issues with Globus Compute/Parsl when using the `failures` app, manually upgrade `dill`:
     ```bash
     pip install --upgrade dill==0.3.8
     ```
     It is still possible to use Globus Compute with newer `dill` versions but you must ensure the same version of `dill` is installed on all endpoints.
-    See [Issue #155](https://github.com/proxystore/taps/issues/155){target=_blank} for more information.
+    See [Issue #155](https://github.com/proxystore/taps/issues/155){target=_blank} for more information and [PR #163](https://github.com/proxystore/taps/pull/163){target=_blank} which addresses this issue.
 
 ## Data
 

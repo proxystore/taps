@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import dataclasses
 import functools
 import socket
 import sys
 import time
+from dataclasses import field
 from typing import Any
 from typing import Callable
 from typing import Generic
@@ -19,24 +21,23 @@ if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
 else:  # pragma: <3.10 cover
     from typing_extensions import ParamSpec
 
-from pydantic import BaseModel
-from pydantic import Field
-
 from taps.engine.transform import TaskTransformer
 
 P = ParamSpec('P')
 R = TypeVar('R')
 
 
-class ExceptionInfo(BaseModel):
+@dataclasses.dataclass(frozen=True)
+class ExceptionInfo:
     """Task exception information."""
 
-    type: str = Field(description='Exception type.')
-    message: str = Field(description='Exception message.')
-    traceback: str = Field(description='Exception traceback.')
+    type: str = field(metadata={'description': 'Exception type.'})
+    message: str = field(metadata={'description': 'Exception message.'})
+    traceback: str = field(metadata={'description': 'Exception traceback.'})
 
 
-class ExecutionInfo(BaseModel):
+@dataclasses.dataclass(frozen=True)
+class ExecutionInfo:
     """Task execution information.
 
     All times are Unix timestamps recorded on the worker process executing
@@ -58,105 +59,142 @@ class ExecutionInfo(BaseModel):
     ```
     """
 
-    hostname: str = Field(
-        description='Name of the host the task was executed on.',
+    hostname: str = field(
+        metadata={'description': 'Name of the host the task was executed on.'},
     )
-    execution_start_time: float = Field(
-        description=(
-            'Unix timestamp indicating the task began execution on a worker.'
-        ),
+    execution_start_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the task began execution on a '
+                'worker.'
+            ),
+        },
     )
-    execution_end_time: float = Field(
-        description=(
-            'Unix timestamp indicating the task finished execution '
-            'on a worker.'
-        ),
+    execution_end_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the task finished execution '
+                'on a worker.'
+            ),
+        },
     )
-    task_start_time: float = Field(
-        description=(
-            'Unix timestamp indicating the start of execution of '
-            'the task function.'
-        ),
+    task_start_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the start of execution of '
+                'the task function.'
+            ),
+        },
     )
-    task_end_time: float = Field(
-        description=(
-            'Unix timestamp indicating the end of execution of '
-            'the task function.'
-        ),
+    task_end_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the end of execution of '
+                'the task function.'
+            ),
+        },
     )
-    input_transform_start_time: float = Field(
-        description=(
-            'Unix timestamp indicating the start of resolving input '
-            'arguments on the worker.'
-        ),
+    input_transform_start_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the start of resolving input '
+                'arguments on the worker.'
+            ),
+        },
     )
-    input_transform_end_time: float = Field(
-        description=(
-            'Unix timestamp indicating the end of resolving input '
-            'arguments on the worker.'
-        ),
+    input_transform_end_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the end of resolving input '
+                'arguments on the worker.'
+            ),
+        },
     )
-    result_transform_start_time: float = Field(
-        description=(
-            'Unix timestamp indicating the start of transforming the '
-            'task function result on the worker.'
-        ),
+    result_transform_start_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the start of transforming the '
+                'task function result on the worker.'
+            ),
+        },
     )
-    result_transform_end_time: float = Field(
-        description=(
-            'Unix timestamp indicating the end of transforming the '
-            'task function result on the worker.'
-        ),
+    result_transform_end_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the end of transforming the '
+                'task function result on the worker.'
+            ),
+        },
     )
 
 
-class TaskInfo(BaseModel):
+@dataclasses.dataclass()
+class TaskInfo:
     """Task execution information."""
 
-    task_id: str = Field(
-        description='Unique UUID of the task as determined by the engine.',
+    task_id: str = field(
+        metadata={
+            'description': (
+                'Unique UUID of the task as determined by the engine.'
+            ),
+        },
     )
-    name: str = Field(
-        description=(
-            'Name of the task. Typically defaults to the name of the '
-            'function unless overridden.'
-        ),
+    name: str = field(
+        metadata={
+            'description': (
+                'Name of the task. Typically defaults to the name of the '
+                'function unless overridden.'
+            ),
+        },
     )
-    parent_task_ids: List[str] = Field(  # noqa: UP006
-        description=(
-            'UUIDs of parent tasks. A task is a child task if its arguments '
-            'contain a future to the result of another task.'
-        ),
+    parent_task_ids: List[str] = field(  # noqa: UP006
+        metadata={
+            'description': (
+                'UUIDs of parent tasks. A task is a child task if its '
+                'arguments contain a future to the result of another task.'
+            ),
+        },
     )
-    submit_time: float = Field(
-        description=(
-            'Unix timestamp indicating the engine submitted the task '
-            'to the executor.'
-        ),
+    submit_time: float = field(
+        metadata={
+            'description': (
+                'Unix timestamp indicating the engine submitted the task '
+                'to the executor.'
+            ),
+        },
     )
-    received_time: Optional[float] = Field(  # noqa: UP007
-        None,
-        description=(
-            'Unix timestamp indicating the executor was notified the task '
-            'has completed. This is recorded in a callback on the task future '
-            'and thus includes any lag in invoking the future callbacks.'
-        ),
+    received_time: Optional[float] = field(  # noqa: UP007
+        default=None,
+        metadata={
+            'description': (
+                'Unix timestamp indicating the executor was notified the task '
+                'has completed. This is recorded in a callback on the task '
+                'future and thus includes any lag in invoking the future '
+                'callbacks.'
+            ),
+        },
     )
-    success: Optional[bool] = Field(  # noqa: UP007
-        None,
-        description=(
-            'Boolean indicating if the task completed without raising '
-            'an exception.'
-        ),
+    success: Optional[bool] = field(  # noqa: UP007
+        default=None,
+        metadata={
+            'description': (
+                'Boolean indicating if the task completed without raising '
+                'an exception.'
+            ),
+        },
     )
-    exception: Optional[ExceptionInfo] = Field(  # noqa: UP007
-        None,
-        description='Task exception information.',
+    exception: Optional[ExceptionInfo] = field(  # noqa: UP007
+        default=None,
+        metadata={'description': 'Task exception information.'},
     )
-    execution: Optional[ExecutionInfo] = Field(  # noqa: UP007
-        None,
-        description='Task execution information.',
+    execution: Optional[ExecutionInfo] = field(  # noqa: UP007
+        default=None,
+        metadata={'description': 'Task execution information.'},
     )
+
+    def asdict(self) -> dict[str, Any]:
+        """Get task info as a dictionary."""
+        return dataclasses.asdict(self)
 
 
 class TaskResult(Generic[R]):
