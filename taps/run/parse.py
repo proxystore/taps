@@ -55,7 +55,7 @@ def _add_argument_group(
     parser: argparse.ArgumentParser,
     **kwargs: Any,
 ) -> argparse._ArgumentGroup:
-    title = kwargs.get('title', None)
+    title = kwargs.get('title')
 
     # Note: this accesses a private part of the ArgumentParser
     # API so could be an issue in the future. But to my knowledge,
