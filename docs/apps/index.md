@@ -3,7 +3,7 @@
 TaPS provides a diverse set of parallel and distributed applications for benchmarking.
 These applications, summarized below, span many domains, datasets, and structures to support comprehensive performance evaluation of existing and future systems.
 
-![Application Structures](../static/app-structures.svg)
+![Application Structures](../static/app-structures.jpg)
 > Example task dependency diagrams of various applications provided by TaPS.
 > In most applications, the exact structure depends on the application configuration.
 
