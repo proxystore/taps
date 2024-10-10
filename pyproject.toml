@@ -27,7 +27,7 @@ dependencies = [
     "psutil",
     "pydantic>=2",
     "pydantic-settings>=2.3.0",
-    "ray[client] ; python_version<'3.12'",
+    "ray[client]",
     "tomli-w",
 ]
 
