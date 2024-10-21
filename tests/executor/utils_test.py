@@ -13,7 +13,7 @@ from taps.executor.utils import _Task
 from taps.executor.utils import FutureDependencyExecutor
 
 
-@pytest.fixture()
+@pytest.fixture
 def executor(
     thread_executor: ThreadPoolExecutor,
 ) -> Generator[FutureDependencyExecutor, None, None]:

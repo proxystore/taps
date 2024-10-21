@@ -34,7 +34,7 @@ from taps.executor.parsl import ParslLocalConfig
 from taps.executor.parsl import ProviderConfig
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_monitoring() -> Generator[mock.MagicMock, None, None]:
     with mock.patch(
         'taps.executor.parsl.MonitoringHub',
