@@ -35,6 +35,17 @@ from dask.distributed import as_completed as as_completed_dask
 from dask.distributed import Future as DaskFuture
 from dask.distributed import wait as wait_dask
 
+try:  # pragma: no cover
+    from ndcctools.taskvine.futures import (
+        as_completed as as_completed_taskvine,
+    )
+    from ndcctools.taskvine.futures import VineFuture
+    from ndcctools.taskvine.futures import wait as wait_taskvine
+
+    taskvine_available = True
+except ImportError:  # pragma: no cover
+    taskvine_available = False
+
 from taps.engine.task import ExceptionInfo
 from taps.engine.task import Task
 from taps.engine.task import task
@@ -394,7 +405,13 @@ def as_completed(
     # as_completed is tricky to type here.
     _as_completed: Any
     if len(tasks) == 0 or isinstance(tasks[0].future, Future):
-        _as_completed = as_completed_python
+        if taskvine_available and isinstance(
+            tasks[0].future,
+            VineFuture,
+        ):  # pragma: no cover
+            _as_completed = as_completed_taskvine
+        else:
+            _as_completed = as_completed_python
     elif isinstance(tasks[0].future, DaskFuture):
         _as_completed = as_completed_dask
         if sys.version_info < (3, 9):  # pragma: <3.9 cover
@@ -431,17 +448,32 @@ def wait(
     futures = {task.future: task for task in tasks}
 
     if len(tasks) == 0 or isinstance(tasks[0].future, Future):
-        _wait = wait_python
+        if taskvine_available and isinstance(
+            tasks[0].future,
+            VineFuture,
+        ):  # pragma: no cover
+            _wait = wait_taskvine
+        else:
+            _wait = wait_python
     elif isinstance(tasks[0].future, DaskFuture):
         _wait = wait_dask
     else:  # pragma: no cover
         raise ValueError(f'Unsupported future type {type(tasks[0])}.')
 
-    completed_futures, not_completed_futures = _wait(  # type: ignore[var-annotated]
-        list(futures.keys()),  # type: ignore[arg-type]
+    results = _wait(
+        list(futures.keys()),
         timeout=timeout,
         return_when=return_when,
     )
+
+    try:
+        completed_futures, not_completed_futures = results
+    except TypeError:  # pragma: no cover
+        # This handles the return type of TaskVine's wait().
+        completed_futures, not_completed_futures = (
+            results.done,
+            results.not_done,
+        )
 
     completed_tasks = {futures[f] for f in completed_futures}
     not_completed_tasks = {futures[f] for f in not_completed_futures}
