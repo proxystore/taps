@@ -98,9 +98,12 @@ class _FailureInjectionEngine(Engine):
             return cast(Task[P, R], failure_task), failure_type
 
         if failure_type == FailureType.DEPENDENCY:
-            wrapped = functools.partial(_wrapper_dependency_failure, task)
+            wrapped = functools.partial(  # type: ignore[call-arg]
+                _wrapper_dependency_failure,
+                task,
+            )
         else:
-            wrapped = functools.partial(
+            wrapped = functools.partial(  # type: ignore[call-arg]
                 _wrapper_generic_failure,
                 task,
                 FAILURE_FUNCTIONS[failure_type],
