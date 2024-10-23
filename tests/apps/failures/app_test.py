@@ -74,8 +74,6 @@ def test_failure_injection_engine(as_task: bool, engine: Engine) -> None:
     def my_abs(x: int) -> int:
         return abs(x)
 
-    function: Callable[[int], int] = (
-        task(my_abs) if as_task else my_abs  # type: ignore[assignment]
-    )
+    function: Callable[[int], int] = task(my_abs) if as_task else my_abs
     future = failure_engine.submit(function, -1)
     assert future.result() == 1

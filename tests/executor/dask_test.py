@@ -9,7 +9,7 @@ from taps.executor.dask import DaskDistributedConfig
 from taps.executor.dask import DaskDistributedExecutor
 
 
-@pytest.fixture()
+@pytest.fixture
 def local_client() -> Client:
     client = Client(
         n_workers=1,

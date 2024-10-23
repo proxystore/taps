@@ -48,7 +48,7 @@ def _process_chunk(
     function: Callable[P, T],
     chunk: Iterable[P.args],
 ) -> list[T]:
-    return [function(*args) for args in chunk]
+    return [function(*args) for args in chunk]  # type: ignore[call-arg]
 
 
 class _Task(Generic[P, T]):

@@ -204,7 +204,10 @@ class TaskVineExecutor(FuturesExecutor):  # pragma: no cover
         if timeout is not None:
             end_time = timeout + time.monotonic()
 
-        futures = [self.submit(function, *args) for args in zip(*iterables)]
+        futures = [
+            self.submit(function, *args)  # type: ignore[call-arg]
+            for args in zip(*iterables)
+        ]
 
         def _result_iterator() -> Generator[R, None, None]:
             futures.reverse()
