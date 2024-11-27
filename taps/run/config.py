@@ -59,10 +59,17 @@ class RunConfig(BaseModel):
             '"{executor}" for formatting).'
         ),
     )
-    env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP007
-        None,
-        description='Environment variables to set during benchmarking.',
-    )
+
+    if sys.version_info < (3, 9):  # pragma: <3.9 cover
+        env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP007
+            None,
+            description='Environment variables to set during benchmarking.',
+        )
+    else:  # pragma: >=3.9 cover
+        env_vars: Optional[dict[str, str]] = Field(  # noqa: UP007
+            None,
+            description='Environment variables to set during benchmarking.',
+        )
 
 
 class Config(BaseSettings):
@@ -196,13 +203,16 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
         description='engine options',
     )
 
-    return create_model(
+    model = create_model(
         'GeneratedConfig',
         app=(app_cls, app_field),
         engine=(engine_cls, engine_field),
         __base__=Config,
         __doc__=Config.__doc__,
+        __validators__=None,
     )
+    model.model_rebuild()
+    return model
 
 
 def make_run_dir(config: Config) -> pathlib.Path:
