@@ -16,6 +16,7 @@ from proxystore.store import get_store
 from proxystore.store import Store
 from proxystore.store.config import ConnectorConfig
 from proxystore.store.utils import resolve_async
+from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import model_validator
 
@@ -27,7 +28,14 @@ T = TypeVar('T')
 
 @register('transformer')
 class ProxyTransformerConfig(TransformerConfig):
-    """[`ProxyTransformer`][taps.transformer.ProxyTransformer] plugin configuration."""  # noqa: E501
+    """[`ProxyTransformer`][taps.transformer.ProxyTransformer] plugin configuration.
+
+    Note:
+        Extra arguments provided to this config will be passed as parameters
+        to the [`Store`][proxystore.store.Store].
+    """  # noqa: E501
+
+    model_config = ConfigDict(extra='allow')  # type: ignore[misc]
 
     name: Literal['proxystore'] = Field(
         'proxystore',
@@ -36,7 +44,6 @@ class ProxyTransformerConfig(TransformerConfig):
     connector: ConnectorConfig = Field(
         description='Connector configuration.',
     )
-    cache_size: int = Field(16, description='cache size')
     async_resolve: bool = Field(
         False,
         description=(
@@ -44,12 +51,17 @@ class ProxyTransformerConfig(TransformerConfig):
             'extract_target=True.'
         ),
     )
+    cache_size: int = Field(16, description='cache size')
     extract_target: bool = Field(
         False,
         description=(
             'Extract the target from the proxy when resolving the identifier. '
             'Not compatible with async_resolve=True.'
         ),
+    )
+    metrics: bool = Field(
+        False,
+        description='Enable recording operation metrics.',
     )
     populate_target: bool = Field(
         True,
@@ -68,13 +80,22 @@ class ProxyTransformerConfig(TransformerConfig):
     def get_transformer(self) -> ProxyTransformer:
         """Create a transformer from the configuration."""
         connector = self.connector.get_connector()
+
+        # Want register=True to be the default unless the user config
+        # has explicitly disabled it.
+        extra: dict[str, Any] = {'register': True}
+        # Guaranteed when config.extra is set to "allow"
+        assert self.model_extra is not None
+        extra.update(self.model_extra)
+
         return ProxyTransformer(
             store=Store(
                 'proxy-transformer',
                 connector=connector,
                 cache_size=self.cache_size,
+                metrics=self.metrics,
                 populate_target=self.populate_target,
-                register=True,
+                **extra,
             ),
             async_resolve=self.async_resolve,
             extract_target=self.extract_target,
