@@ -3188,41 +3188,6 @@
 on the local node.</p>
 
 
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>name</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
-                  <code>&#39;parsl-local&#39;</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Executor name.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>workers</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Maximum number of parsl workers.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>run_dir</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;parsl-runinfo&#39;</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Parsl run directory within the app run directory.</p>
-          </div>
-        </li>
-    </ul>
-
-
 
 
   <div class="doc doc-children">
@@ -3336,89 +3301,6 @@ on the local node.</p>
 <a class="autorefs autorefs-internal" href="#taps.executor.parsl.ParslLocalConfig"><code>ParslLocalConfig</code></a>.</p>
 
 
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>name</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
-                  <code>&#39;parsl-htex&#39;</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Executor name.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>htex</code></b>
-              (<code>ForwardRef(&#39;Union[HTExConfig, Dict[str, HTExConfig]]&#39;)</code>)
-          –
-          <div class="doc-md-description">
-            <p>HTEx configuration.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>app_cache</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Enable app caching.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>retries</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
-                  <code>0</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Number of task retries in case of task failure.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>strategy</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Block scaling strategy.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>max_idletime</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Idle time before strategy can shutdown unused blocks.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>monitoring</code></b>
-              (<code>ForwardRef(&#39;Optional[MonitoringConfig]&#39;)</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Database monitoring configuration.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>run_dir</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;parsl-runinfo&#39;</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Parsl run directory within the app run directory.</p>
-          </div>
-        </li>
-    </ul>
-
-
 
 
   <div class="doc doc-children">
@@ -3520,81 +3402,6 @@ on the local node.</p>
 
 
       <p>Configuration for Parl's <a class="autorefs autorefs-external" href="https://parsl.readthedocs.io/en/stable/stubs/parsl.executors.HighThroughputExecutor.html#parsl.executors.HighThroughputExecutor"><code>parsl.executors.HighThroughputExecutor</code></a>.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>label</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
-                  <code>&#39;taps-htex&#39;</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Executor label.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>provider</code></b>
-              (<code>ForwardRef(&#39;Optional[ProviderConfig]&#39;)</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Configuration for the compute resource provider.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>address</code></b>
-              (<code>ForwardRef(&#39;Optional[Union[str, AddressConfig]]&#39;)</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Address to connect to the main Parsl process.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>manager_selector</code></b>
-              (<code>ForwardRef(&#39;Optional[ManagerSelectorConfig]&#39;)</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Configuration for the manager selector (available in Parsl v2024.8.5 and later).</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>worker_ports</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Tuple" href="https://docs.python.org/3/library/typing.html#typing.Tuple">Tuple</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>] | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Ports used by workers to connect to Parsl</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>worker_port_range</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Tuple" href="https://docs.python.org/3/library/typing.html#typing.Tuple">Tuple</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>] | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Range of ports to choose worker ports from.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>interchange_port_range</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Tuple" href="https://docs.python.org/3/library/typing.html#typing.Tuple">Tuple</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>] | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Ports used by Parsl to connect to interchange.</p>
-          </div>
-        </li>
-    </ul>
 
 
 <details class="note" open>
@@ -3714,19 +3521,6 @@ arguments to
       <p>Parsl address configuration.</p>
 
 
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>kind</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Function to invoke to get address.</p>
-          </div>
-        </li>
-    </ul>
-
-
 <details class="example" open>
   <summary>Example</summary>
   <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">parsl.addresses</span> <span class="kn">import</span> <span class="n">address_by_interface</span>
@@ -3806,29 +3600,6 @@ arguments to
 
 
       <p>Parsl execution provider configuration.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>kind</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Execution provider class name</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>launcher</code></b>
-              (<code>ForwardRef(&#39;Optional[LauncherConfig]&#39;)</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Launcher configuration.</p>
-          </div>
-        </li>
-    </ul>
 
 
 <details class="example" open>
@@ -3949,19 +3720,6 @@ The resulting provider is equivalent to creating it manually.
       <p>Parsl launcher configuration.</p>
 
 
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>kind</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Launcher class name.</p>
-          </div>
-        </li>
-    </ul>
-
-
 <details class="example" open>
   <summary>Example</summary>
   <p>Create a launcher configuration and call
@@ -4051,19 +3809,6 @@ The resulting launcher is equivalent to creating it manually.
 
 
       <p>Parsl HTEx manager selector configuration.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>kind</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Manager selector class name.</p>
-          </div>
-        </li>
-    </ul>
 
 
 <details class="example" open>
@@ -4157,31 +3902,6 @@ The resulting manager selector is equivalent to creating it manually.
 
 
       <p>Parsl monitoring system configuration.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code>hub_address</code></b>
-              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-internal" title="taps.executor.parsl.AddressConfig" href="#taps.executor.parsl.AddressConfig">AddressConfig</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Address to connect to the monitoring hub.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code>hub_port_range</code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Tuple" href="https://docs.python.org/3/library/typing.html#typing.Tuple">Tuple</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>] | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Port range for a ZMQ channel from executor process.</p>
-          </div>
-        </li>
-    </ul>
 
 
 <details class="example" open>
