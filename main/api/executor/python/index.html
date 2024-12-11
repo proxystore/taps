@@ -2897,6 +2897,41 @@
       <p><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ProcessPoolExecutor"><code>ProcessPoolExecutor</code></a> plugin configuration.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>&#39;process-pool&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Executor name.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>max_processes</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
+                  <code>4</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Maximum number of processes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>context</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Multiprocessing start method (one of fork, spawn, or forkserver).</p>
+          </div>
+        </li>
+    </ul>
+
+
 
 
   <div class="doc doc-children">
@@ -2968,6 +3003,31 @@
 
 
       <p><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor"><code>ThreadPoolExecutor</code></a> plugin configuration.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>name</code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>&#39;thread-pool&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Executor name.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>max_threads</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
+                  <code>4</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Maximum number of threads.</p>
+          </div>
+        </li>
+    </ul>
 
 
 

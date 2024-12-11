@@ -2921,6 +2921,41 @@
       <p>Logging configuration.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>level</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
+                  <code>&#39;INFO&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Minimum logging level for stdout.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>file_level</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Override logging level for the log file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>file_name</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>&#39;log.txt&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Logging file name.</p>
+          </div>
+        </li>
+    </ul>
+
+
 
 
   <div class="doc doc-children">
@@ -2960,6 +2995,31 @@
       <p>Run configuration.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>dir_format</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
+                  <code>&#39;runs/{name}_{executor}_{timestamp}&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Run directory format (supports "{name}", "{timestamp}", and "{executor}" for formatting).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>env_vars</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Environment variables to set during benchmarking.</p>
+          </div>
+        </li>
+    </ul>
+
+
 
 
   <div class="doc doc-children">
@@ -2997,6 +3057,59 @@
 
 
       <p>Application benchmark configuration.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>app</code></b>
+              (<code><a class="autorefs autorefs-internal" title="taps.apps.AppConfig" href="../../apps/#taps.apps.AppConfig">AppConfig</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Application configuration.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>engine</code></b>
+              (<code><a class="autorefs autorefs-internal" title="taps.engine.EngineConfig" href="../../engine/#taps.engine.EngineConfig">EngineConfig</a></code>, default:
+                  <code>EngineConfig(executor=ProcessPoolConfig(name=&#39;process-pool&#39;, max_processes=4, context=None), filter=None, transformer=None, task_record_file_name=&#39;tasks.jsonl&#39;)</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Engine configuration.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>logging</code></b>
+              (<code><a class="autorefs autorefs-internal" title="taps.run.config.LoggingConfig" href="#taps.run.config.LoggingConfig">LoggingConfig</a></code>, default:
+                  <code>LoggingConfig(level=&#39;INFO&#39;, file_level=None, file_name=&#39;log.txt&#39;)</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Logging configuration.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>run</code></b>
+              (<code><a class="autorefs autorefs-internal" title="taps.run.config.RunConfig" href="#taps.run.config.RunConfig">RunConfig</a></code>, default:
+                  <code>RunConfig(dir_format=&#39;runs/{name}_{executor}_{timestamp}&#39;, env_vars=None)</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Run configuration.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code>version</code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>, default:
+                  <code>&#39;0.2.2.dev1&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>TaPS version (do not alter).</p>
+          </div>
+        </li>
+    </ul>
 
 
 
