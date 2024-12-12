@@ -169,7 +169,7 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
         )
     else:
         filter_cls = Optional[FilterConfig]  # type: ignore[assignment]
-        filter_field = Field(
+        filter_field = Field(  # type: ignore[assignment]
             None,
             description='Filter configuration (selected: none).',
         )
@@ -185,7 +185,7 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
         )
     else:
         transformer_cls = Optional[TransformerConfig]  # type: ignore[assignment]
-        transformer_field = Field(
+        transformer_field = Field(  # type: ignore[assignment]
             None,
             description='Transformer configuration (selected: none).',
         )
