@@ -115,6 +115,7 @@ nav:
       - MapReduce: apps/mapreduce.md
       - Molecular Design: apps/moldesign.md
       - Montage: apps/montage.md
+      - Physics: apps/physics.md
       - Synthetic: apps/synthetic.md
   - Guides:
       - guides/index.md
