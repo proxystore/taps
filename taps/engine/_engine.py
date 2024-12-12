@@ -323,7 +323,7 @@ class Engine:
             iterables: Variable number of iterables.
             timeout: The maximum number of seconds to wait. If None, then there
                 is no limit on the wait time.
-            chunksize: Currently no supported. If greater than one, the
+            chunksize: Currently not supported. If greater than one, the
                 iterables will be chopped into chunks of size chunksize
                 and submitted to the executor. If set to one, the items in the
                 list will be sent one at a time.
