@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import pathlib
 import pickle
 
@@ -12,8 +13,10 @@ from proxystore.store import unregister_store
 from proxystore.store.config import ConnectorConfig
 from pydantic import ValidationError
 
+from taps.run.utils import change_cwd
 from taps.transformer import ProxyTransformer
 from taps.transformer import ProxyTransformerConfig
+from taps.transformer._proxy import _write_metrics
 
 
 def test_file_config(tmp_path: pathlib.Path) -> None:
@@ -33,7 +36,6 @@ def test_file_config_extras(tmp_path: pathlib.Path) -> None:
             kind='file',
             options={'store_dir': str(tmp_path)},
         ),
-        metrics=True,
         register=False,
     )
     transformer = config.get_transformer()
@@ -115,3 +117,38 @@ def test_proxy_transformer_pickling() -> None:
         assert get_store(name) is not None
 
         transformer.close()
+
+
+def test_metrics_recording(tmp_path: pathlib.Path) -> None:
+    with change_cwd(tmp_path):
+        config = ProxyTransformerConfig(
+            connector=ConnectorConfig(kind='local'),
+            metrics=True,
+            register=False,
+        )
+
+        transformer = config.get_transformer()
+        obj = transformer.transform('value')
+        transformer.resolve(obj)
+        transformer.close()
+
+        assert isinstance(transformer.metrics_dir, pathlib.Path)
+        files = list(transformer.metrics_dir.iterdir())
+        assert len(files) == 2  # noqa: PLR2004
+
+
+@pytest.mark.parametrize('metrics', (True, False))
+def test_write_metrics_empty(metrics: bool, tmp_path: pathlib.Path) -> None:
+    with Store(
+        'test-write-metrics-disabled',
+        LocalConnector(),
+        metrics=metrics,
+        register=False,
+    ) as store:
+        _write_metrics(
+            store,
+            tmp_path / 'aggregated.json',
+            tmp_path / 'stats.jsonl',
+        )
+
+        assert len(os.listdir(tmp_path)) == 0
