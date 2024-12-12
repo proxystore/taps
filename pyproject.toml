@@ -43,6 +43,7 @@ docking = ["numpy", "pandas", "requests", "scikit-learn", "rdkit"]
 fedlearn = ["numpy", "torch", "torchvision"]
 moldesign = ["ase", "matplotlib", "numpy", "pandas", "rdkit==2023.9.6", "scikit-learn", "tqdm"]
 montage = ["montage_wrapper", "pandas"]
+physics = ["matplotlib", "noise", "numpy<2", "pybullet", "scipy"]
 dev = [
     "taps[cholesky,montage]",
     "covdefaults>=2.2",
@@ -87,6 +88,7 @@ omit = [
     "taps/apps/docking/*",
     "taps/apps/fedlearn/*",
     "taps/apps/moldesign/*",
+    "taps/apps/physics.py",
 ]
 parallel = true
 

@@ -16,6 +16,7 @@ These applications, summarized below, span many domains, datasets, and structure
 | [MapReduce](mapreduce.md)             | Text Analysis    | Python Functions | File, In-memory  |
 | [Molecular Design](moldesign.md)      | Molecular Design | Python Functions | In-memory        |
 | [Montage](montage.md)                 | Astronomy        | Executable       | File             |
+| [Physics](physics.md)                 | Physics          | Python Functions | In-memory        |
 | [Synthetic](synthetic.md)             | N/A              | Python Functions | In-memory        |
 
 Check out the application specific guides for more information and instructions.
