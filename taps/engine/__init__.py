@@ -12,6 +12,6 @@ __all__ = (
     'EngineConfig',
     'TaskFuture',
     'as_completed',
-    'wait',
     'task',
+    'wait',
 )
