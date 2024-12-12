@@ -27,6 +27,19 @@ def test_file_config(tmp_path: pathlib.Path) -> None:
     transformer.close()
 
 
+def test_file_config_extras(tmp_path: pathlib.Path) -> None:
+    config = ProxyTransformerConfig(
+        connector=ConnectorConfig(
+            kind='file',
+            options={'store_dir': str(tmp_path)},
+        ),
+        metrics=True,
+        register=False,
+    )
+    transformer = config.get_transformer()
+    transformer.close()
+
+
 def test_config_validation_error(tmp_path: pathlib.Path) -> None:
     with pytest.raises(
         ValidationError,
