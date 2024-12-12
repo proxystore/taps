@@ -2,318 +2,330 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://taps.proxystore.dev/latest/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/faq/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/get-started/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/SUMMARY/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/future/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/logging/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/plugins/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/record/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/cholesky/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/mapreduce/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/montage/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/api/apps/physics/</loc>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/synthetic/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/cholesky/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/docking/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/failures/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/fedlearn/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/mapreduce/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/moldesign/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/montage/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/api/apps/configs/physics/</loc>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/configs/synthetic/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/docking/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/docking/app/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/docking/data/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/docking/train/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/failures/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/failures/app/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/failures/types/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/app/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/client/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/modules/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/tasks/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/fedlearn/types/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/moldesign/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/moldesign/app/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/apps/moldesign/tasks/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/engine/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/engine/task/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/engine/transform/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/dask/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/globus/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/parsl/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/python/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/ray/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/taskvine/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/executor/utils/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/filter/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/run/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/run/config/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/run/env/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/run/main/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/run/parse/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/run/utils/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/api/transformer/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/cholesky/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/docking/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/failures/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/fedlearn/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/mapreduce/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/moldesign/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/montage/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
+    </url>
+    <url>
+         <loc>https://taps.proxystore.dev/latest/apps/physics/</loc>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/apps/synthetic/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/contributing/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/contributing/issues-pull-requests/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/contributing/releases/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/contributing/style-guide/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/guides/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/guides/apps/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/guides/config/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/guides/data/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/guides/executor/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/guides/parsl/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/guides/scripts/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
     <url>
          <loc>https://taps.proxystore.dev/latest/publications/</loc>
-         <lastmod>2024-12-11</lastmod>
+         <lastmod>2024-12-12</lastmod>
     </url>
 </urlset>
