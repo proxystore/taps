@@ -166,7 +166,7 @@ def prettify_validation_error(
         model_str = ''
 
     return ValueError(f"""\
-Found {count} validation error{"" if count == 1 else "s"}{model_str}
+Found {count} validation error{'' if count == 1 else 's'}{model_str}
 {errors_str}\
 """)
 

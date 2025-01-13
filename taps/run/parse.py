@@ -108,8 +108,7 @@ This behavior applies to all plugin types.
         default=argparse.SUPPRESS,
         nargs='+',
         help=(
-            'Base toml configuration files to load '
-            '(file are parsed in order).'
+            'Base toml configuration files to load (file are parsed in order).'
         ),
     )
 
