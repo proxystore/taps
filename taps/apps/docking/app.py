@@ -304,7 +304,7 @@ class DockingApp:
         for i in range(self.num_iterations):
             logger.log(
                 APP_LOG_LEVEL,
-                f'Starting iteration {i+1}/{self.num_iterations}',
+                f'Starting iteration {i + 1}/{self.num_iterations}',
             )
 
             model = train_model(training_df)

@@ -204,7 +204,7 @@ python:
   version: {self.python.version}
   build: {impl} ({bit_length}-bit runtime) [{compiler}]
 packages:
-  {"  ".join(packages)}
+  {'  '.join(packages)}
 """.strip()
 
     def json(self) -> dict[str, Any]:

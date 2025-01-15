@@ -135,7 +135,7 @@ class FedlearnApp:
         """
         results = []
         for round_idx in range(self.rounds):
-            preface = f'({round_idx+1}/{self.rounds})'
+            preface = f'({round_idx + 1}/{self.rounds})'
             logger.log(
                 APP_LOG_LEVEL,
                 f'{preface} Starting local training for this round',
@@ -158,8 +158,8 @@ class FedlearnApp:
                 ).result()
                 logger.log(
                     APP_LOG_LEVEL,
-                    f"{preface} Finished testing with test_loss="
-                    f"{test_result['test_loss']:.3f}",
+                    f'{preface} Finished testing with test_loss='
+                    f'{test_result["test_loss"]:.3f}',
                 )
 
     def _federated_round(
@@ -215,7 +215,7 @@ class FedlearnApp:
         for fut in as_completed(futures):
             results.extend(fut.result())
 
-        preface = f'({round_idx+1}/{self.rounds})'
+        preface = f'({round_idx + 1}/{self.rounds})'
         logger.log(APP_LOG_LEVEL, f'{preface} Finished local training')
         avg_params = unweighted_module_avg(selected_clients)
         self.global_model.load_state_dict(avg_params)

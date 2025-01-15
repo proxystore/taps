@@ -270,14 +270,15 @@ def run_sequential(
         tasks.append(task)
         logger.log(
             APP_LOG_LEVEL,
-            f'Submitted task {i+1}/{task_count} '
+            f'Submitted task {i + 1}/{task_count} '
             f'(task_id={task.info.task_id})',
         )
 
     for i, task in enumerate(as_completed(tasks)):
         logger.log(
             APP_LOG_LEVEL,
-            f'Received task {i+1}/{task_count} (task_id: {task.info.task_id})',
+            f'Received task {i + 1}/{task_count} '
+            f'(task_id: {task.info.task_id})',
         )
 
     # Validate the final result in the sequence
