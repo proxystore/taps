@@ -13,6 +13,8 @@ from typing import Generator
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
+from typing import Mapping
+from typing import Sequence
 from typing import TypeVar
 
 from taps.future import FutureProtocol
@@ -45,19 +47,19 @@ def _get_chunks(
 
 
 def _process_chunk(
-    function: Callable[P, T],
-    chunk: Iterable[P.args],
+    function: Callable[..., T],
+    chunk: Iterable[Any],
 ) -> list[T]:
-    return [function(*args) for args in chunk]  # type: ignore[call-arg]
+    return [function(*args) for args in chunk]
 
 
-class _Task(Generic[P, T]):
+class _Task(Generic[T]):
     def __init__(
         self,
         executor: Executor,
-        function: Callable[P, T],
-        args: P.args,
-        kwargs: P.kwargs,
+        function: Callable[..., T],
+        args: Sequence[Any],
+        kwargs: Mapping[str, Any],
         client_future: Future[T],
     ) -> None:
         self.executor = executor
@@ -150,7 +152,7 @@ class FutureDependencyExecutor(Executor):
 
     def __init__(self, executor: Executor) -> None:
         self.executor = executor
-        self._tasks: dict[Future[Any], _Task[Any, Any]] = {}
+        self._tasks: dict[Future[Any], _Task[Any]] = {}
 
     def __enter__(self) -> Self:
         self.executor.__enter__()
@@ -196,8 +198,8 @@ class FutureDependencyExecutor(Executor):
 
     def map(
         self,
-        function: Callable[P, T],
-        *iterables: Iterable[P.args],
+        function: Callable[..., T],
+        *iterables: Iterable[Any],
         timeout: float | None = None,
         chunksize: int = 1,
     ) -> Iterator[T]:

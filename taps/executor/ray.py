@@ -5,7 +5,6 @@ from concurrent.futures import Executor
 from concurrent.futures import Future
 from typing import Any
 from typing import Callable
-from typing import cast
 from typing import Literal
 from typing import Optional
 from typing import TypeVar
@@ -112,8 +111,8 @@ class RayExecutor(Executor):
             [`Future`][concurrent.futures.Future]-like object representing \
             the result of the execution of the callable.
         """
-        args = cast(P.args, _parse_args(args))
-        kwargs = cast(P.kwargs, _parse_kwargs(kwargs))
+        pargs = _parse_args(args)
+        pkwargs = _parse_kwargs(kwargs)
 
         if function in self._remote:
             remote = self._remote[function]
@@ -122,7 +121,7 @@ class RayExecutor(Executor):
             remote = ray.remote(wrapped)
             self._remote[function] = remote
 
-        object_ref = remote.remote(*args, **kwargs)
+        object_ref = remote.remote(*pargs, **pkwargs)
 
         return object_ref.future()
 
