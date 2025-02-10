@@ -178,8 +178,8 @@ class TaskVineExecutor(FuturesExecutor):  # pragma: no cover
 
     def map(
         self,
-        function: Callable[P, R],
-        *iterables: Iterable[P.args],
+        function: Callable[..., R],
+        *iterables: Iterable[Any],
         timeout: float | None = None,
         chunksize: int = 1,
     ) -> Iterator[R]:
@@ -204,10 +204,7 @@ class TaskVineExecutor(FuturesExecutor):  # pragma: no cover
         if timeout is not None:
             end_time = timeout + time.monotonic()
 
-        futures = [
-            self.submit(function, *args)  # type: ignore[call-arg]
-            for args in zip(*iterables)
-        ]
+        futures = [self.submit(function, *args) for args in zip(*iterables)]
 
         def _result_iterator() -> Generator[R, None, None]:
             futures.reverse()

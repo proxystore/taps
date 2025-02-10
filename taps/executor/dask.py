@@ -4,6 +4,7 @@ import logging
 import sys
 from concurrent.futures import Executor
 from concurrent.futures import Future
+from typing import Any
 from typing import Callable
 from typing import Generator
 from typing import Iterable
@@ -90,8 +91,8 @@ class DaskDistributedExecutor(Executor):
 
     def map(
         self,
-        function: Callable[P, T],
-        *iterables: Iterable[P.args],
+        function: Callable[..., T],
+        *iterables: Iterable[Any],
         timeout: float | None = None,
         chunksize: int = 1,
     ) -> Iterator[T]:

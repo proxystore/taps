@@ -240,9 +240,9 @@ class Task(Generic[P, R], Protocol):
     @overload
     def __call__(
         self,
-        *args: P.args,
+        *args: Any,
         _transformer: None = None,
-        **kwargs: P.kwargs,
+        **kwargs: Any,
     ) -> R: ...
 
     @overload
@@ -255,9 +255,9 @@ class Task(Generic[P, R], Protocol):
 
     def __call__(
         self,
-        *args: P.args,
+        *args: Any,
         _transformer: TaskTransformer[Any] | None = None,
-        **kwargs: P.kwargs,
+        **kwargs: Any,
     ) -> TaskResult[R] | R:
         """Execute the task or wrapped function.
 
@@ -457,9 +457,9 @@ def task(
         # will not be pickleable (e.g., `foo_task = task(foo, wrap=True)`).
         @functools.wraps(function)
         def wrapper(
-            *args: P.args,
+            *args: Any,
             _transformer: TaskTransformer[Any] | None = None,
-            **kwargs: P.kwargs,
+            **kwargs: Any,
         ) -> TaskResult[R] | R:
             return _execute(
                 function,
