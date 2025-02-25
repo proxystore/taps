@@ -208,4 +208,4 @@ This behavior applies to all plugin types.
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    return settings_cls(_cli_settings_source=cli_settings)
+    return settings_cls(_cli_settings_source=cli_settings)  # type: ignore[arg-type]
