@@ -69,7 +69,7 @@ def create_clients(
             idx: Subset(train_data, client_indices[idx]) for idx in client_ids
         }
     else:
-        client_subsets = {idx: None for idx in client_ids}
+        client_subsets = dict.fromkeys(client_ids)
 
     clients = []
     for idx in client_ids:
