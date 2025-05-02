@@ -82,6 +82,7 @@ def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
             resource_monitoring_interval=1,
             hub_port=55055,
         ),
+        warmup=True,
     )
 
     with mock.patch(
