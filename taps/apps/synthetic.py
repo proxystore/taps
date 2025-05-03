@@ -59,6 +59,25 @@ def generate_data(size: int) -> Data:
     return Data(raw)
 
 
+def generate_length(mean: float, std_dev: float | None = None) -> float:
+    """Get random task length with specified mean and standard deviation.
+
+    Simple wrapper around random.gauss which generates a constant when
+    std_dev is 0 or none, and guarantees the returned value is positive.
+
+    Args:
+        mean (float): mean length of sleep
+        std_dev (float): standard deviation of task distribution
+
+    Returns:
+        random length.
+    """
+    if std_dev is None or std_dev == 0:
+        return mean
+
+    return max(0, random.gauss(mean, std_dev))
+
+
 @task(name='noop')
 def noop_task(
     *data: Data,
@@ -102,6 +121,7 @@ def run_bag_of_tasks(
     task_data_bytes: int,
     task_sleep: float,
     max_running_tasks: int,
+    task_std: float,
 ) -> None:
     """Run bag of tasks workflow."""
     max_running_tasks = min(max_running_tasks, task_count)
@@ -112,7 +132,7 @@ def run_bag_of_tasks(
             noop_task,
             generate_data(task_data_bytes),
             output_size=task_data_bytes,
-            sleep=task_sleep,
+            sleep=generate_length(task_sleep, task_std),
             task_id=uuid.uuid4(),
         )
         for _ in range(max_running_tasks)
@@ -140,7 +160,7 @@ def run_bag_of_tasks(
                 noop_task,
                 generate_data(task_data_bytes),
                 output_size=task_data_bytes,
-                sleep=task_sleep,
+                sleep=generate_length(task_sleep, task_std),
                 task_id=uuid.uuid4(),
             )
             for _ in range(new_task_count)
@@ -176,6 +196,7 @@ def run_diamond(
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
+    task_std: float,
 ) -> None:
     """Run diamond workflow."""
     initial_task = engine.submit(
@@ -192,7 +213,7 @@ def run_diamond(
             noop_task,
             initial_task,
             output_size=task_data_bytes,
-            sleep=task_sleep,
+            sleep=generate_length(task_sleep, task_std),
             task_id=uuid.uuid4(),
         )
         for _ in range(task_count)
@@ -220,6 +241,7 @@ def run_reduce(
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
+    task_std: float,
 ) -> None:
     """Run reduce worklow."""
     map_tasks = [
@@ -227,7 +249,7 @@ def run_reduce(
             noop_task,
             generate_data(task_data_bytes),
             output_size=task_data_bytes,
-            sleep=task_sleep,
+            sleep=generate_length(task_sleep, task_std),
             task_id=uuid.uuid4(),
         )
         for _ in range(task_count)
@@ -238,7 +260,7 @@ def run_reduce(
         noop_task,
         *map_tasks,
         output_size=task_data_bytes,
-        sleep=task_sleep,
+        sleep=generate_length(task_sleep, task_std),
         task_id=uuid.uuid4(),
     )
     logger.log(APP_LOG_LEVEL, 'Submitted reduce task')
@@ -252,6 +274,7 @@ def run_sequential(
     task_count: int,
     task_data_bytes: int,
     task_sleep: float,
+    task_std: float,
 ) -> None:
     """Run sequential workflow."""
     start = time.monotonic()
@@ -264,7 +287,7 @@ def run_sequential(
             noop_task,
             input_data,
             output_size=task_data_bytes,
-            sleep=task_sleep,
+            sleep=generate_length(task_sleep, task_std),
             task_id=uuid.uuid4(),
         )
         tasks.append(task)
@@ -300,6 +323,7 @@ class SyntheticApp:
             workflow.
         warmup_tasks: Number of warmup tasks to submit before running the
             workflow.
+        task_std: Deviation in task length to generate load imbalances
     """
 
     def __init__(
@@ -311,11 +335,13 @@ class SyntheticApp:
         bag_max_running: int | None,
         *,
         warmup_tasks: int = 0,
+        task_std: float = 0,
     ) -> None:
         self.structure = structure
         self.task_count = task_count
         self.task_data_bytes = task_data_bytes
         self.task_sleep = task_sleep
+        self.task_std = task_std
         self.bag_max_running = bag_max_running
         self.warmup_tasks = warmup_tasks
 
@@ -353,6 +379,7 @@ class SyntheticApp:
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,
                 max_running_tasks=self.bag_max_running,
+                task_std=self.task_std,
             )
         elif self.structure == WorkflowStructure.DIAMOND:
             run_diamond(
@@ -360,6 +387,7 @@ class SyntheticApp:
                 task_count=self.task_count,
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,
+                task_std=self.task_std,
             )
         elif self.structure == WorkflowStructure.REDUCE:
             run_reduce(
@@ -367,6 +395,7 @@ class SyntheticApp:
                 task_count=self.task_count,
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,
+                task_std=self.task_std,
             )
         elif self.structure == WorkflowStructure.SEQUENTIAL:
             run_sequential(
@@ -374,6 +403,7 @@ class SyntheticApp:
                 task_count=self.task_count,
                 task_data_bytes=self.task_data_bytes,
                 task_sleep=self.task_sleep,
+                task_std=self.task_std,
             )
         else:
             raise AssertionError(

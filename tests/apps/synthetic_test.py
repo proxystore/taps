@@ -77,7 +77,7 @@ def test_synthetic_app(
 
 
 def test_run_bag_of_tasks(engine: Engine) -> None:
-    task_count, task_sleep, max_running_tasks = 6, 0.001, 3
+    task_count, task_sleep, max_running_tasks, task_std = 6, 0.001, 3, 0.0001
 
     start = time.perf_counter()
     run_bag_of_tasks(
@@ -86,6 +86,7 @@ def test_run_bag_of_tasks(engine: Engine) -> None:
         0,
         task_sleep,
         max_running_tasks,
+        task_std,
     )
     runtime = time.perf_counter() - start
 
@@ -97,7 +98,7 @@ def test_run_diamond(engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_diamond(engine, task_count, 0, task_sleep)
+    run_diamond(engine, task_count, 0, task_sleep, 0)
     runtime = time.perf_counter() - start
 
     layers = 3
@@ -108,7 +109,7 @@ def test_run_reduce(engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_reduce(engine, task_count, 0, task_sleep)
+    run_reduce(engine, task_count, 0, task_sleep, 0)
     runtime = time.perf_counter() - start
 
     layers = 2
@@ -119,7 +120,7 @@ def test_run_sequential(engine: Engine) -> None:
     task_count, task_sleep = 3, 0.001
 
     start = time.perf_counter()
-    run_sequential(engine, task_count, 0, task_sleep)
+    run_sequential(engine, task_count, 0, task_sleep, 0)
     runtime = time.perf_counter() - start
 
     assert task_count * task_sleep <= runtime
