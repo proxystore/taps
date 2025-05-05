@@ -11,6 +11,7 @@ import pytest
 
 from taps.executor.utils import _Task
 from taps.executor.utils import FutureDependencyExecutor
+from taps.executor.utils import warmup_executor
 
 
 @pytest.fixture
@@ -170,3 +171,11 @@ def test_task_future_cancelled(
     assert task.task_future.cancel()
     with pytest.raises(CancelledError):
         client_future.result()
+
+
+def test_warmup_executor() -> None:
+    with ThreadPoolExecutor() as executor:
+        warmup_executor(executor, 1, 1, 1, 1)
+
+        with pytest.raises(RuntimeError, match='Could not connect'):
+            warmup_executor(executor, 2, 1, 1, 1)

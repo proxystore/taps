@@ -28,6 +28,7 @@ if TYPE_CHECKING:
     )
 
 from taps.executor import ExecutorConfig as TapsExecutorConfig
+from taps.executor.utils import warmup_executor
 from taps.plugins import register
 
 
@@ -122,11 +123,45 @@ class ParslHTExConfig(TapsExecutorConfig):
         'parsl-runinfo',
         description='Parsl run directory within the app run directory.',
     )
+    warmup: bool = Field(
+        False,
+        description='Warmup parsl workers on initialization of executor.',
+    )
+    min_connected_nodes: int = Field(
+        1,
+        description='Number of nodes necessary to consider parsl warm.',
+    )
+    warmup_batch_size: int = Field(
+        1,
+        description='Number of tasks to submit per warmup batch.',
+    )
+    max_warmup_batches: int = Field(
+        1,
+        description='Maximum number of warm up batches before failure.',
+    )
+    warmup_sleep: int = Field(
+        1,
+        description='Time to sleep between warmup batches.',
+    )
 
     def get_executor(self) -> ParslPoolExecutor:
-        """Create an executor instance from the config."""
+        """Create an executor instance from the config.
+
+        Note:
+            If warmup is specified, in the config, this method blocks until
+            the executor is warm.
+        """
         options = self.model_dump(
-            exclude={'name', 'htex', 'monitoring'},
+            exclude={
+                'name',
+                'htex',
+                'monitoring',
+                'warmup',
+                'min_connected_nodes',
+                'warmup_batch_size',
+                'max_warmup_batches',
+                'warmup_sleep',
+            },
             exclude_none=True,
         )
 
@@ -143,7 +178,18 @@ class ParslHTExConfig(TapsExecutorConfig):
             initialize_logging=False,
             **options,
         )
-        return ParslPoolExecutor(config)
+        executor = ParslPoolExecutor(config)
+
+        if self.warmup:
+            warmup_executor(
+                executor,
+                self.min_connected_nodes,
+                self.warmup_batch_size,
+                self.max_warmup_batches,
+                self.warmup_sleep,
+            )
+
+        return executor
 
 
 class HTExConfig(BaseModel):

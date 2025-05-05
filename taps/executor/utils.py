@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import functools
 import itertools
+import logging
+import socket
 import sys
 import threading
+import time
 from concurrent.futures import Executor
 from concurrent.futures import Future
 from types import TracebackType
@@ -29,6 +32,8 @@ if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
 else:  # pragma: <3.11 cover
     from typing_extensions import Self
+
+logger = logging.getLogger(__name__)
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -260,3 +265,58 @@ class FutureDependencyExecutor(Executor):
             self.executor.shutdown(wait=wait, cancel_futures=cancel_futures)
         else:  # pragma: <3.9 cover
             self.executor.shutdown(wait=wait)
+
+
+def _warmup_task() -> str:
+    # Used internally by warmup_executor()
+    return socket.gethostname()
+
+
+def warmup_executor(
+    executor: Executor,
+    min_connected_nodes: int,
+    batch_size: int,
+    max_batches: int,
+    batch_sleep: int,
+) -> None:
+    """Warm up an executor until enough nodes are seen.
+
+    Submits a bag of tasks to the executor where each task returns the
+    hostname the task was executed on. Unique hostnames are used to identify
+    active nodes.
+
+    Args:
+        executor: Executor to warm up.
+        min_connected_nodes: Number of unique nodes necessary to consider
+            the executor warm.
+        batch_size: Number of tasks to submit.
+        max_batches: Number of iterations to try to warm nodes.
+        batch_sleep: Seconds to sleep between batches.
+
+    Raises:
+        RuntimeError: If `min_connected_nodes` nodes are not detected
+            within `max_batches` warmup iterations.
+    """
+    hosts = set()
+    for i in range(max_batches):
+        futures = [executor.submit(_warmup_task) for _ in range(batch_size)]
+        logger.info(
+            f'Submitting warmup batch of tasks (batch={i + 1}/{max_batches}, '
+            f'tasks={batch_size})',
+        )
+
+        for f in futures:
+            hosts.add(f.result())
+
+        if len(hosts) >= min_connected_nodes:
+            logger.info(f'Executor connected to {len(hosts)} node(s)')
+            logger.debug(f'Connected hosts: {hosts}')
+            return
+
+        time.sleep(batch_sleep)
+
+    raise RuntimeError(
+        f'Could not connect to {min_connected_nodes} nodes within '
+        f'{max_batches} warmup batches of {batch_size} tasks.'
+        f'Found {len(hosts)} unique nodes.',
+    )
