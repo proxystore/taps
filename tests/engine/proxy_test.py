@@ -10,6 +10,14 @@ from proxystore.store import get_store
 from proxystore.store import Store
 from proxystore.store.utils import get_key
 
+try:
+    from proxystore.proxy import ProxyResolveError
+except ImportError:  # pragma: no cover
+    # Only available in ProxyStore v0.8.2 and later
+    class ProxyResolveError(Exception):  # type: ignore[no-redef]
+        pass
+
+
 from taps.engine import Engine
 from taps.engine import TaskFuture
 
@@ -41,7 +49,7 @@ def test_proxy_unintentional_resolves(
         result = task.result()
 
         assert isinstance(result, Proxy)
-        with pytest.raises(RuntimeError):
+        with pytest.raises((ProxyResolveError, RuntimeError)):
             len(result)
 
 

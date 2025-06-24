@@ -20,7 +20,7 @@ class MapreduceConfig(AppConfig):
         description='Application name.',
     )
     data_dir: pathlib.Path = Field(description='Text file directory.')
-    map_tasks: Optional[int] = Field(  # noqa: UP007
+    map_tasks: Optional[int] = Field(  # noqa: UP045
         32,
         description=(
             'Maximum number of map tasks (`None` uses one '

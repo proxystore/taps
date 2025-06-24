@@ -41,7 +41,7 @@ class SyntheticConfig(AppConfig, use_enum_values=True):
     task_count: int = Field(description='Number of tasks in the workflow.')
     task_data_bytes: int = Field(0, description='Intermediate task data size.')
     task_sleep: float = Field(0, description='Minimum duration of each task.')
-    bag_max_running: Optional[int] = Field(  # noqa: UP007
+    bag_max_running: Optional[int] = Field(  # noqa: UP045
         None,
         description='Max running tasks in bag workflow.',
     )

@@ -163,7 +163,7 @@ class TaskInfo:
             ),
         },
     )
-    received_time: Optional[float] = field(  # noqa: UP007
+    received_time: Optional[float] = field(  # noqa: UP045
         default=None,
         metadata={
             'description': (
@@ -174,7 +174,7 @@ class TaskInfo:
             ),
         },
     )
-    success: Optional[bool] = field(  # noqa: UP007
+    success: Optional[bool] = field(  # noqa: UP045
         default=None,
         metadata={
             'description': (
@@ -183,11 +183,11 @@ class TaskInfo:
             ),
         },
     )
-    exception: Optional[ExceptionInfo] = field(  # noqa: UP007
+    exception: Optional[ExceptionInfo] = field(  # noqa: UP045
         default=None,
         metadata={'description': 'Task exception information.'},
     )
-    execution: Optional[ExecutionInfo] = field(  # noqa: UP007
+    execution: Optional[ExecutionInfo] = field(  # noqa: UP045
         default=None,
         metadata={'description': 'Task execution information.'},
     )

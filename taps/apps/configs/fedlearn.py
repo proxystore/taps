@@ -64,7 +64,7 @@ class FedlearnConfig(AppConfig, use_enum_values=True):
         True,
         description='Evaluate the global model on test data after each round.',
     )
-    seed: Optional[int] = Field(None, description='Random seed.')  # noqa: UP007
+    seed: Optional[int] = Field(None, description='Random seed.')  # noqa: UP045
 
     @field_validator('dataset', mode='before')
     @classmethod

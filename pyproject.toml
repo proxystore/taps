@@ -178,6 +178,8 @@ extend-ignore = [
     # However, coverage marks unfinished generators as not covered and
     # all/any can early exit before exhausting the generator.
     "C419",
+    # Allow imports not at top of file. Needed for parsl apps.
+    "PLC0415",
     # Allow pytest.raises() without match
     "PT011",
     # Allow nested contexts

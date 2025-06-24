@@ -45,7 +45,7 @@ class ParslLocalConfig(TapsExecutorConfig):
         'parsl-local',
         description='Executor name.',
     )
-    workers: Optional[int] = Field(  # noqa: UP007
+    workers: Optional[int] = Field(  # noqa: UP045
         None,
         description='Maximum number of parsl workers.',
     )
@@ -99,7 +99,7 @@ class ParslHTExConfig(TapsExecutorConfig):
     htex: Union[HTExConfig, Dict[str, HTExConfig]] = Field(  # noqa: UP006,UP007
         description='HTEx configuration.',
     )
-    app_cache: Optional[bool] = Field(  # noqa: UP007
+    app_cache: Optional[bool] = Field(  # noqa: UP045
         None,
         description='Enable app caching.',
     )
@@ -107,15 +107,15 @@ class ParslHTExConfig(TapsExecutorConfig):
         0,
         description='Number of task retries in case of task failure.',
     )
-    strategy: Optional[str] = Field(  # noqa: UP007
+    strategy: Optional[str] = Field(  # noqa: UP045
         None,
         description='Block scaling strategy.',
     )
-    max_idletime: Optional[float] = Field(  # noqa: UP007
+    max_idletime: Optional[float] = Field(  # noqa: UP045
         None,
         description='Idle time before strategy can shutdown unused blocks.',
     )
-    monitoring: Optional[MonitoringConfig] = Field(  # noqa: UP007
+    monitoring: Optional[MonitoringConfig] = Field(  # noqa: UP045
         None,
         description='Database monitoring configuration.',
     )
@@ -211,30 +211,30 @@ class HTExConfig(BaseModel):
     model_config = ConfigDict(extra='allow')
 
     label: str = Field('taps-htex', description='Executor label.')
-    provider: Optional[ProviderConfig] = Field(  # noqa: UP007
+    provider: Optional[ProviderConfig] = Field(  # noqa: UP045
         None,
         description='Configuration for the compute resource provider.',
     )
-    address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007
+    address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007,UP045
         None,
         description='Address to connect to the main Parsl process.',
     )
-    manager_selector: Optional[ManagerSelectorConfig] = Field(  # noqa: UP007
+    manager_selector: Optional[ManagerSelectorConfig] = Field(  # noqa: UP045
         None,
         description=(
             'Configuration for the manager selector (available in '
             'Parsl v2024.8.5 and later).'
         ),
     )
-    worker_ports: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
+    worker_ports: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
         None,
         description='Ports used by workers to connect to Parsl',
     )
-    worker_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
+    worker_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
         None,
         description='Range of ports to choose worker ports from.',
     )
-    interchange_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
+    interchange_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
         None,
         description='Ports used by Parsl to connect to interchange.',
     )
@@ -347,7 +347,7 @@ class ProviderConfig(BaseModel):
     model_config = ConfigDict(extra='allow')
 
     kind: str = Field(description='Execution provider class name')
-    launcher: Optional[LauncherConfig] = Field(  # noqa: UP007
+    launcher: Optional[LauncherConfig] = Field(  # noqa: UP045
         None,
         description='Launcher configuration.',
     )
@@ -522,11 +522,11 @@ class MonitoringConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
-    hub_address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007
+    hub_address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007,UP045
         None,
         description='Address to connect to the monitoring hub.',
     )
-    hub_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP007
+    hub_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
         None,
         description='Port range for a ZMQ channel from executor process.',
     )

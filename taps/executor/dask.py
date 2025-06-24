@@ -150,7 +150,7 @@ class DaskDistributedConfig(ExecutorConfig):
     """[`DaskDistributedExecutor`][taps.executor.dask.DaskDistributedExecutor] plugin configuration."""  # noqa: E501
 
     name: Literal['dask'] = Field('dask', description='Executor name.')
-    scheduler: Optional[str] = Field(  # noqa: UP007
+    scheduler: Optional[str] = Field(  # noqa: UP045
         None,
         description='Dask scheduler address.',
     )
@@ -158,7 +158,7 @@ class DaskDistributedConfig(ExecutorConfig):
         False,
         description='Use threads instead of processes for dask workers.',
     )
-    workers: Optional[int] = Field(  # noqa: UP007
+    workers: Optional[int] = Field(  # noqa: UP045
         None,
         description='Maximum number of dask workers.',
     )
@@ -166,14 +166,14 @@ class DaskDistributedConfig(ExecutorConfig):
         True,
         description='Configure if workers are daemon.',
     )
-    wait_for_workers: Optional[int] = Field(  # noqa: UP007
+    wait_for_workers: Optional[int] = Field(  # noqa: UP045
         None,
         description=(
             'Wait for N workers to connect before starting. '
             'Useful when connecting to a remote scheduler.'
         ),
     )
-    wait_for_workers_timeout: Optional[float] = Field(  # noqa: UP007
+    wait_for_workers_timeout: Optional[float] = Field(  # noqa: UP045
         None,
         description='Timeout (seconds) for waiting for workers to connect.',
     )
