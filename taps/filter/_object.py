@@ -150,7 +150,7 @@ class ObjectTypeFilterConfig(FilterConfig):
         'object-type',
         description='Filter name.',
     )
-    patterns: Optional[List[str]] = Field(  # noqa: UP006,UP007
+    patterns: Optional[List[str]] = Field(  # noqa: UP006,UP045
         None,
         description='List of patterns to match against type names.',
     )

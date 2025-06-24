@@ -38,10 +38,10 @@ class Hardware:
     """Hardware information."""
 
     architecture: str = field(metadata={'description': 'CPU architecture.'})
-    physical_cores: Optional[int] = field(  # noqa: UP007
+    physical_cores: Optional[int] = field(  # noqa: UP045
         metadata={'description': 'CPU physical core count.'},
     )
-    logical_cores: Optional[int] = field(  # noqa: UP007
+    logical_cores: Optional[int] = field(  # noqa: UP045
         metadata={'description': 'CPU logical core count.'},
     )
     memory_capacity: float = field(

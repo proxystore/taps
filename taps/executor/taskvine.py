@@ -226,7 +226,7 @@ class TaskVineConfig(ExecutorConfig):
         1,
         description='Number of cores per task.',
     )
-    cores_per_worker: Optional[int] = Field(  # noqa: UP007
+    cores_per_worker: Optional[int] = Field(  # noqa: UP045
         None,
         description='Number of cores per worker.',
     )

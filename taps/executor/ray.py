@@ -140,11 +140,11 @@ class RayConfig(ExecutorConfig):
     """[`RayExecutor`][taps.executor.ray.RayExecutor] plugin configuration."""
 
     name: Literal['ray'] = Field('ray', description='Executor name.')
-    address: Optional[str] = Field(  # noqa: UP007
+    address: Optional[str] = Field(  # noqa: UP045
         'local',
         description='Ray scheduler address (default spawns local cluster).',
     )
-    num_cpus: Optional[int] = Field(  # noqa: UP007,
+    num_cpus: Optional[int] = Field(  # noqa: UP045,
         None,
         description='Maximum number of CPUs that ray will use.',
     )

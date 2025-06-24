@@ -39,11 +39,11 @@ class LoggingConfig(BaseModel):
         'INFO',
         description='Minimum logging level for stdout.',
     )
-    file_level: Optional[Union[int, str]] = Field(  # noqa: UP007
+    file_level: Optional[Union[int, str]] = Field(  # noqa: UP007,UP045
         None,
         description='Override logging level for the log file.',
     )
-    file_name: Optional[str] = Field(  # noqa: UP007
+    file_name: Optional[str] = Field(  # noqa: UP045
         'log.txt',
         description='Logging file name.',
     )
@@ -61,12 +61,12 @@ class RunConfig(BaseModel):
     )
 
     if sys.version_info < (3, 9):  # pragma: <3.9 cover
-        env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP007
+        env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP045
             None,
             description='Environment variables to set during benchmarking.',
         )
     else:  # pragma: >=3.9 cover
-        env_vars: Optional[dict[str, str]] = Field(  # noqa: UP007
+        env_vars: Optional[dict[str, str]] = Field(  # noqa: UP045
             None,
             description='Environment variables to set during benchmarking.',
         )
@@ -116,6 +116,8 @@ class Config(BaseSettings):
             and self.run == other.run
             and self.version == other.version
         )
+
+    __hash__ = BaseSettings.__hash__
 
     @classmethod
     def from_toml(cls, filepath: str | pathlib.Path) -> Config:

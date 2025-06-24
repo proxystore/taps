@@ -27,7 +27,7 @@ class PhysicsConfig(AppConfig):
     tick_rate: int = Field(240, description='Simulation steps per seconds.')
     total_time: int = Field(10, description='Simulation runtime in seconds.')
     real_time: bool = Field(True, description='Simulate at real time.')
-    seed: Optional[int] = Field(None, description='Random seed.')  # noqa: UP007
+    seed: Optional[int] = Field(None, description='Random seed.')  # noqa: UP045
     terrain_width: int = Field(
         20,
         description='Terrain width/length in meters.',

@@ -25,7 +25,7 @@ class ProcessPoolConfig(ExecutorConfig):
         multiprocessing.cpu_count(),
         description='Maximum number of processes.',
     )
-    context: Optional[  # noqa: UP007
+    context: Optional[  # noqa: UP045
         Literal['fork', 'spawn', 'forkserver']
     ] = Field(
         None,

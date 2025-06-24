@@ -22,15 +22,15 @@ class EngineConfig(BaseModel):
         default_factory=ProcessPoolConfig,
         description='Executor configuration.',
     )
-    filter: Optional[FilterConfig] = Field(  # noqa: UP007
+    filter: Optional[FilterConfig] = Field(  # noqa: UP045
         default=None,
         description='Filter configuration.',
     )
-    transformer: Optional[TransformerConfig] = Field(  # noqa: UP007
+    transformer: Optional[TransformerConfig] = Field(  # noqa: UP045
         default=None,
         description='Transformer configuration.',
     )
-    task_record_file_name: Optional[str] = Field(  # noqa: UP007
+    task_record_file_name: Optional[str] = Field(  # noqa: UP045
         'tasks.jsonl',
         description='Name of line-delimted JSON file to log task records to.',
     )
@@ -54,6 +54,8 @@ class EngineConfig(BaseModel):
             and self.transformer == other.transformer
             and self.task_record_file_name == other.task_record_file_name
         )
+
+    __hash__ = BaseModel.__hash__
 
     def get_engine(self) -> Engine:
         """Create an engine from the configuration."""

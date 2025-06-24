@@ -22,7 +22,7 @@ class Client(BaseModel):
 
     idx: int = Field(description='Client ID.')
     model: torch.nn.Module = Field(description='Client local model.')
-    data: Optional[Subset] = Field(  # noqa: UP007
+    data: Optional[Subset] = Field(  # noqa: UP045
         description='Subset of data this client will train on.',
     )
 
