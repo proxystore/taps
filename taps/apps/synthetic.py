@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-import os
 import pathlib
 import random
 import sys
@@ -35,9 +34,6 @@ class Data:
 def generate_data(size: int) -> Data:
     """Get random data of specified size.
 
-    Uses `random.randbytes()` in Python 3.9 or newer and
-    `os.urandom()` in Python 3.8 and older.
-
     Note:
         This class returns a `Data` object rather than a bytestring directly.
         This indirection is because some serializers skip [`bytes`][bytes]
@@ -51,11 +47,7 @@ def generate_data(size: int) -> Data:
     Returns:
         random data.
     """
-    max_bytes = int(1e9)
-    if sys.version_info >= (3, 9) and size < max_bytes:  # pragma: >=3.9 cover
-        raw = random.randbytes(size)
-    else:  # pragma: <3.9 cover
-        raw = os.urandom(size)
+    raw = random.randbytes(size)
     return Data(raw)
 
 
