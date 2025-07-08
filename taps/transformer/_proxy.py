@@ -30,7 +30,7 @@ from taps.plugins import register
 from taps.transformer._protocol import TransformerConfig
 
 T = TypeVar('T')
-JSON = Union[int, float, str, Dict[str, 'JSON']]
+JSON = Union[int, float, str, Dict[str, 'JSON']]  # noqa: UP006
 _PROXYSTORE_DIR = 'proxystore'
 _PROXYSTORE_AGGREGATE_FILE = 'aggregated.json'
 _PROXYSTORE_STATS_FILE = 'stats.jsonl'

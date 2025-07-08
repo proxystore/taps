@@ -259,12 +259,9 @@ class FutureDependencyExecutor(Executor):
         Args:
             wait: Wait on all pending futures to complete.
             cancel_futures: Cancel all pending futures that the executor
-                has not started running. Only used in Python 3.9 and later.
+                has not started running.
         """
-        if sys.version_info >= (3, 9):  # pragma: >=3.9 cover
-            self.executor.shutdown(wait=wait, cancel_futures=cancel_futures)
-        else:  # pragma: <3.9 cover
-            self.executor.shutdown(wait=wait)
+        self.executor.shutdown(wait=wait, cancel_futures=cancel_futures)
 
 
 def _warmup_task() -> str:

@@ -19,7 +19,7 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 
-Record: TypeAlias = Dict[str, Any]
+Record: TypeAlias = Dict[str, Any]  # noqa: UP006
 """Record type."""
 
 

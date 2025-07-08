@@ -11,7 +11,7 @@ else:  # pragma: <3.10 cover
     from typing_extensions import TypeAlias
 
 
-Result: TypeAlias = Dict[str, Any]
+Result: TypeAlias = Dict[str, Any]  # noqa: UP006
 """Result type for each FL epoch, round, and task."""
 
 

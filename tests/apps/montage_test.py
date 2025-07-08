@@ -137,18 +137,22 @@ fitshdr
 image.fits
 """)
 
-    with mock.patch(
-        'taps.apps.montage.moverlaps',
-        autospec=True,
-        return_value=diffs_tbl,
-    ), mock.patch(
-        'taps.apps.montage.bgexec_prep',
-        autospec=True,
-        return_value=corrections_tbl,
-    ), mock.patch(
-        'taps.apps.montage.mimgtbl',
-        autospec=True,
-        return_value=img_tbl,
+    with (
+        mock.patch(
+            'taps.apps.montage.moverlaps',
+            autospec=True,
+            return_value=diffs_tbl,
+        ),
+        mock.patch(
+            'taps.apps.montage.bgexec_prep',
+            autospec=True,
+            return_value=corrections_tbl,
+        ),
+        mock.patch(
+            'taps.apps.montage.mimgtbl',
+            autospec=True,
+            return_value=img_tbl,
+        ),
     ):
         app.run(engine, tmp_path)
 

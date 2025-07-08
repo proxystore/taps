@@ -226,9 +226,9 @@ class HTExConfig(BaseModel):
             'Parsl v2024.8.5 and later).'
         ),
     )
-    worker_ports: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
+    worker_port: Optional[int] = Field(  # noqa: UP045
         None,
-        description='Ports used by workers to connect to Parsl',
+        description='Port used by workers to connect to Parsl',
     )
     worker_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
         None,

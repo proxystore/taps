@@ -66,7 +66,7 @@ def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
         ),
         address=AddressConfig(kind='address_by_hostname'),
         manager_selector=manager_selector,
-        worker_ports=[0, 0],
+        worker_port=0,
         worker_port_range=[0, 0],
         interchange_port_range=[0, 0],
     )
@@ -193,7 +193,7 @@ def test_htex_config() -> None:
             queue='debug',
         ),
         address=AddressConfig(kind='address_by_hostname'),
-        worker_ports=[0, 0],
+        worker_port=0,
         worker_port_range=[0, 0],
         interchange_port_range=[0, 0],
     )

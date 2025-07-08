@@ -115,7 +115,7 @@ strategy = "none"
 run_dir = "{tmp_path / 'parsl'!s}"
 
 [engine.executor.htex]
-worker_ports = [0, 0]
+worker_ports = 0
 max_workers_per_node = 4
 cores_per_worker = 2
 
