@@ -22,7 +22,7 @@ classifiers = [
 dependencies = [
     "dask[distributed]",
     "globus-compute-sdk",
-    "parsl",
+    "parsl>=2025.07.07",
     "proxystore>=0.7.0",
     "psutil",
     "pydantic>=2,<2.10 ; python_version<'3.9'",
