@@ -59,17 +59,10 @@ class RunConfig(BaseModel):
             '"{executor}" for formatting).'
         ),
     )
-
-    if sys.version_info < (3, 9):  # pragma: <3.9 cover
-        env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP045
-            None,
-            description='Environment variables to set during benchmarking.',
-        )
-    else:  # pragma: >=3.9 cover
-        env_vars: Optional[dict[str, str]] = Field(  # noqa: UP045
-            None,
-            description='Environment variables to set during benchmarking.',
-        )
+    env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP045
+        None,
+        description='Environment variables to set during benchmarking.',
+    )
 
 
 class Config(BaseSettings):

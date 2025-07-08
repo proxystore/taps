@@ -171,8 +171,8 @@ select = [
 extend-ignore = [
     # Do not require docstrings for modules, packages, magic methods, or __init__ methods
     "D100", "D104", "D105", "D107",
-    # Allow builtin attribute and module shadowing
-    "A003", "A005",
+    # Allow builtin attribute shadowing
+    "A003",
     # Ruff will change all([generator]) to all(generator) because the all/any
     # generator expressions directly and the list comprehension is not needed.
     # However, coverage marks unfinished generators as not covered and
@@ -184,6 +184,8 @@ extend-ignore = [
     "PT011",
     # Allow nested contexts
     "SIM117",
+    # Allow deprecated import
+    "UP035",
 ]
 
 [tool.ruff.lint.flake8-pytest-style]

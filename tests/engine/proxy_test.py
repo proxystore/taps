@@ -77,13 +77,16 @@ def test_proxy_resolve_count(
 ) -> None:
     executor = request.getfixturevalue(executor_fixture)
 
-    with Store(
-        'test-proxy-resolve-count',
-        FileConnector(str(tmp_path)),
-        metrics=True,
-        populate_target=True,
-        register=True,
-    ) as store, Engine(executor) as engine:
+    with (
+        Store(
+            'test-proxy-resolve-count',
+            FileConnector(str(tmp_path)),
+            metrics=True,
+            populate_target=True,
+            register=True,
+        ) as store,
+        Engine(executor) as engine,
+    ):
         value = 'test-value'
         proxy = store.proxy(value)
         task = engine.submit(check, proxy, size=len(value))
