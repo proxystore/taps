@@ -19,8 +19,8 @@ def test_validate_rate() -> None:
     with pytest.raises(
         ValidationError,
         match=(
-            "Option 'bag_max_running' must be specified when "
-            "'bag' is specified."
+            r"Option 'bag_max_running' must be specified when "
+            r"'bag' is specified."
         ),
     ):
         SyntheticConfig(structure='bag', task_count=3)

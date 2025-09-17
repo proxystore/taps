@@ -26,5 +26,5 @@ def test_simple_failures(
     exc_type: type[Exception],
 ) -> None:
     function = FAILURE_FUNCTIONS[failure_type]
-    with pytest.raises(exc_type, match='Failure injection error.'):
+    with pytest.raises(exc_type, match=r'Failure injection error.'):
         function()

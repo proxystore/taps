@@ -142,7 +142,7 @@ def create_terrain_plot(
     x, y = numpy.meshgrid(x, y)
 
     for ax, positions in zip(axs, (initial_positions, final_positions)):
-        px, py, pz = zip(*positions)
+        px, py, _ = zip(*positions)
         xy = numpy.vstack([px, py])
         kde = gaussian_kde(xy)(xy)
         kde_grid = numpy.zeros_like(heightmap)
