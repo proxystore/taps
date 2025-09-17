@@ -27,7 +27,7 @@ def test_get_transformer_configs() -> None:
 
 
 def test_register_bad_kind() -> None:
-    with pytest.raises(ValueError, match='Unknown plugin type "test".'):
+    with pytest.raises(ValueError, match=r'Unknown plugin type "test".'):
         register('test')(BaseModel)  # type: ignore[arg-type]
 
 

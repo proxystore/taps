@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import re
-
 import pytest
 from pydantic import ValidationError
 
@@ -21,7 +19,7 @@ def test_create_app() -> None:
 def test_validate_base_app() -> None:
     with pytest.raises(
         ValidationError,
-        match='Base app named "fake-app" is unknown.',
+        match=r'Base app named "fake-app" is unknown.',
     ):
         FailureInjectionConfig(base='fake-app')
 
@@ -29,6 +27,6 @@ def test_validate_base_app() -> None:
 def test_validate_rate() -> None:
     with pytest.raises(
         ValidationError,
-        match=re.escape('Failure rate must be in the range [0, 1]. Got 2.1.'),
+        match=r'Failure rate must be in the range \[0, 1\]. Got 2.1.',
     ):
         FailureInjectionConfig(base='mock-app', failure_rate=2.1)

@@ -15,7 +15,7 @@ def test_create_app() -> None:
 def test_validation_error() -> None:
     with pytest.raises(
         ValidationError,
-        match='The matrix size and block size must be greater than 0.',
+        match=r'The matrix size and block size must be greater than 0.',
     ):
         CholeskyConfig(matrix_size=-1, block_size=5)
 

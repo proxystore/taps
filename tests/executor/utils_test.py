@@ -51,7 +51,7 @@ def test_dag_executor_shutdown(thread_executor: ThreadPoolExecutor) -> None:
 def test_dag_executor_map_value_error(
     executor: FutureDependencyExecutor,
 ) -> None:
-    with pytest.raises(ValueError, match='chunksize must be >= 1.'):
+    with pytest.raises(ValueError, match=r'chunksize must be >= 1.'):
         executor.map(abs, [], chunksize=0)
 
 
