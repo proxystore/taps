@@ -144,4 +144,5 @@ ifname = "bond0"
         config.engine.executor.htex,  # type: ignore[attr-defined]
         'get_executor',
     ):
-        config.engine.executor.get_executor()
+        with config.engine.executor.get_executor():
+            pass
