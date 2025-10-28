@@ -46,8 +46,8 @@ def mock_monitoring() -> Generator[mock.MagicMock, None, None]:
 def test_get_local_executor(tmp_path: pathlib.Path) -> None:
     run_dir = str(tmp_path / 'parsl')
     config = ParslLocalConfig(run_dir=run_dir)
-    executor = config.get_executor()
-    assert isinstance(executor, Executor)
+    with config.get_executor() as executor:
+        assert isinstance(executor, Executor)
 
 
 def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
@@ -197,9 +197,12 @@ def test_htex_config() -> None:
         worker_port_range=[0, 0],
         interchange_port_range=[0, 0],
     )
-    assert isinstance(config.get_executor(), HighThroughputExecutor)
+
+    with config.get_executor() as executor:
+        assert isinstance(executor, HighThroughputExecutor)
 
 
 def test_htex_config_default() -> None:
     config = HTExConfig()
-    assert isinstance(config.get_executor(), HighThroughputExecutor)
+    with config.get_executor() as executor:
+        assert isinstance(executor, HighThroughputExecutor)
