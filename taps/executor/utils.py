@@ -17,16 +17,12 @@ from typing import Generic
 from typing import Iterable
 from typing import Iterator
 from typing import Mapping
+from typing import ParamSpec
 from typing import Sequence
 from typing import TypeVar
 
 from taps.future import FutureProtocol
 from taps.logging import get_repr
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -43,7 +39,7 @@ def _get_chunks(
     *iterables: Iterable[T],
     chunksize: int,
 ) -> Generator[tuple[tuple[T, ...], ...], None, None]:
-    it = zip(*iterables)
+    it = zip(*iterables, strict=False)
     while True:
         chunk = tuple(itertools.islice(it, chunksize))
         if not chunk:
@@ -207,6 +203,7 @@ class FutureDependencyExecutor(Executor):
         *iterables: Iterable[Any],
         timeout: float | None = None,
         chunksize: int = 1,
+        buffersize: int | None = None,
     ) -> Iterator[T]:
         """Map a function onto iterables of arguments.
 
@@ -219,6 +216,7 @@ class FutureDependencyExecutor(Executor):
             chunksize: If greater than one, the iterables will be chopped into
                 chunks of size chunksize and submitted to the executor. If set
                 to one, the items in the list will be sent one at a time.
+            buffersize: Ignored.
 
         Returns:
             An iterator equivalent to: `map(func, *iterables)` but the calls \

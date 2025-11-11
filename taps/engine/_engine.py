@@ -18,13 +18,9 @@ from typing import Generator
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
+from typing import ParamSpec
 from typing import Sequence
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -336,7 +332,10 @@ class Engine:
         if timeout is not None:
             end_time = timeout + time.monotonic()
 
-        tasks = [self.submit(function, *args) for args in zip(*iterables)]
+        tasks = [
+            self.submit(function, *args)
+            for args in zip(*iterables, strict=False)
+        ]
 
         # Yield must be hidden in closure so that the futures are submitted
         # before the first iterator value is required.

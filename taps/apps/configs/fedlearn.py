@@ -3,7 +3,6 @@ from __future__ import annotations
 import pathlib
 from typing import Any
 from typing import Literal
-from typing import Optional
 
 from pydantic import Field
 from pydantic import field_validator
@@ -64,7 +63,7 @@ class FedlearnConfig(AppConfig, use_enum_values=True):
         True,
         description='Evaluate the global model on test data after each round.',
     )
-    seed: Optional[int] = Field(None, description='Random seed.')  # noqa: UP045
+    seed: int | None = Field(None, description='Random seed.')
 
     @field_validator('dataset', mode='before')
     @classmethod

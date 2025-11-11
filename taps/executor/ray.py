@@ -1,18 +1,12 @@
 from __future__ import annotations
 
-import sys
 from concurrent.futures import Executor
 from concurrent.futures import Future
 from typing import Any
 from typing import Callable
 from typing import Literal
-from typing import Optional
+from typing import ParamSpec
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 try:
     import ray
@@ -140,11 +134,11 @@ class RayConfig(ExecutorConfig):
     """[`RayExecutor`][taps.executor.ray.RayExecutor] plugin configuration."""
 
     name: Literal['ray'] = Field('ray', description='Executor name.')
-    address: Optional[str] = Field(  # noqa: UP045
+    address: str | None = Field(
         'local',
         description='Ray scheduler address (default spawns local cluster).',
     )
-    num_cpus: Optional[int] = Field(  # noqa: UP045,
+    num_cpus: int | None = Field(
         None,
         description='Maximum number of CPUs that ray will use.',
     )

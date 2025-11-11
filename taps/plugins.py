@@ -1,15 +1,10 @@
 from __future__ import annotations
 
-import sys
 from typing import Callable
 from typing import Literal
 from typing import TYPE_CHECKING
+from typing import TypeAlias
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import TypeAlias
-else:  # pragma: <3.10 cover
-    from typing_extensions import TypeAlias
 
 from pydantic import BaseModel
 

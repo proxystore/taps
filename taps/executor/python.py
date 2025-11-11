@@ -4,7 +4,6 @@ import multiprocessing
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
 from typing import Literal
-from typing import Optional
 
 from pydantic import Field
 
@@ -25,9 +24,7 @@ class ProcessPoolConfig(ExecutorConfig):
         multiprocessing.cpu_count(),
         description='Maximum number of processes.',
     )
-    context: Optional[  # noqa: UP045
-        Literal['fork', 'spawn', 'forkserver']
-    ] = Field(
+    context: Literal['fork', 'spawn', 'forkserver'] | None = Field(
         None,
         description=(
             'Multiprocessing start method (one of fork, spawn, or forkserver).'

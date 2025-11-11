@@ -5,13 +5,8 @@ import pathlib
 import sys
 from types import TracebackType
 from typing import Any
-from typing import Dict
 from typing import Protocol
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import TypeAlias
-else:  # pragma: <3.10 cover
-    from typing_extensions import TypeAlias
+from typing import TypeAlias
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -19,7 +14,7 @@ else:  # pragma: <3.11 cover
     from typing_extensions import Self
 
 
-Record: TypeAlias = Dict[str, Any]  # noqa: UP006
+Record: TypeAlias = dict[str, Any]
 """Record type."""
 
 

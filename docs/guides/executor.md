@@ -29,12 +29,8 @@ from concurrent.futures import Future
 from typing import Callable
 from typing import Iterable
 from typing import Iterator
+from typing import ParamSpec
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 P = ParamSpec('P')
 T = TypeVar('T')
@@ -133,12 +129,8 @@ from typing import Callable
 from typing import Iterable
 from typing import Iterator
 from typing import Literal
+from typing import ParamSpec
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 from pydantic import Field
 

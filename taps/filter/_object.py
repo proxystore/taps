@@ -5,9 +5,7 @@ import pickle
 import re
 import sys
 from typing import Any
-from typing import List
 from typing import Literal
-from typing import Optional
 from typing import Sequence
 
 from pydantic import Field
@@ -150,7 +148,7 @@ class ObjectTypeFilterConfig(FilterConfig):
         'object-type',
         description='Filter name.',
     )
-    patterns: Optional[List[str]] = Field(  # noqa: UP006,UP045
+    patterns: list[str] | None = Field(
         None,
         description='List of patterns to match against type names.',
     )
