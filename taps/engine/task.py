@@ -3,23 +3,16 @@ from __future__ import annotations
 import dataclasses
 import functools
 import socket
-import sys
 import time
 from dataclasses import field
 from typing import Any
 from typing import Callable
 from typing import Generic
-from typing import List
-from typing import Optional
 from typing import overload
+from typing import ParamSpec
 from typing import Protocol
 from typing import runtime_checkable
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 from taps.engine.transform import TaskTransformer
 
@@ -147,7 +140,7 @@ class TaskInfo:
             ),
         },
     )
-    parent_task_ids: List[str] = field(  # noqa: UP006
+    parent_task_ids: list[str] = field(
         metadata={
             'description': (
                 'UUIDs of parent tasks. A task is a child task if its '
@@ -163,7 +156,7 @@ class TaskInfo:
             ),
         },
     )
-    received_time: Optional[float] = field(  # noqa: UP045
+    received_time: float | None = field(
         default=None,
         metadata={
             'description': (
@@ -174,7 +167,7 @@ class TaskInfo:
             ),
         },
     )
-    success: Optional[bool] = field(  # noqa: UP045
+    success: bool | None = field(
         default=None,
         metadata={
             'description': (
@@ -183,11 +176,11 @@ class TaskInfo:
             ),
         },
     )
-    exception: Optional[ExceptionInfo] = field(  # noqa: UP045
+    exception: ExceptionInfo | None = field(
         default=None,
         metadata={'description': 'Task exception information.'},
     )
-    execution: Optional[ExecutionInfo] = field(  # noqa: UP045
+    execution: ExecutionInfo | None = field(
         default=None,
         metadata={'description': 'Task execution information.'},
     )

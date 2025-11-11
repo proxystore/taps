@@ -1,17 +1,10 @@
 from __future__ import annotations
 
 import enum
-import sys
 from typing import Any
-from typing import Dict
+from typing import TypeAlias
 
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import TypeAlias
-else:  # pragma: <3.10 cover
-    from typing_extensions import TypeAlias
-
-
-Result: TypeAlias = Dict[str, Any]  # noqa: UP006
+Result: TypeAlias = dict[str, Any]
 """Result type for each FL epoch, round, and task."""
 
 

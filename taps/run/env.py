@@ -9,7 +9,6 @@ import platform
 import sys
 from dataclasses import field
 from typing import Any
-from typing import Optional
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -38,10 +37,10 @@ class Hardware:
     """Hardware information."""
 
     architecture: str = field(metadata={'description': 'CPU architecture.'})
-    physical_cores: Optional[int] = field(  # noqa: UP045
+    physical_cores: int | None = field(
         metadata={'description': 'CPU physical core count.'},
     )
-    logical_cores: Optional[int] = field(  # noqa: UP045
+    logical_cores: int | None = field(
         metadata={'description': 'CPU logical core count.'},
     )
     memory_capacity: float = field(

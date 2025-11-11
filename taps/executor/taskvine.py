@@ -10,13 +10,8 @@ from typing import Generator
 from typing import Iterable
 from typing import Iterator
 from typing import Literal
-from typing import Optional
+from typing import ParamSpec
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 from pydantic import Field
 
@@ -204,7 +199,10 @@ class TaskVineExecutor(FuturesExecutor):  # pragma: no cover
         if timeout is not None:
             end_time = timeout + time.monotonic()
 
-        futures = [self.submit(function, *args) for args in zip(*iterables)]
+        futures = [
+            self.submit(function, *args)
+            for args in zip(*iterables, strict=False)
+        ]
 
         def _result_iterator() -> Generator[R, None, None]:
             futures.reverse()
@@ -226,7 +224,7 @@ class TaskVineConfig(ExecutorConfig):
         1,
         description='Number of cores per task.',
     )
-    cores_per_worker: Optional[int] = Field(  # noqa: UP045
+    cores_per_worker: int | None = Field(
         None,
         description='Number of cores per worker.',
     )

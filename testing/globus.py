@@ -1,18 +1,13 @@
 from __future__ import annotations
 
 import contextlib
-import sys
 from concurrent.futures import Future
 from typing import Any
 from typing import Callable
 from typing import Generator
+from typing import ParamSpec
 from typing import TypeVar
 from unittest import mock
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 import globus_compute_sdk
 

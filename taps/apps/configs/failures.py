@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import sys
 from typing import Any
-from typing import Dict
 from typing import Literal
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
@@ -29,7 +28,7 @@ class FailureInjectionConfig(AppConfig, use_enum_values=True):
         description='Application name.',
     )
     base: str = Field(description='Base app to inject failures into.')
-    config: Dict[str, Any] = Field(  # noqa: UP006
+    config: dict[str, Any] = Field(
         default_factory=dict,
         description='Base app configuration.',
     )

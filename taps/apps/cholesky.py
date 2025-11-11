@@ -4,12 +4,7 @@ from __future__ import annotations
 
 import logging
 import pathlib
-import sys
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import TypeAlias
-else:  # pragma: <3.10 cover
-    from typing_extensions import TypeAlias
+from typing import TypeAlias
 
 import numpy
 from numpy.typing import NDArray

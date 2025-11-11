@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-import sys
 from concurrent.futures import Executor
 from concurrent.futures import Future
 from typing import Any
@@ -10,13 +9,8 @@ from typing import Generator
 from typing import Iterable
 from typing import Iterator
 from typing import Literal
-from typing import Optional
+from typing import ParamSpec
 from typing import TypeVar
-
-if sys.version_info >= (3, 10):  # pragma: >=3.10 cover
-    from typing import ParamSpec
-else:  # pragma: <3.10 cover
-    from typing_extensions import ParamSpec
 
 import dask
 from dask.distributed import Client
@@ -95,6 +89,7 @@ class DaskDistributedExecutor(Executor):
         *iterables: Iterable[Any],
         timeout: float | None = None,
         chunksize: int = 1,
+        buffersize: int | None = None,
     ) -> Iterator[T]:
         """Map a function onto iterables of arguments.
 
@@ -105,6 +100,7 @@ class DaskDistributedExecutor(Executor):
             timeout: The maximum number of seconds to wait. If None, then there
                 is no limit on the wait time.
             chunksize: Sets the Dask batch size.
+            buffersize: Ignored.
 
         Returns:
             An iterator equivalent to: `map(func, *iterables)` but the calls \
@@ -150,7 +146,7 @@ class DaskDistributedConfig(ExecutorConfig):
     """[`DaskDistributedExecutor`][taps.executor.dask.DaskDistributedExecutor] plugin configuration."""  # noqa: E501
 
     name: Literal['dask'] = Field('dask', description='Executor name.')
-    scheduler: Optional[str] = Field(  # noqa: UP045
+    scheduler: str | None = Field(
         None,
         description='Dask scheduler address.',
     )
@@ -158,7 +154,7 @@ class DaskDistributedConfig(ExecutorConfig):
         False,
         description='Use threads instead of processes for dask workers.',
     )
-    workers: Optional[int] = Field(  # noqa: UP045
+    workers: int | None = Field(
         None,
         description='Maximum number of dask workers.',
     )
@@ -166,14 +162,14 @@ class DaskDistributedConfig(ExecutorConfig):
         True,
         description='Configure if workers are daemon.',
     )
-    wait_for_workers: Optional[int] = Field(  # noqa: UP045
+    wait_for_workers: int | None = Field(
         None,
         description=(
             'Wait for N workers to connect before starting. '
             'Useful when connecting to a remote scheduler.'
         ),
     )
-    wait_for_workers_timeout: Optional[float] = Field(  # noqa: UP045
+    wait_for_workers_timeout: float | None = Field(
         None,
         description='Timeout (seconds) for waiting for workers to connect.',
     )

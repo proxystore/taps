@@ -4,9 +4,6 @@ import pathlib
 import sys
 from datetime import datetime
 from typing import Any
-from typing import Dict
-from typing import Optional
-from typing import Union
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     import tomllib
@@ -35,15 +32,15 @@ from taps.transformer import TransformerConfig
 class LoggingConfig(BaseModel):
     """Logging configuration."""
 
-    level: Union[int, str] = Field(  # noqa: UP007
+    level: int | str = Field(
         'INFO',
         description='Minimum logging level for stdout.',
     )
-    file_level: Optional[Union[int, str]] = Field(  # noqa: UP007,UP045
+    file_level: int | str | None = Field(
         None,
         description='Override logging level for the log file.',
     )
-    file_name: Optional[str] = Field(  # noqa: UP045
+    file_name: str | None = Field(
         'log.txt',
         description='Logging file name.',
     )
@@ -59,7 +56,7 @@ class RunConfig(BaseModel):
             '"{executor}" for formatting).'
         ),
     )
-    env_vars: Optional[Dict[str, str]] = Field(  # noqa: UP006,UP045
+    env_vars: dict[str, str] | None = Field(
         None,
         description='Environment variables to set during benchmarking.',
     )
@@ -163,7 +160,7 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
             description=f'Filter configuration (selected: {filter_name}).',
         )
     else:
-        filter_cls = Optional[FilterConfig]  # type: ignore[assignment]
+        filter_cls = FilterConfig | None  # type: ignore[assignment]
         filter_field = Field(  # type: ignore[assignment]
             None,
             description='Filter configuration (selected: none).',
@@ -179,7 +176,7 @@ def _make_config_cls(options: dict[str, Any]) -> type[Config]:
             ),
         )
     else:
-        transformer_cls = Optional[TransformerConfig]  # type: ignore[assignment]
+        transformer_cls = TransformerConfig | None  # type: ignore[assignment]
         transformer_field = Field(  # type: ignore[assignment]
             None,
             description='Transformer configuration (selected: none).',

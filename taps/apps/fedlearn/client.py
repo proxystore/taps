@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import Optional
 
 import torch
 from numpy.random import Generator
@@ -22,7 +21,7 @@ class Client(BaseModel):
 
     idx: int = Field(description='Client ID.')
     model: torch.nn.Module = Field(description='Client local model.')
-    data: Optional[Subset] = Field(  # noqa: UP045
+    data: Subset | None = Field(
         description='Subset of data this client will train on.',
     )
 

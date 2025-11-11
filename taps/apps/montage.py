@@ -342,7 +342,12 @@ class MontageApp:
 
         mdiff_futures = []
         logger.log(APP_LOG_LEVEL, 'Starting difference computations')
-        for image1, image2, output in zip(images1, images2, outputs):
+        for image1, image2, output in zip(
+            images1,
+            images2,
+            outputs,
+            strict=False,
+        ):
             future = engine.submit(
                 mdiff,
                 image_1=projections_dir / image1,

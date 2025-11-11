@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pathlib
 from typing import Literal
-from typing import Optional
 
 from pydantic import Field
 
@@ -20,7 +19,7 @@ class MapreduceConfig(AppConfig):
         description='Application name.',
     )
     data_dir: pathlib.Path = Field(description='Text file directory.')
-    map_tasks: Optional[int] = Field(  # noqa: UP045
+    map_tasks: int | None = Field(
         32,
         description=(
             'Maximum number of map tasks (`None` uses one '

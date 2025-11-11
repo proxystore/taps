@@ -4,7 +4,6 @@ import enum
 import sys
 from typing import Any
 from typing import Literal
-from typing import Optional
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -41,7 +40,7 @@ class SyntheticConfig(AppConfig, use_enum_values=True):
     task_count: int = Field(description='Number of tasks in the workflow.')
     task_data_bytes: int = Field(0, description='Intermediate task data size.')
     task_sleep: float = Field(0, description='Minimum duration of each task.')
-    bag_max_running: Optional[int] = Field(  # noqa: UP045
+    bag_max_running: int | None = Field(
         None,
         description='Max running tasks in bag workflow.',
     )

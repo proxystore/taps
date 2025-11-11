@@ -88,7 +88,11 @@ def create_contour_plot(
 
     x = numpy.linspace(0, config.width, num=config.width * config.resolution)
     y = numpy.linspace(0, config.width, num=config.width * config.resolution)
-    for ax, positions in zip(axs, (initial_positions, final_positions)):
+    for ax, positions in zip(
+        axs,
+        (initial_positions, final_positions),
+        strict=False,
+    ):
         handle = ax.contour(x, y, heightmap, levels=10)
         plt.clabel(handle, inline=True)
         px, py = (
@@ -99,7 +103,9 @@ def create_contour_plot(
         )
         ax.scatter(px, py, s=16, c='#FFFFFF', zorder=100)
 
-    for i, (ax, title) in enumerate(zip(axs, ('Initial', 'Final'))):
+    for i, (ax, title) in enumerate(
+        zip(axs, ('Initial', 'Final'), strict=False),
+    ):
         ax.set_title(title)
         ax.set_xlim(0, config.width)
         ax.set_ylim(0, config.width)
@@ -141,13 +147,17 @@ def create_terrain_plot(
     y = numpy.arange(0, config.width, 1 / config.resolution)
     x, y = numpy.meshgrid(x, y)
 
-    for ax, positions in zip(axs, (initial_positions, final_positions)):
-        px, py, _ = zip(*positions)
+    for ax, positions in zip(
+        axs,
+        (initial_positions, final_positions),
+        strict=False,
+    ):
+        px, py, _ = zip(*positions, strict=False)
         xy = numpy.vstack([px, py])
         kde = gaussian_kde(xy)(xy)
         kde_grid = numpy.zeros_like(heightmap)
 
-        for i, (xi, yi) in enumerate(zip(px, py)):
+        for i, (xi, yi) in enumerate(zip(px, py, strict=False)):
             # Clamp positions to be in [0, config.width]. If a ball rolled
             # off the edge, it's position would be outside the mesh map.
             max_index = (config.width * config.resolution) - 1
@@ -166,7 +176,7 @@ def create_terrain_plot(
             alpha=0.9,
         )
 
-    for ax, title in zip(axs, ('Initial', 'Final')):
+    for ax, title in zip(axs, ('Initial', 'Final'), strict=False):
         ax.set_title(title, pad=-20)
         ax.set_xlim(0, config.width)
         ax.set_ylim(0, config.width)

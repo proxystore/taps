@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import Optional
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -22,15 +21,15 @@ class EngineConfig(BaseModel):
         default_factory=ProcessPoolConfig,
         description='Executor configuration.',
     )
-    filter: Optional[FilterConfig] = Field(  # noqa: UP045
+    filter: FilterConfig | None = Field(
         default=None,
         description='Filter configuration.',
     )
-    transformer: Optional[TransformerConfig] = Field(  # noqa: UP045
+    transformer: TransformerConfig | None = Field(
         default=None,
         description='Transformer configuration.',
     )
-    task_record_file_name: Optional[str] = Field(  # noqa: UP045
+    task_record_file_name: str | None = Field(
         'tasks.jsonl',
         description='Name of line-delimted JSON file to log task records to.',
     )

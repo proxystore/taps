@@ -1,12 +1,8 @@
 from __future__ import annotations
 
 import multiprocessing
-from typing import Dict
 from typing import Literal
-from typing import Optional
-from typing import Tuple
 from typing import TYPE_CHECKING
-from typing import Union
 
 import parsl
 from parsl.addresses import address_by_hostname
@@ -45,7 +41,7 @@ class ParslLocalConfig(TapsExecutorConfig):
         'parsl-local',
         description='Executor name.',
     )
-    workers: Optional[int] = Field(  # noqa: UP045
+    workers: int | None = Field(
         None,
         description='Maximum number of parsl workers.',
     )
@@ -96,10 +92,10 @@ class ParslHTExConfig(TapsExecutorConfig):
         'parsl-htex',
         description='Executor name.',
     )
-    htex: Union[HTExConfig, Dict[str, HTExConfig]] = Field(  # noqa: UP006,UP007
+    htex: HTExConfig | dict[str, HTExConfig] = Field(
         description='HTEx configuration.',
     )
-    app_cache: Optional[bool] = Field(  # noqa: UP045
+    app_cache: bool | None = Field(
         None,
         description='Enable app caching.',
     )
@@ -107,15 +103,15 @@ class ParslHTExConfig(TapsExecutorConfig):
         0,
         description='Number of task retries in case of task failure.',
     )
-    strategy: Optional[str] = Field(  # noqa: UP045
+    strategy: str | None = Field(
         None,
         description='Block scaling strategy.',
     )
-    max_idletime: Optional[float] = Field(  # noqa: UP045
+    max_idletime: float | None = Field(
         None,
         description='Idle time before strategy can shutdown unused blocks.',
     )
-    monitoring: Optional[MonitoringConfig] = Field(  # noqa: UP045
+    monitoring: MonitoringConfig | None = Field(
         None,
         description='Database monitoring configuration.',
     )
@@ -211,30 +207,30 @@ class HTExConfig(BaseModel):
     model_config = ConfigDict(extra='allow')
 
     label: str = Field('taps-htex', description='Executor label.')
-    provider: Optional[ProviderConfig] = Field(  # noqa: UP045
+    provider: ProviderConfig | None = Field(
         None,
         description='Configuration for the compute resource provider.',
     )
-    address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007,UP045
+    address: str | AddressConfig | None = Field(
         None,
         description='Address to connect to the main Parsl process.',
     )
-    manager_selector: Optional[ManagerSelectorConfig] = Field(  # noqa: UP045
+    manager_selector: ManagerSelectorConfig | None = Field(
         None,
         description=(
             'Configuration for the manager selector (available in '
             'Parsl v2024.8.5 and later).'
         ),
     )
-    worker_port: Optional[int] = Field(  # noqa: UP045
+    worker_port: int | None = Field(
         None,
         description='Port used by workers to connect to Parsl',
     )
-    worker_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
+    worker_port_range: tuple[int, int] | None = Field(
         None,
         description='Range of ports to choose worker ports from.',
     )
-    interchange_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
+    interchange_port_range: tuple[int, int] | None = Field(
         None,
         description='Ports used by Parsl to connect to interchange.',
     )
@@ -347,7 +343,7 @@ class ProviderConfig(BaseModel):
     model_config = ConfigDict(extra='allow')
 
     kind: str = Field(description='Execution provider class name')
-    launcher: Optional[LauncherConfig] = Field(  # noqa: UP045
+    launcher: LauncherConfig | None = Field(
         None,
         description='Launcher configuration.',
     )
@@ -522,11 +518,11 @@ class MonitoringConfig(BaseModel):
 
     model_config = ConfigDict(extra='allow')
 
-    hub_address: Optional[Union[str, AddressConfig]] = Field(  # noqa: UP007,UP045
+    hub_address: str | AddressConfig | None = Field(
         None,
         description='Address to connect to the monitoring hub.',
     )
-    hub_port_range: Optional[Tuple[int, int]] = Field(  # noqa: UP006,UP045
+    hub_port_range: tuple[int, int] | None = Field(
         None,
         description='Port range for a ZMQ channel from executor process.',
     )

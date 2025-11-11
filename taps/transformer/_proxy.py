@@ -6,10 +6,8 @@ import pathlib
 import sys
 from typing import Any
 from typing import cast
-from typing import Dict
 from typing import Literal
 from typing import TypeVar
-from typing import Union
 
 if sys.version_info >= (3, 11):  # pragma: >=3.11 cover
     from typing import Self
@@ -30,7 +28,7 @@ from taps.plugins import register
 from taps.transformer._protocol import TransformerConfig
 
 T = TypeVar('T')
-JSON = Union[int, float, str, Dict[str, 'JSON']]  # noqa: UP006
+JSON = int | float | str | dict[str, 'JSON']
 _PROXYSTORE_DIR = 'proxystore'
 _PROXYSTORE_AGGREGATE_FILE = 'aggregated.json'
 _PROXYSTORE_STATS_FILE = 'stats.jsonl'
