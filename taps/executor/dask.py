@@ -5,6 +5,7 @@ from concurrent.futures import Executor
 from concurrent.futures import Future
 from typing import Any
 from typing import Callable
+from typing import cast
 from typing import Generator
 from typing import Iterable
 from typing import Iterator
@@ -81,7 +82,8 @@ class DaskDistributedExecutor(Executor):
             [`Future`][concurrent.futures.Future]-like object representing \
             the result of the execution of the callable.
         """
-        return self.client.submit(function, *args, **kwargs)
+        future = self.client.submit(function, *args, **kwargs)
+        return cast(Future[T], future)
 
     def map(
         self,
