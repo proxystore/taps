@@ -73,7 +73,6 @@ def test_get_htex_executor(tmp_path: pathlib.Path, mock_monitoring) -> None:
 
     config = ParslHTExConfig(
         htex=htex_config,
-        app_cache=False,
         retries=1,
         run_dir=str(tmp_path / 'parsl'),
         monitoring=MonitoringConfig(

@@ -95,10 +95,6 @@ class ParslHTExConfig(TapsExecutorConfig):
     htex: HTExConfig | dict[str, HTExConfig] = Field(
         description='HTEx configuration.',
     )
-    app_cache: bool | None = Field(
-        None,
-        description='Enable app caching.',
-    )
     retries: int = Field(
         0,
         description='Number of task retries in case of task failure.',
