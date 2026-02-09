@@ -275,7 +275,7 @@ class AddressConfig(BaseModel):
         # Parse the class name if the full path is passed. For example,
         # parsl.addresses.address_by_hostname and address_by_hostname should
         # both be valid.
-        cls_name = kind.split('.')[-1]
+        cls_name = kind.rsplit('.', maxsplit=1)[-1]
         try:
             getattr(parsl.addresses, cls_name)
         except AttributeError as e:
@@ -349,7 +349,7 @@ class ProviderConfig(BaseModel):
     def _validate_provider_name(cls, kind: str) -> str:
         # Parse the class name if the full path is passed. For example,
         # parsl.providers.SlurmProvider and SlurmProvider should both be valid.
-        cls_name = kind.split('.')[-1]
+        cls_name = kind.rsplit('.', maxsplit=1)[-1]
         try:
             getattr(parsl.providers, cls_name)
         except AttributeError as e:
@@ -404,7 +404,7 @@ class LauncherConfig(BaseModel):
     def _validate_launcher_name(cls, kind: str) -> str:
         # Parse the class name if the full path is passed. For example,
         # parsl.launchers.SrunLauncher and SrunLauncher should both be valid.
-        cls_name = kind.split('.')[-1]
+        cls_name = kind.rsplit('.', maxsplit=1)[-1]
         try:
             getattr(parsl.launchers, cls_name)
         except AttributeError as e:
@@ -452,7 +452,7 @@ class ManagerSelectorConfig(BaseModel):
         # Parse the class name if the full path is passed. For example,
         # parsl.executors.high_throughput.manager_selector.RandomManagerSelector  # noqa: E501
         # and RandomManagerSelector should both be valid.
-        cls_name = kind.split('.')[-1]
+        cls_name = kind.rsplit('.', maxsplit=1)[-1]
         try:
             import parsl.executors.high_throughput.manager_selector
         except ImportError as e:  # pragma: no cover
