@@ -26,7 +26,11 @@ dependencies = [
     "proxystore>=0.7.0",
     "psutil",
     "pydantic>=2",
-    "pydantic-settings>=2.3.0",
+    # pydantic-settings 2.13.0 contains this commit:
+    # https://github.com/pydantic/pydantic-settings/commit/0f8f951b89b137bd563ce74dac016ba2c4cdc7a2
+    # which causes the following error:
+    # argparse.ArgumentError: argument --app: conflicting option string: --app
+    "pydantic-settings>=2.3.0,<2.13.0",
     "ray[client]",
     "tomli-w",
 ]
