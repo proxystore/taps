@@ -11,7 +11,7 @@ from proxystore.store import Store
 from proxystore.store.utils import get_key
 
 try:
-    from proxystore.proxy import ProxyResolveError
+    from proxystore.proxy import ProxyResolveError  # type: ignore[attr-defined, unused-ignore]  # noqa: I001
 except ImportError:  # pragma: no cover
     # Only available in ProxyStore v0.8.2 and later
     class ProxyResolveError(Exception):  # type: ignore[no-redef]
