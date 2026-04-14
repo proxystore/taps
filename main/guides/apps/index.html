@@ -2948,7 +2948,7 @@ Then, configure a virtual environment with the TaPS package and development depe
 <p>Our example application is going to be called <code>foobar</code>.
 All applications in TaPS are composed of two required components:
 <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.AppConfig"><code>AppConfig</code></a> and <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.App"><code>Config</code></a>.
-The <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.AppConfig"><code>AppConfig</code></a> is a Pydantic <a class="autorefs autorefs-external" href="https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel"><code>BaseModel</code></a> containing all configuration options that should be exposed via the CLI.
+The <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.AppConfig"><code>AppConfig</code></a> is a Pydantic <a class="autorefs autorefs-external" href="https://docs.pydantic.dev/latest/api/pydantic/base_model/#pydantic.BaseModel"><code>BaseModel</code></a> containing all configuration options that should be exposed via the CLI.
 The <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.App"><code>App</code></a> has a <a class="autorefs autorefs-internal" href="../../api/apps/#taps.apps.App.run"><code>run()</code></a> method which is the entry point to running the applications.</p>
 <h3 id="the-app">The <code>App</code><a class="headerlink" href="#the-app" title="Permanent link">&para;</a></h3>
 <p>All applications are submodules of <code>taps/apps/</code>.
