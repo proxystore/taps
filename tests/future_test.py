@@ -14,4 +14,4 @@ def test_is_future() -> None:
     with mock.patch('dask.distributed.Future', autospec=True):
         from dask.distributed import Future as DaskFuture
 
-        assert is_future(DaskFuture(uuid.uuid4()))
+        assert is_future(DaskFuture(uuid.uuid4()))  # type: ignore[arg-type]
