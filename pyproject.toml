@@ -183,6 +183,8 @@ extend-ignore = [
     "C419",
     # Allow imports not at top of file. Needed for parsl apps.
     "PLC0415",
+    # Too many positional arguments.
+    "PLR0917",
     # Allow pytest.raises() without match
     "PT011",
     # Allow nested contexts
