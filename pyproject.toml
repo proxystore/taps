@@ -62,7 +62,7 @@ dev = [
     "virtualenv",
 ]
 docs = [
-    "black==24.4.2",
+    "black==26.3.1",
     "griffe-fieldz==0.2.0",
     "mkdocs-autorefs==1.3.1",
     "mkdocs-click==0.8.1",
