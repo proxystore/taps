@@ -91,6 +91,7 @@ from pydantic import Field
 from taps.plugins import register
 from taps.transformer import TransformerConfig
 
+
 @register('transformer')
 class FooTransformerConfig(TransformerConfig):
     """Foo transformer configuration."""
@@ -140,6 +141,7 @@ from typing import Literal
 from pydantic import Field
 
 from taps.plugins import register
+
 
 @register('filter')
 class FooFilterConfig(FilterConfig):
