@@ -23,9 +23,9 @@ dependencies = [
     "dask[distributed]",
     "globus-compute-sdk",
     "parsl>=2025.07.07",
-    "proxystore>=0.7.0",
+    "proxystore>=0.7.0,<2",
     "psutil",
-    "pydantic>=2",
+    "pydantic>=2,<3",
     # pydantic-settings 2.13.0 contains this commit:
     # https://github.com/pydantic/pydantic-settings/commit/0f8f951b89b137bd563ce74dac016ba2c4cdc7a2
     # which causes the following error:
@@ -62,17 +62,21 @@ dev = [
     "virtualenv",
 ]
 docs = [
-    "black==26.3.1",
-    "griffe-fieldz==0.2.0",
-    "mkdocs-autorefs==1.3.1",
-    "mkdocs-click==0.8.1",
-    "mkdocs-gen-files==0.5.0",
-    "mkdocs-literate-nav==0.6.1",
+    "griffe==2.3.0",
+    "griffe-fieldz==0.5.0",
+    "mkdocs-click==0.9.0",
+    "mkdocs-gen-files==0.6.1",
+    "mkdocs-literate-nav==0.6.3",
     "mkdocs-material==9.7.7",
-    "mkdocs-section-index==0.3.9",
-    "mkdocstrings==0.25.2",
-    "mkdocstrings-python==1.10.8",
-    "mike==2.1.3",
+    "mkdocs-section-index==0.3.12",
+    "mkdocstrings==1.0.6",
+    # pymdown-extensions 12.2 changed Highlight.__init__ to require md,
+    # which is incompatible with mkdocstrings 1.0.6
+    "pymdown-extensions<12.2",
+    "mkdocstrings-python==2.0.9",
+    "mike==2.2.0",
+    # Used by mkdocstrings to format signatures
+    "ruff",
 ]
 
 [tool.codespell]
